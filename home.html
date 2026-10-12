@@ -31,7 +31,6 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 
 <link rel="preload" as="image" href="caishen.png">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- 主题初始化（避免闪烁） -->
@@ -92,7 +91,6 @@
   :root{
     color-scheme: dark;
 
-    /* 品牌色 */
     --red:      #ff2d55;
     --red-d:    #cc0e30;
     --red-l:    #ff6b85;
@@ -101,7 +99,6 @@
     --gold-l:   #ffd966;
     --cyan:     #00e5ff;
 
-    /* 页面背景 */
     --bg-page:        #040204;
     --bg-grid-1:      rgba(255, 45, 85, .04);
     --bg-grid-2:      rgba(255, 183, 0, .015);
@@ -112,24 +109,23 @@
     --vignette-1:     rgba(4, 2, 4, .6);
     --vignette-2:     rgba(0, 0, 0, .35);
 
-    /* 文字 */
     --text:      #f0e6d2;
     --text-dim:  #a58c6f;
     --text-mute: #6b5744;
 
-    /* 面板 */
     --panel-bg:       rgba(24, 10, 15, .72);
     --panel-bg-2:     rgba(14, 6, 10, .7);
     --panel-bg-deep:  rgba(6, 3, 5, .99);
     --panel-inner:    rgba(255, 183, 0, .06);
 
-    /* 边框 */
     --border:       rgba(255, 45, 85, .22);
     --border-hi:    rgba(255, 45, 85, .55);
     --border-gold:  rgba(255, 183, 0, .35);
 
-    /* 发光强度 */
     --glow-strength: 1;
+
+    --hud-blink: 2s;
+    --hud-dot:   #26ff8f;
   }
 
   /* ============================================================
@@ -138,7 +134,6 @@
   [data-theme="light"]{
     color-scheme: light;
 
-    /* 品牌色（降饱和度 + 加深） */
     --red:      #c0392b;
     --red-d:    #8e1c10;
     --red-l:    #a82315;
@@ -147,7 +142,6 @@
     --gold-l:   #a67a00;
     --cyan:     #0e7a8a;
 
-    /* 页面背景（暖米纸） */
     --bg-page:        #fff7ed;
     --bg-grid-1:      rgba(192, 57, 43, .07);
     --bg-grid-2:      rgba(212, 160, 23, .04);
@@ -158,31 +152,54 @@
     --vignette-1:     rgba(255, 247, 237, .5);
     --vignette-2:     rgba(120, 60, 20, .12);
 
-    /* 文字 */
     --text:      #2e1e0e;
     --text-dim:  #6b4f2b;
     --text-mute: #a8906e;
 
-    /* 面板 */
     --panel-bg:       rgba(255, 253, 249, .92);
     --panel-bg-2:     rgba(255, 250, 240, .85);
     --panel-bg-deep:  rgba(253, 240, 220, .96);
     --panel-inner:    rgba(212, 160, 23, .12);
 
-    /* 边框 */
     --border:       rgba(192, 57, 43, .28);
     --border-hi:    rgba(192, 57, 43, .6);
     --border-gold:  rgba(212, 160, 23, .5);
 
-    /* 发光强度（亮色下整体减弱） */
     --glow-strength: .55;
+
+    --hud-blink: 3.4s;
+    --hud-dot:   #0e7a4d;
+  }
+
+  /* ============================================================
+     @property：让品牌色 CSS 变量可过渡
+     ============================================================ */
+  @property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
+  @property --red-d          { syntax: '<color>';  inherits: true; initial-value: #cc0e30; }
+  @property --red-l          { syntax: '<color>';  inherits: true; initial-value: #ff6b85; }
+  @property --gold           { syntax: '<color>';  inherits: true; initial-value: #ffb700; }
+  @property --gold-d         { syntax: '<color>';  inherits: true; initial-value: #cc8f00; }
+  @property --gold-l         { syntax: '<color>';  inherits: true; initial-value: #ffd966; }
+  @property --cyan           { syntax: '<color>';  inherits: true; initial-value: #00e5ff; }
+  @property --glow-strength  { syntax: '<number>'; inherits: true; initial-value: 1; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 74px;
+    transition:
+      --red           .9s cubic-bezier(.4, 0, .2, 1),
+      --red-d         .9s cubic-bezier(.4, 0, .2, 1),
+      --red-l         .9s cubic-bezier(.4, 0, .2, 1),
+      --gold          .9s cubic-bezier(.4, 0, .2, 1),
+      --gold-d        .9s cubic-bezier(.4, 0, .2, 1),
+      --gold-l        .9s cubic-bezier(.4, 0, .2, 1),
+      --cyan          .9s cubic-bezier(.4, 0, .2, 1),
+      --glow-strength .9s cubic-bezier(.4, 0, .2, 1);
   }
 
   /* ============================================================
      基础
      ============================================================ */
-  html{ scroll-behavior: smooth; scroll-padding-top: 74px; }
-
   body{
     background-color: var(--bg-page);
     background-image:
@@ -208,7 +225,6 @@
     transition: background-color .4s ease, color .4s ease;
   }
 
-  /* 扫描线 */
   body::before{
     content: "";
     position: fixed;
@@ -224,7 +240,6 @@
     z-index: 9998;
     mix-blend-mode: overlay;
   }
-  /* 暗角 */
   body::after{
     content: "";
     position: fixed;
@@ -275,9 +290,9 @@
     content: "";
     width: 5px; height: 5px;
     border-radius: 50%;
-    background: #26ff8f;
-    box-shadow: 0 0 6px #26ff8f;
-    animation: hudBlink 2s ease-in-out infinite;
+    background: var(--hud-dot);
+    box-shadow: 0 0 6px var(--hud-dot);
+    animation: hudBlink var(--hud-blink) ease-in-out infinite;
   }
   @keyframes hudBlink{
     0%, 100% { opacity: .5; }
@@ -344,10 +359,8 @@
     transition: all .4s cubic-bezier(.34,1.56,.64,1);
     font-size: .9rem;
   }
-  /* 暗色模式：显示月亮（点击切到亮） */
   [data-theme="dark"]  #themeToggle .icon-dark  { opacity: 1; transform: rotate(0) scale(1); }
   [data-theme="dark"]  #themeToggle .icon-light { opacity: 0; transform: rotate(90deg) scale(.6); }
-  /* 亮色模式：显示太阳 */
   [data-theme="light"] #themeToggle .icon-dark  { opacity: 0; transform: rotate(-90deg) scale(.6); }
   [data-theme="light"] #themeToggle .icon-light { opacity: 1; transform: rotate(0) scale(1); }
 
@@ -390,7 +403,7 @@
   }
 
   /* ============================================================
-     赛博庙门（始终暗色）
+     赛博庙门
      ============================================================ */
   #gate{
     position: fixed;
@@ -917,7 +930,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ============================================================
-     H1 + Glitch 故障字效
+     H1 + Glitch
      ============================================================ */
   .hero h1{
     font-size: clamp(1.85rem, 8vw, 2.9rem);
@@ -944,21 +957,19 @@
     filter: drop-shadow(0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .9));
   }
 
-  /* ---- Glitch 容器 ---- */
   .glitch{
     position: relative;
     display: inline-block;
     color: var(--gold-l);
     letter-spacing: 2px;
-    /* 保持原有霓虹金发光 */
     text-shadow:
       0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .9),
       0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .4);
     z-index: 1;
     isolation: isolate;
+    animation: glitchShake 7s infinite steps(1, end);
   }
 
-  /* 红 / 青 通道副本 */
   .glitch::before,
   .glitch::after{
     content: attr(data-text);
@@ -973,13 +984,11 @@
     opacity: 0;
     transition: opacity .3s ease;
     z-index: -1;
-    /* 保持字距一致 */
     letter-spacing: inherit;
     font: inherit;
     font-family: inherit;
   }
 
-  /* 红色通道 */
   .glitch::before{
     color: var(--red);
     text-shadow:
@@ -987,7 +996,6 @@
       0 0 calc(20px * var(--glow-strength)) var(--red);
     animation: glitchRed 7s infinite steps(1, end);
   }
-  /* 青色通道 */
   .glitch::after{
     color: var(--cyan);
     text-shadow:
@@ -996,7 +1004,6 @@
     animation: glitchCyan 7.5s infinite steps(1, end);
   }
 
-  /* 红通道抖动 */
   @keyframes glitchRed{
     0%, 92%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
     92.5% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(15% 0 55% 0); }
@@ -1007,7 +1014,6 @@
     95%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
   }
 
-  /* 青通道抖动（错开触发） */
   @keyframes glitchCyan{
     0%, 88%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
     88.5% { opacity: 1; transform: translate(5px, 1px);   clip-path: inset(25% 0 55% 0); }
@@ -1018,10 +1024,6 @@
     91%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
   }
 
-  /* 整个字体的极轻晃动（同步） */
-  .glitch{
-    animation: glitchShake 7s infinite steps(1, end);
-  }
   @keyframes glitchShake{
     0%, 92%, 100% { transform: translate(0, 0); }
     92.5% { transform: translate(1px, -1px); }
@@ -1031,7 +1033,6 @@
     94.5% { transform: translate(0, 0); }
   }
 
-  /* Hover 时强化 glitch（"召唤"） */
   .hero h1:hover .glitch::before,
   .hero h1:hover .glitch::after{
     opacity: 1;
@@ -1311,7 +1312,6 @@
     text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .35);
   }
 
-  /* 卡片 */
   .card{
     background: var(--panel-bg);
     border: 1px solid var(--border);
@@ -1335,7 +1335,6 @@
   }
   .card + .card{ margin-top: 14px; }
 
-  /* 列表 */
   ul{ margin: 10px 0 16px; padding-left: 4px; list-style: none; }
   ul li{
     position: relative;
@@ -1357,7 +1356,6 @@
     filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--red));
   }
 
-  /* 特性网格 */
   .grid-3{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
@@ -1426,7 +1424,6 @@
     margin: 0;
   }
 
-  /* 引用 */
   .quote{
     position: relative;
     margin: 18px 0;
@@ -1455,7 +1452,6 @@
   .quote p{ margin-bottom: 10px; }
   .quote p:last-child{ margin-bottom: 0; }
 
-  /* 铁律宣言 —— 始终暗红/金（不受主题影响，作为"锚点"） */
   .creed{
     margin: 22px 0;
     padding: clamp(28px, 6vw, 42px) clamp(18px, 5vw, 32px);
@@ -1522,7 +1518,6 @@
   }
   .creed p:last-child{ margin-bottom: 0; }
 
-  /* 口诀 —— 始终暖金/米纸 */
   .chant{
     margin: 26px 0;
     padding: clamp(28px, 6vw, 42px) clamp(18px, 5vw, 32px);
@@ -1580,7 +1575,6 @@
       0 0 40px rgba(255, 45, 85, .5);
   }
 
-  /* 表格 */
   .table-wrap{
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1631,7 +1625,6 @@
     font-family: 'JetBrains Mono', 'Noto Serif SC', monospace;
   }
 
-  /* 路线 */
   .road{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -1713,7 +1706,6 @@
     margin: 0;
   }
 
-  /* 加入 */
   .join-list{ display: grid; gap: 12px; margin: 20px 0; }
   .join-item{
     display: flex;
@@ -1816,7 +1808,6 @@
   }
   .community-links a i{ color: var(--gold); filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .8)); }
 
-  /* 财神符 CTA */
   .charm-cta{
     position: relative;
     margin-top: 24px;
@@ -2028,12 +2019,15 @@
     position: relative;
   }
   .censer-sticks span.lit{
-    background: linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 55%, var(--gold-d) 100%);
+    background: linear-gradient(180deg,
+      var(--gold-l) 0%,
+      var(--gold)   55%,
+      var(--gold-d) 100%);
     height: 22px;
     opacity: 1;
     box-shadow:
-      0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .9),
-      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .5);
+      0 0 calc(8px  * var(--glow-strength)) var(--gold),
+      0 0 calc(16px * var(--glow-strength)) var(--gold-d);
   }
   .censer-sticks span.lit::before{
     content: "";
@@ -2044,8 +2038,14 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: radial-gradient(circle, #fff3d0 0%, #ffb700 40%, #ff2d55 80%, transparent 100%);
-    box-shadow: 0 0 8px #ffb700, 0 0 16px #ff2d55;
+    background: radial-gradient(circle,
+      var(--gold-l) 0%,
+      var(--gold)   40%,
+      var(--red)    80%,
+      transparent   100%);
+    box-shadow:
+      0 0 8px  var(--gold),
+      0 0 16px var(--red);
     animation: emberGlow 1.8s ease-in-out infinite;
   }
   @keyframes emberGlow{
@@ -2081,10 +2081,9 @@
       radial-gradient(ellipse at 50% 100%, rgba(255, 183, 0, .15), transparent 70%),
       var(--panel-bg-deep);
     box-shadow:
-      0 0 calc(40px * var(--glow-strength)) rgba(255, 183, 0, .55),
-      0 0 calc(80px * var(--glow-strength)) rgba(255, 45, 85, .3),
-      0 8px 22px rgba(0, 0, 0, .7),
-      inset 0 0 40px rgba(255, 183, 0, .08);
+      0 0 calc(40px * var(--glow-strength)) var(--gold),
+      0 0 calc(80px * var(--glow-strength)) var(--red),
+      0 8px 22px rgba(0, 0, 0, .6);
   }
   #censer.full .censer-count b{ color: var(--gold); }
   #censer.full::after{
@@ -2102,11 +2101,16 @@
     50%      { opacity: .9; transform: scale(1.08); }
   }
   #censer.full .censer-svg{
-    filter: drop-shadow(0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .9)) drop-shadow(0 0 20px rgba(255, 183, 0, .5));
+    filter:
+      drop-shadow(0 0 calc(10px * var(--glow-strength)) var(--gold))
+      drop-shadow(0 0 20px var(--gold));
+  }
+  #censer.full .censer-count b{
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
   }
 
   /* ============================================================
-     财神符弹窗（始终暗色）
+     财神符弹窗
      ============================================================ */
   #charmModal{
     position: fixed;
@@ -2292,7 +2296,9 @@
   }
   .charm-actions button:active{ transform: scale(.96); }
 
-  /* Toast */
+  /* ============================================================
+     Toast
+     ============================================================ */
   #toast{
     position: fixed;
     left: 50%;
@@ -2337,7 +2343,7 @@
   }
 
   /* ============================================================
-     页脚（始终暗色）
+     页脚
      ============================================================ */
   footer{
     margin-top: 46px;
@@ -2425,7 +2431,9 @@
   }
   footer .f-warn i{ color: #ff2d55; margin-right: 4px; text-shadow: 0 0 6px rgba(255, 45, 85, .8); }
 
-  /* 回到顶部 */
+  /* ============================================================
+     回到顶部
+     ============================================================ */
   #toTop{
     position: fixed;
     right: 16px;
@@ -2491,26 +2499,8 @@
     .censer-deity{ width: 62px; height: 62px; margin-left: -31px; margin-bottom: 6px; }
     .charm-box{ padding: 20px 16px 16px; }
     #toast{ bottom: 82px; font-size: .68rem; padding: 10px 16px; letter-spacing: 1px; }
-
-    .charm-cta-deity{
-      width: 96px; height: 96px;
-      right: -10px; bottom: -10px;
-    }
+    .charm-cta-deity{ width: 96px; height: 96px; right: -10px; bottom: -10px; }
     .charm-cta-inner{ max-width: 78%; }
-
-    /* H1 glitch 在移动端减弱（防止横移太大） */
-    @keyframes glitchRed{
-      0%, 92%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
-      93%   { opacity: 1; transform: translate(-3px, -1px); clip-path: inset(20% 0 55% 0); }
-      94%   { opacity: 1; transform: translate(2px, 1px);   clip-path: inset(50% 0 30% 0); }
-      95%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
-    }
-    @keyframes glitchCyan{
-      0%, 88%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
-      89%   { opacity: 1; transform: translate(3px, 1px);   clip-path: inset(30% 0 55% 0); }
-      90%   { opacity: 1; transform: translate(-2px, -1px); clip-path: inset(60% 0 20% 0); }
-      91%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
-    }
   }
 
   @media (max-width: 360px){
@@ -2526,95 +2516,11 @@
       animation-duration: .001ms !important;
       transition-duration: .001ms !important;
     }
-    /* glitch 关闭 */
     .glitch::before,
     .glitch::after{ display: none; }
   }
 
   ::selection{ background: rgba(255, 45, 85, .4); color: var(--gold-l); }
-  /* ============================================================
-   @property：让品牌色 CSS 变量可过渡（Chrome 85+ / Safari 16.4+ / Firefox 128+）
-   ============================================================ */
-@property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
-@property --red-d          { syntax: '<color>';  inherits: true; initial-value: #cc0e30; }
-@property --red-l          { syntax: '<color>';  inherits: true; initial-value: #ff6b85; }
-@property --gold           { syntax: '<color>';  inherits: true; initial-value: #ffb700; }
-@property --gold-d         { syntax: '<color>';  inherits: true; initial-value: #cc8f00; }
-@property --gold-l         { syntax: '<color>';  inherits: true; initial-value: #ffd966; }
-@property --cyan           { syntax: '<color>';  inherits: true; initial-value: #00e5ff; }
-@property --glow-strength  { syntax: '<number>'; inherits: true; initial-value: 1; }
-
-/* 主题切换时，所有依赖这些变量的属性都会平滑补间 */
-html {
-  transition:
-    --red           .9s cubic-bezier(.4, 0, .2, 1),
-    --red-d         .9s cubic-bezier(.4, 0, .2, 1),
-    --red-l         .9s cubic-bezier(.4, 0, .2, 1),
-    --gold          .9s cubic-bezier(.4, 0, .2, 1),
-    --gold-d        .9s cubic-bezier(.4, 0, .2, 1),
-    --gold-l        .9s cubic-bezier(.4, 0, .2, 1),
-    --cyan          .9s cubic-bezier(.4, 0, .2, 1),
-    --glow-strength .9s cubic-bezier(.4, 0, .2, 1);
-}
-
-/* ============================================================
-   HUD 呼吸灯：频率跟随主题
-   暗色 = 急促（赛博心跳）· 亮色 = 舒缓（禅意）
-   ============================================================ */
-:root {
-  --hud-blink: 2s;
-  --hud-dot:   #26ff8f;     /* 暗色：荧光绿 */
-}
-[data-theme="light"] {
-  --hud-blink: 3.4s;        /* 亮色：慢 70% */
-  --hud-dot:   #0e7a4d;     /* 亮色：深松绿，米白底上清晰 */
-}
-.hud::before {
-  background: var(--hud-dot);
-  box-shadow: 0 0 6px var(--hud-dot);
-  animation: hudBlink var(--hud-blink) ease-in-out infinite;
-}
-
-/* ============================================================
-   香炉的香：变量驱动，主题切换时自动渐变
-   ============================================================ */
-.censer-sticks span.lit {
-  background: linear-gradient(180deg,
-    var(--gold-l) 0%,
-    var(--gold)   55%,
-    var(--gold-d) 100%);
-  box-shadow:
-    0 0 calc(8px  * var(--glow-strength)) var(--gold),
-    0 0 calc(16px * var(--glow-strength)) var(--gold-d);
-}
-
-/* 顶端火星也跟着渐变 */
-.censer-sticks span.lit::before {
-  background: radial-gradient(circle,
-    var(--gold-l) 0%,
-    var(--gold)   40%,
-    var(--red)    80%,
-    transparent   100%);
-  box-shadow:
-    0 0 8px  var(--gold),
-    0 0 16px var(--red);
-}
-
-/* 香炉满状态的光晕也跟随主题 */
-#censer.full {
-  box-shadow:
-    0 0 calc(40px * var(--glow-strength)) var(--gold),
-    0 0 calc(80px * var(--glow-strength)) var(--red),
-    0 8px 22px rgba(0, 0, 0, .6);
-}
-#censer.full .censer-svg {
-  filter:
-    drop-shadow(0 0 calc(10px * var(--glow-strength)) var(--gold))
-    drop-shadow(0 0 20px var(--gold));
-}
-#censer.full .censer-count b {
-  text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
-}
 </style>
 </head>
 <body>
@@ -3059,7 +2965,7 @@ html {
 
 <script>
 /* ============================================================
-   主题切换
+   主题切换（含事件广播）
    ============================================================ */
 (function () {
   var KEY = 'caishen_theme';
@@ -3071,6 +2977,11 @@ html {
     try { localStorage.setItem(KEY, t); } catch (_) {}
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', t === 'light' ? '#fff7ed' : '#060305');
+
+    // 广播主题变更（粒子系统 + 财神符缓存监听）
+    try {
+      window.dispatchEvent(new CustomEvent('caishen:theme', { detail: { theme: t } }));
+    } catch (_) {}
   }
 
   btn.addEventListener('click', function () {
@@ -3252,12 +3163,9 @@ window.__showToast = (function () {
   var TRANSITION_MS = 900;
   var isTransitioning = false;
 
-  /* 切换配色（供主题切换 / 事件调用） */
   function switchPalette(theme) {
     var newPalette = PALETTES[theme] || PALETTES.dark;
-    // 同色不重复切
     if (!isTransitioning && currentPalette === newPalette) return;
-    // 若正在过渡且目标相同，忽略
     if (isTransitioning && targetPalette === newPalette) return;
 
     targetPalette = newPalette;
@@ -3267,7 +3175,6 @@ window.__showToast = (function () {
   }
   window.__switchParticleTheme = switchPalette;
 
-  /* 监听主题切换事件 */
   window.addEventListener('caishen:theme', function (e) {
     var theme = (e && e.detail && e.detail.theme) || 'dark';
     switchPalette(theme);
@@ -3324,10 +3231,8 @@ window.__showToast = (function () {
     ctx.clearRect(0, 0, W, H);
 
     if (isTransitioning && targetSprite) {
-      /* ---- 过渡中：source-over + 双 sprite 交叉淡化 ---- */
       var elapsed = performance.now() - transitionStart;
       var raw = Math.min(1, elapsed / TRANSITION_MS);
-      // easeInOutCubic
       var eased = raw < 0.5
         ? 4 * raw * raw * raw
         : 1 - Math.pow(-2 * raw + 2, 3) / 2;
@@ -3340,11 +3245,9 @@ window.__showToast = (function () {
         var py = p.y - p.size;
         var sz = p.size * 2;
 
-        // 旧 sprite
         ctx.globalAlpha = p.alpha * (1 - eased);
         ctx.drawImage(currentSprite, px, py, sz, sz);
 
-        // 新 sprite
         ctx.globalAlpha = p.alpha * eased;
         ctx.drawImage(targetSprite, px, py, sz, sz);
       }
@@ -3358,7 +3261,6 @@ window.__showToast = (function () {
         targetPalette = null;
       }
     } else {
-      /* ---- 常态 ---- */
       ctx.globalCompositeOperation = currentMode;
       for (var j = 0; j < particles.length; j++) {
         var q = particles[j];
@@ -3368,115 +3270,6 @@ window.__showToast = (function () {
       }
     }
 
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-  }
-
-  function loop() {
-    if (!document.hidden) { update(); draw(); }
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  /* ===== 交互生成粒子 ===== */
-  var lastTap = 0;
-  function burst(x, y, n, size, alpha) {
-    n = n || 3;
-    for (var i = 0; i < n; i++) {
-      spawn(
-        x + (Math.random() - 0.5) * 34,
-        y + (Math.random() - 0.5) * 34,
-        { size: size || BASE_SIZE * 0.95, alpha: alpha || 0.18 }
-      );
-    }
-  }
-  window.addEventListener('pointerdown', function (e) {
-    var now = Date.now();
-    if (now - lastTap < 55) return;
-    lastTap = now;
-    if (e.target && e.target.closest &&
-        e.target.closest('#gate, #censer, #charmModal, #themeToggle, button, a, input, textarea, select')) return;
-    burst(e.clientX, e.clientY, 2 + Math.floor(Math.random() * 3));
-  }, { passive: true });
-
-  var lastY = window.scrollY;
-  var accum = 0;
-  window.addEventListener('scroll', function () {
-    var y = window.scrollY;
-    accum += Math.abs(y - lastY);
-    lastY = y;
-    if (accum > 46) {
-      accum = 0;
-      if (particles.length < MAX_PARTS * 0.8) {
-        spawn(Math.random() * W, H + 8, { size: BASE_SIZE * 0.72, alpha: 0.12 });
-      }
-    }
-  }, { passive: true });
-
-  setInterval(function () {
-    if (document.hidden) return;
-    if (particles.length > MAX_PARTS * 0.65) return;
-    spawn(Math.random() * W, H + 10, { size: BASE_SIZE * 0.78, alpha: 0.10 });
-  }, 850);
-
-  window.__spawnSmoke = spawn;
-  window.__smokeBurst = burst;
-})();
-
-  function resize() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = W + 'px';
-    canvas.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function spawn(x, y, opt) {
-    opt = opt || {};
-    if (particles.length >= MAX_PARTS) return;
-    var size = (opt.size || BASE_SIZE) * (0.6 + Math.random() * 0.8);
-    particles.push({
-      x: x, y: y,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: -0.35 - Math.random() * 0.6,
-      size: size,
-      growth: 0.14 + Math.random() * 0.22,
-      life: 0,
-      maxLife: 220 + Math.random() * 160,
-      baseAlpha: (opt.alpha || 0.22) * (0.6 + Math.random() * 0.7),
-      alpha: 0
-    });
-  }
-
-  function update() {
-    for (var i = particles.length - 1; i >= 0; i--) {
-      var p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx += (Math.random() - 0.5) * 0.025;
-      p.vy -= 0.0028;
-      p.size += p.growth;
-      p.life++;
-      var t = p.life / p.maxLife;
-      if (t >= 1) { particles.splice(i, 1); continue; }
-      var fade = Math.min(1, p.life / 6) * (1 - t) * (1 - t * 0.4);
-      p.alpha = p.baseAlpha * fade;
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'lighter';
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      if (p.alpha <= 0.002) continue;
-      ctx.globalAlpha = p.alpha;
-      ctx.drawImage(sprite, p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
-    }
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
   }
@@ -3941,9 +3734,6 @@ window.__showToast = (function () {
     }
   }
 
-  /* ============================================================
-     两套主题配色
-     ============================================================ */
   var DARK_THEME = {
     bgFrom:      '#0a0408',
     bgMid:       '#12060c',
@@ -3989,16 +3779,16 @@ window.__showToast = (function () {
     gridColor:   'rgba(192, 57, 43, 0.10)',
     topGlow:     'rgba(212, 160, 23, 0.22)',
     vignette:    'rgba(120, 60, 20, 0.15)',
-    borderOuter: '#c0392b',              /* 朱红 */
-    borderInner: 'rgba(184, 134, 11, 0.7)', /* 暗金 */
+    borderOuter: '#c0392b',
+    borderInner: 'rgba(184, 134, 11, 0.7)',
     cornerColor: '#b8860b',
     codeColor:   'rgba(142, 28, 16, 0.7)',
-    titleColor:  '#8e1c10',              /* 朱红标题 */
-    titleGlow:   '#d4a017',              /* 暗金辉光 */
+    titleColor:  '#8e1c10',
+    titleGlow:   '#d4a017',
     sepColor:    'rgba(192, 57, 43, 0.5)',
     sepDot:      '#b8860b',
     labelColor:  '#a82315',
-    signColor:   '#5a2e0e',              /* 深棕签文 */
+    signColor:   '#5a2e0e',
     signGlow:    '#d4a017',
     chantColor:  '#8e1c10',
     subChant:    '#a82315',
@@ -4025,9 +3815,6 @@ window.__showToast = (function () {
     return t === 'light' ? LIGHT_THEME : DARK_THEME;
   }
 
-  /* ============================================================
-     工具函数
-     ============================================================ */
   function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     var chars = String(text).split('');
     var lines = [];
@@ -4049,7 +3836,6 @@ window.__showToast = (function () {
     return lines.length;
   }
 
-  /* 霓虹/发光文字（多层描边） */
   function neonText(ctx, text, x, y, font, color, glowColor, glowSize) {
     ctx.save();
     ctx.font = font;
@@ -4093,7 +3879,6 @@ window.__showToast = (function () {
   }
 
   function drawDeity(ctx, cx, cy, size, T) {
-    // 光晕
     var glow = ctx.createRadialGradient(cx, cy, size * 0.15, cx, cy, size * 0.72);
     glow.addColorStop(0,    T.deityGlow1);
     glow.addColorStop(0.4,  T.deityGlow2);
@@ -4104,7 +3889,6 @@ window.__showToast = (function () {
     ctx.arc(cx, cy, size * 0.72, 0, Math.PI * 2);
     ctx.fill();
 
-    // 虚线圆
     ctx.save();
     ctx.strokeStyle = T.deityDash;
     ctx.lineWidth = 1.5;
@@ -4114,7 +3898,6 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
-    // 内圈
     ctx.save();
     ctx.strokeStyle = T.deityRing;
     ctx.lineWidth = 1;
@@ -4123,7 +3906,6 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
-    // 财神图
     var state = window.__deityState || {};
     if (state.usable && window.__deityImg) {
       try {
@@ -4137,7 +3919,6 @@ window.__showToast = (function () {
       } catch (e) {}
     }
 
-    // 降级：圆盘 + 财字
     var r = size * 0.4;
     var circle = ctx.createRadialGradient(cx, cy - r * 0.3, 0, cx, cy, r);
     circle.addColorStop(0,   T.fallback1);
@@ -4161,9 +3942,6 @@ window.__showToast = (function () {
     ctx.fillText('财', cx, cy + size * 0.02);
   }
 
-  /* ============================================================
-     生成财神符
-     ============================================================ */
   function generateCharm() {
     var W = 1080, H = 1440;
     var canvas = document.createElement('canvas');
@@ -4176,7 +3954,6 @@ window.__showToast = (function () {
     var T = getCharmTheme();
     var fortune = getFortune();
 
-    /* 1. 背景渐变 */
     var bg = ctx.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0,   T.bgFrom);
     bg.addColorStop(0.5, T.bgMid);
@@ -4184,7 +3961,6 @@ window.__showToast = (function () {
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    /* 2. 网格 */
     ctx.save();
     ctx.strokeStyle = T.gridColor;
     ctx.lineWidth = 1;
@@ -4196,7 +3972,6 @@ window.__showToast = (function () {
     }
     ctx.restore();
 
-    /* 3. 顶部光晕 */
     var glowTop = ctx.createRadialGradient(W / 2, H * 0.28, 0, W / 2, H * 0.28, W * 0.95);
     glowTop.addColorStop(0, T.topGlow);
     glowTop.addColorStop(0.5, 'rgba(0,0,0,0)');
@@ -4204,14 +3979,12 @@ window.__showToast = (function () {
     ctx.fillStyle = glowTop;
     ctx.fillRect(0, 0, W, H);
 
-    /* 4. 暗角 */
     var vignette = ctx.createRadialGradient(W / 2, H * 0.55, W * 0.35, W / 2, H * 0.55, W * 0.95);
     vignette.addColorStop(0, 'rgba(0,0,0,0)');
     vignette.addColorStop(1, T.vignette);
     ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, W, H);
 
-    /* 5. 外框（主题色） */
     ctx.save();
     ctx.strokeStyle = T.borderOuter;
     ctx.lineWidth = 2;
@@ -4226,7 +3999,6 @@ window.__showToast = (function () {
     ctx.strokeRect(66, 66, W - 132, H - 132);
     ctx.restore();
 
-    /* 6. 四角装饰 */
     ctx.save();
     ctx.strokeStyle = T.cornerColor;
     ctx.lineWidth = 3;
@@ -4241,22 +4013,18 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
-    /* 7. 顶部小字 */
     ctx.fillStyle = T.codeColor;
     ctx.font = '600 22px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 138);
 
-    /* 8. 财神像 */
     drawDeity(ctx, W / 2, 448, 460, T);
 
-    /* 9. 财神符大字 */
     neonText(ctx, '财 神 符', W / 2, 782,
       '900 96px "Noto Serif SC", "Songti SC", serif',
       T.titleColor, T.titleGlow, 24);
 
-    /* 10. 分隔线 */
     ctx.save();
     ctx.strokeStyle = T.sepColor;
     ctx.lineWidth = 1;
@@ -4273,19 +4041,16 @@ window.__showToast = (function () {
     ctx.arc(W / 2, 866, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    /* 11. 签 label */
     ctx.fillStyle = T.labelColor;
     ctx.font = '600 22px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('[' + fortune.label + ']', W / 2, 934);
 
-    /* 12. 签文 */
     neonText(ctx, fortune.text, W / 2, 1042,
       '800 52px "Noto Serif SC", "Songti SC", "STSong", serif',
       T.signColor, T.signGlow, 16);
 
-    /* 13. 口诀 */
     ctx.fillStyle = T.chantColor;
     ctx.font = '700 32px "Noto Serif SC", "Songti SC", serif';
     ctx.textAlign = 'center';
@@ -4296,7 +4061,6 @@ window.__showToast = (function () {
     ctx.font = '500 22px "Noto Serif SC", "Songti SC", serif';
     ctx.fillText('财神到，财运到', W / 2, 1284);
 
-    /* 14. URL + 日期 */
     ctx.fillStyle = T.urlColor;
     ctx.font = '500 20px "JetBrains Mono", Consolas, monospace';
     ctx.fillText('caishen.xyz', W / 2, H - 132);
@@ -4309,17 +4073,14 @@ window.__showToast = (function () {
     ctx.font = '400 18px "JetBrains Mono", Consolas, monospace';
     ctx.fillText(dateStr, W / 2, H - 96);
 
-    /* 15. 印章 */
     drawSeal(ctx, W - 148, H - 148, 108, T);
 
-    /* 16. 编号 */
     ctx.fillStyle = T.noColor;
     ctx.font = '400 20px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText('# ' + Math.floor(Math.random() * 9000 + 1000), 92, H - 148);
 
-    /* 17. 导出 */
     try {
       return canvas.toDataURL('image/png');
     } catch (e) {
@@ -4346,7 +4107,6 @@ window.__showToast = (function () {
   }
 
   function doOpen() {
-    /* 每次打开都重新生成（成本 <30ms，用户无感知），确保颜色跟当前主题一致 */
     try {
       currentDataUrl = generateCharm();
       img.src = currentDataUrl;
