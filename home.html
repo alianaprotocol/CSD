@@ -5115,6 +5115,83 @@ window.__metalScrape = (function () {
     });
   }
 })();
+  
+/* ============================================================
+   ✦ 文化基因组扫描仪 · 滚动进入视口时依次点亮三行
+   ============================================================ */
+(function () {
+  var scanner = document.getElementById('cultureScanner');
+  if (!scanner) return;
+
+  var rows = scanner.querySelectorAll('.scan-row');
+  var result = scanner.querySelector('.scanner-result');
+  var played = false;
+
+  // 尊重 reduced-motion
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (_) {}
+
+  function animateRow(row, delay) {
+    setTimeout(function () {
+      row.classList.add('active');
+
+      var fill = row.querySelector('.scan-fill');
+      var pctB = row.querySelector('.scan-pct b');
+
+      // 进度条填充
+      if (fill) fill.style.width = '100%';
+
+      // 百分比数字滚动
+      if (pctB) {
+        if (reduceMotion) {
+          pctB.textContent = '100';
+          return;
+        }
+        var start = performance.now();
+        var dur = 1150;
+        function tick(now) {
+          var t = Math.min(1, (now - start) / dur);
+          // easeOutCubic
+          var eased = 1 - Math.pow(1 - t, 3);
+          pctB.textContent = Math.round(eased * 100);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+    }, delay);
+  }
+
+  function play() {
+    if (played) return;
+    played = true;
+
+    rows.forEach(function (row, i) {
+      animateRow(row, i * 680);
+    });
+
+    // 结论最后浮现
+    setTimeout(function () {
+      if (result) result.classList.add('show');
+    }, rows.length * 680 + 380);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          play();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.28 });
+    io.observe(scanner);
+  } else {
+    play();
+  }
+})();
 </script>
 
 </body>
