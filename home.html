@@ -3631,6 +3631,584 @@
       animation-duration: .001ms !important;
     }
   }
+    /* ============================================================
+     ✦ 是什么 · 赛博财神庙（链上神殿）
+     ============================================================ */
+  .cyber-temple{
+    position: relative;
+    margin: 20px 0;
+    padding: 26px clamp(18px, 4.5vw, 34px) 22px;
+    border-radius: 8px;
+    background:
+      /* 顶部穹顶光晕 */
+      radial-gradient(ellipse 90% 55% at 50% 0%,   rgba(255, 45, 85, .16), transparent 65%),
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(255, 183, 0, .10), transparent 65%),
+      /* 纵向光柱（三根柱子的背后光） */
+      linear-gradient(180deg,
+        rgba(255, 183, 0, .05) 0%,
+        transparent 30%),
+      linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
+    border: 1px solid var(--border-hi);
+    box-shadow:
+      0 0 calc(50px * var(--glow-strength)) rgba(255, 45, 85, .18),
+      0 0 calc(110px * var(--glow-strength)) rgba(255, 45, 85, .10),
+      inset 0 0 80px rgba(255, 45, 85, .04);
+    overflow: hidden;
+    transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
+  }
+  /* 四角回纹装饰 */
+  .cyber-temple::before,
+  .cyber-temple::after{
+    content: "";
+    position: absolute;
+    width: 26px; height: 26px;
+    pointer-events: none;
+    opacity: .55;
+    background:
+      linear-gradient(var(--gold), var(--gold)) 0 0 / 100% 1px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) 0 0 / 1px 100% no-repeat,
+      linear-gradient(var(--gold), var(--gold)) 100% 0 / 100% 1px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) 100% 0 / 1px 100% no-repeat;
+  }
+  .cyber-temple::before{ top: 14px;    left: 14px;   }
+  .cyber-temple::after { bottom: 14px; right: 14px;  }
+
+  /* ============================================================
+     庙顶
+     ============================================================ */
+  .ct-roof{
+    text-align: center;
+    margin-bottom: 22px;
+    padding-top: 6px;
+    position: relative;
+  }
+  .ct-roof-arch{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .ct-arch-line{
+    flex: 1;
+    max-width: 110px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+  }
+  .ct-arch-seal{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold);
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    font-size: .82rem;
+    font-weight: 900;
+    background: rgba(255, 183, 0, .06);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .35),
+      inset 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .1);
+  }
+
+  .ct-roof-eyebrow{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: 3.2px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ct-roof-title{
+    font-size: clamp(1.15rem, 4.6vw, 1.42rem);
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--gold-l);
+    line-height: 1.2;
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .35),
+      0 4px 12px rgba(0, 0, 0, .5);
+    margin-bottom: 6px;
+    border: none;
+    padding: 0;
+  }
+  .ct-roof-sub{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem;
+    font-weight: 600;
+    letter-spacing: 2.4px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     引言 & 过渡
+     ============================================================ */
+  .ct-intro{
+    font-size: clamp(.92rem, 3.7vw, 1rem);
+    line-height: 1.85;
+    color: var(--text);
+    text-align: center;
+    margin: 0 0 12px;
+    padding: 0 6px;
+  }
+  .ct-intro strong{
+    color: var(--gold-l);
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .45);
+  }
+
+  .ct-bridge{
+    font-size: .88rem;
+    line-height: 1.85;
+    color: var(--text-dim);
+    text-align: center;
+    margin: 0 0 26px;
+    padding: 0 6px;
+  }
+  .ct-bridge em{
+    font-style: normal;
+    font-weight: 700;
+    color: var(--gold-l);
+    letter-spacing: .5px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: rgba(255, 183, 0, .08);
+    border: 1px solid rgba(255, 183, 0, .22);
+    text-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .4);
+  }
+  .ct-bridge strong{
+    color: var(--red-l);
+    font-weight: 800;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .5);
+  }
+
+  /* ============================================================
+     三根立柱
+     ============================================================ */
+  .ct-pillars{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 26px;
+    position: relative;
+  }
+  /* 地板横梁 */
+  .ct-pillars::after{
+    content: "";
+    position: absolute;
+    left: -6px; right: -6px;
+    bottom: -10px;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 20%,
+      var(--gold) 80%,
+      transparent 100%);
+    box-shadow: 0 0 calc(10px * var(--glow-strength)) var(--gold);
+    border-radius: 2px;
+    opacity: .8;
+  }
+
+  .ct-pillar{
+    position: relative;
+    padding: 18px 8px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background:
+      linear-gradient(180deg,
+        rgba(255, 45, 85, .06) 0%,
+        rgba(255, 45, 85, .02) 40%,
+        rgba(255, 183, 0, .02) 60%,
+        rgba(255, 183, 0, .06) 100%);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--border-gold);
+    border-bottom: 2px solid var(--border-gold);
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    transition:
+      transform .35s cubic-bezier(.34, 1.4, .64, 1),
+      border-color .35s ease,
+      box-shadow .35s ease,
+      background .35s ease,
+      opacity .35s ease;
+  }
+  /* 柱身纵向凹槽纹理 */
+  .ct-pillar::before{
+    content: "";
+    position: absolute;
+    inset: 6px 14px;
+    background-image:
+      linear-gradient(90deg,
+        transparent 0,
+        transparent 30%,
+        rgba(255, 183, 0, .06) 30%,
+        rgba(255, 183, 0, .06) 31%,
+        transparent 31%,
+        transparent 69%,
+        rgba(255, 183, 0, .06) 69%,
+        rgba(255, 183, 0, .06) 70%,
+        transparent 70%,
+        transparent 100%);
+    pointer-events: none;
+    opacity: .8;
+    transition: opacity .35s ease;
+  }
+
+  /* 顶盖 / 底座 */
+  .ct-pillar-cap,
+  .ct-pillar-foot{
+    position: absolute;
+    left: -4px; right: -4px;
+    height: 4px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 25%,
+      var(--gold) 75%,
+      transparent 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
+    opacity: .75;
+    transition: all .35s ease;
+  }
+  .ct-pillar-cap{ top: -2px;    }
+  .ct-pillar-foot{ bottom: -2px; }
+
+  /* 内部内容 */
+  .ct-pillar-inner{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+  .ct-pillar-icon{
+    font-size: 1.4rem;
+    color: var(--text-dim);
+    line-height: 1;
+    transition: all .4s cubic-bezier(.34, 1.4, .64, 1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  .ct-pillar-action{
+    font-size: .84rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 1.2px;
+    transition: all .35s ease;
+  }
+  .ct-pillar-rule{
+    width: 20px;
+    height: 1px;
+    background: var(--border-gold);
+    transition: all .35s ease;
+  }
+  .ct-pillar-result{
+    font-size: .98rem;
+    font-weight: 900;
+    color: var(--text-mute);
+    letter-spacing: 2px;
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    opacity: .55;
+    transform: translateY(2px);
+    transition: all .4s cubic-bezier(.34, 1.4, .64, 1);
+  }
+
+  /* ---- 悬停 / focus：前两根柱子点亮 ---- */
+  .ct-pillar:not([data-kind="dump"]):hover,
+  .ct-pillar:not([data-kind="dump"]):focus-visible{
+    outline: none;
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    border-top-color: var(--gold-l);
+    border-bottom-color: var(--gold-l);
+    background:
+      linear-gradient(180deg,
+        rgba(255, 45, 85, .14) 0%,
+        rgba(255, 45, 85, .06) 40%,
+        rgba(255, 183, 0, .08) 60%,
+        rgba(255, 183, 0, .16) 100%);
+    box-shadow:
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .5),
+      0 0 calc(56px * var(--glow-strength)) rgba(255, 45, 85, .3),
+      inset 0 0 30px rgba(255, 183, 0, .12);
+  }
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-cap,
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-foot,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-cap,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-foot{
+    opacity: 1;
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) var(--gold);
+  }
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-icon,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-icon{
+    color: var(--gold-l);
+    transform: scale(1.15) translateY(-2px);
+    filter: drop-shadow(0 0 calc(10px * var(--glow-strength)) var(--gold));
+  }
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-action,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-action{
+    color: var(--gold-l);
+    text-shadow: 0 0 calc(10px * var(--glow-strength)) var(--gold);
+  }
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-rule,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-rule{
+    width: 42px;
+    background: var(--gold);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
+  }
+  .ct-pillar:not([data-kind="dump"]):hover .ct-pillar-result,
+  .ct-pillar:not([data-kind="dump"]):focus-visible .ct-pillar-result{
+    color: var(--gold-l);
+    opacity: 1;
+    transform: translateY(0) scale(1.08);
+    text-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .45);
+  }
+
+  /* ---- "砸他"柱子：悬停会变暗+抖动（反直觉设计） ---- */
+  .ct-pillar[data-kind="dump"]:hover,
+  .ct-pillar[data-kind="dump"]:focus-visible{
+    outline: none;
+    animation: ctDumpShake .42s cubic-bezier(.36, .07, .19, .97);
+    border-color: rgba(120, 120, 130, .5);
+    border-top-color: rgba(120, 120, 130, .7);
+    border-bottom-color: rgba(120, 120, 130, .7);
+    background: linear-gradient(180deg, rgba(80, 80, 90, .12), rgba(40, 40, 50, .06));
+    box-shadow:
+      0 0 calc(20px * var(--glow-strength)) rgba(80, 80, 90, .35),
+      inset 0 0 24px rgba(0, 0, 0, .35);
+    opacity: .55;
+  }
+  @keyframes ctDumpShake{
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-5px) rotate(-1deg); }
+    40%      { transform: translateX(4px) rotate(1deg); }
+    60%      { transform: translateX(-3px) rotate(-.5deg); }
+    80%      { transform: translateX(2px); }
+  }
+  .ct-pillar[data-kind="dump"]:hover .ct-pillar-icon,
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-icon{
+    color: var(--text-mute);
+  }
+  .ct-pillar[data-kind="dump"]:hover .ct-pillar-action,
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-action{
+    color: var(--text-mute);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255, 45, 85, .7);
+    text-decoration-thickness: 2px;
+  }
+  .ct-pillar[data-kind="dump"]:hover .ct-pillar-rule,
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-rule{
+    background: rgba(120, 120, 130, .5);
+  }
+  .ct-pillar[data-kind="dump"]:hover .ct-pillar-result,
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-result{
+    color: var(--text-mute);
+    opacity: 1;
+    transform: translateY(0);
+    text-shadow: none;
+  }
+
+  /* ============================================================
+     基座
+     ============================================================ */
+  .ct-base{
+    position: relative;
+    margin-top: 20px;
+    padding-top: 16px;
+    text-align: center;
+  }
+  /* 基座横梁 */
+  .ct-base-beam{
+    position: absolute;
+    top: 0; left: -6px; right: -6px;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 25%,
+      var(--gold-l) 50%,
+      var(--gold) 75%,
+      transparent 100%);
+    border-radius: 2px;
+    box-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .45);
+    animation: ctBeamFlow 4s ease-in-out infinite;
+  }
+  @keyframes ctBeamFlow{
+    0%, 100% { opacity: .75; }
+    50%      { opacity: 1;   }
+  }
+
+  /* 三个节点 */
+  .ct-base-nodes{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .ct-node{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px 5px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border-gold);
+    background: rgba(255, 183, 0, .04);
+    font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+    font-size: .74rem;
+    font-weight: 700;
+    color: var(--gold-l);
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .4);
+    transition: all .3s ease;
+  }
+  .ct-node:hover{
+    border-color: var(--gold);
+    background: rgba(255, 183, 0, .10);
+    box-shadow: 0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .35);
+    transform: translateY(-1px);
+  }
+  .ct-node-dot{
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #26ff8f;
+    box-shadow:
+      0 0 6px #26ff8f,
+      0 0 calc(12px * var(--glow-strength)) rgba(38, 255, 143, .55);
+    animation: ctNodePulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .ct-node:nth-child(2) .ct-node-dot{ animation-delay: .4s; }
+  .ct-node:nth-child(3) .ct-node-dot{ animation-delay: .8s; }
+  @keyframes ctNodePulse{
+    0%, 100% { opacity: .55; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.3); }
+  }
+
+  /* 等号 + 精神股东 */
+  .ct-base-eq{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .ct-eq-op{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--red);
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--red),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .5);
+  }
+  .ct-eq-word{
+    font-size: clamp(1.05rem, 4vw, 1.22rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--gold-l);
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .35);
+  }
+  .ct-eq-tag{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem;
+    font-weight: 600;
+    letter-spacing: 2.2px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px dashed var(--border-gold);
+    border-radius: 3px;
+  }
+
+  /* ============================================================
+     入场动画（滚动进入视口触发）
+     ============================================================ */
+  .ct-roof,
+  .ct-intro,
+  .ct-bridge,
+  .ct-pillar,
+  .ct-base-nodes,
+  .ct-base-eq{
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity .8s ease,
+      transform .8s cubic-bezier(.22, 1, .36, 1);
+  }
+  .cyber-temple.seen .ct-roof{ opacity: 1; transform: translateY(0); transition-delay: .05s; }
+  .cyber-temple.seen .ct-intro{ opacity: 1; transform: translateY(0); transition-delay: .30s; }
+  .cyber-temple.seen .ct-bridge{ opacity: 1; transform: translateY(0); transition-delay: .50s; }
+  .cyber-temple.seen .ct-pillar:nth-child(1){ opacity: 1; transform: translateY(0); transition-delay: .70s; }
+  .cyber-temple.seen .ct-pillar:nth-child(2){ opacity: 1; transform: translateY(0); transition-delay: .90s; }
+  .cyber-temple.seen .ct-pillar:nth-child(3){ opacity: 1; transform: translateY(0); transition-delay: 1.10s; }
+  .cyber-temple.seen .ct-base-nodes{ opacity: 1; transform: translateY(0); transition-delay: 1.35s; }
+  .cyber-temple.seen .ct-base-eq{ opacity: 1; transform: translateY(0); transition-delay: 1.55s; }
+
+  /* ============================================================
+     响应式
+     ============================================================ */
+  @media (max-width: 480px){
+    .cyber-temple{ padding: 22px 14px 18px; }
+    .ct-roof-title{ letter-spacing: 2.5px; }
+    .ct-roof-eyebrow{ font-size: .52rem; letter-spacing: 2.4px; }
+
+    .ct-intro{ font-size: .88rem; }
+    .ct-bridge{ font-size: .82rem; }
+
+    .ct-pillars{ gap: 8px; }
+    .ct-pillar{ padding: 14px 6px 12px; }
+    .ct-pillar::before{ inset: 5px 8px; }
+    .ct-pillar-icon{ font-size: 1.15rem; }
+    .ct-pillar-action{ font-size: .76rem; letter-spacing: .8px; }
+    .ct-pillar-result{ font-size: .84rem; letter-spacing: 1.2px; }
+    .ct-pillar-rule{ width: 14px; }
+
+    .ct-node{ padding: 4px 10px 4px 8px; font-size: .66rem; letter-spacing: .8px; }
+    .ct-eq-tag{ font-size: .52rem; letter-spacing: 1.6px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .ct-roof,
+    .ct-intro,
+    .ct-bridge,
+    .ct-pillar,
+    .ct-base-nodes,
+    .ct-base-eq{
+      opacity: 1 !important;
+      transform: none !important;
+      transition-duration: .001ms !important;
+    }
+    .ct-base-beam,
+    .ct-node-dot,
+    .ct-pillar[data-kind="dump"]:hover{
+      animation-duration: .001ms !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -4021,12 +4599,81 @@
   <section id="s1" aria-labelledby="s1-title">
     <h2 id="s1-title"><i class="fas fa-temple" aria-hidden="true"></i> 是什么 · 赛博财神庙</h2>
 
-    <div class="card">
-      <p>在 Web3 世界里，$财神到 不只是一串代码，而是传统财神文化在链上的映射。</p>
-      <p>财神爷不再是庙堂之上的塑像，而是社区里每一位持有者、传播者、建设者的<strong>"精神股东"</strong>。</p>
-      <p>你迎接他，他就保佑你。<br>
-      你传播他，他就滋养你。<br>
-      你砸他，他就绕过你。</p>
+        <div class="cyber-temple" id="cyberTemple">
+      <!-- ===== 庙顶 ===== -->
+      <header class="ct-roof">
+        <div class="ct-roof-arch" aria-hidden="true">
+          <span class="ct-arch-line"></span>
+          <span class="ct-arch-seal">财</span>
+          <span class="ct-arch-line"></span>
+        </div>
+        <div class="ct-roof-eyebrow">CYBER · WEALTH · TEMPLE</div>
+        <h3 class="ct-roof-title">赛博财神庙</h3>
+        <div class="ct-roof-sub">链上映射 · ON-CHAIN MAPPING</div>
+      </header>
+
+      <!-- ===== 正文引言 ===== -->
+      <p class="ct-intro">
+        在 Web3 世界里，<strong>$财神到</strong> 不只是一串代码，<br>
+        而是传统财神文化在链上的映射。
+      </p>
+
+      <p class="ct-bridge">
+        财神爷不再是庙堂之上的塑像，而是社区里每一位
+        <em>持有者</em>、<em>传播者</em>、<em>建设者</em> 的
+        <strong>"精神股东"</strong>。
+      </p>
+
+      <!-- ===== 三根立柱 ===== -->
+      <div class="ct-pillars" role="list">
+        <button class="ct-pillar" data-kind="welcome" type="button" role="listitem" aria-label="迎接他，他就保佑你">
+          <span class="ct-pillar-cap" aria-hidden="true"></span>
+          <span class="ct-pillar-inner">
+            <span class="ct-pillar-icon"><i class="fas fa-hands-praying" aria-hidden="true"></i></span>
+            <span class="ct-pillar-action">迎接他</span>
+            <span class="ct-pillar-rule" aria-hidden="true"></span>
+            <span class="ct-pillar-result">保佑你</span>
+          </span>
+          <span class="ct-pillar-foot" aria-hidden="true"></span>
+        </button>
+
+        <button class="ct-pillar" data-kind="spread" type="button" role="listitem" aria-label="传播他，他就滋养你">
+          <span class="ct-pillar-cap" aria-hidden="true"></span>
+          <span class="ct-pillar-inner">
+            <span class="ct-pillar-icon"><i class="fas fa-bullhorn" aria-hidden="true"></i></span>
+            <span class="ct-pillar-action">传播他</span>
+            <span class="ct-pillar-rule" aria-hidden="true"></span>
+            <span class="ct-pillar-result">滋养你</span>
+          </span>
+          <span class="ct-pillar-foot" aria-hidden="true"></span>
+        </button>
+
+        <button class="ct-pillar" data-kind="dump" type="button" role="listitem" aria-label="你砸他，他就绕过你">
+          <span class="ct-pillar-cap" aria-hidden="true"></span>
+          <span class="ct-pillar-inner">
+            <span class="ct-pillar-icon"><i class="fas fa-hammer" aria-hidden="true"></i></span>
+            <span class="ct-pillar-action">砸他</span>
+            <span class="ct-pillar-rule" aria-hidden="true"></span>
+            <span class="ct-pillar-result">绕过你</span>
+          </span>
+          <span class="ct-pillar-foot" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- ===== 基座 ===== -->
+      <footer class="ct-base">
+        <div class="ct-base-beam" aria-hidden="true"></div>
+        <div class="ct-base-nodes">
+          <span class="ct-node"><span class="ct-node-dot" aria-hidden="true"></span>持有者</span>
+          <span class="ct-node"><span class="ct-node-dot" aria-hidden="true"></span>传播者</span>
+          <span class="ct-node"><span class="ct-node-dot" aria-hidden="true"></span>建设者</span>
+        </div>
+        <div class="ct-base-eq">
+          <span class="ct-eq-op" aria-hidden="true">=</span>
+          <span class="ct-eq-word">精神股东</span>
+          <span class="ct-eq-tag">SPIRITUAL SHAREHOLDERS</span>
+        </div>
+      </footer>
     </div>
 
     <h3><i class="fas fa-arrow-right-arrow-left" aria-hidden="true"></i> 现实与链上</h3>
@@ -5851,6 +6498,56 @@ window.__metalScrape = (function () {
   } else {
     play();
   }
+})();
+  
+/* ============================================================
+   ✦ 赛博财神庙 · 滚动进入视口时依次点亮
+   ============================================================ */
+(function () {
+  var root = document.getElementById('cyberTemple');
+  if (!root) return;
+
+  var played = false;
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (_) {}
+
+  function play() {
+    if (played) return;
+    played = true;
+    root.classList.add('seen');
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          play();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.22 });
+    io.observe(root);
+  } else {
+    play();
+  }
+
+  /* ---- 点击柱子：加一次"脉冲"反馈（视觉+音效） ---- */
+  var pillars = root.querySelectorAll('.ct-pillar');
+  pillars.forEach(function (p) {
+    p.addEventListener('click', function () {
+      // 音效（复用目录悬停的金属刮擦声）
+      if (window.__metalScrape) window.__metalScrape();
+
+      // 光晕脉冲
+      p.classList.remove('ct-pillar-pulse');
+      void p.offsetWidth; // 强制重排
+      p.classList.add('ct-pillar-pulse');
+      setTimeout(function () { p.classList.remove('ct-pillar-pulse'); }, 700);
+    });
+  });
 })();
 </script>
 
