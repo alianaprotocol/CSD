@@ -1122,15 +1122,16 @@
   .notice i{ color: var(--red); font-size: 1rem; margin-top: 2px; flex-shrink: 0; text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .8); }
   .notice strong{ color: var(--red-l); }
 
-  /* ============================================================
-     目录
+   /* ============================================================
+     目录 · 六爻链上导航
      ============================================================ */
   .toc{
     margin-top: 26px;
     background: var(--panel-bg);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 22px clamp(16px, 4.5vw, 28px) 24px;
+    padding: 0;
+    overflow: hidden;
     box-shadow:
       0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .08),
       inset 0 0 60px rgba(255, 45, 85, .02);
@@ -1139,106 +1140,340 @@
     position: relative;
     transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
   }
-  .toc::before{
+  /* 顶部扫描线 */
+  .toc::after{
     content: "";
     position: absolute;
-    inset: 8px;
-    border: 1px solid var(--panel-inner);
-    border-radius: 8px;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      var(--red) 20%,
+      var(--gold) 50%,
+      var(--red) 80%,
+      transparent);
+    opacity: .7;
+    animation: tocScan 6s ease-in-out infinite;
     pointer-events: none;
   }
-  .toc-title{
+  @keyframes tocScan{
+    0%, 100% { opacity: .3; transform: translateX(-12%); }
+    50%      { opacity: 1;  transform: translateX(12%);  }
+  }
+
+  /* ---- 头部 ---- */
+  .toc-head{
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
-    font-size: .88rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 18px;
-    padding-bottom: 14px;
+    padding: 15px 20px;
     border-bottom: 1px dashed var(--border-gold);
-    letter-spacing: 3px;
-    text-transform: uppercase;
+    background: linear-gradient(90deg, rgba(255, 45, 85, .06), transparent 60%);
     font-family: 'JetBrains Mono', monospace;
-    text-shadow: 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .6);
+    font-size: .7rem;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
   }
-  .toc-title i{ color: var(--gold); }
+  .toc-head-title{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--gold);
+    text-shadow: 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .6);
+    font-weight: 700;
+  }
+  .toc-head-title i{
+    color: var(--gold);
+    font-size: .9em;
+    animation: tocDotPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes tocDotPulse{
+    0%, 100% { opacity: .55; }
+    50%      { opacity: 1;   }
+  }
+  .toc-head-title .mono-mini{
+    color: var(--text-mute);
+    letter-spacing: 1.4px;
+    font-weight: 500;
+    margin-left: 4px;
+  }
 
-  .toc-grid{
+  .toc-head-meta{
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--text-mute);
+    letter-spacing: 1.6px;
+  }
+  .toc-head-meta b{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 calc(8px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 183, 0, .35);
+    transition: color .3s ease;
+  }
+  .toc-head-meta .slash{ color: var(--text-mute); font-size: .82rem; }
+
+  /* ---- 列表 ---- */
+  .toc-list{
+    list-style: none;
+    margin: 0;
+    padding: 6px 0 10px;
+    counter-reset: toc;
+  }
+
+  .toc-item{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
+    grid-template-columns: 34px 40px minmax(0, 1fr) auto 84px;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 20px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: inherit;
+    position: relative;
+    border-left: 2px solid transparent;
+    transition:
+      padding .3s cubic-bezier(.34, 1.2, .64, 1),
+      background .3s ease,
+      border-color .3s ease;
+  }
+  /* 悬停时的横向光扫 */
+  .toc-item::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      rgba(255, 45, 85, .10) 0%,
+      rgba(255, 45, 85, .02) 40%,
+      transparent 80%);
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .toc-item:hover::before,
+  .toc-item:focus-visible::before{
+    opacity: 1;
+  }
+  .toc-item:hover,
+  .toc-item:focus-visible{
+    border-left-color: var(--red);
+    padding-left: 26px;
+    outline: none;
+  }
+
+  /* 编号（#001 风格） */
+  .toc-idx{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .74rem;
+    font-weight: 700;
+    color: var(--text-mute);
+    letter-spacing: 1px;
+    transition: all .3s ease;
     position: relative;
     z-index: 1;
   }
-  .toc-grid a{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    border-radius: 6px;
-    background: rgba(255, 183, 0, .03);
-    border: 1px solid var(--border-gold);
-    color: var(--text);
-    text-decoration: none;
-    font-size: .88rem;
-    font-weight: 700;
-    transition: all .22s ease;
-    position: relative;
-    font-family: 'Noto Sans SC', sans-serif;
+  .toc-idx::before{
+    content: "#";
+    color: var(--red);
+    opacity: .55;
+    margin-right: 1px;
+    font-weight: 900;
+    transition: all .3s ease;
   }
-  .toc-grid a::before{
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: transparent;
-    border-radius: 6px 0 0 6px;
-    transition: all .22s ease;
+  .toc-item:hover .toc-idx{ color: var(--gold-l); }
+  .toc-item:hover .toc-idx::before{
+    opacity: 1;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
   }
-  .toc-grid a:hover,
-  .toc-grid a:focus-visible{
-    background: rgba(255, 45, 85, .08);
-    border-color: var(--red);
-    color: var(--gold-l);
-    transform: translateX(2px);
-    box-shadow:
-      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .25),
-      inset 0 0 20px rgba(255, 45, 85, .06);
-    outline: none;
-  }
-  .toc-grid a:hover::before{ background: var(--red); box-shadow: 0 0 8px var(--red); }
-  .toc-grid a i:first-child{
-    color: var(--gold);
-    font-size: .95rem;
-    width: 18px;
+
+  /* 卦象符号 */
+  .toc-sym{
+    font-size: 1.5rem;
+    line-height: 1;
     text-align: center;
-    flex-shrink: 0;
-    transition: all .22s ease;
-  }
-  .toc-grid a:hover i:first-child{ color: var(--red-l); }
-  .toc-grid a > span{ display: flex; flex-direction: column; }
-  .toc-grid a small{
-    display: block;
-    font-size: .68rem;
-    font-weight: 500;
     color: var(--text-mute);
-    margin-top: 2px;
-    letter-spacing: .5px;
+    filter: none;
+    transition: all .4s cubic-bezier(.34, 1.2, .64, 1);
+    user-select: none;
+    position: relative;
+    z-index: 1;
+    transform-origin: center;
+  }
+  .toc-item:hover .toc-sym{
+    color: var(--gold);
+    transform: scale(1.2) rotate(-4deg);
+    filter:
+      drop-shadow(0 0 calc(8px * var(--glow-strength)) var(--gold))
+      drop-shadow(0 0 calc(20px * var(--glow-strength)) var(--gold));
+  }
+
+  /* 中文主标题 + 副标题 */
+  .toc-body{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .toc-zh{
+    font-size: .98rem;
+    font-weight: 800;
+    color: var(--gold-l);
+    letter-spacing: .8px;
+    line-height: 1.35;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .25);
+    transition: text-shadow .3s ease, color .3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toc-item:hover .toc-zh{
+    color: var(--gold);
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  }
+  .toc-sub{
+    font-size: .7rem;
     font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .6px;
+    color: var(--text-mute);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color .3s ease;
   }
-  .toc-check{
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%) scale(0);
-    color: #26ff8f;
-    font-size: .85rem;
-    transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-    text-shadow: 0 0 8px #26ff8f;
+  .toc-item:hover .toc-sub{ color: var(--text-dim); }
+
+  /* 英文标签 */
+  .toc-en{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .66rem;
+    font-weight: 600;
+    color: var(--text-mute);
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    transition: all .3s ease;
   }
-  .toc-grid a.done .toc-check{ transform: translateY(-50%) scale(1); }
-  .toc-grid a.done{ border-color: rgba(38, 255, 143, .35); }
+  .toc-item:hover .toc-en{
+    color: var(--red-l);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .55);
+  }
+
+  /* 状态 + 箭头 */
+  .toc-state{
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--text-mute);
+    position: relative;
+    z-index: 1;
+    transition: color .3s ease;
+  }
+  .toc-dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-mute);
+    opacity: .5;
+    transition: all .4s cubic-bezier(.34, 1.4, .64, 1);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toc-item:hover .toc-dot{
+    background: var(--gold);
+    opacity: 1;
+    box-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
+  }
+  .toc-arrow{
+    font-size: .62rem;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all .35s cubic-bezier(.34, 1.4, .64, 1);
+    flex-shrink: 0;
+  }
+  .toc-item:hover .toc-arrow{
+    opacity: 1;
+    transform: translateX(0);
+    filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--gold));
+  }
+
+  /* ============ 已读状态 ============ */
+  .toc-item.done{ border-left-color: rgba(38, 255, 143, .55); }
+  .toc-item.done .toc-dot{
+    background: #26ff8f;
+    opacity: 1;
+    box-shadow:
+      0 0 8px #26ff8f,
+      0 0 calc(16px * var(--glow-strength)) rgba(38, 255, 143, .55);
+  }
+  .toc-item.done .toc-state{ color: #26ff8f; }
+  .toc-item.done .toc-sym{
+    color: var(--gold);
+    filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--gold));
+  }
+  .toc-item.done .toc-idx{ color: var(--gold-d); }
+  .toc-item.done .toc-zh{
+    color: var(--gold);
+    text-shadow: 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .55);
+  }
+
+  /* 已读时顶部渐变线节奏更慢 */
+  .toc-item.done::before{
+    background: linear-gradient(90deg,
+      rgba(38, 255, 143, .10) 0%,
+      rgba(38, 255, 143, .02) 40%,
+      transparent 80%);
+  }
+  .toc-item.done:hover::before{ opacity: 1; }
+
+  /* ---- 响应式 ---- */
+  @media (max-width: 720px){
+    .toc-head{ padding: 13px 16px; font-size: .66rem; letter-spacing: 2px; }
+    .toc-head-title .mono-mini{ display: none; }
+    .toc-item{
+      grid-template-columns: 32px 34px minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 12px 16px;
+    }
+    .toc-item:hover{ padding-left: 20px; }
+    .toc-en{ display: none; }
+    .toc-sym{ font-size: 1.3rem; }
+    .toc-zh{ font-size: .92rem; }
+    .toc-sub{ font-size: .66rem; }
+  }
+
+  @media (max-width: 480px){
+    .toc-head{ padding: 12px 14px; font-size: .62rem; }
+    .toc-head-meta b{ font-size: .92rem; }
+    .toc-item{
+      grid-template-columns: 26px 28px minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 11px 14px;
+    }
+    .toc-item:hover{ padding-left: 18px; }
+    .toc-sym{ font-size: 1.15rem; }
+    .toc-zh{ font-size: .88rem; letter-spacing: .4px; }
+    .toc-sub{ font-size: .62rem; }
+    .toc-state{ font-size: .62rem; gap: 5px; }
+    .toc-arrow{ display: none; }
+  }
 
   /* ============================================================
      章节
@@ -2645,42 +2880,118 @@
     </div>
   </aside>
 
-  <nav class="toc" aria-label="文档目录">
-    <div class="toc-title">
-      <i class="fas fa-list-ul" aria-hidden="true"></i> Index · 目录
-    </div>
-    <div class="toc-grid">
-      <a href="#s0" data-target="s0">
-        <i class="fas fa-feather" aria-hidden="true"></i>
-        <span>缘起<small>WHY CAISHEN</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-      <a href="#s1" data-target="s1">
-        <i class="fas fa-temple" aria-hidden="true"></i>
-        <span>是什么<small>CYBER TEMPLE</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-      <a href="#s2" data-target="s2">
-        <i class="fas fa-shield-halved" aria-hidden="true"></i>
-        <span>铁律<small>NEVER DUMP</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-      <a href="#s3" data-target="s3">
-        <i class="fas fa-gem" aria-hidden="true"></i>
-        <span>资产<small>IP ASSETS</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-      <a href="#s4" data-target="s4">
-        <i class="fas fa-stairs" aria-hidden="true"></i>
-        <span>路线<small>ROADMAP</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-      <a href="#s5" data-target="s5">
-        <i class="fas fa-handshake-angle" aria-hidden="true"></i>
-        <span>加入<small>JOIN US</small></span>
-        <i class="fas fa-check toc-check" aria-hidden="true"></i>
-      </a>
-    </div>
+   <nav class="toc" aria-label="文档目录">
+    <header class="toc-head">
+      <span class="toc-head-title">
+        <i class="fas fa-terminal" aria-hidden="true"></i>
+        INDEX · 目录
+        <span class="mono-mini">/ 六爻链上协议</span>
+      </span>
+      <span class="toc-head-meta" aria-live="polite">
+        <b id="tocProgressNum">0</b>
+        <span class="slash">/ 6</span>
+        <span>已接</span>
+      </span>
+    </header>
+
+    <ul class="toc-list" role="list">
+      <li>
+        <a href="#s0" data-target="s0" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">001</span>
+          <span class="toc-sym" aria-hidden="true">☰</span>
+          <span class="toc-body">
+            <span class="toc-zh">缘起 · 为什么是财神</span>
+            <span class="toc-sub">乾为天 · 万象之始</span>
+          </span>
+          <span class="toc-en">WHY CAISHEN</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#s1" data-target="s1" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">002</span>
+          <span class="toc-sym" aria-hidden="true">☷</span>
+          <span class="toc-body">
+            <span class="toc-zh">是什么 · 赛博财神庙</span>
+            <span class="toc-sub">坤为地 · 承载万物</span>
+          </span>
+          <span class="toc-en">CYBER TEMPLE</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#s2" data-target="s2" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">003</span>
+          <span class="toc-sym" aria-hidden="true">☶</span>
+          <span class="toc-body">
+            <span class="toc-zh">铁律 · 不可砸财神</span>
+            <span class="toc-sub">艮为山 · 不可动摇</span>
+          </span>
+          <span class="toc-en">NEVER DUMP</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#s3" data-target="s3" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">004</span>
+          <span class="toc-sym" aria-hidden="true">☲</span>
+          <span class="toc-body">
+            <span class="toc-zh">资产 · 我们有什么</span>
+            <span class="toc-sub">离为火 · 光耀四方</span>
+          </span>
+          <span class="toc-en">IP ASSETS</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#s4" data-target="s4" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">005</span>
+          <span class="toc-sym" aria-hidden="true">☴</span>
+          <span class="toc-body">
+            <span class="toc-zh">路线 · 我们往哪走</span>
+            <span class="toc-sub">巽为风 · 无形致远</span>
+          </span>
+          <span class="toc-en">ROADMAP</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#s5" data-target="s5" class="toc-item">
+          <span class="toc-idx" aria-hidden="true">006</span>
+          <span class="toc-sym" aria-hidden="true">☱</span>
+          <span class="toc-body">
+            <span class="toc-zh">加入 · 你怎么参与</span>
+            <span class="toc-sub">兑为泽 · 汇聚成海</span>
+          </span>
+          <span class="toc-en">JOIN US</span>
+          <span class="toc-state">
+            <span class="toc-dot" aria-hidden="true"></span>
+            <span class="toc-state-text">未接</span>
+            <i class="fas fa-arrow-right toc-arrow" aria-hidden="true"></i>
+          </span>
+        </a>
+      </li>
+    </ul>
   </nav>
 
   <!-- ① 缘起 -->
@@ -3585,13 +3896,23 @@ window.__showToast = (function () {
       else censerSticks[i].classList.remove('lit');
     }
 
-    SECTIONS.forEach(function (id) {
-      var link = document.querySelector('.toc-grid a[data-target="' + id + '"]');
+       SECTIONS.forEach(function (id) {
+      var link = document.querySelector('.toc-item[data-target="' + id + '"]');
       if (link) {
         if (read[id]) link.classList.add('done');
         else link.classList.remove('done');
+
+        // 同步更新状态文案
+        var stateText = link.querySelector('.toc-state-text');
+        if (stateText) {
+          stateText.textContent = read[id] ? '已接' : '未接';
+        }
       }
     });
+
+    // 更新目录头部的进度计数器
+    var tocNum = document.getElementById('tocProgressNum');
+    if (tocNum) tocNum.textContent = n;
 
     var wasFull = isFull;
     isFull = n === SECTIONS.length;
