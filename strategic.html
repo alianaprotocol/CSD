@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>财神到 Alpha Vault + Meteora DLMM 联合方案</title>
+<style>
+  :root{
+    --ink:#14181d;
+    --ink-2:#2f3841;
+    --ink-3:#5b6672;
+    --muted:#8a939d;
+    --line:#e2e6ea;
+    --line-2:#eef1f4;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --red:#a91f27;
+    --red-dark:#7e161c;
+    --red-soft:#fbf4f4;
+    --gold:#a8821c;
+    --gold-soft:#faf6ea;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+    --sp-1:4px;
+    --sp-2:8px;
+    --sp-3:12px;
+    --sp-4:16px;
+    --sp-5:20px;
+    --sp-7:28px;
+    --sp-9:36px;
+    --sp-10:44px;
+
+    --r:3px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-size:14.5px;
+    line-height:1.75;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .doc{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--card);
+    min-height:100vh;
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+    padding:0 26px;
+  }
+  .doc::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--red) 0%,var(--red) 42%,var(--gold) 42%,var(--gold) 100%);
+    z-index:2;
+  }
+  .wrap{padding:0;}
+
+  .num{
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum" 1;
+    letter-spacing:-.01em;
+  }
+
+  /* ================= 文件抬头 ================= */
+  .masthead{
+    padding:var(--sp-9) 0 26px;
+    border-bottom:1.5px solid var(--ink);
+  }
+  .mast-row{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:var(--sp-5);
+  }
+  .mast-left{min-width:0;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 var(--sp-3);
+    line-height:1;
+  }
+  .doc-title{
+    margin:0;
+    font-size:clamp(20px,5.2vw,25px);
+    font-weight:700;
+    letter-spacing:-.012em;
+    line-height:1.3;
+    color:var(--ink);
+  }
+  .doc-title em{
+    font-style:normal;
+    display:block;
+    font-size:.72em;
+    font-weight:600;
+    color:var(--ink-3);
+    letter-spacing:-.005em;
+    margin-top:4px;
+  }
+  .doc-sub{
+    margin:var(--sp-2) 0 0;
+    font-size:13px;
+    color:var(--ink-3);
+    letter-spacing:.02em;
+    line-height:1.5;
+  }
+  .ticker{
+    flex:none;
+    text-align:right;
+    padding-top:var(--sp-1);
+  }
+  .ticker .sym{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    color:var(--red);
+    letter-spacing:.01em;
+    white-space:nowrap;
+    line-height:1.35;
+  }
+  .ticker .ch{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.14em;
+    margin-top:6px;
+    line-height:1;
+  }
+
+  .mast-meta{
+    display:flex;flex-wrap:wrap;
+    gap:var(--sp-3) 30px;
+    margin-top:24px;
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+  }
+  .mast-meta .cell{min-width:0;}
+  .mast-meta .k{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 5px;
+    line-height:1;
+  }
+  .mast-meta .v{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-.005em;
+    line-height:1.4;
+  }
+  .mast-meta .v.is-red{color:var(--red);}
+
+  /* ================= 摘要 ================= */
+  .abstract{
+    padding:var(--sp-7) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fcfcfd 0%,#ffffff 100%);
+  }
+  .abstract p{
+    margin:0;
+    font-size:14px;
+    line-height:1.95;
+    color:var(--ink-2);
+  }
+  .abstract b{color:var(--ink);font-weight:700;}
+  .abstract .hl{
+    color:var(--red);
+    font-weight:700;
+    border-bottom:2px solid rgba(169,31,39,.22);
+    padding-bottom:1px;
+  }
+
+  /* ================= 区块 ================= */
+  .sec{
+    padding:var(--sp-9) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+  }
+  .sec:last-of-type{
+    border-bottom:0;
+    padding-bottom:var(--sp-10);
+  }
+
+  .sec-head{
+    display:flex;align-items:baseline;gap:var(--sp-3);
+    margin:0 0 var(--sp-5);
+  }
+  .sec-idx{
+    flex:none;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--red);
+    padding-top:3px;
+    line-height:1;
+  }
+  .sec-title{
+    margin:0;
+    font-size:16.5px;
+    font-weight:700;
+    letter-spacing:-.008em;
+    line-height:1.35;
+    color:var(--ink);
+  }
+  .sec-title span{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:400;
+    color:var(--muted);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    margin-top:5px;
+    line-height:1;
+  }
+
+  /* ================= 正文段落 ================= */
+  .prose p{
+    margin:0 0 12px;
+    font-size:14px;
+    line-height:1.9;
+    color:var(--ink-2);
+  }
+  .prose p:last-child{margin-bottom:0;}
+  .prose b{color:var(--ink);font-weight:700;}
+  .prose .hl{color:var(--red);font-weight:700;}
+
+  /* ================= 分组卡片 ================= */
+  .group-list{
+    border-top:1px solid var(--line);
+  }
+  .group{
+    position:relative;
+    padding:16px 0 15px 14px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .group:last-child{border-bottom:0;}
+  .group::before{
+    content:"";
+    position:absolute;
+    left:0;top:16px;bottom:15px;
+    width:3px;
+    border-radius:0 3px 3px 0;
+    background:var(--gold);
+  }
+  .group.is-core::before{background:var(--red);}
+  .group.is-core{
+    background:linear-gradient(90deg,var(--red-soft) 0%,rgba(251,244,244,0) 88%);
+  }
+  .group.is-flex::before{background:#cbb6a2;}
+
+  .group-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .group-name{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    letter-spacing:-.005em;
+  }
+  .group.is-core .group-name{color:var(--red-dark);}
+  .group-total{
+    flex:none;
+    font-family:var(--mono);
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink-2);
+    white-space:nowrap;
+    line-height:1.3;
+  }
+  .group.is-core .group-total{color:var(--red);}
+
+  .group-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:11px;
+  }
+  .group-stat{
+    padding:9px 12px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    min-width:0;
+  }
+  .group-stat .k{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:3px;
+    line-height:1;
+  }
+  .group-stat .v{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    letter-spacing:-.005em;
+  }
+
+  .group-note{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .group-note b{color:var(--ink-2);font-weight:600;}
+
+  /* 子分配（B 组名额分配） */
+  .sub-alloc{
+    margin-top:10px;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    overflow:hidden;
+  }
+  .sub-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 12px;
+    border-bottom:1px solid var(--line-2);
+    font-size:12.5px;
+    line-height:1.6;
+  }
+  .sub-row:last-child{border-bottom:0;}
+  .sub-row:nth-child(even){background:#fbfcfd;}
+  .sub-row .s-name{color:var(--ink-2);min-width:0;}
+  .sub-row .s-val{
+    flex:none;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-3);
+    white-space:nowrap;
+  }
+
+  /* ================= 表格 ================= */
+  .tbl-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:#fff;
+    scrollbar-width:thin;
+  }
+  .tbl-scroll::-webkit-scrollbar{height:4px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{background:#d2d8dd;border-radius:2px;}
+
+  table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:13px;
+  }
+  th,td{
+    padding:var(--sp-3) var(--sp-4);
+    text-align:right;
+    white-space:nowrap;
+    border-bottom:1px solid var(--line-2);
+    line-height:1.5;
+  }
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    background:#f4f6f8;
+    color:var(--ink-3);
+    font-weight:600;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  tbody tr:last-child td{border-bottom:0;}
+  tbody tr:nth-child(even){background:#fbfcfd;}
+  tbody td{color:var(--ink-2);}
+  tbody td:first-child{
+    color:var(--ink);
+    font-weight:600;
+    font-size:13px;
+  }
+  tbody tr.sum td{
+    background:var(--red-soft);
+    color:var(--red-dark);
+    font-weight:700;
+    border-top:1px solid #efd2d4;
+  }
+  tbody tr.sum td:first-child{color:var(--red-dark);}
+  tbody tr.flex td{color:var(--ink-3);}
+
+  /* ================= 步骤流程 ================= */
+  .flow{
+    border-top:1px solid var(--line);
+  }
+  .flow-step{
+    display:grid;
+    grid-template-columns:26px 1fr;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .flow-step:last-child{border-bottom:0;}
+  .flow-num{
+    width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    background:var(--red-soft);
+    color:var(--red);
+    font-family:var(--mono);
+    font-size:11.5px;
+    font-weight:700;
+    line-height:1;
+    margin-top:2px;
+  }
+  .flow-body{min-width:0;}
+  .flow-title{
+    font-size:14px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.45;
+    letter-spacing:-.005em;
+  }
+  .flow-desc{
+    margin-top:4px;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.75;
+  }
+
+  /* ================= 公式块 ================= */
+  .formula{
+    margin:14px 0 0;
+    padding:13px 15px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    border-radius:var(--r);
+    font-family:var(--mono);
+    font-size:12.5px;
+    line-height:1.85;
+    color:var(--ink-2);
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    white-space:pre;
+  }
+  .formula b{color:var(--red);font-weight:700;}
+  .formula .cmt{color:var(--muted);}
+
+  /* ================= 时间轴 ================= */
+  .timeline{
+    border-top:1px solid var(--line);
+    margin-top:14px;
+  }
+  .tl-row{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:16px;
+    padding:13px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .tl-row:last-child{border-bottom:0;}
+  .tl-key{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    color:var(--red);
+    padding-top:2px;
+    line-height:1.6;
+  }
+  .tl-val{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.75;
+    min-width:0;
+  }
+  .tl-val b{color:var(--ink);font-weight:700;}
+
+  /* ================= 规格 ================= */
+  .spec{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .spec-row{
+    display:grid;
+    grid-template-columns:118px 1fr;
+    gap:var(--sp-5);
+    padding:var(--sp-4) 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .spec-row:last-child{border-bottom:0;}
+  .spec-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding-top:3px;
+    line-height:1.6;
+  }
+  .spec-v{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.8;
+    min-width:0;
+  }
+  .spec-v b{color:var(--ink);font-weight:700;}
+  .spec-v code{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink);
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:2px 7px;
+    word-break:break-all;
+    line-height:1.65;
+    margin:2px 0;
+  }
+
+  /* ================= 规则列表 ================= */
+  .rules{
+    border-top:1px solid var(--line);
+  }
+  .rule-item{
+    display:grid;
+    grid-template-columns:16px 1fr;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .rule-item:last-child{border-bottom:0;}
+  .rule-dot{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    color:var(--red);
+    line-height:1.75;
+    padding-top:2px;
+  }
+  .rule-text{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.78;
+    min-width:0;
+  }
+  .rule-text b{color:var(--ink);font-weight:700;}
+
+  /* ================= 说明 ================= */
+  .caption{
+    margin:var(--sp-4) 0 0;
+    padding:2px 0 2px var(--sp-3);
+    border-left:2px solid var(--line);
+    font-size:12px;
+    line-height:1.9;
+    color:var(--muted);
+  }
+  .caption b{color:var(--ink-2);font-weight:600;}
+  .caption.gold{border-left-color:var(--gold);}
+
+  /* ================= KPI ================= */
+  .kpi{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    margin-top:var(--sp-4);
+    overflow:hidden;
+  }
+  .kpi-cell{
+    padding:var(--sp-4) var(--sp-3);
+    text-align:center;
+    border-right:1px solid var(--line-2);
+  }
+  .kpi-cell:nth-child(2n){border-right:0;}
+  .kpi-cell:nth-child(-n+2){border-bottom:1px solid var(--line-2);}
+  .kpi-cell b{
+    display:block;
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.01em;
+    line-height:1.3;
+  }
+  .kpi-cell b.is-red{color:var(--red);}
+  .kpi-cell span{
+    display:block;
+    margin-top:6px;
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.04em;
+    line-height:1.5;
+  }
+
+  /* ================= 页脚 ================= */
+  .doc-foot{
+    padding:26px 0 var(--sp-10);
+    border-top:1.5px solid var(--ink);
+    margin-top:32px;
+  }
+  .foot-row{
+    display:flex;justify-content:space-between;
+    gap:var(--sp-4);flex-wrap:wrap;
+    padding:var(--sp-2) 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .foot-row:last-of-type{border-bottom:0;}
+  .foot-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.8;
+    flex:none;
+  }
+  .foot-v{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-3);
+    line-height:1.8;
+    word-break:break-all;
+    text-align:right;
+  }
+  .disc{
+    margin-top:var(--sp-5);
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.95;
+  }
+
+  /* ================= 小屏 ================= */
+  @media (max-width:400px){
+    .doc{padding:0 22px;}
+    .mast-meta{gap:var(--sp-3) 20px;}
+    .spec-row{grid-template-columns:1fr;gap:var(--sp-1);}
+    .spec-k{padding-top:0;}
+    .tl-row{grid-template-columns:82px 1fr;gap:12px;}
+    .group-stats{grid-template-columns:1fr;}
+    .foot-row{flex-direction:column;gap:2px;}
+    .foot-v{text-align:left;}
+    .formula{font-size:11.5px;}
+    .kpi-cell b{font-size:15px;}
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ================= 文件抬头 ================= -->
+  <header class="wrap masthead">
+    <div class="mast-row">
+      <div class="mast-left">
+        <div class="eyebrow">Alpha Vault · Launch Plan</div>
+        <h1 class="doc-title">
+          财神到 Alpha Vault + Meteora DLMM 联合方案
+          <em>结合 BG、FIST、LUCKY99 三大社区</em>
+        </h1>
+        <p class="doc-sub">统一币价 · 白名单制认购</p>
+      </div>
+      <div class="ticker">
+        <span class="sym">$财神到</span>
+        <span class="ch">ALPHA VAULT</span>
+      </div>
+    </div>
+
+    <div class="mast-meta">
+      <div class="cell">
+        <span class="k">Target Raise</span>
+        <span class="v num">$150,000</span>
+      </div>
+      <div class="cell">
+        <span class="k">Hard Cap</span>
+        <span class="v num is-red">$180,000</span>
+      </div>
+      <div class="cell">
+        <span class="k">Est. Price</span>
+        <span class="v num">$0.015–0.017</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 摘要 ================= -->
+  <section class="wrap abstract">
+    <p>
+      本方案采用 Meteora <b>Alpha Vault</b> 的 <span class="hl">Pro-Rata（按比例分配）</span>模式，
+      结合 Launch Pool 的 DLMM 流动性池，实现公平、透明的预启动认购机制。
+      核心目的是防止狙击机器人在代币公开交易的第一时间抢购低价筹码，
+      确保真正的社区支持者能够获得公平的早期参与机会。
+    </p>
+  </section>
+
+  <!-- ================= 01 方案背景 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">01</span>
+      <h2 class="sec-title">方案背景<span>Background</span></h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        本方案采用 Meteora Alpha Vault 的 Pro-Rata（按比例分配）模式，结合 Launch Pool 的 DLMM 流动性池，
+        实现公平、透明的预启动认购机制。该机制的核心目的是防止狙击机器人在代币公开交易的第一时间抢购低价筹码，
+        确保真正的社区支持者能够获得公平的早期参与机会。
+      </p>
+      <p>
+        Alpha Vault 运行在 Solana 主网，并非独立的 AMM，而是一个<b>账户制分配层</b>——
+        它连接到一个 Meteora Launch Pool，使用该池子执行实际买入。
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= 02 白名单分组与额度 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">02</span>
+      <h2 class="sec-title">白名单分组与额度<span>Whitelist Groups</span></h2>
+    </div>
+
+    <div class="group-list">
+
+      <!-- A 组 -->
+      <div class="group is-core">
+        <div class="group-head">
+          <span class="group-name">A 组 · 核心名额</span>
+          <span class="group-total num">80,000 USDT</span>
+        </div>
+        <div class="group-stats">
+          <div class="group-stat">
+            <div class="k">名额</div>
+            <div class="v num">80 人</div>
+          </div>
+          <div class="group-stat">
+            <div class="k">限额</div>
+            <div class="v num">1,000 USDT / 人</div>
+          </div>
+        </div>
+        <div class="group-note">
+          <b>资格：</b>仅限 BG 基金会成员 + 少数兄弟社区核心
+        </div>
+      </div>
+
+      <!-- B 组 -->
+      <div class="group">
+        <div class="group-head">
+          <span class="group-name">B 组 · 社区名额</span>
+          <span class="group-total num">60,000 USDT</span>
+        </div>
+        <div class="group-stats">
+          <div class="group-stat">
+            <div class="k">名额</div>
+            <div class="v num">300 人</div>
+          </div>
+          <div class="group-stat">
+            <div class="k">限额</div>
+            <div class="v num">200 USDT / 人</div>
+          </div>
+        </div>
+        <div class="sub-alloc">
+          <div class="sub-row">
+            <span class="s-name">BG 社区成员 / 铁军</span>
+            <span class="s-val num">50% · 150 人</span>
+          </div>
+          <div class="sub-row">
+            <span class="s-name">FIST 社区</span>
+            <span class="s-val num">25% · 75 人</span>
+          </div>
+          <div class="sub-row">
+            <span class="s-name">LUCKY99 社区</span>
+            <span class="s-val num">25% · 75 人</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C 组 -->
+      <div class="group">
+        <div class="group-head">
+          <span class="group-name">C 组 · 外部流量</span>
+          <span class="group-total num">10,000 USDT</span>
+        </div>
+        <div class="group-stats">
+          <div class="group-stat">
+            <div class="k">名额</div>
+            <div class="v num">100 人</div>
+          </div>
+          <div class="group-stat">
+            <div class="k">限额</div>
+            <div class="v num">100 USDT / 人</div>
+          </div>
+        </div>
+        <div class="group-note">
+          <b>资格：</b>外部流量
+        </div>
+      </div>
+
+      <!-- D 组 -->
+      <div class="group is-flex">
+        <div class="group-head">
+          <span class="group-name">D 组 · 备用缓冲（机动额度）</span>
+          <span class="group-total num">30,000 USDT</span>
+        </div>
+        <div class="group-stats">
+          <div class="group-stat">
+            <div class="k">名额</div>
+            <div class="v">待定</div>
+          </div>
+          <div class="group-stat">
+            <div class="k">限额</div>
+            <div class="v">待定</div>
+          </div>
+        </div>
+        <div class="group-note">
+          由项目方 / 基金会根据实际白名单与超募情况机动分配。<br>
+          <b>用途：</b>作为硬顶 $180,000 USDT 中的备用缓冲额度，用于补充社区名额、合作方或临时白名单；
+          是否启用及具体分配以最终公告为准。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 03 总额汇总 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">03</span>
+      <h2 class="sec-title">总额汇总<span>Allocation Summary</span></h2>
+    </div>
+
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>组别</th>
+            <th>名额</th>
+            <th>限额</th>
+            <th>总额</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A 组</td><td class="num">80</td><td class="num">1,000 USDT</td><td class="num">80,000 USDT</td></tr>
+          <tr><td>B 组</td><td class="num">300</td><td class="num">200 USDT</td><td class="num">60,000 USDT</td></tr>
+          <tr><td>C 组</td><td class="num">100</td><td class="num">100 USDT</td><td class="num">10,000 USDT</td></tr>
+          <tr class="sum"><td>目标合计</td><td class="num">480</td><td>—</td><td class="num">150,000 USDT</td></tr>
+          <tr class="flex"><td>D 组</td><td>机动待定</td><td>待定</td><td class="num">30,000 USDT</td></tr>
+          <tr class="sum"><td>硬顶合计</td><td>480 + D 组机动名额</td><td>—</td><td class="num">180,000 USDT</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="caption">
+      <b>说明：</b>目标认购 $150,000 USDT；硬顶金额 $180,000 USDT，
+      其中包含 D 组备用缓冲 $30,000 USDT。
+    </p>
+  </section>
+
+  <!-- ================= 04 为什么所有人都是同一个币价 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">04</span>
+      <h2 class="sec-title">统一币价机制<span>Pro-Rata Pricing</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:4px;">
+      <p>
+        本方案采用 Alpha Vault 的 Pro-Rata（按比例分配）模式，核心机制是
+        <b>先统一归集，再统一买入，最后按比例分配</b>。
+      </p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-body">
+          <div class="flow-title">统一归集</div>
+          <div class="flow-desc">
+            存款窗口开启后，A / B / C / D 白名单成员将 USDT 存入同一个 Alpha Vault。
+            所有资金进入统一资金池，由 vault 合约统一管理。
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-body">
+          <div class="flow-title">统一买入</div>
+          <div class="flow-desc">
+            存款窗口关闭后，Alpha Vault 在 Launch Pool 的预激活保护窗口内，
+            用全部可用资金以同一个价格、统一执行买入。
+            买入价格由池子参数决定，对所有参与者完全相同。
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-body">
+          <div class="flow-title">按比例分配</div>
+          <div class="flow-desc">
+            买入完成后，系统记录本次买入获得的代币总量。每个人的分配公式为：
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula">你的代币 = （你的存款 ÷ 总存款）× 本次买入的代币总量</div>
+
+    <div class="prose" style="margin-top:14px;">
+      <p>
+        这意味着：无论你存 1,000 U 还是 100 U，你获得的代币都是按同一个平均成本计算的。
+        <b>存款多的人拿到的代币多，但单价完全相同。</b>
+      </p>
+    </div>
+
+    <p class="caption gold">
+      <b>超额认购处理：</b>Pro-Rata 模式原生支持超额认购。如果总存款超过预设的买入上限，
+      超出部分按比例退还。最终所有人的实际买入均价仍然一致。
+    </p>
+
+    <div class="kpi">
+      <div class="kpi-cell">
+        <b class="num is-red">$0.015–0.017</b>
+        <span>预计平均买入价</span>
+      </div>
+      <div class="kpi-cell">
+        <b class="num">$7.5M–8.5M</b>
+        <span>预计初始 FDV</span>
+      </div>
+      <div class="kpi-cell" style="grid-column:1 / -1;border-right:0;border-bottom:0;">
+        <b style="font-size:13.5px;font-weight:600;color:var(--ink-3);letter-spacing:0;">
+          同一个资金池 · 同一个买入价 · 同一个分配公式
+        </b>
+        <span>Pro-Rata 消除了「谁先存谁价低」或「大户有折扣」的可能</span>
+      </div>
+    </div>
+
+    <p class="caption">
+      <b>说明：</b>FDV 按原总供应口径估算，实际以链上执行为准。
+      平均买入价基于目标 $150K / 硬顶 $180K 与当前池子深度估算。
+    </p>
+  </section>
+
+  <!-- ================= 05 释放规则 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">05</span>
+      <h2 class="sec-title">释放规则<span>Vesting · Cliff 0 天 / 60 天线性</span></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-key">Cliff</div>
+        <div class="tl-val"><b>0 天</b> —— 指无额外锁仓</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">首次 Claim</div>
+        <div class="tl-val">公开交易时间 <b>+ 2 天</b>，即公开交易开始后 2 天开放首次领取</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">Vesting</div>
+        <div class="tl-val"><b>60 天</b>线性释放 —— 首次 claim 开放后，代币在 60 天内线性释放，每天解锁约 1/60</div>
+      </div>
+    </div>
+
+    <div class="formula">首次 claim 开放前：
+当前可领取量 = 0
+
+首次 claim 开放后：
+当前可领取量 = （当前时间 − 首次 claim 开放时间）÷ 60 天 × 你分配到的总代币
+
+<span class="cmt">// 最高不超过你分配到的总代币</span>
+首次 claim 开放时间 = 公开交易时间 + 2 天</div>
+
+    <p class="caption">
+      <b>举例：</b>如果你分配到 6,000 枚代币，公开交易开始后第 2 天开放首次 claim。
+      首次 claim 开放后第 1 天可领取约 <b>100 枚</b>（1/60），
+      第 30 天累计可领取约 <b>3,000 枚</b>（50%），
+      第 60 天全部释放完毕。
+    </p>
+
+    <p class="caption gold">
+      <b>一句话说明：</b>Cliff 0 天，无额外锁仓；公开交易时间 + 2 天开放首次 claim，
+      随后 60 天内线性释放完毕。
+    </p>
+  </section>
+
+  <!-- ================= 06 技术执行说明 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">06</span>
+      <h2 class="sec-title">技术执行说明<span>Technical Implementation</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:14px;">
+      <p>
+        本方案的技术实现依托 Meteora Alpha Vault 的原生功能，<b>无需自定义开发</b>。
+      </p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-row">
+        <div class="spec-k">白名单实现</div>
+        <div class="spec-v">
+          采用 <b>Authority-Managed Escrow</b> 模式（<code>PermissionWithAuthority</code>）。
+          Vault 创建者（authority）为每个白名单钱包创建独立的 escrow 账户，
+          并分别设定各组的 <code>max_cap</code>（最大存入额度）。
+          该模式操作简单，适合精选白名单名单。
+        </div>
+      </div>
+
+      <div class="spec-row">
+        <div class="spec-k">统一币价</div>
+        <div class="spec-v">
+          Vault 以 Pro-Rata 模式初始化（<code>initialize_vault_with_prorata_config</code>），
+          所有参与者按存款比例分配代币。<code>max_buying_cap</code> 参数限定 vault
+          在池子中可交换的 quote 总量，超出部分自动退还。
+        </div>
+      </div>
+
+      <div class="spec-row">
+        <div class="spec-k">释放机制</div>
+        <div class="spec-v">
+          Vesting 通过 <code>start_vesting_point</code> 与 <code>end_vesting_point</code> 参数配置。
+          Cliff 0 天表示无额外锁仓；首次 claim 为公开交易时间 + 2 天，随后 60 天线性解锁。
+          主网锁定 / vesting 时长上限约一年，60 天远低于该限制。
+        </div>
+      </div>
+
+      <div class="spec-row">
+        <div class="spec-k">前置条件</div>
+        <div class="spec-v">
+          需先创建 Meteora Launch Pool（DLMM 类型），且该池子必须将
+          Alpha Vault 地址记录为白名单预激活买家。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 核心规则 ================= -->
+  <section class="wrap sec">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
+      <h2 class="sec-title">核心规则<span>Key Rules</span></h2>
+    </div>
+
+    <div class="rules">
+      <div class="rule-item">
+        <span class="rule-dot">01</span>
+        <span class="rule-text">白名单制，<b>仅限名单内成员参与</b>。</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">02</span>
+        <span class="rule-text">所有人<b>统一币价</b>，不设阶梯价，不设先到先得。</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">03</span>
+        <span class="rule-text">
+          Cliff 0 天，Vesting 60 天：首次 claim 为公开交易时间 + 2 天，
+          随后 60 天内线性释放完毕。
+        </span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">04</span>
+        <span class="rule-text">通过 <b>Alpha Vault + Meteora DLMM</b> 方案执行。</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">05</span>
+        <span class="rule-text">
+          存款窗口内可在各自额度内自由存入，窗口关闭后 vault 统一执行买入。
+        </span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">06</span>
+        <span class="rule-text">超额部分<b>按比例退还</b> USDT。</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-dot">07</span>
+        <span class="rule-text">
+          目标认购 <b>$150,000 USDT</b>；硬顶金额 <b>$180,000 USDT</b>，
+          其中包含 D 组备用缓冲 $30,000 USDT。
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="wrap doc-foot">
+    <div class="foot-row">
+      <span class="foot-k">Document</span>
+      <span class="foot-v">God Of Fortune · Alpha Vault Plan</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Mechanism</span>
+      <span class="foot-v">Meteora Alpha Vault · Pro-Rata</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Liquidity</span>
+      <span class="foot-v">Meteora Launch Pool · DLMM</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Network</span>
+      <span class="foot-v">Solana Mainnet</span>
+    </div>
+    <div class="disc">
+      本文档仅用于信息展示，不构成任何投资建议。数字资产价格波动剧烈，请理性判断、注意风险。
+      所有价格、金额与时间以链上实际执行及官方最终公告为准。
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
