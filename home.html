@@ -3116,6 +3116,521 @@
       animation-duration: .001ms !important;
     }
   }
+    /* ============================================================
+     ✦ 缘起 · 财神请柬
+     ============================================================ */
+  .invitation{
+    position: relative;
+    margin: 20px 0;
+    padding: 34px clamp(20px, 5vw, 42px) 30px;
+    border-radius: 6px;
+    /* 羊皮纸质感：暗色下深红羊皮纸，亮色下暖米纸 */
+    background:
+      radial-gradient(ellipse 100% 60% at 50% 0%,   rgba(255, 45, 85, .12), transparent 65%),
+      radial-gradient(ellipse 80% 50% at 50% 100%,  rgba(255, 183, 0, .08), transparent 65%),
+      repeating-linear-gradient(0deg,
+        rgba(0, 0, 0, .015) 0 2px,
+        transparent 2px 4px),
+      linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
+    border: 1px solid var(--border-hi);
+    box-shadow:
+      0 0 calc(50px * var(--glow-strength)) rgba(255, 45, 85, .15),
+      0 0 calc(120px * var(--glow-strength)) rgba(255, 45, 85, .08),
+      inset 0 0 80px rgba(255, 45, 85, .04),
+      inset 0 0 0 1px var(--panel-inner);
+    overflow: hidden;
+    transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
+  }
+
+  /* 四角金色回字纹 */
+  .inv-corner{
+    position: absolute;
+    width: 22px; height: 22px;
+    pointer-events: none;
+    opacity: .55;
+  }
+  .inv-corner::before,
+  .inv-corner::after{
+    content: "";
+    position: absolute;
+    background: var(--gold);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
+  }
+  .inv-corner::before{ width: 100%; height: 1px; }
+  .inv-corner::after { width: 1px; height: 100%; }
+  .inv-corner-tl{ top: 12px;    left: 12px;   }
+  .inv-corner-tr{ top: 12px;    right: 12px;  }
+  .inv-corner-bl{ bottom: 12px; left: 12px;   }
+  .inv-corner-br{ bottom: 12px; right: 12px;  }
+  .inv-corner-tl::before, .inv-corner-tl::after{ top: 0;    left: 0;  }
+  .inv-corner-tr::before, .inv-corner-tr::after{ top: 0;    right: 0; }
+  .inv-corner-bl::before, .inv-corner-bl::after{ bottom: 0; left: 0;  }
+  .inv-corner-br::before, .inv-corner-br::after{ bottom: 0; right: 0; }
+
+  /* ---- 印章 ---- */
+  .inv-stamp{
+    position: absolute;
+    top: 26px;
+    right: clamp(22px, 4vw, 36px);
+    width: 62px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-8deg) scale(.6);
+    opacity: 0;
+    transform-origin: center;
+    transition:
+      transform 1.1s cubic-bezier(.34, 1.56, .64, 1),
+      opacity .6s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .invitation.stamped .inv-stamp{
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+
+  .inv-stamp-frame{
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--red);
+    border-radius: 4px;
+    box-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--red),
+      inset 0 0 calc(12px * var(--glow-strength)) rgba(255, 45, 85, .35);
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255, 45, 85, .10), transparent 70%),
+      rgba(255, 45, 85, .04);
+  }
+  .inv-stamp-frame::after{
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(255, 45, 85, .35);
+    border-radius: 2px;
+  }
+  .inv-stamp-text{
+    position: relative;
+    color: var(--red);
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    line-height: 1.05;
+    letter-spacing: 0;
+    text-align: center;
+    text-shadow:
+      0 0 calc(6px * var(--glow-strength)) var(--red),
+      0 0 calc(16px * var(--glow-strength)) rgba(255, 45, 85, .45);
+  }
+
+  /* ---- 抬头 ---- */
+  .inv-head{
+    margin-bottom: 16px;
+    padding-right: 80px; /* 给印章让位 */
+  }
+  .inv-title{
+    font-size: clamp(1.05rem, 4vw, 1.28rem);
+    font-weight: 800;
+    color: var(--gold-l);
+    letter-spacing: 3px;
+    line-height: 1.3;
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .5),
+      0 0 calc(24px * var(--glow-strength)) rgba(255, 45, 85, .25);
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+  }
+  .inv-subtitle{
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: 2.6px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+  }
+
+  /* ---- 分隔线 ---- */
+  .inv-sep{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding-right: 0;
+  }
+  .inv-sep-line{
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+  }
+  .inv-sep-dot{
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
+  }
+
+  /* ---- 正文行（逐行浮现） ---- */
+  .inv-body{
+    position: relative;
+  }
+  .inv-line{
+    position: relative;
+    margin: 0 0 15px;
+    padding-left: 18px;
+    font-size: .94rem;
+    line-height: 1.85;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+  }
+  .inv-line::before{
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: .85em;
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    transform: rotate(45deg);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--red);
+  }
+  .inv-line-em{
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold-l);
+    letter-spacing: .5px;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  }
+  .inv-line-em::before{
+    background: var(--gold);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
+  }
+
+  /* ---- 东西对撞 ---- */
+  .inv-dual{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 12px;
+    margin: 20px 0 22px;
+    opacity: 0;
+    transform: scale(.94);
+    transition:
+      opacity 1s ease .1s,
+      transform 1s cubic-bezier(.34, 1.4, .64, 1) .1s;
+  }
+
+  .inv-side{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 16px 14px;
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease;
+  }
+  .inv-side::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .7;
+  }
+
+  /* 西：Doge — 冷灰蓝 */
+  .inv-side-west{
+    background: linear-gradient(180deg, rgba(110, 130, 160, .10), rgba(110, 130, 160, .03));
+    border: 1px solid rgba(140, 160, 190, .3);
+    color: #a8b8cf;
+  }
+  .inv-side-west::before{
+    background: radial-gradient(circle at 50% 0%, rgba(140, 170, 210, .18), transparent 65%);
+  }
+  .inv-side-west .inv-side-icon{
+    border-color: rgba(140, 160, 190, .5);
+    color: #a8b8cf;
+    box-shadow: 0 0 12px rgba(140, 160, 190, .35);
+  }
+
+  /* 东：财神 — 金红 */
+  .inv-side-east{
+    background: linear-gradient(180deg, rgba(255, 45, 85, .10), rgba(255, 183, 0, .04));
+    border: 1px solid var(--border-hi);
+    color: var(--gold-l);
+    box-shadow:
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .22),
+      inset 0 0 30px rgba(255, 45, 85, .04);
+  }
+  .inv-side-east::before{
+    background: radial-gradient(circle at 50% 0%, rgba(255, 183, 0, .18), transparent 65%);
+  }
+  .inv-side-east .inv-side-icon{
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow:
+      0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .55),
+      inset 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .12);
+  }
+
+  .inv-side-icon{
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1.5px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+  }
+  .inv-doge{
+    font-family: 'Times New Roman', serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .inv-side-name{
+    font-size: 1.06rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .inv-side-west .inv-side-name{
+    color: #cdd9e8;
+    text-shadow: 0 0 8px rgba(140, 160, 190, .5);
+  }
+  .inv-side-east .inv-side-name{
+    color: var(--gold-l);
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  }
+  .inv-side-year{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    opacity: .7;
+  }
+  .inv-side-desc{
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-top: 2px;
+    opacity: .9;
+  }
+
+  /* 中：对撞 */
+  .inv-vs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 4px;
+  }
+  .inv-vs-line{
+    flex: 1;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--red), transparent);
+    min-height: 20px;
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--red);
+  }
+  .inv-vs-mark{
+    font-size: 1rem;
+    color: var(--red);
+    font-weight: 900;
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--red),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .55);
+    animation: invVsPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes invVsPulse{
+    0%, 100% { opacity: .75; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.18); }
+  }
+
+  /* ---- 落款 ---- */
+  .inv-sign{
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px dashed var(--border-gold);
+    text-align: center;
+    position: relative;
+  }
+  .inv-sign-row{
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: .9rem;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', 'Noto Serif SC', monospace;
+  }
+  .inv-sign-label{
+    font-size: .74rem;
+    color: var(--text-mute);
+    letter-spacing: 2px;
+  }
+  .inv-sign-text{
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .inv-sign-final{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+  }
+  .inv-sign-eq{
+    color: var(--text-mute);
+    font-weight: 700;
+    font-size: .9rem;
+  }
+  .inv-final-gold{
+    font-size: clamp(1.15rem, 4.6vw, 1.42rem);
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 183, 0, .45),
+      0 0 calc(60px * var(--glow-strength)) rgba(255, 45, 85, .25);
+  }
+  .inv-final-fire{
+    font-size: clamp(1.05rem, 4.2vw, 1.32rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--red-l);
+    text-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--red),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 45, 85, .45);
+    position: relative;
+  }
+  /* 数字香火底部有"火苗"闪烁 */
+  .inv-final-fire::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 60%;
+    height: 6px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center,
+      rgba(255, 183, 0, .8) 0%,
+      rgba(255, 45, 85, .5) 40%,
+      transparent 80%);
+    filter: blur(3px);
+    animation: invFireGlow 1.8s ease-in-out infinite;
+  }
+  @keyframes invFireGlow{
+    0%, 100% { opacity: .55; transform: translateX(-50%) scaleX(.85); }
+    50%      { opacity: 1;   transform: translateX(-50%) scaleX(1.1); }
+  }
+
+  /* 落款印章 */
+  .inv-sign-seal{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 20px;
+    padding: 5px 12px;
+    border: 1px dashed var(--red);
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+    color: var(--red-l);
+    text-shadow: 0 0 calc(6px * var(--glow-strength)) var(--red);
+    background: rgba(255, 45, 85, .05);
+    transform: rotate(-1.2deg);
+  }
+  .inv-sign-seal i{
+    color: var(--red);
+    filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--red));
+  }
+
+  /* ---- 入场动画触发 ---- */
+  .invitation.seen .inv-line{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .invitation.seen .inv-dual{
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ---- 响应式 ---- */
+  @media (max-width: 480px){
+    .invitation{
+      padding: 26px 18px 24px;
+    }
+    .inv-stamp{
+      width: 54px; height: 54px;
+      top: 20px;
+      right: 18px;
+    }
+    .inv-stamp-text{ font-size: .92rem; }
+    .inv-head{ padding-right: 68px; }
+    .inv-title{ letter-spacing: 2px; }
+    .inv-subtitle{ font-size: .56rem; letter-spacing: 1.8px; }
+
+    .inv-line{ font-size: .88rem; padding-left: 16px; }
+    .inv-line-em{ font-size: .94rem; }
+
+    .inv-dual{
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .inv-vs{
+      flex-direction: row;
+      padding: 6px 0;
+      gap: 10px;
+    }
+    .inv-vs-line{
+      height: 1px;
+      width: auto;
+      min-height: 0;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+    }
+    .inv-side{ padding: 14px 12px; }
+    .inv-side-icon{ width: 36px; height: 36px; font-size: 1rem; }
+    .inv-doge{ font-size: 1.28rem; }
+    .inv-side-name{ font-size: .98rem; }
+    .inv-side-desc{ font-size: .72rem; }
+
+    .inv-sign-final{ gap: 8px; }
+    .inv-sign-seal{ font-size: .56rem; letter-spacing: 1.6px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .inv-stamp,
+    .inv-line,
+    .inv-dual{
+      transition-duration: .001ms !important;
+    }
+    .invitation.seen .inv-line,
+    .invitation.seen .inv-dual,
+    .invitation.stamped .inv-stamp{
+      opacity: 1;
+      transform: none;
+    }
+    .inv-vs-mark,
+    .inv-final-fire::after{
+      animation-duration: .001ms !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3358,14 +3873,91 @@
   <section id="s0" aria-labelledby="s0-title">
     <h2 id="s0-title"><i class="fas fa-feather" aria-hidden="true"></i> 缘起 · 为什么是财神</h2>
 
-    <div class="card">
-      <p>在纽约的地铁里，在吉隆坡的茶餐室，在伦敦的唐人街，只要春节一到，总有一句"恭喜发财"响起。</p>
-      <p>它不需要翻译，不需要解释。</p>
-      <p><strong>西方有 Doge，东方有财神。</strong><br>
-      Doge 是互联网的偶然，财神是华人的必然。</p>
-      <p>我们不发明新符号，我们唤醒一个古老符号。把千年财神信仰，带进 Web3，带进 Meme，带进全球华人的社区。</p>
-      <p>如果说比特币是数字黄金，<br>
-      那么 $财神到，就是<strong>数字香火</strong>。</p>
+        <div class="invitation" id="csInvitation">
+      <!-- 四角装饰 -->
+      <span class="inv-corner inv-corner-tl" aria-hidden="true"></span>
+      <span class="inv-corner inv-corner-tr" aria-hidden="true"></span>
+      <span class="inv-corner inv-corner-bl" aria-hidden="true"></span>
+      <span class="inv-corner inv-corner-br" aria-hidden="true"></span>
+
+      <!-- 印章 -->
+      <div class="inv-stamp" aria-hidden="true">
+        <span class="inv-stamp-frame"></span>
+        <span class="inv-stamp-text">财<br>神<br>到</span>
+      </div>
+
+      <!-- 抬头 -->
+      <div class="inv-head">
+        <div class="inv-title">致全球华人</div>
+        <div class="inv-subtitle">A LETTER · TO EVERY CHINESE</div>
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="inv-sep" aria-hidden="true">
+        <span class="inv-sep-line"></span>
+        <span class="inv-sep-dot"></span>
+        <span class="inv-sep-line"></span>
+      </div>
+
+      <!-- 正文 -->
+      <div class="inv-body">
+        <p class="inv-line">
+          在纽约的地铁里，在吉隆坡的茶餐室，在伦敦的唐人街，只要春节一到，总有一句"恭喜发财"响起。
+        </p>
+
+        <p class="inv-line inv-line-em">
+          它不需要翻译，不需要解释。
+        </p>
+
+        <!-- 东西对撞 -->
+        <div class="inv-dual">
+          <div class="inv-side inv-side-west">
+            <div class="inv-side-icon" aria-hidden="true">
+              <span class="inv-doge">Ð</span>
+            </div>
+            <div class="inv-side-name">Doge</div>
+            <div class="inv-side-year">2013</div>
+            <div class="inv-side-desc">互联网的偶然</div>
+          </div>
+
+          <div class="inv-vs" aria-hidden="true">
+            <span class="inv-vs-line"></span>
+            <span class="inv-vs-mark">✕</span>
+            <span class="inv-vs-line"></span>
+          </div>
+
+          <div class="inv-side inv-side-east">
+            <div class="inv-side-icon" aria-hidden="true">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="inv-side-name">财神</div>
+            <div class="inv-side-year">千年</div>
+            <div class="inv-side-desc">华人的必然</div>
+          </div>
+        </div>
+
+        <p class="inv-line">
+          我们不发明新符号，我们唤醒一个古老符号。把千年财神信仰，带进 Web3，带进 Meme，带进全球华人的社区。
+        </p>
+      </div>
+
+      <!-- 落款 -->
+      <div class="inv-sign">
+        <div class="inv-sign-row">
+          <span class="inv-sign-label">如果说</span>
+          <span class="inv-sign-text">比特币 = 数字黄金</span>
+        </div>
+        <div class="inv-sign-final">
+          <span class="inv-sign-label">那么</span>
+          <span class="inv-final-gold">$财神到</span>
+          <span class="inv-sign-eq">=</span>
+          <span class="inv-final-fire">数字香火</span>
+        </div>
+        <div class="inv-sign-seal" aria-hidden="true">
+          <i class="fas fa-fire"></i>
+          <span>CAISHEN.DAO</span>
+        </div>
+      </div>
     </div>
 
     <h3><i class="fas fa-circle-nodes" aria-hidden="true"></i> 为什么财神能成为全球华人第一 IP？</h3>
@@ -5188,6 +5780,74 @@ window.__metalScrape = (function () {
       });
     }, { threshold: 0.28 });
     io.observe(scanner);
+  } else {
+    play();
+  }
+})();
+  
+/* ============================================================
+   ✦ 缘起 · 财神请柬入场动画
+   滚入视口时：印章盖下 → 分隔线扫过 → 逐行浮现 → 双栏对撞
+   ============================================================ */
+(function () {
+  var root = document.getElementById('csInvitation');
+  if (!root) return;
+
+  var lines = root.querySelectorAll('.inv-line');
+  var dual = root.querySelector('.inv-dual');
+  var played = false;
+
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (_) {}
+
+  // 每行的入场延迟：印章先落 → 正文依次浮出 → 双栏最后
+  function schedule() {
+    // 1) 印章先落
+    root.classList.add('stamped');
+
+    if (reduceMotion) {
+      root.classList.add('seen');
+      return;
+    }
+
+    // 2) 正文逐行浮现（0.45s 起，每行间隔 0.35s）
+    lines.forEach(function (line, i) {
+      setTimeout(function () {
+        line.style.opacity = '1';
+        line.style.transform = 'translateY(0)';
+      }, 450 + i * 350);
+    });
+
+    // 3) 双栏对撞在正文之后
+    if (dual) {
+      var dualDelay = 450 + lines.length * 350 + 150;
+      setTimeout(function () {
+        root.classList.add('seen');
+      }, dualDelay);
+    } else {
+      root.classList.add('seen');
+    }
+  }
+
+  function play() {
+    if (played) return;
+    played = true;
+    schedule();
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          play();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+    io.observe(root);
   } else {
     play();
   }
