@@ -2783,6 +2783,339 @@
   }
 
   ::selection{ background: rgba(255, 45, 85, .4); color: var(--gold-l); }
+    /* ============================================================
+     ✦ 文化基因组扫描仪
+     ============================================================ */
+  .scanner{
+    margin: 22px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 100% 22px,
+      linear-gradient(90deg, rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 22px 100%,
+      linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .10),
+      inset 0 0 60px rgba(255, 45, 85, .03);
+    transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
+  }
+  /* 顶部扫描线（持续动画，暗示"正在运行"） */
+  .scanner::after{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent, var(--red) 20%, var(--gold) 50%, var(--red) 80%, transparent);
+    opacity: .6;
+    animation: scannerTop 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes scannerTop{
+    0%, 100% { opacity: .25; transform: translateX(-14%); }
+    50%      { opacity: .95; transform: translateX(14%);  }
+  }
+
+  /* ---- 顶栏 ---- */
+  .scanner-bar{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(90deg, rgba(255, 45, 85, .10), transparent 65%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  .scanner-dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow:
+      0 0 calc(8px * var(--glow-strength)) var(--gold),
+      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .6);
+    animation: scanPulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes scanPulse{
+    0%, 100% { opacity: .5; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.35); }
+  }
+
+  .scanner-title{
+    color: var(--gold-l);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .6);
+  }
+
+  .scanner-live{
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--red-l);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+  }
+  .scanner-live i{
+    font-size: .48rem;
+    animation: scanPulse 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--red));
+  }
+
+  /* ---- 扫描行 ---- */
+  .scanner-rows{
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+  }
+
+  .scan-row{
+    padding: 14px 18px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+    opacity: .38;
+    transition: opacity .6s ease;
+  }
+  .scan-row:last-child{ border-bottom: none; }
+  .scan-row.active{ opacity: 1; }
+
+  .scan-head{
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 9px;
+    flex-wrap: wrap;
+  }
+
+  .scan-idx{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: 1px;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
+    flex-shrink: 0;
+  }
+
+  .scan-name{
+    font-size: .94rem;
+    font-weight: 800;
+    color: var(--gold-l);
+    letter-spacing: .5px;
+    flex: 1;
+    min-width: 0;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .25);
+    transition: text-shadow .4s ease;
+  }
+  .scan-row.active .scan-name{
+    text-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  }
+
+  .scan-pct{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    font-weight: 800;
+    color: var(--text-mute);
+    letter-spacing: .5px;
+    flex-shrink: 0;
+    transition: color .4s ease, text-shadow .4s ease;
+  }
+  .scan-row.active .scan-pct{
+    color: var(--gold);
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(22px * var(--glow-strength)) rgba(255, 183, 0, .45);
+  }
+  .scan-pct i{
+    font-style: normal;
+    opacity: .55;
+    font-size: .72rem;
+    margin-left: 1px;
+  }
+
+  /* 进度轨道 */
+  .scan-track{
+    position: relative;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 45, 85, .08);
+    border: 1px solid var(--border);
+    margin-bottom: 11px;
+    overflow: visible;
+  }
+
+  .scan-fill{
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg,
+      var(--gold-d) 0%,
+      var(--gold)   55%,
+      var(--red)    100%);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .45);
+    transition: width 1.15s cubic-bezier(.22, 1, .36, 1);
+    position: relative;
+  }
+  /* 填充里的流动高光 */
+  .scan-fill::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, .55) 50%,
+      transparent);
+    background-size: 22px 100%;
+    background-repeat: no-repeat;
+    animation: scanFlow 1.4s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .scan-row.active .scan-fill::after{ opacity: 1; }
+  @keyframes scanFlow{
+    from { background-position: -22px 0; }
+    to   { background-position: calc(100% + 22px) 0; }
+  }
+  /* 填充末端的发光"扫描头" */
+  .scan-fill::before{
+    content: "";
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: var(--gold-l);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .5);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .scan-row.active .scan-fill::before{ opacity: 1; }
+
+  .scan-desc{
+    font-size: .82rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin: 0;
+    transition: color .4s ease;
+  }
+  .scan-row.active .scan-desc{ color: var(--text); }
+
+  /* ---- 结论 ---- */
+  .scanner-result{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px 18px;
+    padding: 20px 18px 22px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent, rgba(255, 45, 85, .07));
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .8s cubic-bezier(.22, 1, .36, 1);
+  }
+  .scanner-result.show{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .scanner-result::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(255, 45, 85, .25), transparent 70%);
+    pointer-events: none;
+    animation: resultGlow 3s ease-in-out infinite;
+  }
+  @keyframes resultGlow{
+    0%, 100% { opacity: .55; }
+    50%      { opacity: 1;   }
+  }
+  .scanner-result > *{ position: relative; z-index: 1; }
+
+  .result-label{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    color: var(--text-mute);
+    padding: 4px 10px;
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .result-verdict{
+    font-size: clamp(.95rem, 3.6vw, 1.12rem);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .45);
+  }
+
+  .result-stamp{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--red-l);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
+    padding: 5px 12px;
+    border: 1px dashed var(--red);
+    border-radius: 3px;
+    transform: rotate(-2deg);
+    background: rgba(255, 45, 85, .05);
+  }
+
+  /* ---- 响应式 ---- */
+  @media (max-width: 480px){
+    .scanner-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
+    .scanner-live{ font-size: .56rem; letter-spacing: 2px; }
+    .scan-row{ padding: 12px 14px; }
+    .scan-idx{ font-size: .62rem; }
+    .scan-name{ font-size: .88rem; }
+    .scan-pct{ font-size: .76rem; }
+    .scan-desc{ font-size: .78rem; }
+    .scanner-result{ padding: 16px 14px 18px; gap: 10px 14px; }
+    .result-verdict{ font-size: .92rem; letter-spacing: 1px; }
+    .result-stamp{ font-size: .64rem; letter-spacing: 1.4px; padding: 4px 9px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .scan-fill,
+    .scanner-result{
+      transition-duration: .001ms !important;
+    }
+    .scan-fill::after,
+    .scanner::after,
+    .scanner-result::before,
+    .scanner-dot,
+    .scanner-live i{
+      animation-duration: .001ms !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3037,23 +3370,59 @@
 
     <h3><i class="fas fa-circle-nodes" aria-hidden="true"></i> 为什么财神能成为全球华人第一 IP？</h3>
 
-    <div class="grid-3">
-      <div class="feat">
-        <div class="num" aria-hidden="true">01</div>
-        <h4>文化最大公约数</h4>
-        <p>只要有华人的地方，就有财神、红包、春联、"恭喜发财"。</p>
+<div class="scanner" id="cultureScanner">
+  <div class="scanner-bar">
+    <span class="scanner-dot" aria-hidden="true"></span>
+    <span class="scanner-title mono">CULTURE.GENOME.SCAN</span>
+    <span class="scanner-live mono">
+      <i class="fas fa-circle" aria-hidden="true"></i> LIVE
+    </span>
+  </div>
+
+  <ol class="scanner-rows">
+    <li class="scan-row" data-i="0">
+      <div class="scan-head">
+        <span class="scan-idx mono">[001]</span>
+        <span class="scan-name">文化最大公约数</span>
+        <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
       </div>
-      <div class="feat">
-        <div class="num" aria-hidden="true">02</div>
-        <h4>情绪最大公约数</h4>
-        <p>财神不只是钱，是好运、团圆、希望、开门红——中国人对美好生活最直白的祝愿。</p>
+      <div class="scan-track" aria-hidden="true">
+        <div class="scan-fill"></div>
       </div>
-      <div class="feat">
-        <div class="num" aria-hidden="true">03</div>
-        <h4>传播最大公约数</h4>
-        <p>"财神到"三个字，本身就是祝福、表情包、一首歌、一场仪式，天生适合传播。</p>
+      <p class="scan-desc">只要有华人的地方，就有财神、红包、春联、"恭喜发财"。文化范围 = 全球华人半径。</p>
+    </li>
+
+    <li class="scan-row" data-i="1">
+      <div class="scan-head">
+        <span class="scan-idx mono">[002]</span>
+        <span class="scan-name">情绪最大公约数</span>
+        <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
       </div>
-    </div>
+      <div class="scan-track" aria-hidden="true">
+        <div class="scan-fill"></div>
+      </div>
+      <p class="scan-desc">财神不只是钱，是好运、团圆、希望、开门红——中国人对美好生活最直白的祝愿。</p>
+    </li>
+
+    <li class="scan-row" data-i="2">
+      <div class="scan-head">
+        <span class="scan-idx mono">[003]</span>
+        <span class="scan-name">传播最大公约数</span>
+        <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
+      </div>
+      <div class="scan-track" aria-hidden="true">
+        <div class="scan-fill"></div>
+      </div>
+      <p class="scan-desc">"财神到"三个字，本身就是祝福、表情包、一首歌、一场仪式，天生适合传播。</p>
+    </li>
+  </ol>
+
+  <div class="scanner-result">
+    <span class="result-label mono">CONCLUSION</span>
+    <span class="result-verdict">全域覆盖 · 无法复制</span>
+    <span class="result-stamp mono">财神 = 全球华人第一文化 IP</span>
+  </div>
+</div>
   </section>
 
   <!-- ② 是什么 -->
