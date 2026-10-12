@@ -1442,6 +1442,33 @@
       transparent 80%);
   }
   .toc-item.done:hover::before{ opacity: 1; }
+  
+  /* ============ 抽签抖动动画（章节变已接时触发一次） ============ */
+  @keyframes signShake{
+    0%   { transform: translateY(0)    scale(1)    rotate(0);    }
+    12%  { transform: translateY(-9px) scale(1.10) rotate(-6deg); }
+    30%  { transform: translateY(4px)  scale(1.02) rotate(3deg);  }
+    50%  { transform: translateY(-6px) scale(1.07) rotate(-3deg); }
+    70%  { transform: translateY(2px)  scale(1.02) rotate(2deg);  }
+    88%  { transform: translateY(-2px) scale(1.03) rotate(-1deg); }
+    100% { transform: translateY(0)    scale(1)    rotate(0);    }
+  }
+  .toc-sym.shake{
+    animation: signShake .32s cubic-bezier(.34, 1.4, .64, 1) both;
+    color: var(--gold);
+    filter:
+      drop-shadow(0 0 calc(12px * var(--glow-strength)) var(--gold))
+      drop-shadow(0 0 calc(28px * var(--glow-strength)) var(--gold));
+  }
+
+  /* 已接那一刻：整行闪过一次绿光 */
+  @keyframes tocItemFlash{
+    0%   { background: rgba(38, 255, 143, .22); }
+    100% { background: transparent; }
+  }
+  .toc-item.flash{
+    animation: tocItemFlash .9s cubic-bezier(.22, 1, .36, 1) both;
+  }
 
   /* ---- 响应式 ---- */
   @media (max-width: 720px){
@@ -3408,6 +3435,157 @@ window.__showToast = (function () {
 
 
 /* ============================================================
+   ✦ 金属摩擦音效（悬停目录时触发）
+   白噪声 → 高通 → 带通 → 极短包络
+   频率偏高、时长约 70ms，营造"金属刮擦"感
+   ============================================================ */
+window.__metalScrape = (function () {
+  var audioCtx = null;
+  var noiseBuffer = null;
+  var lastPlay = 0;
+  var THROTTLE_MS = 90;
+  var enabled = true;
+  var userTouched = false;
+
+  /* 首次交互（点击/触摸/键盘）解锁 AudioContext */
+  function unlockOnFirstTouch() {
+    if (userTouched) return;
+    userTouched = true;
+    try {
+      var ctx = ensureCtx();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume().catch(function () {});
+      }
+    } catch (_) {}
+  }
+  ['pointerdown', 'touchstart', 'keydown'].forEach(function (evt) {
+    window.addEventListener(evt, unlockOnFirstTouch, { once: true, passive: true });
+  });
+
+  function ensureCtx() {
+    if (!audioCtx) {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (_) {
+        enabled = false;
+        return null;
+      }
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(function () {});
+    }
+    return audioCtx;
+  }
+
+  function ensureNoise(ctx) {
+    if (noiseBuffer) return noiseBuffer;
+    var dur = 0.12;
+    var len = Math.floor(ctx.sampleRate * dur);
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) {
+      // 白噪声，带一点线性衰减，避免尾音太长
+      data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    }
+    noiseBuffer = buf;
+    return noiseBuffer;
+  }
+
+  function play() {
+    if (!enabled) return;
+    var ctx = ensureCtx();
+    if (!ctx) return;
+
+    var now = performance.now();
+    if (now - lastPlay < THROTTLE_MS) return;
+    lastPlay = now;
+
+    var t = ctx.currentTime;
+
+    /* ---- 噪声源：模拟金属摩擦的"擦" ---- */
+    var src = ctx.createBufferSource();
+    src.buffer = ensureNoise(ctx);
+    // 每次随机播放起点，避免听感重复
+    src.playbackRate.value = 0.9 + Math.random() * 0.4;
+
+    /* ---- 高通：去掉低频，突出金属味 ---- */
+    var hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 2400 + Math.random() * 600;
+    hp.Q.value = 0.7;
+
+    /* ---- 带通：在 4~6kHz 处共振，形成"叮"的金属色 ---- */
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 4200 + Math.random() * 1800;
+    bp.Q.value = 6 + Math.random() * 3;
+
+    /* ---- 增益包络：5ms 起 → 70ms 落 ---- */
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.055, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.075);
+
+    /* ---- 高频振荡器：叠一层"脆"的金属共振 ---- */
+    var osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(5200 + Math.random() * 1200, t);
+    osc.frequency.exponentialRampToValueAtTime(3600, t + 0.05);
+
+    var oscGain = ctx.createGain();
+    oscGain.gain.setValueAtTime(0.0001, t);
+    oscGain.gain.exponentialRampToValueAtTime(0.018, t + 0.004);
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+
+    /* ---- 连接 ---- */
+    src.connect(hp);
+    hp.connect(bp);
+    bp.connect(g);
+    g.connect(ctx.destination);
+
+    osc.connect(oscGain);
+    oscGain.connect(ctx.destination);
+
+    /* ---- 播放 + 清理 ---- */
+    src.start(t, Math.random() * 0.03);
+    src.stop(t + 0.12);
+    osc.start(t);
+    osc.stop(t + 0.08);
+
+    // 自动断开，释放资源
+    src.onended = function () {
+      try { src.disconnect(); hp.disconnect(); bp.disconnect(); g.disconnect(); } catch (_) {}
+    };
+    osc.onended = function () {
+      try { osc.disconnect(); oscGain.disconnect(); } catch (_) {}
+    };
+  }
+
+  play.setEnabled = function (v) { enabled = !!v; };
+  play.isEnabled = function () { return enabled; };
+  return play;
+})();
+
+
+/* ============================================================
+   ✦ 目录项交互：悬停音效 + 键盘 focus 音效
+   ============================================================ */
+(function () {
+  var items = document.querySelectorAll('.toc-item');
+  if (!items.length) return;
+
+  function onEnter() {
+    if (window.__metalScrape) window.__metalScrape();
+  }
+
+  items.forEach(function (item) {
+    item.addEventListener('mouseenter', onEnter);
+    // 键盘 Tab 聚焦也触发（避免重复：鼠标点击时 mouseenter 已触发，focus 会再来一次，但节流器会拦住）
+    item.addEventListener('focus', onEnter);
+  });
+})();
+  
+/* ============================================================
    ① 香火粒子系统（跟随主题变化 · 平滑过渡）
    ============================================================ */
 (function () {
@@ -3962,11 +4140,12 @@ window.__showToast = (function () {
     updateUI._last = n;
   }
 
-  function markRead(id) {
+    function markRead(id) {
     if (read[id]) return;
     read[id] = true;
     try { localStorage.setItem(STORE_KEY, JSON.stringify(read)); } catch (_) {}
 
+    // 香炉冒烟反馈
     if (window.__smokeBurst && censer) {
       var rect = censer.getBoundingClientRect();
       var cx = rect.left + rect.width / 2;
@@ -3975,6 +4154,34 @@ window.__showToast = (function () {
     }
 
     updateUI();
+
+    // ★ 抽签动画 + 整行绿光闪烁
+    var item = document.querySelector('.toc-item[data-target="' + id + '"]');
+    if (item) {
+      var sym = item.querySelector('.toc-sym');
+
+      // 卦象抖动（重播：先移除类名，强制 reflow，再加回去）
+      if (sym) {
+        sym.classList.remove('shake');
+        void sym.offsetWidth; // 强制重排，重置动画
+        sym.classList.add('shake');
+        setTimeout(function () { sym.classList.remove('shake'); }, 400);
+      }
+
+      // 整行闪一下绿光（300ms 延迟，与香炉冒烟错开，更有层次）
+      setTimeout(function () {
+        item.classList.remove('flash');
+        void item.offsetWidth;
+        item.classList.add('flash');
+        setTimeout(function () { item.classList.remove('flash'); }, 950);
+      }, 220);
+
+      // 同时补一声"清脆"的金属音（区别于悬停音，用更长尾音）
+      if (window.__metalScrape) {
+        // 这里略作延迟，视觉上抽签动作和音效同步
+        setTimeout(function () { window.__metalScrape(); }, 40);
+      }
+    }
   }
 
   updateUI._last = null;
