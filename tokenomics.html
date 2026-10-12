@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
 <title>财神到 God Of Fortune · 代币经济方案</title>
 <style>
   :root{
+    color-scheme: light dark;
+
     --ink:#14181d;
     --ink-2:#2f3841;
     --ink-3:#5b6672;
@@ -21,6 +24,18 @@
     --gold:#a8821c;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 
+    /* 组件级变量（可被深色模式覆盖） */
+    --toc-bg:rgba(255,255,255,.92);
+    --abstract-from:#fcfcfd;
+    --abstract-to:#ffffff;
+    --lead-fade:rgba(251,244,244,0);
+    --hover-bg:rgba(20,24,29,.05);
+    --active-bg:rgba(169,31,39,.08);
+    --thead-bg:#f4f6f8;
+    --zebra-bg:#fbfcfd;
+    --sum-line:#efd2d4;
+    --scroll-thumb:#d2d8dd;
+
     --sp-1:4px;
     --sp-2:8px;
     --sp-3:12px;
@@ -34,7 +49,7 @@
   }
 
   *,*::before,*::after{box-sizing:border-box;}
-  html{-webkit-text-size-adjust:100%;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--bg);
@@ -45,6 +60,7 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
   }
 
   .doc{
@@ -55,8 +71,9 @@
     border-left:1px solid var(--line);
     border-right:1px solid var(--line);
     position:relative;
-    overflow:hidden;
+    overflow-x:clip;
     padding:0 26px;
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .doc::before{
     content:"";
@@ -157,11 +174,54 @@
     line-height:1.4;
   }
 
+  /* ================= 目录导航 ================= */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    gap:6px;
+    margin:0 -26px;
+    padding:10px 26px;
+    background:var(--toc-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-link{
+    flex:none;
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-3);
+    text-decoration:none;
+    background:transparent;
+    border:1px solid transparent;
+    transition:background .18s ease,color .18s ease,border-color .18s ease;
+    letter-spacing:.02em;
+    white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toc-link:hover{background:var(--bg);color:var(--ink);}
+  .toc-link.active{
+    background:var(--red);
+    color:#fff;
+    border-color:var(--red);
+  }
+
   /* ================= 摘要 ================= */
   .abstract{
     padding:var(--sp-7) 0 var(--sp-7);
     border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg,#fcfcfd 0%,#ffffff 100%);
+    background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
+    transition:background .25s ease;
   }
   .abstract p{
     margin:0;
@@ -177,10 +237,61 @@
     padding-bottom:1px;
   }
 
+  /* ================= 核心优势 ================= */
+  .hl-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:0;
+  }
+  .hl-card{
+    padding:16px 16px 17px;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:var(--card);
+    min-width:0;
+    position:relative;
+    overflow:hidden;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .hl-card::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:3px;
+    background:var(--gold);
+    border-radius:0 3px 3px 0;
+  }
+  .hl-card.hl-red::before{background:var(--red);}
+  .hl-num{
+    font-family:var(--mono);
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:-.03em;
+    color:var(--ink);
+    line-height:1.1;
+    margin-bottom:6px;
+  }
+  .hl-card.hl-red .hl-num{color:var(--red);}
+  .hl-t{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    letter-spacing:-.005em;
+  }
+  .hl-d{
+    margin-top:6px;
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
   /* ================= 区块 ================= */
   .sec{
     padding:var(--sp-9) 0 var(--sp-7);
     border-bottom:1px solid var(--line);
+    scroll-margin-top:56px;
   }
   .sec:last-of-type{
     border-bottom:0;
@@ -266,6 +377,7 @@
     border:1px solid var(--line);
     border-radius:var(--r);
     min-width:0;
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .ca-text{
     flex:1 1 auto;
@@ -297,10 +409,81 @@
     cursor:pointer;
     transition:background .15s ease, color .15s ease;
   }
-  .ca-copy:hover{background:rgba(20,24,29,.05);color:var(--ink);}
-  .ca-copy:active{background:rgba(169,31,39,.08);}
+  .ca-copy:hover{background:var(--hover-bg);color:var(--ink);}
+  .ca-copy:active{background:var(--active-bg);}
   .ca-copy.copied{color:var(--red);}
   .ca-copy svg{display:block;width:15px;height:15px;}
+
+  /* ================= 环形图 ================= */
+  .donut-wrap{
+    display:grid;
+    grid-template-columns:190px 1fr;
+    gap:24px;
+    align-items:center;
+    padding:0 0 24px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:4px;
+  }
+  .donut-chart{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .donut{
+    width:100%;
+    max-width:190px;
+    height:auto;
+    display:block;
+  }
+  .donut-num{
+    font-family:var(--mono);
+    font-size:19px;
+    font-weight:700;
+    fill:var(--ink);
+    letter-spacing:-.02em;
+  }
+  .donut-label{
+    font-size:9.5px;
+    fill:var(--muted);
+    letter-spacing:.14em;
+  }
+  .donut-legend{
+    display:grid;
+    gap:7px;
+    min-width:0;
+  }
+  .lg-item{
+    display:grid;
+    grid-template-columns:8px 1fr auto;
+    gap:9px;
+    align-items:center;
+    font-size:12px;
+    line-height:1.4;
+    min-width:0;
+  }
+  .lg-dot{
+    width:8px;
+    height:8px;
+    border-radius:2px;
+    display:block;
+    flex:none;
+  }
+  .lg-name{
+    color:var(--ink-3);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    min-width:0;
+  }
+  .lg-pct{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:11px;
+    color:var(--ink-2);
+    text-align:right;
+    white-space:nowrap;
+    letter-spacing:-.01em;
+  }
 
   /* ================= 代币分配 ================= */
   .alloc-list{
@@ -315,7 +498,7 @@
   .alloc-row.lead{
     position:relative;
     padding-left:14px;
-    background:linear-gradient(90deg,var(--red-soft) 0%,rgba(251,244,244,0) 88%);
+    background:linear-gradient(90deg,var(--red-soft) 0%,var(--lead-fade) 88%);
   }
   .alloc-row.lead::before{
     content:"";
@@ -413,7 +596,7 @@
     padding:3px 10px 3px 8px;
     border:1px solid var(--line);
     border-radius:999px;
-    background:#fff;
+    background:var(--card);
     color:var(--ink-3);
     font-size:11.5px;
     font-weight:500;
@@ -502,11 +685,12 @@
     -webkit-overflow-scrolling:touch;
     border:1px solid var(--line);
     border-radius:var(--r);
-    background:#fff;
+    background:var(--card);
     scrollbar-width:thin;
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .tbl-scroll::-webkit-scrollbar{height:4px;}
-  .tbl-scroll::-webkit-scrollbar-thumb{background:#d2d8dd;border-radius:2px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:2px;}
 
   table{
     border-collapse:collapse;
@@ -522,7 +706,7 @@
   }
   th:first-child,td:first-child{text-align:left;}
   thead th{
-    background:#f4f6f8;
+    background:var(--thead-bg);
     color:var(--ink-3);
     font-weight:600;
     font-family:var(--mono);
@@ -530,9 +714,10 @@
     letter-spacing:.1em;
     text-transform:uppercase;
     border-bottom:1px solid var(--line);
+    transition:background-color .25s ease;
   }
   tbody tr:last-child td{border-bottom:0;}
-  tbody tr:nth-child(even){background:#fbfcfd;}
+  tbody tr:nth-child(even){background:var(--zebra-bg);}
   tbody td{color:var(--ink-2);}
   tbody td:first-child{
     color:var(--ink);
@@ -547,7 +732,7 @@
     background:var(--red-soft);
     color:var(--red-dark);
     font-weight:700;
-    border-top:1px solid #efd2d4;
+    border-top:1px solid var(--sum-line);
   }
   .t-milestone tr.sum td:first-child{color:var(--red-dark);}
 
@@ -624,7 +809,57 @@
     word-break:break-all;
     line-height:1.65;
     margin-top:5px;
+    transition:background-color .25s ease, border-color .25s ease;
   }
+
+  /* ================= FAQ ================= */
+  .faq-list{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .faq-item{
+    border-bottom:1px solid var(--line-2);
+  }
+  .faq-item:last-child{border-bottom:0;}
+  .faq-item summary{
+    padding:16px 0;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    line-height:1.5;
+    letter-spacing:-.005em;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .15s ease;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";
+    font-family:var(--mono);
+    font-size:17px;
+    font-weight:400;
+    color:var(--muted);
+    flex:none;
+    line-height:1;
+    transition:color .18s ease;
+  }
+  .faq-item[open] summary::after{
+    content:"−";
+    color:var(--red);
+  }
+  .faq-item summary:hover{color:var(--red);}
+  .faq-a{
+    padding:0 24px 16px 0;
+    font-size:13px;
+    line-height:1.85;
+    color:var(--ink-3);
+  }
+  .faq-a b{color:var(--ink-2);font-weight:600;}
 
   /* ================= 页脚 ================= */
   .doc-foot{
@@ -665,12 +900,88 @@
     line-height:1.95;
   }
 
+  /* ================= 深色模式 ================= */
+  @media (prefers-color-scheme: dark){
+    :root{
+      color-scheme: dark;
+
+      --ink:#e6eaf0;
+      --ink-2:#b0b8c2;
+      --ink-3:#7a8494;
+      --muted:#5f6a76;
+      --line:#252c36;
+      --line-2:#1a2029;
+      --bg:#0a0e14;
+      --card:#10161e;
+      --red:#e63946;
+      --red-dark:#ff5a6a;
+      --red-soft:#2a1418;
+      --gold:#d4a82a;
+
+      --toc-bg:rgba(16,22,30,.92);
+      --abstract-from:#161c25;
+      --abstract-to:#10161e;
+      --lead-fade:rgba(42,20,24,0);
+      --hover-bg:rgba(230,236,240,.06);
+      --active-bg:rgba(230,57,70,.14);
+      --thead-bg:#181e26;
+      --zebra-bg:#141a22;
+      --sum-line:#3a1e22;
+      --scroll-thumb:#3a424d;
+    }
+
+    /* 环形图底色替换 */
+    .donut circle[stroke="#eef1f4"]{stroke:#1f242b;}
+    /* 深色下灰色系列整体提亮，保证环上可见 */
+    .donut circle[stroke="#2f3841"]{stroke:#c8cfd6;}
+    .donut circle[stroke="#5b6672"]{stroke:#a8b0b8;}
+    .donut circle[stroke="#7a8590"]{stroke:#909aa4;}
+    .donut circle[stroke="#a8b0b8"]{stroke:#7a8590;}
+    .donut circle[stroke="#c4c9cf"]{stroke:#6a7480;}
+    .donut circle[stroke="#d8dce0"]{stroke:#5a646e;}
+    /* 金色系列深色下略提亮 */
+    .donut circle[stroke="#a8821c"]{stroke:#d4a82a;}
+    .donut circle[stroke="#bf9a3a"]{stroke:#d8b04a;}
+    .donut circle[stroke="#c9a84a"]{stroke:#e0b85a;}
+
+    /* 深色下的分项分隔线略微提亮，避免糊在一起 */
+    .hl-card::before{opacity:.95;}
+    .alloc-row.lead::before{opacity:.95;}
+
+    /* 深色下的链接 hover 边框 */
+    .alloc-link:hover{
+      border-color:#5a2a2e;
+      color:var(--red);
+      background:var(--red-soft);
+    }
+
+    /* 深色下的 doc 顶栏渐变保持，不用改 */
+
+    /* 深色下的表格偶数行与表头保持可读 */
+    tbody tr:nth-child(even){background:var(--zebra-bg);}
+
+    /* 深色下页脚契约行颜色微调 */
+    .foot-v{color:var(--ink-3);}
+
+    /* 深色下复制按钮的按下态 */
+    .ca-copy:active{background:rgba(230,57,70,.14);}
+  }
+
   /* ================= 小屏 ================= */
   @media (max-width:480px){
     .doc{padding:0 22px;}
+    .toc{margin:0 -22px;padding:10px 22px;}
 
     .ca-full{display:none;}
     .ca-short{display:inline;}
+
+    .donut-wrap{
+      grid-template-columns:1fr;
+      gap:18px;
+      justify-items:center;
+      padding-bottom:20px;
+    }
+    .donut-legend{width:100%;}
   }
 
   @media (max-width:400px){
@@ -686,6 +997,9 @@
     .foot-v{text-align:left;}
     .rel{gap:var(--sp-1) var(--sp-4);}
 
+    .hl-grid{grid-template-columns:1fr;gap:8px;}
+    .hl-card{padding:14px 14px 15px;}
+
     .alloc-row{padding:14px 0 13px;}
     .alloc-row.lead{padding-left:12px;}
     .alloc-row.lead::before{top:13px;bottom:12px;}
@@ -697,6 +1011,8 @@
     .alloc-note{margin-top:7px;font-size:11.5px;}
     .alloc-links{gap:6px;margin-top:9px;}
     .alloc-link{font-size:11px;padding:3px 9px 3px 7px;}
+
+    .faq-a{padding-right:8px;}
   }
 </style>
 </head>
@@ -733,17 +1049,65 @@
     </div>
   </header>
 
+  <!-- ================= 目录导航 ================= -->
+  <nav class="toc" aria-label="文档导航">
+    <a class="toc-link" href="#highlights">核心优势</a>
+    <a class="toc-link" href="#overview">基础信息</a>
+    <a class="toc-link" href="#distribution">代币分配</a>
+    <a class="toc-link" href="#vesting">解锁节奏</a>
+    <a class="toc-link" href="#burn">通缩机制</a>
+    <a class="toc-link" href="#execution">执行规则</a>
+    <a class="toc-link" href="#faq">FAQ</a>
+  </nav>
+
   <!-- ================= 摘要 ================= -->
   <section class="wrap abstract">
     <p>
-      全网共发行 <b>686,868,686</b> 枚 $财神到。其中 <span class="hl">50%</span> 划入「FDV 里程碑销毁池」，
-      随币价上涨、逐档触发并转入黑洞地址<span class="hl">永久销毁</span>。剩余部分按基金会、社区、生态与流动性分项配置，
-      并设有 3 至 36 个月不等的锁仓与线性释放安排。
+      全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">50%</span> 划入「FDV 里程碑销毁池」——
+      币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁 343,434,343 枚，且永不回流团队。
+      剩余 50% 按基金会、社区、生态与流动性分项配置，全部设有 3 至 36 个月不等的锁仓与线性释放安排，
+      每一笔锁仓均有独立链上地址可供查验。
     </p>
   </section>
 
+  <!-- ================= 核心优势 ================= -->
+  <section class="wrap sec" id="highlights">
+    <div class="sec-head">
+      <span class="sec-idx">★</span>
+      <h2 class="sec-title">核心优势<span>Core Highlights</span></h2>
+    </div>
+
+    <div class="hl-grid">
+      <div class="hl-card hl-red">
+        <div class="hl-num">50%</div>
+        <div class="hl-t">供应量用于销毁</div>
+        <div class="hl-d">12 档 FDV 里程碑，累计销毁 343,434,343 枚，永不回流团队</div>
+      </div>
+      <div class="hl-card">
+        <div class="hl-num">100%</div>
+        <div class="hl-t">锁仓链上可查</div>
+        <div class="hl-d">基金会、社区、生态份额均有独立 Jupiter Lock 托管地址，第三方可随时验证</div>
+      </div>
+      <div class="hl-card">
+        <div class="hl-num">4/7</div>
+        <div class="hl-t">多签 + 多源预言机</div>
+        <div class="hl-d">3/5 或 4/7 多签执行，CoinGecko、CMC、链上预言机多源取中位数，杜绝单点操纵</div>
+      </div>
+      <div class="hl-card">
+        <div class="hl-num">39<span style="font-size:13px;font-weight:600;color:var(--muted);">个月</span></div>
+        <div class="hl-t">解锁曲线平缓</div>
+        <div class="hl-d">无一次性大额解锁，最长份额拉至 39 个月释放，不形成集中抛压</div>
+      </div>
+      <div class="hl-card hl-red" style="grid-column:1/-1;">
+        <div class="hl-num">686,868,686</div>
+        <div class="hl-t">总量恒定，永不增发</div>
+        <div class="hl-d">一经铸出即封顶，无任何增发权限，通缩路径写死在链上</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= 01 基础信息 ================= -->
-  <section class="wrap sec">
+  <section class="wrap sec" id="overview">
     <div class="sec-head">
       <span class="sec-idx">01</span>
       <h2 class="sec-title">基础信息<span>Token Overview</span></h2>
@@ -791,14 +1155,114 @@
           </button>
         </div>
       </div>
+      <div class="fact wide">
+        <div class="k">Features</div>
+        <div class="v">总量恒定不增发 · 50% 供应量用于销毁 · 全部分配额链上可查</div>
+      </div>
     </div>
   </section>
 
   <!-- ================= 02 代币分配 ================= -->
-  <section class="wrap sec">
+  <section class="wrap sec" id="distribution">
     <div class="sec-head">
       <span class="sec-idx">02</span>
       <h2 class="sec-title">代币分配<span>Distribution · 合计 686,868,686 枚</span></h2>
+    </div>
+
+    <!-- 环形图 -->
+    <div class="donut-wrap">
+      <div class="donut-chart">
+        <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="代币分配环形图">
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#eef1f4" stroke-width="22"/>
+          <g transform="rotate(-90 100 100)">
+            <!-- 销毁池 50% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#a91f27" stroke-width="22"
+                    stroke-dasharray="226.19 226.20" stroke-dashoffset="0"/>
+            <!-- 财神基金会 10% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#a8821c" stroke-width="22"
+                    stroke-dasharray="45.24 407.15" stroke-dashoffset="-226.19"/>
+            <!-- BG 基金会 10% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#bf9a3a" stroke-width="22"
+                    stroke-dasharray="45.24 407.15" stroke-dashoffset="-271.43"/>
+            <!-- 燃香赐福池 7.3119% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#c9a84a" stroke-width="22"
+                    stroke-dasharray="33.07 419.32" stroke-dashoffset="-316.67"/>
+            <!-- 做市/流动性 6% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#2f3841" stroke-width="22"
+                    stroke-dasharray="27.14 425.25" stroke-dashoffset="-349.74"/>
+            <!-- LUCKY99 5% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#5b6672" stroke-width="22"
+                    stroke-dasharray="22.62 429.77" stroke-dashoffset="-376.88"/>
+            <!-- FIST 5% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#7a8590" stroke-width="22"
+                    stroke-dasharray="22.62 429.77" stroke-dashoffset="-399.50"/>
+            <!-- 生态建设 2.9118% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#a8b0b8" stroke-width="22"
+                    stroke-dasharray="13.17 439.22" stroke-dashoffset="-422.12"/>
+            <!-- 初始流动性 2.475% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#c4c9cf" stroke-width="22"
+                    stroke-dasharray="11.20 441.19" stroke-dashoffset="-435.29"/>
+            <!-- 空投/营销 1.3012% -->
+            <circle cx="100" cy="100" r="72" fill="none" stroke="#d8dce0" stroke-width="22"
+                    stroke-dasharray="5.89 446.50" stroke-dashoffset="-446.49"/>
+          </g>
+          <text x="100" y="93" text-anchor="middle" class="donut-num">686.9M</text>
+          <text x="100" y="113" text-anchor="middle" class="donut-label">总供应量</text>
+        </svg>
+      </div>
+
+      <div class="donut-legend">
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#a91f27"></span>
+          <span class="lg-name">FDV 里程碑销毁池</span>
+          <span class="lg-pct">50.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#a8821c"></span>
+          <span class="lg-name">财神基金会</span>
+          <span class="lg-pct">10.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#bf9a3a"></span>
+          <span class="lg-name">BG 基金会</span>
+          <span class="lg-pct">10.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#c9a84a"></span>
+          <span class="lg-name">燃香赐福池</span>
+          <span class="lg-pct">7.31%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#2f3841"></span>
+          <span class="lg-name">做市 / CEX / DEX</span>
+          <span class="lg-pct">6.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#5b6672"></span>
+          <span class="lg-name">LUCKY99 社区</span>
+          <span class="lg-pct">5.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#7a8590"></span>
+          <span class="lg-name">FIST 社区</span>
+          <span class="lg-pct">5.00%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#a8b0b8"></span>
+          <span class="lg-name">财神生态建设</span>
+          <span class="lg-pct">2.91%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#c4c9cf"></span>
+          <span class="lg-name">初始流动性</span>
+          <span class="lg-pct">2.48%</span>
+        </div>
+        <div class="lg-item">
+          <span class="lg-dot" style="background:#d8dce0"></span>
+          <span class="lg-name">空投奖励 / 营销</span>
+          <span class="lg-pct">1.30%</span>
+        </div>
+      </div>
     </div>
 
     <div class="alloc-list">
@@ -810,7 +1274,7 @@
         </div>
         <div class="alloc-amt num">343,434,343 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:100%"></i></div>
-        <div class="alloc-note">达到目标即转入黑洞永久销毁</div>
+        <div class="alloc-note">价格每达一档目标即转入黑洞销毁，累计销毁 343,434,343 枚，永不回流团队</div>
       </div>
 
       <div class="alloc-row">
@@ -820,7 +1284,7 @@
         </div>
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放</div>
+        <div class="alloc-note">锁 3 个月后 36 个月线性释放，三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/escrow/HhF2A5ZLtPGCpvCJ2cF8zVRNzRUGBy2d61d4iw96SEbQ" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -846,7 +1310,7 @@
         </div>
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放</div>
+        <div class="alloc-note">锁 3 个月后 36 个月线性释放，三年匀速解锁，与项目长期价值深度绑定</div>
       </div>
 
       <div class="alloc-row">
@@ -856,7 +1320,7 @@
         </div>
         <div class="alloc-amt num">50,224,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:14.62%"></i></div>
-        <div class="alloc-note">燃香赐福专属活动</div>
+        <div class="alloc-note">燃香赐福专属活动池，定向回馈真实参与的用户</div>
       </div>
 
       <div class="alloc-row">
@@ -866,7 +1330,7 @@
         </div>
         <div class="alloc-amt num">41,212,121 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:12%"></i></div>
-        <div class="alloc-note">上线释放 10%，其余 12 个月线性</div>
+        <div class="alloc-note">上线释放 10%，其余 12 个月线性 —— 先建立交易深度，再逐步释放</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/escrow/ByvSFCK2LKaWcxQCp3kCDTr9UEwUD9f7EVwK63uFauAB" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -892,7 +1356,7 @@
         </div>
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放</div>
+        <div class="alloc-note">锁 3 个月后 36 个月线性释放，社区份额长期匀速解锁，不形成集中抛压</div>
       </div>
 
       <div class="alloc-row">
@@ -902,7 +1366,7 @@
         </div>
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放</div>
+        <div class="alloc-note">锁 3 个月后 36 个月线性释放，社区份额长期匀速解锁，不形成集中抛压</div>
       </div>
 
       <div class="alloc-row">
@@ -912,7 +1376,7 @@
         </div>
         <div class="alloc-amt num">20,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:5.82%"></i></div>
-        <div class="alloc-note">锁 3 个月后 12 个月线性释放</div>
+        <div class="alloc-note">锁 3 个月后 12 个月线性释放，按建设节奏分批投入，不做一次性释放</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/escrow/BthipsWEE4W56f8aqSdm9hyeED2g18MTPej6PN7vVyBs" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -938,7 +1402,7 @@
         </div>
         <div class="alloc-amt num">17,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:4.95%"></i></div>
-        <div class="alloc-note">建立 Meteora DLMM 流动池</div>
+        <div class="alloc-note">建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
       </div>
 
       <div class="alloc-row">
@@ -948,7 +1412,7 @@
         </div>
         <div class="alloc-amt num">8,937,616 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:2.6%"></i></div>
-        <div class="alloc-note">上线释放 10%，其余 12 个月线性</div>
+        <div class="alloc-note">上线释放 10%，其余 12 个月线性 —— 空投直达真实用户，营销细水长流</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/escrow/DwTBS5tGYPPd93PsG3enofaTVNqeuyduJm8CeHHn23Lz" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -970,12 +1434,13 @@
     </div>
 
     <p class="caption">
-      <b>说明：</b>「线性释放」指按时间均匀解锁。例如 36 个月线性释放，即每月解锁该部分总量的 1/36。
+      <b>说明：</b>「线性释放」指按时间均匀解锁。例如 36 个月线性释放，即每月解锁该部分总量的 1/36 ——
+      解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。
     </p>
   </section>
 
   <!-- ================= 03 解锁节奏 ================= -->
-  <section class="wrap sec">
+  <section class="wrap sec" id="vesting">
     <div class="sec-head">
       <span class="sec-idx">03</span>
       <h2 class="sec-title">解锁节奏<span>Vesting Schedule</span></h2>
@@ -985,43 +1450,45 @@
       <div class="rel">
         <div class="rel-cond">上线释放 10%，无锁仓期，12 个月线性</div>
         <div class="rel-amt num">50,149,737 枚</div>
-        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销</div>
+        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜开盘优先建立交易深度，剩余部分匀速释放</div>
       </div>
 
       <div class="rel">
         <div class="rel-cond">锁 3 个月，之后 12 个月线性释放</div>
         <div class="rel-amt num">20,000,000 枚</div>
-        <div class="rel-scope">财神生态建设</div>
+        <div class="rel-scope">财神生态建设｜先有 3 个月冷静期，再按月投入，避免短期集中释放冲击盘面</div>
       </div>
 
       <div class="rel">
         <div class="rel-cond">锁 3 个月，之后 36 个月线性释放</div>
         <div class="rel-amt num">206,060,606 枚</div>
-        <div class="rel-scope">财神基金会 · BG 基金会 · Lucky99 社区 · Fist 社区</div>
+        <div class="rel-scope">财神基金会 · BG 基金会 · Lucky99 社区 · Fist 社区｜占总量的 30%，被拉长至 39 个月周期释放，长期利益与持币人一致</div>
       </div>
 
       <div class="rel hold">
         <div class="rel-cond">不释放，仅按里程碑销毁</div>
         <div class="rel-amt num">343,434,343 枚</div>
-        <div class="rel-scope">FDV 里程碑销毁池 —— 达到价格目标即转入黑洞永久销毁，永不回流团队</div>
+        <div class="rel-scope">FDV 里程碑销毁池 —— 达到价格目标即转入黑洞永久销毁，永不回流团队，也不会转作他用</div>
       </div>
     </div>
 
     <p class="caption">
       <b>名词解释：</b>Cliff（锁仓期）指该期间内不产生任何解锁；Vesting（线性释放）指锁仓期结束后按时间逐期解锁。
+      上述锁仓与释放安排均通过链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
     </p>
   </section>
 
   <!-- ================= 04 通缩机制 ================= -->
-  <section class="wrap sec">
+  <section class="wrap sec" id="burn">
     <div class="sec-head">
       <span class="sec-idx">04</span>
       <h2 class="sec-title">通缩机制<span>FDV Milestone Burn · 12 Stages</span></h2>
     </div>
 
     <p class="caption gold" style="margin-top:0;margin-bottom:16px;">
-      币价上涨带动 FDV 上升，逐档触发销毁；每档销毁数量递增，累计销毁上限为总量的 <b>50%</b>。
-      销毁即转入黑洞地址，永久退出流通，且不回流团队。
+      币价上涨带动 FDV 上升，逐档触发销毁 —— 价格越高，单档销毁量越大，形成
+      <b>「上涨 → 通缩 → 筹码更稀缺」</b>的正向循环。12 档全部触发后，累计销毁 343,434,343 枚，占总量的 <b>50%</b>，
+      且永不回流团队。销毁池独立列示，与基金会、社区份额完全隔离。
     </p>
 
     <div class="tbl-scroll">
@@ -1068,12 +1535,13 @@
     </div>
 
     <p class="caption">
-      <b>FDV（完全稀释估值）</b> = 币价 × 原始总供应量 686,868,686。美元单位：M = 百万，B = 十亿。
+      <b>FDV（完全稀释估值）</b> = 币价 × 原始总供应量 686,868,686。触发口径固定，不因流通量变化而改变。
+      美元单位：M = 百万，B = 十亿。
     </p>
   </section>
 
   <!-- ================= 05 执行规则 ================= -->
-  <section class="wrap sec">
+  <section class="wrap sec" id="execution">
     <div class="sec-head">
       <span class="sec-idx">05</span>
       <h2 class="sec-title">执行规则<span>Execution &amp; Transparency</span></h2>
@@ -1082,15 +1550,15 @@
     <div class="spec">
       <div class="spec-row">
         <div class="spec-k">Trigger</div>
-        <div class="spec-v">FDV = 价格 × 原始总供应量 686,868,686</div>
+        <div class="spec-v">FDV = 价格 × 原始总供应量 686,868,686，口径固定，不因流通量变化而改变</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">Data Source</div>
-        <div class="spec-v">CoinGecko、CMC、链上预言机，多源取中位数，避免单一数据源被操纵</div>
+        <div class="spec-v">CoinGecko、CMC、链上预言机多源取中位数，单一数据源无法影响触发结果，从源头杜绝操纵</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">Authority</div>
-        <div class="spec-v">3/5 或 4/7 多签执行，任何单一主体无法独立操作</div>
+        <div class="spec-v">3/5 或 4/7 多签执行，任何单一主体无法独立操作，不存在单点控制风险</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">Burn Address</div>
@@ -1101,16 +1569,75 @@
       </div>
       <div class="spec-row">
         <div class="spec-k">Disclosure</div>
-        <div class="spec-v">每笔销毁的交易哈希、数量、时间与执行人全部对外公开</div>
+        <div class="spec-v">每笔销毁的交易哈希、数量、时间与执行人全部对外公开，任何人可逐笔链上核验</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">If Untriggered</div>
-        <div class="spec-v">销毁池继续锁定，不回流团队</div>
+        <div class="spec-v">销毁池继续锁定，不回流团队，也不会转作他用</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">Multi-Stage</div>
-        <div class="spec-v">若一次性跨越多档，按顺序逐档执行，不跳过、不合并</div>
+        <div class="spec-v">若一次性跨越多档，按顺序逐档执行，不跳过、不合并，每一档均可独立核验</div>
       </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 FAQ ================= -->
+  <section class="wrap sec" id="faq">
+    <div class="sec-head">
+      <span class="sec-idx">06</span>
+      <h2 class="sec-title">常见问题<span>FAQ</span></h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>FDV 怎么算？为什么用原始总供应量？</summary>
+        <div class="faq-a">
+          FDV = 币价 × 原始总供应量 <b>686,868,686</b>。用原始总量而不是流通量，是为了让触发口径固定、不随解锁而变化，
+          避免因流通量变化导致触发标准漂移。无论销毁多少、释放多少，每一档的触发价格始终可预期。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>销毁后代币去哪了？能不能找回？</summary>
+        <div class="faq-a">
+          转入 Solana 黑洞地址 <code>1nc1nerator...1111</code>，私钥不存在，全网可查、永久锁定、无法找回。
+          每笔销毁的交易哈希、数量、时间与执行人全部对外公开，任何人可逐笔核验。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>如果一直没达到 $1B FDV 怎么办？</summary>
+        <div class="faq-a">
+          销毁池继续锁定，<b>不回流团队、不转作他用</b>。已触发的档位照常销毁，未触发的部分永远不动。
+          销毁池与团队份额完全隔离，即使项目停止运营，这部分代币也不会被团队动用。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>锁仓到期后会不会砸盘？</summary>
+        <div class="faq-a">
+          大部分份额是 <b>3 个月锁仓 + 36 个月线性</b>，每月只释放 1/36，单月释放量极小。最长的份额拉至 39 个月，
+          不形成集中抛压。所有锁仓均通过 Jupiter Lock 链上托管，第三方可随时自行查验。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>团队有没有预留份额？怎么防止跑路？</summary>
+        <div class="faq-a">
+          团队份额包含在「财神基金会」中，同样锁 3 个月 + 36 个月线性，与所有持币人利益一致。
+          销毁池独立列示，与团队份额完全隔离，<b>永不回流团队</b>。执行销毁由 3/5 或 4/7 多签完成，
+          任何单一主体无法独立操作，不存在单点控制风险。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>销毁触发数据会不会被操纵？</summary>
+        <div class="faq-a">
+          数据源为 CoinGecko、CMC、链上预言机，<b>多源取中位数</b>，单一数据源无法左右结果；
+          执行由 3/5 或 4/7 多签完成，任一单一主体无法独立操作。触发口径固定，不因流通量变化而改变。
+        </div>
+      </details>
     </div>
   </section>
 
@@ -1119,6 +1646,10 @@
     <div class="foot-row">
       <span class="foot-k">Document</span>
       <span class="foot-v">God Of Fortune · Token Economics</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Total Supply</span>
+      <span class="foot-v">686,868,686</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Contract</span>
@@ -1137,48 +1668,86 @@
 
 <script>
   (function () {
+    /* ---------- 复制合约地址 ---------- */
     var btn = document.getElementById('copyBtn');
-    if (!btn) return;
+    if (btn) {
+      var icoCopy  = btn.querySelector('.ico-copy');
+      var icoCheck = btn.querySelector('.ico-check');
 
-    var icoCopy  = btn.querySelector('.ico-copy');
-    var icoCheck = btn.querySelector('.ico-check');
+      function fallback(text, cb) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
 
-    function fallback(text, cb) {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.top = '-1000px';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      ta.setSelectionRange(0, text.length);
-      try { document.execCommand('copy'); cb && cb(); } catch (e) {}
-      document.body.removeChild(ta);
+      btn.addEventListener('click', function () {
+        var text = btn.getAttribute('data-addr');
+
+        var done = function () {
+          icoCopy.style.display = 'none';
+          icoCheck.style.display = 'block';
+          btn.classList.add('copied');
+          setTimeout(function () {
+            icoCopy.style.display = 'block';
+            icoCheck.style.display = 'none';
+            btn.classList.remove('copied');
+          }, 1500);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(done).catch(function () {
+            fallback(text, done);
+          });
+        } else {
+          fallback(text, done);
+        }
+      });
     }
 
-    btn.addEventListener('click', function () {
-      var text = btn.getAttribute('data-addr');
+    /* ---------- 目录导航高亮 ---------- */
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+    if (!links.length) return;
 
-      var done = function () {
-        icoCopy.style.display = 'none';
-        icoCheck.style.display = 'block';
-        btn.classList.add('copied');
-        setTimeout(function () {
-          icoCopy.style.display = 'block';
-          icoCheck.style.display = 'none';
-          btn.classList.remove('copied');
-        }, 1500);
-      };
+    var sections = links.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
 
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(done).catch(function () {
-          fallback(text, done);
-        });
-      } else {
-        fallback(text, done);
-      }
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+
+    var linkMap = {};
+    links.forEach(function (a) {
+      linkMap[a.getAttribute('href')] = a;
     });
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove('active'); });
+          var a = linkMap['#' + entry.target.id];
+          if (a) {
+            a.classList.add('active');
+            var toc = a.parentElement;
+            if (toc && toc.scrollWidth > toc.clientWidth) {
+              var target = a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2;
+              toc.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+            }
+          }
+        }
+      });
+    }, {
+      rootMargin: '-56px 0px -70% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(function (s) { obs.observe(s); });
   })();
 </script>
 
