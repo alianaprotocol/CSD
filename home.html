@@ -3103,7 +3103,7 @@ window.__showToast = (function () {
 
 
 /* ============================================================
-   ① 香火粒子系统
+   ① 香火粒子系统（跟随主题变化 · 平滑过渡）
    ============================================================ */
 (function () {
   var canvas = document.getElementById('smoke-canvas');
@@ -3117,18 +3117,228 @@ window.__showToast = (function () {
   var BASE_SIZE = window.innerWidth < 600 ? 12 : 16;
 
   var SPRITE = 64;
-  var sprite = document.createElement('canvas');
-  sprite.width = sprite.height = SPRITE;
-  (function () {
-    var sctx = sprite.getContext('2d');
+
+  /* ===== 两套配色 =====
+     暗色：金白 → 霓虹金 → 霓虹红 → 透明（发光叠加）
+     亮色：深红 → 朱红 → 暗金 → 透明（水墨烟感）
+  */
+  var PALETTES = {
+    dark: {
+      mode: 'lighter',
+      stops: [
+        [0,    'rgba(255, 233, 184, 1)'],
+        [0.3,  'rgba(255, 183, 0, 0.65)'],
+        [0.6,  'rgba(255, 45, 85, 0.25)'],
+        [1,    'rgba(255, 45, 85, 0)']
+      ]
+    },
+    light: {
+      mode: 'source-over',
+      stops: [
+        [0,    'rgba(168, 35, 21, 0.85)'],
+        [0.3,  'rgba(192, 57, 43, 0.50)'],
+        [0.6,  'rgba(212, 160, 23, 0.20)'],
+        [1,    'rgba(212, 160, 23, 0)']
+      ]
+    }
+  };
+
+  function makeSprite(palette) {
+    var c = document.createElement('canvas');
+    c.width = c.height = SPRITE;
+    var sctx = c.getContext('2d');
     var g = sctx.createRadialGradient(SPRITE / 2, SPRITE / 2, 0, SPRITE / 2, SPRITE / 2, SPRITE / 2);
-    g.addColorStop(0,    'rgba(255, 233, 184, 1)');
-    g.addColorStop(0.3,  'rgba(255, 183, 0, 0.65)');
-    g.addColorStop(0.6,  'rgba(255, 45, 85, 0.25)');
-    g.addColorStop(1,    'rgba(255, 45, 85, 0)');
+    for (var i = 0; i < palette.stops.length; i++) {
+      g.addColorStop(palette.stops[i][0], palette.stops[i][1]);
+    }
     sctx.fillStyle = g;
     sctx.fillRect(0, 0, SPRITE, SPRITE);
-  })();
+    return c;
+  }
+
+  /* ===== 当前状态 ===== */
+  var initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  var currentPalette = PALETTES[initialTheme] || PALETTES.dark;
+  var currentSprite = makeSprite(currentPalette);
+  var currentMode = currentPalette.mode;
+
+  /* 过渡状态 */
+  var targetSprite = null;
+  var targetPalette = null;
+  var transitionStart = 0;
+  var TRANSITION_MS = 900;
+  var isTransitioning = false;
+
+  /* 切换配色（供主题切换 / 事件调用） */
+  function switchPalette(theme) {
+    var newPalette = PALETTES[theme] || PALETTES.dark;
+    // 同色不重复切
+    if (!isTransitioning && currentPalette === newPalette) return;
+    // 若正在过渡且目标相同，忽略
+    if (isTransitioning && targetPalette === newPalette) return;
+
+    targetPalette = newPalette;
+    targetSprite = makeSprite(newPalette);
+    transitionStart = performance.now();
+    isTransitioning = true;
+  }
+  window.__switchParticleTheme = switchPalette;
+
+  /* 监听主题切换事件 */
+  window.addEventListener('caishen:theme', function (e) {
+    var theme = (e && e.detail && e.detail.theme) || 'dark';
+    switchPalette(theme);
+  });
+
+  /* ===== 尺寸 ===== */
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* ===== 粒子 ===== */
+  function spawn(x, y, opt) {
+    opt = opt || {};
+    if (particles.length >= MAX_PARTS) return;
+    var size = (opt.size || BASE_SIZE) * (0.6 + Math.random() * 0.8);
+    particles.push({
+      x: x, y: y,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: -0.35 - Math.random() * 0.6,
+      size: size,
+      growth: 0.14 + Math.random() * 0.22,
+      life: 0,
+      maxLife: 220 + Math.random() * 160,
+      baseAlpha: (opt.alpha || 0.22) * (0.6 + Math.random() * 0.7),
+      alpha: 0
+    });
+  }
+
+  function update() {
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx += (Math.random() - 0.5) * 0.025;
+      p.vy -= 0.0028;
+      p.size += p.growth;
+      p.life++;
+      var t = p.life / p.maxLife;
+      if (t >= 1) { particles.splice(i, 1); continue; }
+      var fade = Math.min(1, p.life / 6) * (1 - t) * (1 - t * 0.4);
+      p.alpha = p.baseAlpha * fade;
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    if (isTransitioning && targetSprite) {
+      /* ---- 过渡中：source-over + 双 sprite 交叉淡化 ---- */
+      var elapsed = performance.now() - transitionStart;
+      var raw = Math.min(1, elapsed / TRANSITION_MS);
+      // easeInOutCubic
+      var eased = raw < 0.5
+        ? 4 * raw * raw * raw
+        : 1 - Math.pow(-2 * raw + 2, 3) / 2;
+
+      ctx.globalCompositeOperation = 'source-over';
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        if (p.alpha <= 0.002) continue;
+        var px = p.x - p.size;
+        var py = p.y - p.size;
+        var sz = p.size * 2;
+
+        // 旧 sprite
+        ctx.globalAlpha = p.alpha * (1 - eased);
+        ctx.drawImage(currentSprite, px, py, sz, sz);
+
+        // 新 sprite
+        ctx.globalAlpha = p.alpha * eased;
+        ctx.drawImage(targetSprite, px, py, sz, sz);
+      }
+
+      if (raw >= 1) {
+        isTransitioning = false;
+        currentSprite = targetSprite;
+        currentPalette = targetPalette;
+        currentMode = currentPalette.mode;
+        targetSprite = null;
+        targetPalette = null;
+      }
+    } else {
+      /* ---- 常态 ---- */
+      ctx.globalCompositeOperation = currentMode;
+      for (var j = 0; j < particles.length; j++) {
+        var q = particles[j];
+        if (q.alpha <= 0.002) continue;
+        ctx.globalAlpha = q.alpha;
+        ctx.drawImage(currentSprite, q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function loop() {
+    if (!document.hidden) { update(); draw(); }
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  /* ===== 交互生成粒子 ===== */
+  var lastTap = 0;
+  function burst(x, y, n, size, alpha) {
+    n = n || 3;
+    for (var i = 0; i < n; i++) {
+      spawn(
+        x + (Math.random() - 0.5) * 34,
+        y + (Math.random() - 0.5) * 34,
+        { size: size || BASE_SIZE * 0.95, alpha: alpha || 0.18 }
+      );
+    }
+  }
+  window.addEventListener('pointerdown', function (e) {
+    var now = Date.now();
+    if (now - lastTap < 55) return;
+    lastTap = now;
+    if (e.target && e.target.closest &&
+        e.target.closest('#gate, #censer, #charmModal, #themeToggle, button, a, input, textarea, select')) return;
+    burst(e.clientX, e.clientY, 2 + Math.floor(Math.random() * 3));
+  }, { passive: true });
+
+  var lastY = window.scrollY;
+  var accum = 0;
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY;
+    accum += Math.abs(y - lastY);
+    lastY = y;
+    if (accum > 46) {
+      accum = 0;
+      if (particles.length < MAX_PARTS * 0.8) {
+        spawn(Math.random() * W, H + 8, { size: BASE_SIZE * 0.72, alpha: 0.12 });
+      }
+    }
+  }, { passive: true });
+
+  setInterval(function () {
+    if (document.hidden) return;
+    if (particles.length > MAX_PARTS * 0.65) return;
+    spawn(Math.random() * W, H + 10, { size: BASE_SIZE * 0.78, alpha: 0.10 });
+  }, 850);
+
+  window.__spawnSmoke = spawn;
+  window.__smokeBurst = burst;
+})();
 
   function resize() {
     W = window.innerWidth;
