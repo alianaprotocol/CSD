@@ -4327,12 +4327,12 @@
     padding: 0 14px 14px;
   }
 
-  .mb-row{
+   .mb-row{
     display: grid;
-    grid-template-columns: 1fr 90px 1fr;
+    grid-template-columns: 1fr 120px 1fr;
     align-items: center;
-    gap: 12px;
-    padding: 10px 6px;
+    gap: 0;
+    padding: 14px 4px;
     position: relative;
     opacity: .32;
     transition: opacity .7s ease;
@@ -4342,28 +4342,43 @@
   }
   .mb-row.lit{ opacity: 1; }
 
-  /* ---- 两侧单元格 ---- */
+  /* ---- 两侧单元格：图标靠中间，文字靠外侧 ---- */
   .mb-side{
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     position: relative;
+    min-height: 44px;
   }
-  .mb-side-real{ justify-content: flex-start; }
-  .mb-side-chain{ justify-content: flex-end; flex-direction: row-reverse; }
+  /* 现实侧：文字在左，图标在右（紧贴虚线） */
+  .mb-side-real{
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    padding-right: 4px;
+  }
+  .mb-side-real .mb-name{ text-align: right; flex-shrink: 0; }
+  /* 链上侧：图标在左（紧贴虚线），文字在右 */
+  .mb-side-chain{
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 4px;
+  }
+  .mb-side-chain .mb-name{ text-align: left; flex-shrink: 0; }
 
   /* 图标 */
-  .mb-icon{
-    width: 44px; height: 44px;
+    .mb-icon{
+    width: 46px; height: 46px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     position: relative;
     flex-shrink: 0;
     transition: all .55s cubic-bezier(.34, 1.4, .64, 1);
     overflow: hidden;
+    /* 用 transform 保证缩放时不影响布局 */
+    transform-origin: center;
   }
 
   /* ---- 现实世界：青铜质感 ---- */
@@ -4450,48 +4465,68 @@
       0 0 calc(24px * var(--glow-strength)) rgba(255, 45, 85, .45);
   }
 
-  /* ---- 中间的桥 ---- */
+    /* ---- 中间的桥：完整连接两侧图标的桥面 ---- */
   .mb-track{
     position: relative;
-    height: 26px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
   }
-  /* 虚线基底 */
-  .mb-track::before{
+  /* 两端锚点（小圆点） + 中间虚线 */
+  .mb-track::before,
+  .mb-track::after{
     content: "";
     position: absolute;
-    left: 6px; right: 6px;
     top: 50%;
-    height: 1px;
-    background-image:
-      linear-gradient(90deg,
-        var(--border-gold) 0 4px,
-        transparent 4px 8px);
-    background-size: 8px 1px;
-    background-repeat: repeat-x;
-    opacity: .55;
+    width: 5px; height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--border-gold);
     transform: translateY(-.5px);
-    transition: opacity .4s ease;
+    transition: all .5s ease;
+    opacity: .55;
   }
-  .mb-row.lit .mb-track::before{
-    opacity: 1;
-    background-image:
-      linear-gradient(90deg,
-        var(--gold) 0 4px,
-        transparent 4px 8px);
+  .mb-track::before{ left: 0;  }
+  .mb-track::after { right: 0; }
+
+  /* 虚线由 .mb-track-pulse 之前的伪元素承载 —— 用新的方式实现 */
+  /* 这里我们用 .mb-track 自身的内联背景做虚线，避免过多的伪元素冲突 */
+  .mb-track{
+    background-image: linear-gradient(90deg,
+      var(--border-gold) 0 5px,
+      transparent 5px 11px);
+    background-size: 11px 1px;
+    background-repeat: repeat-x;
+    background-position: 6px 50%;
+    /* 让虚线不延伸到最后，留出两端锚点空间 */
+    background-clip: content-box;
+    padding: 0 10px;
+    transition: background .5s ease;
+  }
+  .mb-row.lit .mb-track{
+    background-image: linear-gradient(90deg,
+      var(--gold) 0 5px,
+      transparent 5px 11px);
     filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--gold));
   }
+  .mb-row.lit .mb-track::before,
+  .mb-row.lit .mb-track::after{
+    background: var(--gold);
+    opacity: 1;
+    box-shadow:
+      0 0 calc(6px * var(--glow-strength)) var(--gold),
+      0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .5);
+  }
 
-  /* 移动光脉冲 */
+   /* 移动光脉冲（沿桥面从左到右穿过） */
   .mb-track-pulse{
     position: absolute;
     top: 50%;
-    left: 6px;
-    width: 8px; height: 8px;
-    margin-top: -4px;
+    left: 0;
+    width: 10px; height: 10px;
+    margin-top: -5px;
     border-radius: 50%;
     background: radial-gradient(circle,
       #fff3d0 0%,
@@ -4499,58 +4534,70 @@
       var(--red) 75%,
       transparent 100%);
     box-shadow:
-      0 0 calc(10px * var(--glow-strength)) var(--gold),
-      0 0 calc(20px * var(--glow-strength)) var(--red);
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(24px * var(--glow-strength)) var(--red);
     opacity: 0;
     pointer-events: none;
+    z-index: 2;
   }
   .mb-row.lit .mb-track-pulse{
-    animation: mbPulseTravel 1.05s cubic-bezier(.4, 0, .2, 1) forwards;
+    animation: mbPulseTravel 1.15s cubic-bezier(.4, 0, .2, 1) forwards;
   }
   @keyframes mbPulseTravel{
-    0%   { left: 6px;   opacity: 0; transform: scale(.7); }
-    10%  { opacity: 1;  transform: scale(1.05); }
-    90%  { opacity: 1;  transform: scale(1.05); }
-    100% { left: calc(100% - 14px); opacity: 0; transform: scale(.7); }
+    0%   { left: 0;                  opacity: 0; transform: scale(.6); }
+    8%   { opacity: 1;  transform: scale(1.15); }
+    92%  { opacity: 1;  transform: scale(1.15); }
+    100% { left: calc(100% - 10px);  opacity: 0; transform: scale(.6); }
   }
 
-  /* 箭头 */
+  /* 箭头（在脉冲后浮现，作为"已抵达"的确认） */
   .mb-track-arrow{
-    font-size: .6rem;
+    font-size: .58rem;
     color: var(--text-mute);
-    opacity: .35;
+    opacity: 0;
     position: relative;
-    z-index: 1;
-    transition: all .4s ease .5s;
+    z-index: 3;
+    transition: all .4s ease .6s;
+    transform: translateX(-4px);
   }
   .mb-row.lit .mb-track-arrow{
     color: var(--gold-l);
     opacity: 1;
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
-    transform: translateX(4px);
+    text-shadow:
+      0 0 calc(8px * var(--glow-strength)) var(--gold),
+      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .5);
+    transform: translateX(0);
   }
 
-  /* ---- 响应式 ---- */
-  @media (max-width: 720px){
+   @media (max-width: 720px){
     .mb-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
     .mb-bar-count{ font-size: .56rem; letter-spacing: 1.4px; }
     .mb-bar-count b{ font-size: .8rem; }
     .mb-labels{ padding: 10px 16px 4px; font-size: .56rem; letter-spacing: 1.6px; }
     .mb-list{ padding: 0 10px 12px; }
-    .mb-row{ grid-template-columns: 1fr 60px 1fr; gap: 8px; padding: 9px 4px; }
-    .mb-icon{ width: 38px; height: 38px; font-size: .95rem; }
-    .mb-side{ gap: 8px; }
+    .mb-row{
+      grid-template-columns: 1fr 80px 1fr;
+      padding: 12px 2px;
+    }
+    .mb-icon{ width: 40px; height: 40px; font-size: 1rem; }
+    .mb-side{ gap: 10px; min-height: 40px; }
     .mb-name{ font-size: .88rem; letter-spacing: .6px; }
+    .mb-track{ height: 40px; }
   }
 
   @media (max-width: 480px){
     .mb-labels{ font-size: .5rem; letter-spacing: 1.2px; }
-    .mb-row{ grid-template-columns: 1fr 42px 1fr; gap: 4px; padding: 8px 2px; }
-    .mb-icon{ width: 32px; height: 32px; font-size: .82rem; }
+    .mb-row{
+      grid-template-columns: 1fr 56px 1fr;
+      padding: 11px 0;
+    }
+    .mb-icon{ width: 34px; height: 34px; font-size: .85rem; }
     .mb-name{ font-size: .8rem; letter-spacing: .3px; }
-    .mb-side{ gap: 6px; }
-    .mb-side-chain{ flex-direction: row-reverse; }
+    .mb-side{ gap: 8px; min-height: 34px; }
+    .mb-track{ height: 34px; padding: 0 6px; background-position: 4px 50%; }
     .mb-track-arrow{ display: none; }
+    /* 移动端脉冲尺寸缩小 */
+    .mb-track-pulse{ width: 8px; height: 8px; margin-top: -4px; }
   }
 
   @media (prefers-reduced-motion: reduce){
