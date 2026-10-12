@@ -2532,6 +2532,89 @@
   }
 
   ::selection{ background: rgba(255, 45, 85, .4); color: var(--gold-l); }
+  /* ============================================================
+   @property：让品牌色 CSS 变量可过渡（Chrome 85+ / Safari 16.4+ / Firefox 128+）
+   ============================================================ */
+@property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
+@property --red-d          { syntax: '<color>';  inherits: true; initial-value: #cc0e30; }
+@property --red-l          { syntax: '<color>';  inherits: true; initial-value: #ff6b85; }
+@property --gold           { syntax: '<color>';  inherits: true; initial-value: #ffb700; }
+@property --gold-d         { syntax: '<color>';  inherits: true; initial-value: #cc8f00; }
+@property --gold-l         { syntax: '<color>';  inherits: true; initial-value: #ffd966; }
+@property --cyan           { syntax: '<color>';  inherits: true; initial-value: #00e5ff; }
+@property --glow-strength  { syntax: '<number>'; inherits: true; initial-value: 1; }
+
+/* 主题切换时，所有依赖这些变量的属性都会平滑补间 */
+html {
+  transition:
+    --red           .9s cubic-bezier(.4, 0, .2, 1),
+    --red-d         .9s cubic-bezier(.4, 0, .2, 1),
+    --red-l         .9s cubic-bezier(.4, 0, .2, 1),
+    --gold          .9s cubic-bezier(.4, 0, .2, 1),
+    --gold-d        .9s cubic-bezier(.4, 0, .2, 1),
+    --gold-l        .9s cubic-bezier(.4, 0, .2, 1),
+    --cyan          .9s cubic-bezier(.4, 0, .2, 1),
+    --glow-strength .9s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ============================================================
+   HUD 呼吸灯：频率跟随主题
+   暗色 = 急促（赛博心跳）· 亮色 = 舒缓（禅意）
+   ============================================================ */
+:root {
+  --hud-blink: 2s;
+  --hud-dot:   #26ff8f;     /* 暗色：荧光绿 */
+}
+[data-theme="light"] {
+  --hud-blink: 3.4s;        /* 亮色：慢 70% */
+  --hud-dot:   #0e7a4d;     /* 亮色：深松绿，米白底上清晰 */
+}
+.hud::before {
+  background: var(--hud-dot);
+  box-shadow: 0 0 6px var(--hud-dot);
+  animation: hudBlink var(--hud-blink) ease-in-out infinite;
+}
+
+/* ============================================================
+   香炉的香：变量驱动，主题切换时自动渐变
+   ============================================================ */
+.censer-sticks span.lit {
+  background: linear-gradient(180deg,
+    var(--gold-l) 0%,
+    var(--gold)   55%,
+    var(--gold-d) 100%);
+  box-shadow:
+    0 0 calc(8px  * var(--glow-strength)) var(--gold),
+    0 0 calc(16px * var(--glow-strength)) var(--gold-d);
+}
+
+/* 顶端火星也跟着渐变 */
+.censer-sticks span.lit::before {
+  background: radial-gradient(circle,
+    var(--gold-l) 0%,
+    var(--gold)   40%,
+    var(--red)    80%,
+    transparent   100%);
+  box-shadow:
+    0 0 8px  var(--gold),
+    0 0 16px var(--red);
+}
+
+/* 香炉满状态的光晕也跟随主题 */
+#censer.full {
+  box-shadow:
+    0 0 calc(40px * var(--glow-strength)) var(--gold),
+    0 0 calc(80px * var(--glow-strength)) var(--red),
+    0 8px 22px rgba(0, 0, 0, .6);
+}
+#censer.full .censer-svg {
+  filter:
+    drop-shadow(0 0 calc(10px * var(--glow-strength)) var(--gold))
+    drop-shadow(0 0 20px var(--gold));
+}
+#censer.full .censer-count b {
+  text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
+}
 </style>
 </head>
 <body>
@@ -3828,7 +3911,7 @@ window.__showToast = (function () {
 
 
 /* ============================================================
-   ⑤ 财神符生成（赛博暗色主题）
+   ⑤ 财神符生成（双主题：暗色符 / 日间符）
    ============================================================ */
 (function () {
   var modal = document.getElementById('charmModal');
@@ -3843,6 +3926,11 @@ window.__showToast = (function () {
   var currentDataUrl = null;
   var FORTUNE_KEY = 'caishen_fortune_v1';
 
+  /* 主题切换 → 清缓存，下次生成用新主题 */
+  window.addEventListener('caishen:theme', function () {
+    currentDataUrl = null;
+  });
+
   function getFortune() {
     try {
       var raw = sessionStorage.getItem(FORTUNE_KEY);
@@ -3853,6 +3941,93 @@ window.__showToast = (function () {
     }
   }
 
+  /* ============================================================
+     两套主题配色
+     ============================================================ */
+  var DARK_THEME = {
+    bgFrom:      '#0a0408',
+    bgMid:       '#12060c',
+    bgTo:        '#080204',
+    gridColor:   'rgba(255, 45, 85, 0.08)',
+    topGlow:     'rgba(255, 45, 85, 0.28)',
+    vignette:    'rgba(0, 0, 0, 0.65)',
+    borderOuter: '#ff2d55',
+    borderInner: 'rgba(255, 183, 0, 0.55)',
+    cornerColor: '#ffb700',
+    codeColor:   'rgba(255, 183, 0, 0.7)',
+    titleColor:  '#ffe9b8',
+    titleGlow:   '#ffb700',
+    sepColor:    'rgba(255, 45, 85, 0.6)',
+    sepDot:      '#ffb700',
+    labelColor:  'rgba(255, 45, 85, 0.9)',
+    signColor:   '#ffe9b8',
+    signGlow:    '#ffb700',
+    chantColor:  'rgba(255, 183, 0, 0.9)',
+    subChant:    'rgba(255, 45, 85, 0.75)',
+    urlColor:    'rgba(255, 183, 0, 0.55)',
+    dateColor:   'rgba(255, 45, 85, 0.5)',
+    noColor:     'rgba(255, 183, 0, 0.5)',
+    sealBg:      'rgba(255, 45, 85, 0.15)',
+    sealBorder:  '#ff2d55',
+    sealText:    '#ff2d55',
+    deityGlow1:  'rgba(255, 183, 0, 0.35)',
+    deityGlow2:  'rgba(255, 45, 85, 0.15)',
+    deityGlow3:  'rgba(255, 45, 85, 0.05)',
+    deityDash:   'rgba(255, 183, 0, .55)',
+    deityRing:   'rgba(255, 45, 85, .3)',
+    deityShadow: 'rgba(255, 183, 0, 0.7)',
+    fallback1:   '#ffe9b8',
+    fallback2:   '#ffb700',
+    fallback3:   '#8a6008',
+    fallbackTxt: '#1a0609'
+  };
+
+  var LIGHT_THEME = {
+    bgFrom:      '#fff7ed',
+    bgMid:       '#fff9ec',
+    bgTo:        '#fce8c4',
+    gridColor:   'rgba(192, 57, 43, 0.10)',
+    topGlow:     'rgba(212, 160, 23, 0.22)',
+    vignette:    'rgba(120, 60, 20, 0.15)',
+    borderOuter: '#c0392b',              /* 朱红 */
+    borderInner: 'rgba(184, 134, 11, 0.7)', /* 暗金 */
+    cornerColor: '#b8860b',
+    codeColor:   'rgba(142, 28, 16, 0.7)',
+    titleColor:  '#8e1c10',              /* 朱红标题 */
+    titleGlow:   '#d4a017',              /* 暗金辉光 */
+    sepColor:    'rgba(192, 57, 43, 0.5)',
+    sepDot:      '#b8860b',
+    labelColor:  '#a82315',
+    signColor:   '#5a2e0e',              /* 深棕签文 */
+    signGlow:    '#d4a017',
+    chantColor:  '#8e1c10',
+    subChant:    '#a82315',
+    urlColor:    'rgba(142, 28, 16, 0.7)',
+    dateColor:   'rgba(142, 28, 16, 0.55)',
+    noColor:     'rgba(142, 28, 16, 0.6)',
+    sealBg:      'rgba(192, 57, 43, 0.12)',
+    sealBorder:  '#c0392b',
+    sealText:    '#c0392b',
+    deityGlow1:  'rgba(212, 160, 23, 0.28)',
+    deityGlow2:  'rgba(192, 57, 43, 0.15)',
+    deityGlow3:  'rgba(192, 57, 43, 0.05)',
+    deityDash:   'rgba(184, 134, 11, 0.55)',
+    deityRing:   'rgba(192, 57, 43, 0.3)',
+    deityShadow: 'rgba(184, 134, 11, 0.5)',
+    fallback1:   '#fde9b8',
+    fallback2:   '#d4a017',
+    fallback3:   '#8a6008',
+    fallbackTxt: '#8e1c10'
+  };
+
+  function getCharmTheme() {
+    var t = document.documentElement.getAttribute('data-theme') || 'dark';
+    return t === 'light' ? LIGHT_THEME : DARK_THEME;
+  }
+
+  /* ============================================================
+     工具函数
+     ============================================================ */
   function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     var chars = String(text).split('');
     var lines = [];
@@ -3874,6 +4049,7 @@ window.__showToast = (function () {
     return lines.length;
   }
 
+  /* 霓虹/发光文字（多层描边） */
   function neonText(ctx, text, x, y, font, color, glowColor, glowSize) {
     ctx.save();
     ctx.font = font;
@@ -3890,25 +4066,25 @@ window.__showToast = (function () {
     ctx.restore();
   }
 
-  function drawSeal(ctx, cx, cy, size) {
+  function drawSeal(ctx, cx, cy, size, T) {
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.15)';
+    ctx.fillStyle = T.sealBg;
     ctx.fillRect(-size / 2, -size / 2, size, size);
-    ctx.strokeStyle = '#ff2d55';
+    ctx.strokeStyle = T.sealBorder;
     ctx.lineWidth = 2;
-    ctx.shadowColor = '#ff2d55';
+    ctx.shadowColor = T.sealBorder;
     ctx.shadowBlur = 12;
     ctx.strokeRect(-size / 2, -size / 2, size, size);
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.4)';
+    ctx.strokeStyle = T.sealBg;
     ctx.lineWidth = 1;
     ctx.strokeRect(-size / 2 + 8, -size / 2 + 8, size - 16, size - 16);
-    ctx.fillStyle = '#ff2d55';
+    ctx.fillStyle = T.sealText;
     ctx.font = '900 ' + Math.round(size * 0.36) + 'px "Noto Serif SC", "Songti SC", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = '#ff2d55';
+    ctx.shadowColor = T.sealBorder;
     ctx.shadowBlur = 16;
     ctx.fillText('财', 0, -size * 0.17);
     ctx.fillText('神', 0, size * 0.20);
@@ -3916,19 +4092,21 @@ window.__showToast = (function () {
     ctx.restore();
   }
 
-  function drawDeity(ctx, cx, cy, size) {
+  function drawDeity(ctx, cx, cy, size, T) {
+    // 光晕
     var glow = ctx.createRadialGradient(cx, cy, size * 0.15, cx, cy, size * 0.72);
-    glow.addColorStop(0,    'rgba(255, 183, 0, 0.35)');
-    glow.addColorStop(0.4,  'rgba(255, 45, 85, 0.15)');
-    glow.addColorStop(0.75, 'rgba(255, 45, 85, 0.05)');
-    glow.addColorStop(1,    'rgba(255, 45, 85, 0)');
+    glow.addColorStop(0,    T.deityGlow1);
+    glow.addColorStop(0.4,  T.deityGlow2);
+    glow.addColorStop(0.75, T.deityGlow3);
+    glow.addColorStop(1,    'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath();
     ctx.arc(cx, cy, size * 0.72, 0, Math.PI * 2);
     ctx.fill();
 
+    // 虚线圆
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 183, 0, .55)';
+    ctx.strokeStyle = T.deityDash;
     ctx.lineWidth = 1.5;
     ctx.setLineDash([10, 14]);
     ctx.beginPath();
@@ -3936,19 +4114,21 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
+    // 内圈
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 45, 85, .3)';
+    ctx.strokeStyle = T.deityRing;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(cx, cy, size * 0.55, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
 
+    // 财神图
     var state = window.__deityState || {};
     if (state.usable && window.__deityImg) {
       try {
         ctx.save();
-        ctx.shadowColor = 'rgba(255, 183, 0, 0.7)';
+        ctx.shadowColor = T.deityShadow;
         ctx.shadowBlur = 30;
         ctx.shadowOffsetY = 4;
         ctx.drawImage(window.__deityImg, cx - size / 2, cy - size / 2, size, size);
@@ -3957,27 +4137,33 @@ window.__showToast = (function () {
       } catch (e) {}
     }
 
+    // 降级：圆盘 + 财字
     var r = size * 0.4;
     var circle = ctx.createRadialGradient(cx, cy - r * 0.3, 0, cx, cy, r);
-    circle.addColorStop(0,   '#ffe9b8');
-    circle.addColorStop(0.5, '#ffb700');
-    circle.addColorStop(1,   '#8a6008');
+    circle.addColorStop(0,   T.fallback1);
+    circle.addColorStop(0.5, T.fallback2);
+    circle.addColorStop(1,   T.fallback3);
     ctx.fillStyle = circle;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 183, 0, .7)';
+
+    ctx.strokeStyle = T.fallback2;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.arc(cx, cy, r - 4, 0, Math.PI * 2);
     ctx.stroke();
-    ctx.fillStyle = '#1a0609';
+
+    ctx.fillStyle = T.fallbackTxt;
     ctx.font = '900 ' + Math.round(size * 0.5) + 'px "Noto Serif SC", "Songti SC", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('财', cx, cy + size * 0.02);
   }
 
+  /* ============================================================
+     生成财神符
+     ============================================================ */
   function generateCharm() {
     var W = 1080, H = 1440;
     var canvas = document.createElement('canvas');
@@ -3987,17 +4173,20 @@ window.__showToast = (function () {
 
     if (!ctx) throw new Error('浏览器不支持 Canvas');
 
+    var T = getCharmTheme();
     var fortune = getFortune();
 
+    /* 1. 背景渐变 */
     var bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0,   '#0a0408');
-    bg.addColorStop(0.5, '#12060c');
-    bg.addColorStop(1,   '#080204');
+    bg.addColorStop(0,   T.bgFrom);
+    bg.addColorStop(0.5, T.bgMid);
+    bg.addColorStop(1,   T.bgTo);
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
+    /* 2. 网格 */
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.08)';
+    ctx.strokeStyle = T.gridColor;
     ctx.lineWidth = 1;
     for (var gx = 0; gx < W; gx += 44) {
       ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
@@ -4007,37 +4196,41 @@ window.__showToast = (function () {
     }
     ctx.restore();
 
+    /* 3. 顶部光晕 */
     var glowTop = ctx.createRadialGradient(W / 2, H * 0.28, 0, W / 2, H * 0.28, W * 0.95);
-    glowTop.addColorStop(0, 'rgba(255, 45, 85, 0.28)');
-    glowTop.addColorStop(0.5, 'rgba(255, 45, 85, 0.08)');
-    glowTop.addColorStop(1, 'rgba(255, 45, 85, 0)');
+    glowTop.addColorStop(0, T.topGlow);
+    glowTop.addColorStop(0.5, 'rgba(0,0,0,0)');
+    glowTop.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glowTop;
     ctx.fillRect(0, 0, W, H);
 
+    /* 4. 暗角 */
     var vignette = ctx.createRadialGradient(W / 2, H * 0.55, W * 0.35, W / 2, H * 0.55, W * 0.95);
     vignette.addColorStop(0, 'rgba(0,0,0,0)');
-    vignette.addColorStop(1, 'rgba(0,0,0,0.65)');
+    vignette.addColorStop(1, T.vignette);
     ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, W, H);
 
+    /* 5. 外框（主题色） */
     ctx.save();
-    ctx.strokeStyle = '#ff2d55';
+    ctx.strokeStyle = T.borderOuter;
     ctx.lineWidth = 2;
-    ctx.shadowColor = '#ff2d55';
+    ctx.shadowColor = T.borderOuter;
     ctx.shadowBlur = 20;
     ctx.strokeRect(46, 46, W - 92, H - 92);
     ctx.restore();
 
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 183, 0, 0.55)';
+    ctx.strokeStyle = T.borderInner;
     ctx.lineWidth = 1;
     ctx.strokeRect(66, 66, W - 132, H - 132);
     ctx.restore();
 
+    /* 6. 四角装饰 */
     ctx.save();
-    ctx.strokeStyle = '#ffb700';
+    ctx.strokeStyle = T.cornerColor;
     ctx.lineWidth = 3;
-    ctx.shadowColor = '#ffb700';
+    ctx.shadowColor = T.cornerColor;
     ctx.shadowBlur = 12;
     var cornerLen = 30;
     ctx.beginPath();
@@ -4048,22 +4241,26 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.7)';
+    /* 7. 顶部小字 */
+    ctx.fillStyle = T.codeColor;
     ctx.font = '600 22px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 138);
 
-    drawDeity(ctx, W / 2, 448, 460);
+    /* 8. 财神像 */
+    drawDeity(ctx, W / 2, 448, 460, T);
 
+    /* 9. 财神符大字 */
     neonText(ctx, '财 神 符', W / 2, 782,
       '900 96px "Noto Serif SC", "Songti SC", serif',
-      '#ffe9b8', '#ffb700', 24);
+      T.titleColor, T.titleGlow, 24);
 
+    /* 10. 分隔线 */
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.6)';
+    ctx.strokeStyle = T.sepColor;
     ctx.lineWidth = 1;
-    ctx.shadowColor = '#ff2d55';
+    ctx.shadowColor = T.borderOuter;
     ctx.shadowBlur = 10;
     ctx.beginPath();
     ctx.moveTo(W / 2 - 200, 866);
@@ -4071,32 +4268,36 @@ window.__showToast = (function () {
     ctx.stroke();
     ctx.restore();
 
-    ctx.fillStyle = '#ffb700';
+    ctx.fillStyle = T.sepDot;
     ctx.beginPath();
     ctx.arc(W / 2, 866, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.9)';
+    /* 11. 签 label */
+    ctx.fillStyle = T.labelColor;
     ctx.font = '600 22px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('[' + fortune.label + ']', W / 2, 934);
 
+    /* 12. 签文 */
     neonText(ctx, fortune.text, W / 2, 1042,
       '800 52px "Noto Serif SC", "Songti SC", "STSong", serif',
-      '#ffe9b8', '#ffb700', 16);
+      T.signColor, T.signGlow, 16);
 
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.9)';
+    /* 13. 口诀 */
+    ctx.fillStyle = T.chantColor;
     ctx.font = '700 32px "Noto Serif SC", "Songti SC", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('只迎财神 · 不砸财神', W / 2, 1230);
 
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.75)';
+    ctx.fillStyle = T.subChant;
     ctx.font = '500 22px "Noto Serif SC", "Songti SC", serif';
     ctx.fillText('财神到，财运到', W / 2, 1284);
 
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.55)';
+    /* 14. URL + 日期 */
+    ctx.fillStyle = T.urlColor;
     ctx.font = '500 20px "JetBrains Mono", Consolas, monospace';
     ctx.fillText('caishen.xyz', W / 2, H - 132);
 
@@ -4104,18 +4305,21 @@ window.__showToast = (function () {
     var dateStr = today.getFullYear() + '.' +
       String(today.getMonth() + 1).padStart(2, '0') + '.' +
       String(today.getDate()).padStart(2, '0');
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.5)';
+    ctx.fillStyle = T.dateColor;
     ctx.font = '400 18px "JetBrains Mono", Consolas, monospace';
     ctx.fillText(dateStr, W / 2, H - 96);
 
-    drawSeal(ctx, W - 148, H - 148, 108);
+    /* 15. 印章 */
+    drawSeal(ctx, W - 148, H - 148, 108, T);
 
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.5)';
+    /* 16. 编号 */
+    ctx.fillStyle = T.noColor;
     ctx.font = '400 20px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText('# ' + Math.floor(Math.random() * 9000 + 1000), 92, H - 148);
 
+    /* 17. 导出 */
     try {
       return canvas.toDataURL('image/png');
     } catch (e) {
@@ -4142,17 +4346,17 @@ window.__showToast = (function () {
   }
 
   function doOpen() {
-    if (!currentDataUrl) {
-      try {
-        currentDataUrl = generateCharm();
-      } catch (err) {
-        console.error('[财神符] 生成失败：', err);
-        var msg = (err && err.message) ? err.message.split('\n')[0] : '生成失败';
-        if (window.__showToast) window.__showToast(msg);
-        return;
-      }
+    /* 每次打开都重新生成（成本 <30ms，用户无感知），确保颜色跟当前主题一致 */
+    try {
+      currentDataUrl = generateCharm();
       img.src = currentDataUrl;
+    } catch (err) {
+      console.error('[财神符] 生成失败：', err);
+      var msg = (err && err.message) ? err.message.split('\n')[0] : '生成失败';
+      if (window.__showToast) window.__showToast(msg);
+      return;
     }
+
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
 
