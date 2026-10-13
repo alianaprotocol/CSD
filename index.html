@@ -227,6 +227,14 @@
     border: 0;
   }
 
+  /* ============ 门页激活时隐藏 HUD 与主题按钮 ============ */
+  body.gate-active .hud,
+  body.gate-active #themeToggle {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease;
+  }
+
   /* ============ HUD ============ */
   .hud{
     position: fixed;
@@ -513,35 +521,31 @@
     top: 0; bottom: 0;
     width: 50.1%;
     background:
-      /* ① 细木纹（2px 周期） */
+      /* ① 细微木纹线条 */
       repeating-linear-gradient(90deg,
-        rgba(0, 0, 0, 0)    0px,
-        rgba(0, 0, 0, 0)    2px,
-        rgba(0, 0, 0, .16)  2px,
-        rgba(0, 0, 0, .16)  3px,
-        rgba(0, 0, 0, 0)    3px,
-        rgba(0, 0, 0, 0)    5px),
-      /* ② 粗竖条（32px 周期） */
-      repeating-linear-gradient(90deg,
-        rgba(120, 40, 15, .13) 0px,
-        rgba(120, 40, 15, .13) 16px,
-        rgba(0, 0, 0, .12)     16px,
-        rgba(0, 0, 0, .12)     32px),
-      /* ③ 木结痂 / 斑驳 */
-      radial-gradient(ellipse 38% 20% at 26% 30%, rgba(96, 32, 12, .40) 0%, transparent 72%),
-      radial-gradient(ellipse 30% 16% at 74% 62%, rgba(72, 22, 8, .34) 0%, transparent 72%),
-      radial-gradient(ellipse 24% 12% at 52% 84%, rgba(88, 28, 10, .28) 0%, transparent 72%),
-      /* ④ 顶部高光 */
+        transparent 0px,
+        rgba(255, 180, 100, 0.03) 3px,
+        transparent 8px,
+        rgba(0, 0, 0, 0.05) 15px,
+        transparent 25px,
+        rgba(255, 180, 100, 0.02) 35px,
+        transparent 50px
+      ),
+      /* ② 木结痂 / 斑驳 */
+      radial-gradient(ellipse 25% 10% at 20% 30%, rgba(80, 20, 10, 0.5) 0%, transparent 80%),
+      radial-gradient(ellipse 30% 15% at 80% 60%, rgba(80, 20, 10, 0.4) 0%, transparent 80%),
+      radial-gradient(ellipse 20% 8% at 45% 85%, rgba(80, 20, 10, 0.3) 0%, transparent 80%),
+      /* ③ 顶部高光 */
       linear-gradient(180deg,
         rgba(255, 190, 100, .12) 0%,
         rgba(255, 170, 80, .05)  12%,
         transparent 26%),
-      /* ⑤ 底部暗角 */
+      /* ④ 底部暗角 */
       linear-gradient(0deg,
         rgba(0, 0, 0, .62) 0%,
         rgba(0, 0, 0, .34) 16%,
         transparent 34%),
-      /* 基底 */
+      /* ⑤ 基底红木渐变 */
       linear-gradient(180deg, #4a0d08 0%, #2e0505 50%, #140202 100%);
     transition:
       transform 1.8s cubic-bezier(.66, 0, .34, 1),
@@ -556,7 +560,7 @@
     transform-origin: left center;
     border-right: 1px solid rgba(0, 0, 0, .85);
     box-shadow:
-      inset -22px 0 34px rgba(0, 0, 0, .82),   /* ★ 门板厚度 */
+      inset -22px 0 34px rgba(0, 0, 0, .82),
       inset   0  0 180px rgba(0, 0, 0, .9),
       inset   0  0 0 1px rgba(212, 160, 23, .12);
   }
@@ -565,11 +569,10 @@
     transform-origin: right center;
     border-left: 1px solid rgba(0, 0, 0, .85);
     box-shadow:
-      inset  22px 0 34px rgba(0, 0, 0, .82),   /* ★ 门板厚度（镜像） */
+      inset  22px 0 34px rgba(0, 0, 0, .82),
       inset   0  0 180px rgba(0, 0, 0, .9),
       inset   0  0 0 1px rgba(212, 160, 23, .12);
   }
-  /* ★ 门板内侧边缘 1px 高光条 */
   .gate-door::before{
     content: "";
     position: absolute;
@@ -590,7 +593,6 @@
   .gate-door-left::before  { right: 0; }
   .gate-door-right::before { left: 0; }
 
-  /* ★ 右门错开 80ms */
   #gate.open .gate-door-right {
     transition:
       transform 1.8s cubic-bezier(.66, 0, .34, 1) .08s,
@@ -598,7 +600,7 @@
   }
 
   /* ============================================================
-     ✦ 门板内嵌面板 —— 7 层 inset 阴影 + 金色回字角
+     ✦ 门板内嵌面板
      ============================================================ */
   .door-panel{
     position: absolute;
@@ -607,25 +609,18 @@
     border-radius: 3px;
     background:
       linear-gradient(180deg,
-        rgba(84, 24, 13, .46) 0%,
-        rgba(32, 6, 4, .62)   50%,
-        rgba(14, 2, 1, .78)   100%);
+        rgba(84, 24, 13, .3) 0%,
+        rgba(32, 6, 4, .5)   50%,
+        rgba(14, 2, 1, .7)   100%);
     box-shadow:
-      /* ① 大暗角 */
-      inset 0 0 34px rgba(0, 0, 0, .72),
-      /* ② 上 6px 内阴影 */
-      inset 0 6px 0 rgba(0, 0, 0, .55),
-      /* ③ 下 4px 内阴影 */
-      inset 0 -4px 0 rgba(0, 0, 0, .72),
-      /* ④ 左 4px 内阴影 */
-      inset 4px 0 0 rgba(0, 0, 0, .48),
-      /* ⑤ 右 4px 内阴影 */
-      inset -4px 0 0 rgba(0, 0, 0, .48),
-      /* ⑥ 顶高光 */
-      inset 0 2px 0 rgba(255, 220, 130, .18),
-      /* ⑦ 外投影 */
-      0 1px 3px rgba(255, 183, 0, .09),
-      0 0 0 1px rgba(0, 0, 0, .55);
+      inset 0 0 20px rgba(0, 0, 0, .6),
+      inset 0 4px 0 rgba(0, 0, 0, .4),
+      inset 0 -3px 0 rgba(0, 0, 0, .6),
+      inset 3px 0 0 rgba(0, 0, 0, .4),
+      inset -3px 0 0 rgba(0, 0, 0, .4),
+      inset 0 1px 0 rgba(255, 220, 130, .12),
+      0 1px 2px rgba(255, 183, 0, .06),
+      0 0 0 1px rgba(0, 0, 0, .4);
   }
   .door-panel::before{
     content: "";
@@ -635,7 +630,6 @@
     border-radius: 2px;
     pointer-events: none;
   }
-  /* ★ 四角金色回字纹 */
   .door-panel::after{
     content: "";
     position: absolute;
@@ -658,7 +652,7 @@
   .door-panel-bot{ top: 72%; height: 16%; }
 
   /* ============================================================
-     ✦ 门钉 —— 3 层径向渐变 + 4 层 box-shadow
+     ✦ 门钉
      ============================================================ */
   .door-studs{
     position: absolute;
@@ -667,23 +661,21 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 1fr;
-    gap: 18px 30px;
+    gap: 16px 24px;
     z-index: 4;
     pointer-events: none;
   }
   .door-studs span{
     display: block;
-    width: 15px; height: 15px;
+    width: 13px; height: 13px;
     border-radius: 50%;
     position: relative;
     background:
-      /* ① 顶部高光 */
       radial-gradient(circle at 34% 26%,
         rgba(255, 255, 255, .98) 0%,
         rgba(255, 246, 214, .62) 16%,
         rgba(255, 240, 190, .18) 34%,
         transparent 50%),
-      /* ② 主体金色 */
       radial-gradient(circle at 50% 52%,
         #fff3d0 0%,
         #f2d070 14%,
@@ -692,24 +684,18 @@
         #6b4a04 76%,
         #2a1802 94%,
         #150c01 100%),
-      /* ③ 右下暗部反光 */
       radial-gradient(circle at 66% 74%,
         rgba(0, 0, 0, .58) 0%,
         rgba(0, 0, 0, .22) 40%,
         transparent 62%);
     box-shadow:
-      /* 上内高光 */
       inset 0  2px 3px rgba(255, 248, 214, .8),
-      /* 下内阴影 */
       inset 0 -2px 4px rgba(0, 0, 0, .85),
-      /* 金晕 */
       0 0 8px rgba(255, 183, 0, .62),
       0 0 18px rgba(255, 183, 0, .28),
-      /* 外部投影 */
       0 2px 5px rgba(0, 0, 0, .88),
       0 5px 11px rgba(0, 0, 0, .5);
   }
-  /* ★ 独立高光点 */
   .door-studs span::after{
     content: "";
     position: absolute;
@@ -735,61 +721,43 @@
   }
 
   /* ============================================================
-     ✦ 兽面铺首 + 衔环
+     ✦ 兽面铺首 + 衔环（重构版）
      ============================================================ */
   .door-porter{
     position: absolute;
     top: 50%;
-    width: 84px;
-    height: 112px;
+    width: 90px;
+    height: 140px;
     transform: translateY(-50%);
     z-index: 6;
-    transform-origin: center;
   }
-  .gate-door-left  .door-porter{ right: 16px; }
-  .gate-door-right .door-porter{ left:  16px; }
+  .gate-door-left  .door-porter{ right: 12px; }
+  .gate-door-right .door-porter{ left:  12px; }
 
   /* ---- 兽面底座 ---- */
   .porter-beast{
     position: absolute;
     top: 0; left: 0;
-    width: 84px; height: 84px;
+    width: 90px; height: 90px;
     border-radius: 50%;
-    background:
-      radial-gradient(circle at 32% 24%,
-        #fffdf2 0%,
-        #ffeaa8 10%,
-        #eec44c 26%,
-        #c8951a 46%,
-        #8a6008 68%,
-        #3c2602 88%,
-        #150c01 100%);
+    background: radial-gradient(circle at 35% 25%, #ffe9a8 0%, #c8951a 30%, #6b4a04 70%, #1d1000 100%);
     box-shadow:
-      inset 0  5px 12px rgba(255, 248, 220, .62),
-      inset 0 -6px 16px rgba(0, 0, 0, .88),
-      0 0 24px rgba(255, 183, 0, .72),
-      0 0 56px rgba(255, 183, 0, .34),
-      0 8px 24px rgba(0, 0, 0, .92);
+      inset 0 5px 10px rgba(255, 240, 200, .6),
+      inset 0 -5px 12px rgba(0, 0, 0, .9),
+      0 0 20px rgba(255, 183, 0, .6),
+      0 8px 20px rgba(0, 0, 0, .9);
     z-index: 2;
   }
-  /* ---- 兽面内盘 ---- */
   .porter-beast::before{
     content: "";
     position: absolute;
-    inset: 9px;
+    inset: 8px;
     border-radius: 50%;
-    background:
-      radial-gradient(circle at 38% 30%,
-        #7c5808 0%,
-        #4a2f03 34%,
-        #1d1000 68%,
-        #060200 100%);
+    background: radial-gradient(circle at 40% 30%, #7c5808 0%, #2e1a00 70%, #000 100%);
     box-shadow:
-      inset 0  4px 9px rgba(0, 0, 0, .96),
-      inset 0 -3px 7px rgba(255, 214, 120, .24),
-      0 0 0 1px rgba(255, 214, 130, .3);
+      inset 0 4px 8px rgba(0, 0, 0, .9),
+      inset 0 -2px 6px rgba(255, 200, 80, .3);
   }
-  /* ---- 兽面外圈金珠 ---- */
   .porter-beast::after{
     content: "";
     position: absolute;
@@ -808,250 +776,127 @@
     filter: drop-shadow(0 0 3px rgba(255, 183, 0, .9));
   }
 
-  /* ---- 兽角（顶部两角） ---- */
+  /* ---- 兽角 ---- */
   .pb-horn{
     position: absolute;
-    width: 15px; height: 15px;
-    background: linear-gradient(140deg,
-      #fff0bc 0%, #e0b028 32%, #a06f00 66%, #4a3203 100%);
-    box-shadow:
-      0 2px 5px rgba(0, 0, 0, .85),
-      0 0 8px rgba(255, 183, 0, .55);
-    z-index: 5;
+    width: 20px; height: 12px;
+    background: linear-gradient(180deg, #ffe9a8, #8a5e0a);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.8);
+    z-index: 3;
   }
-  .pb-horn-l{
-    left: 15px; top: 1px;
-    transform: rotate(-32deg);
-    border-radius: 3px 10px 3px 10px;
-  }
-  .pb-horn-r{
-    right: 15px; top: 1px;
-    transform: rotate(32deg);
-    border-radius: 10px 3px 10px 3px;
-  }
+  .pb-horn-l { top: -6px; left: 6px; transform: rotate(-30deg); }
+  .pb-horn-r { top: -6px; right: 6px; transform: rotate(30deg); }
 
-  /* ---- 兽耳（侧下两角装饰） ---- */
-  .pb-ear{
-    position: absolute;
-    width: 13px; height: 13px;
-    background: linear-gradient(150deg,
-      #ffe9a8 0%, #d4a017 38%, #8a6008 72%, #3a2402 100%);
-    box-shadow:
-      0 2px 4px rgba(0, 0, 0, .8),
-      0 0 6px rgba(255, 183, 0, .45);
-    z-index: 5;
-  }
-  .pb-ear-l{
-    left: 0px; top: 32px;
-    transform: rotate(-22deg);
-    border-radius: 8px 3px 8px 3px;
-  }
-  .pb-ear-r{
-    right: 0px; top: 32px;
-    transform: rotate(22deg);
-    border-radius: 3px 8px 3px 8px;
-  }
-
-  /* ---- 双眉 ---- */
+  /* ---- 眉毛 ---- */
   .pb-brow{
     position: absolute;
-    width: 22px; height: 7px;
-    top: 25px;
-    border-radius: 60% 60% 40% 40% / 80% 80% 30% 30%;
-    background: linear-gradient(180deg,
-      #fff3d0 0%, #e0b028 34%, #a06f00 68%, #4a3203 100%);
-    box-shadow:
-      0 -1px 2px rgba(255, 246, 214, .55),
-      0 2px 5px rgba(0, 0, 0, .9);
-    z-index: 6;
+    width: 24px; height: 6px;
+    top: 28px;
+    background: linear-gradient(180deg, #ffe9a8, #a06f00);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.8);
+    z-index: 4;
   }
-  .pb-brow-l{ left: 16px; transform: rotate(-17deg); }
-  .pb-brow-r{ right: 16px; transform: rotate(17deg); }
+  .pb-brow-l { left: 12px; transform: rotate(-12deg); }
+  .pb-brow-r { right: 12px; transform: rotate(12deg); }
 
-  /* ---- 双眼（红光） ---- */
+  /* ---- 眼睛 ---- */
   .pb-eye{
     position: absolute;
-    width: 13px; height: 13px;
-    top: 38px;
+    width: 16px; height: 10px;
+    top: 40px;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 50%,
-      #ff8a8a 0%,
-      #ff2d55 22%,
-      #cc0e30 52%,
-      #5a0210 80%,
-      #1a0004 100%);
+    background: radial-gradient(circle, #ff8a8a 0%, #cc0e30 50%, #3b0008 100%);
     box-shadow:
-      inset 0 0 6px rgba(0, 0, 0, .9),
-      0 0 7px  rgba(255, 45, 85, .95),
-      0 0 16px rgba(255, 45, 85, .65),
-      0 0 30px rgba(255, 45, 85, .35);
-    animation: beastEyeGlow 3s ease-in-out infinite;
-    z-index: 6;
+      inset 0 0 5px rgba(0,0,0,.9),
+      0 0 10px rgba(255,45,85,.9),
+      0 0 20px rgba(255,45,85,.5);
+    z-index: 4;
   }
-  .pb-eye-l{ left: 22px; }
-  .pb-eye-r{ right: 22px; }
-  .pb-eye::after{
-    content: "";
-    position: absolute;
-    left: 22%; top: 20%;
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 220, 220, .7) 45%,
-      transparent 80%);
-    pointer-events: none;
-  }
-  @keyframes beastEyeGlow{
-    0%, 100% {
-      box-shadow:
-        inset 0 0 6px rgba(0, 0, 0, .9),
-        0 0 7px  rgba(255, 45, 85, .85),
-        0 0 16px rgba(255, 45, 85, .55),
-        0 0 30px rgba(255, 45, 85, .28);
-    }
-    50% {
-      box-shadow:
-        inset 0 0 6px rgba(0, 0, 0, .9),
-        0 0 10px rgba(255, 45, 85, 1),
-        0 0 22px rgba(255, 45, 85, .8),
-        0 0 42px rgba(255, 45, 85, .5);
-    }
-  }
+  .pb-eye-l { left: 16px; transform: rotate(-10deg); }
+  .pb-eye-r { right: 16px; transform: rotate(10deg); }
 
-  /* ---- 三角鼻 ---- */
+  /* ---- 鼻子 ---- */
   .pb-nose{
     position: absolute;
-    left: 50%; top: 46px;
-    width: 0; height: 0;
-    margin-left: -9px;
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-top: 12px solid #c8951a;
-    filter:
-      drop-shadow(0 2px 3px rgba(0, 0, 0, .95))
-      drop-shadow(0 0 3px rgba(255, 183, 0, .5));
-    z-index: 6;
+    left: 50%; top: 50px;
+    width: 24px; height: 16px;
+    margin-left: -12px;
+    background: linear-gradient(180deg, #c8951a, #4a3203);
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.8), 0 1px 2px rgba(255,220,130,.3);
+    z-index: 4;
   }
   .pb-nose::after{
     content: "";
     position: absolute;
-    left: -5px; top: -1px;
-    width: 10px; height: 3px;
+    top: 4px; left: 50%;
+    width: 8px; height: 6px;
+    margin-left: -4px;
+    background: #1d1000;
     border-radius: 50%;
-    background: linear-gradient(180deg, #ffe9a8, #a06f00);
-    opacity: .8;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
   }
 
-  /* ---- 弧形嘴 ---- */
+  /* ---- 嘴巴 ---- */
   .pb-mouth{
     position: absolute;
-    left: 50%; top: 63px;
-    width: 30px; height: 12px;
-    margin-left: -15px;
-    border: 2px solid #c8951a;
-    border-top: none;
+    left: 50%; top: 68px;
+    width: 40px; height: 12px;
+    margin-left: -20px;
+    border-bottom: 3px solid #c8951a;
     border-radius: 0 0 50% 50% / 0 0 100% 100%;
-    background: linear-gradient(180deg,
-      rgba(0, 0, 0, .92) 0%,
-      rgba(70, 22, 0, .62) 60%,
-      rgba(20, 6, 0, .9) 100%);
-    box-shadow:
-      inset 0 -2px 5px rgba(0, 0, 0, .95),
-      0 1px 2px rgba(255, 220, 130, .32);
-    z-index: 6;
+    background: transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,.6), inset 0 -2px 4px rgba(0,0,0,.8);
+    z-index: 4;
   }
 
   /* ---- 悬挂扣 ---- */
   .porter-hook{
     position: absolute;
-    left: 50%; top: 58px;
-    width: 13px; height: 15px;
-    margin-left: -6.5px;
-    border-radius: 50% 50% 42% 42% / 62% 62% 38% 38%;
-    background: linear-gradient(180deg,
-      #fff3d0 0%, #e0b028 34%, #a06f00 68%, #4a3203 100%);
-    box-shadow:
-      inset 0 -2px 4px rgba(0, 0, 0, .85),
-      inset 0  2px 3px rgba(255, 246, 214, .6),
-      0 0 9px rgba(255, 183, 0, .72),
-      0 2px 5px rgba(0, 0, 0, .85);
-    z-index: 7;
+    left: 50%; top: 74px;
+    width: 14px; height: 18px;
+    margin-left: -7px;
+    background: linear-gradient(180deg, #ffe9a8, #6b4a04);
+    border-radius: 50% 50% 20% 20%;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,.5), 0 2px 6px rgba(0,0,0,.9);
+    z-index: 5;
   }
 
-  /* ============================================================
-     ✦ 门环 —— 真正的"铺首衔环"
-     ============================================================ */
+  /* ---- 门环 ---- */
   .porter-ring{
     position: absolute;
-    left: 50%; top: 63px;
-    width: 46px; height: 46px;
-    margin-left: -23px;
+    left: 50%; top: 88px;
+    width: 54px; height: 54px;
+    margin-left: -27px;
     border-radius: 50%;
-    background:
-      radial-gradient(circle at 50% 50%,
-        transparent                0%,
-        transparent                25%,
-        rgba(0, 0, 0, .95)         25%,
-        rgba(0, 0, 0, .92)         29%,
-        #fff3d0                    29%,
-        #ffe9a8                    31%,
-        #e0b028                    34%,
-        #d4a017                    42%,
-        #a06f00                    52%,
-        #6a4a04                    60%,
-        rgba(255, 240, 200, .9)    64%,
-        rgba(255, 240, 200, .9)    68%,
-        #c8951a                    68%,
-        #a8760a                    76%,
-        rgba(0, 0, 0, .88)         78%,
-        rgba(0, 0, 0, .9)          82%,
-        rgba(255, 200, 120, .5)    82%,
-        rgba(255, 200, 120, .35)   84%,
-        transparent                86%,
-        transparent                100%);
+    border: 5px solid #d4a017;
+    background: transparent;
+    background-image: linear-gradient(135deg, #fff3d0 0%, #e0b028 30%, #a06f00 70%, #4a3203 100%);
+    background-clip: padding-box;
     box-shadow:
-      /* 金晕 */
-      0 0 12px rgba(255, 183, 0, .8),
-      0 0 28px rgba(255, 183, 0, .42),
-      /* 外投影 */
-      0 6px 14px rgba(0, 0, 0, .88),
-      0 12px 26px rgba(0, 0, 0, .45);
-    transform-origin: 50% -9px;
+      inset 0 0 8px rgba(0,0,0,.8),
+      0 0 15px rgba(255,183,0,.8),
+      0 8px 16px rgba(0,0,0,.8);
+    transform-origin: 50% -14px;
+    z-index: 6;
     animation: ringIdle 5s ease-in-out infinite;
-    z-index: 8;
   }
-  /* 环内高光点 */
-  .porter-ring::before{
-    content: "";
-    position: absolute;
-    left: 22%; top: 14%;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-      rgba(255, 255, 255, .98) 0%,
-      rgba(255, 246, 214, .7) 42%,
-      transparent 78%);
-    filter: blur(.5px);
-    pointer-events: none;
-  }
-  /* 环外光晕 */
   .porter-ring::after{
     content: "";
     position: absolute;
-    inset: -16px;
+    inset: -5px;
     border-radius: 50%;
-    background: radial-gradient(circle,
-      rgba(255, 183, 0, .38) 0%,
-      rgba(255, 45, 85, .14) 42%,
-      transparent 74%);
-    filter: blur(4px);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: rgba(255, 255, 255, 0.9);
+    border-left-color: rgba(255, 255, 255, 0.1);
+    transform: rotate(-45deg);
     pointer-events: none;
-    z-index: -1;
   }
   @keyframes ringIdle{
-    0%, 100% { transform: translateY(0)     rotate(0deg); }
-    50%      { transform: translateY(1.5px) rotate(3deg); }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(2px) rotate(2deg); }
   }
   .porter-ring.knock{
     animation: ringKnock .42s cubic-bezier(.36, .07, .19, .97);
@@ -1066,7 +911,7 @@
   }
 
   /* ============================================================
-     ✦ 门缝 —— 4 层光带
+     ✦ 门缝光带
      ============================================================ */
   .gate-seam{
     position: absolute;
@@ -1088,20 +933,16 @@
         rgba(255, 255, 255, .85) 86%,
         transparent 100%);
     box-shadow:
-      /* ① 白热核心 */
       0 0 6px 1px rgba(255, 255, 255, .95),
-      /* ② 金晕 */
       0 0 22px 5px rgba(255, 183, 0, .9),
-      /* ③ 外层红晕 */
       0 0 56px 12px rgba(255, 45, 85, .55),
-      /* ④ 内环白热 */
       0 0 3px 0 rgba(255, 255, 255, .9);
   }
   #gate.open .gate-seam{ opacity: 0; }
   #gate.gone .gate-seam{ opacity: 0; }
 
   /* ============================================================
-     ✦ 门槛 —— 4 层渐变 + 3 层内阴影
+     ✦ 门槛
      ============================================================ */
   .gate-sill{
     position: absolute;
@@ -1109,38 +950,29 @@
     bottom: 0;
     height: 26px;
     background:
-      /* ① 顶部金线 */
       linear-gradient(180deg,
         rgba(255, 220, 140, .55) 0%,
         rgba(255, 183, 0, .22)   4%,
         transparent              10%),
-      /* ② 主石身 */
       linear-gradient(180deg,
         rgba(170, 52, 24, .95) 0%,
         rgba(126, 32, 15, .96) 24%,
         rgba(70, 14, 7, .98)   58%,
         rgba(24, 5, 3, 1)      82%,
         rgba(10, 2, 1, 1)     100%),
-      /* ③ 左右暗角 */
       linear-gradient(90deg,
         rgba(0, 0, 0, .58) 0%,
         transparent 14%,
         transparent 86%,
         rgba(0, 0, 0, .58) 100%),
-      /* ④ 地面反光 */
       radial-gradient(ellipse 60% 70% at 50% 100%,
         rgba(255, 183, 0, .16) 0%,
         transparent 72%);
     box-shadow:
-      /* 顶部金线 */
       inset 0  2px 0 rgba(255, 226, 150, .7),
-      /* 中部金晕 */
       inset 0  7px 16px rgba(255, 183, 0, .22),
-      /* 底部暗角 */
       inset 0 -5px 10px rgba(0, 0, 0, .95),
-      /* 加深体积 */
       inset 0 12px 28px rgba(0, 0, 0, .48),
-      /* 外部投影 */
       0 -3px 18px rgba(0, 0, 0, .9),
       0 -1px 0 rgba(212, 160, 23, .6);
     z-index: 7;
@@ -6877,6 +6709,7 @@ window.__metalScrape = (function () {
   try { entered = sessionStorage.getItem(SKIP_KEY) === '1'; } catch (_) {}
   if (entered) { gate.classList.add('hidden'); document.body.style.overflow = ''; return; }
   document.body.style.overflow = 'hidden';
+  document.body.classList.add('gate-active'); // 隐藏 HUD 与主题按钮
 
   var hint     = gate.querySelector('.gate-hint');
   var stage    = gate.querySelector('.fortune-stage');
@@ -6907,7 +6740,6 @@ window.__metalScrape = (function () {
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
   }
 
-  /* ★ 敲门声：短促 + 300ms 后叠一层"咚——"低频回声 */
   function playKnock() {
     if (!audioCtx) return;
     try {
@@ -7076,6 +6908,7 @@ window.__metalScrape = (function () {
     try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
     gate.classList.add('gone');
     clearInterval(gateSmokeTimer);
+    document.body.classList.remove('gate-active'); // 恢复 HUD 与主题按钮
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
     if (window.__smokeBurst) {
       for (var i = 0; i < 5; i++) {
@@ -7098,6 +6931,7 @@ window.__metalScrape = (function () {
       try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
       gate.classList.add('gone');
       clearInterval(gateSmokeTimer);
+      document.body.classList.remove('gate-active'); // 恢复 HUD 与主题按钮
       document.body.style.overflow = '';
       setTimeout(function () { gate.classList.add('hidden'); }, 1200);
     }
