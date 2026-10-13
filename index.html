@@ -5155,6 +5155,117 @@
     .incense-smoke{ animation: none !important; }
     .fs-bar-dot{ animation-duration: .001ms !important; }
   }
+    /* ============================================================
+     ✦ 三炷香 · 底座落款（金色印章胶囊）
+     ============================================================ */
+  .fs-base{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 4px 22px 24px;
+    position: relative;
+  }
+
+  /* 两侧渐隐线 */
+  .fs-base-line{
+    flex: 1;
+    max-width: 70px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+    transition: all .9s ease;
+  }
+  .faith-shrine.done .fs-base-line{
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5);
+  }
+
+  /* 中间的印章胶囊 */
+  .fs-base-seal{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 18px;
+    border-radius: 4px;
+    border: 1px dashed var(--border-gold);
+    background: rgba(255, 183, 0, .03);
+    font-family: 'Noto Serif SC', 'Songti SC', 'JetBrains Mono', monospace;
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    transition: all .9s cubic-bezier(.34, 1.4, .64, 1);
+  }
+  .faith-shrine.done .fs-base-seal{
+    border-style: solid;
+    border-color: var(--gold);
+    background: rgba(255, 183, 0, .08);
+    color: var(--gold-l);
+    box-shadow:
+      0 0 calc(14px * var(--glow-strength)) rgba(255, 183, 0, .35),
+      inset 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .10);
+    text-shadow:
+      0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .55),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .25);
+    transform: translateY(-1px);
+  }
+
+  /* 印章两侧的小圆点（呼吸灯） */
+  .fs-base-seal-dot{
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-mute);
+    opacity: .5;
+    flex-shrink: 0;
+    transition: all .9s ease;
+  }
+  .faith-shrine.done .fs-base-seal-dot{
+    background: var(--gold-l);
+    opacity: 1;
+    box-shadow:
+      0 0 calc(6px * var(--glow-strength)) var(--gold),
+      0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .55);
+    animation: fsBaseDot 2.4s ease-in-out infinite;
+  }
+  .faith-shrine.done .fs-base-seal-dot:last-child{
+    animation-delay: 1.2s;
+  }
+  @keyframes fsBaseDot{
+    0%, 100% { opacity: .55; transform: scale(1);   }
+    50%      { opacity: 1;   transform: scale(1.4); }
+  }
+
+  /* 文字 */
+  .fs-base-text{
+    transition: all .9s ease;
+  }
+
+  /* ---- 底座响应式 ---- */
+  @media (max-width: 720px){
+    .fs-base{ padding: 4px 14px 18px; gap: 10px; }
+    .fs-base-line{ max-width: 50px; }
+    .fs-base-seal{ font-size: .68rem; letter-spacing: 1.4px; padding: 6px 14px; }
+  }
+
+  @media (max-width: 480px){
+    .fs-base{ gap: 8px; padding: 4px 12px 16px; }
+    .fs-base-line{ max-width: 32px; }
+    .fs-base-seal{
+      font-size: .62rem;
+      letter-spacing: 1.2px;
+      padding: 5px 12px;
+      gap: 7px;
+    }
+    .fs-base-seal-dot{ width: 4px; height: 4px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .faith-shrine.done .fs-base-seal-dot{
+      animation-duration: .001ms !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -5788,13 +5899,15 @@
           <p class="faith-desc">财神偏爱团结的社区。长期主义，社区自律，彼此成就。</p>
         </article>
         </div>
-      </div>
+      
 
-      <footer class="fs-base" aria-hidden="true">
+          <footer class="fs-base" aria-hidden="true">
         <span class="fs-base-line"></span>
-        <span class="fs-base-dot"></span>
-        <span class="fs-base-text">三信一体 · 数字香火</span>
-        <span class="fs-base-dot"></span>
+        <span class="fs-base-seal">
+          <span class="fs-base-seal-dot"></span>
+          <span class="fs-base-text">三信一体 · 数字香火</span>
+          <span class="fs-base-seal-dot"></span>
+        </span>
         <span class="fs-base-line"></span>
       </footer>
     </div>
