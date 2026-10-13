@@ -4912,47 +4912,51 @@
   }
 
   /* ---- 火漆印本体 ---- */
-  .fs-base-seal{
+    .fs-base-seal{
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    padding: 11px 24px 12px;
+    padding: 13px 30px 14px;
 
+    /* 火漆主体：左上高光 + 右下暗角 + 暗红蜡基色 */
     background:
-      radial-gradient(ellipse at 32% 28%,
+      radial-gradient(ellipse 70% 90% at 28% 22%,
         rgba(255, 200, 100, .38) 0%,
-        rgba(200, 100, 40, .18) 30%,
-        transparent 55%),
-      radial-gradient(ellipse at 68% 78%,
+        rgba(200, 100, 40, .16) 40%,
+        transparent 62%),
+      radial-gradient(ellipse 70% 90% at 74% 82%,
         rgba(30, 5, 3, .55) 0%,
-        transparent 60%),
+        transparent 65%),
       linear-gradient(148deg,
         #b32818 0%,
-        #8a1c10 40%,
+        #8a1c10 45%,
         #5a0e08 100%);
 
-    border-radius: 48% 52% 46% 54% / 52% 46% 54% 48%;
+    /* ★ 关键修复：用 px 固定值，稳定圆角 pill，微不规则
+       4 个角的半径差异控制在 4px 内，看起来像"手捏过"但不歪 */
+    border-radius: 34px 38px 32px 36px / 36px 32px 38px 34px;
 
-    transform: rotate(-2.4deg);
+    transform: rotate(-2deg);
     transform-origin: center;
 
+    /* 立体：顶部高光 + 底部暗角 + 左右内阴影 + 外阴影 */
     box-shadow:
-      inset 0  2px 3px rgba(255, 220, 130, .32),
-      inset 0 -4px 6px rgba(20, 4, 2, .7),
-      inset 3px 0  6px rgba(20, 4, 2, .35),
-      inset -3px 0 6px rgba(20, 4, 2, .35),
-      0 4px 10px rgba(0, 0, 0, .6),
-      0 2px 4px rgba(0, 0, 0, .45);
+      inset 0  3px 4px rgba(255, 220, 130, .38),
+      inset 0 -5px 8px rgba(20, 4, 2, .72),
+      inset 4px 0  8px rgba(20, 4, 2, .32),
+      inset -4px 0 8px rgba(20, 4, 2, .32),
+      0 5px 12px rgba(0, 0, 0, .62),
+      0 2px 4px rgba(0, 0, 0, .48);
 
     color: #f5d98a;
     font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
-    font-size: .78rem;
+    font-size: .8rem;
     font-weight: 900;
     letter-spacing: 2.6px;
     white-space: nowrap;
     text-shadow:
-      0  1px 0 rgba(255, 200, 100, .35),
+      0  1px 0 rgba(255, 200, 100, .4),
       0 -1px 0 rgba(20, 4, 2, .7);
 
     cursor: pointer;
@@ -4983,33 +4987,35 @@
     transition: all .9s ease;
   }
   /* 底部蜡滴 */
-  .fs-base-seal::after{
+    .fs-base-seal::after{
     content: "";
     position: absolute;
-    bottom: -7px;
-    left: 22%;
-    width: 9px;
+    bottom: -6px;
+    left: 30%;
+    width: 10px;
     height: 9px;
-    border-radius: 50%;
+    /* 蜡滴是不规则的小椭圆，非纯圆 */
+    border-radius: 46% 54% 48% 52% / 60% 62% 38% 40%;
     background: radial-gradient(circle at 38% 30%,
-      #b32818 0%,
-      #7a1410 55%,
+      #c93422 0%,
+      #8a1c10 55%,
       #4a0a05 100%);
     box-shadow:
       0 2px 4px rgba(0, 0, 0, .55),
-      inset 0 1px 1px rgba(255, 200, 100, .35);
-    transform: rotate(24deg);
+      inset 0 1px 1px rgba(255, 200, 100, .38);
+    transform: rotate(-8deg);
     pointer-events: none;
     transition: all .9s ease;
   }
 
-  .fs-base-seal-dot{
-    width: 5px;
-    height: 5px;
+    .fs-base-seal-dot{
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: rgba(245, 217, 138, .45);
-    opacity: .6;
+    background: rgba(255, 200, 100, .5);
+    opacity: .7;
     flex-shrink: 0;
+    box-shadow: inset 0 1px 1px rgba(255, 240, 200, .5);
     transition: all .9s ease;
   }
   .fs-base-text{
