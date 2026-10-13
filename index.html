@@ -5367,6 +5367,684 @@
     .faith-shrine.done .fs-base-seal-dot{ animation-duration: .001ms !important; }
     .fs-base-seal.stamped{ animation-duration: .001ms !important; }
   }
+  /* ============================================================
+   ✦ 铁律 · 赛博戒律碑 (Iron Law Monument)
+   ============================================================ */
+.iron-law-monument {
+  position: relative;
+  margin: 24px 0;
+  padding: 40px 24px 32px;
+  border-radius: 16px;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 45, 85, 0.15), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255, 183, 0, 0.1), transparent 70%),
+    linear-gradient(180deg, #0a0407 0%, #14060c 50%, #060204 100%);
+  border: 1px solid rgba(255, 183, 0, 0.2);
+  box-shadow: 
+    0 0 80px rgba(255, 45, 85, 0.15),
+    inset 0 0 40px rgba(255, 45, 85, 0.05),
+    inset 0 1px 0 rgba(255, 183, 0, 0.3);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* 背景全息辉光 */
+.ilm-holo-bg {
+  position: absolute;
+  inset: -20%;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(255, 45, 85, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(255, 183, 0, 0.1) 0%, transparent 40%);
+  filter: blur(40px);
+  animation: ilmHoloPulse 6s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes ilmHoloPulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.1); }
+}
+
+/* 扫描光栅 */
+.ilm-scanning-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 45, 85, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 45, 85, 0.04) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 轨道光环 */
+.ilm-orbiting-ring {
+  position: absolute;
+  top: -40%; left: 50%;
+  width: 120%; height: 120%;
+  margin-left: -60%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 183, 0, 0.2);
+  animation: ilmOrbit 30s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+.ilm-orbiting-ring::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 45, 85, 0.1);
+}
+@keyframes ilmOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 核心戒律区 */
+.ilm-creed {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.ilm-creed-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, rgba(255, 45, 85, 0.3), rgba(10, 4, 8, 0.9));
+  border: 2px solid var(--red);
+  box-shadow: 
+    0 0 30px rgba(255, 45, 85, 0.6),
+    inset 0 0 20px rgba(255, 45, 85, 0.4),
+    0 0 0 6px rgba(255, 45, 85, 0.1);
+  margin-bottom: 20px;
+  animation: ilmIconHover 3s ease-in-out infinite;
+}
+.ilm-creed-icon i {
+  font-size: 1.8rem;
+  color: var(--red-l);
+  filter: drop-shadow(0 0 12px rgba(255, 45, 85, 0.9));
+}
+@keyframes ilmIconHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.ilm-creed-title {
+  font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  background: linear-gradient(180deg, #fff3d0 0%, var(--gold-l) 40%, var(--gold-d) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 183, 0, 0.6));
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  line-height: 1.3;
+}
+.ilm-creed-sub {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.ilm-creed-line {
+  width: 120px; height: 2px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--red), var(--gold), var(--red), transparent);
+  border-radius: 2px;
+  box-shadow: 0 0 16px var(--red), 0 0 32px var(--gold);
+  animation: ilmLineExpand 3s ease-in-out infinite;
+}
+@keyframes ilmLineExpand {
+  0%, 100% { width: 80px; opacity: 0.6; }
+  50% { width: 180px; opacity: 1; }
+}
+
+/* 注解与铁律列表 */
+.ilm-body {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 183, 0, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 183, 0, 0.05);
+}
+.ilm-intro {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.ilm-intro strong {
+  color: var(--gold-l);
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+  padding: 0 4px;
+}
+
+.ilm-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ilm-rules li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: rgba(255, 45, 85, 0.02);
+  border: 1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  overflow: hidden;
+  cursor: default;
+}
+.ilm-rules li:last-child { margin-bottom: 0; }
+
+/* 铁律节点（左侧发光点） */
+.ilm-rule-node {
+  position: absolute;
+  left: 8px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red), 0 0 20px var(--red);
+  opacity: 0.4;
+  transition: all 0.4s ease;
+}
+.ilm-rule-text {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+/* 悬停时的滑动光效 */
+.ilm-rule-glow {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 45, 85, 0.15), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.ilm-rules li:hover {
+  background: rgba(255, 45, 85, 0.08);
+  border-color: rgba(255, 45, 85, 0.3);
+  transform: translateX(6px);
+  box-shadow: 
+    0 0 20px rgba(255, 45, 85, 0.2),
+    inset 0 0 20px rgba(255, 45, 85, 0.05);
+}
+.ilm-rules li:hover .ilm-rule-node {
+  opacity: 1;
+  box-shadow: 0 0 16px var(--red), 0 0 32px var(--red);
+  transform: scale(1.5);
+}
+.ilm-rules li:hover .ilm-rule-text {
+  color: #fff3d0;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.6);
+}
+.ilm-rules li:hover .ilm-rule-glow {
+  left: 120%;
+}
+
+/* 誓言契约区 */
+.ilm-oath {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 183, 0, 0.08), rgba(255, 45, 85, 0.04));
+  border: 1px dashed rgba(255, 183, 0, 0.4);
+  box-shadow: 
+    0 0 30px rgba(255, 183, 0, 0.1),
+    inset 0 0 30px rgba(255, 183, 0, 0.05);
+  transition: all 0.4s ease;
+}
+.ilm-oath:hover {
+  border-color: var(--gold);
+  box-shadow: 
+    0 0 50px rgba(255, 183, 0, 0.2),
+    inset 0 0 40px rgba(255, 183, 0, 0.1);
+}
+
+/* 誓言印章 */
+.ilm-oath-seal {
+  position: relative;
+  flex-shrink: 0;
+  width: 56px; height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e6a815, #8a1c10);
+  box-shadow: 
+    0 0 20px rgba(255, 183, 0, 0.6),
+    inset 0 2px 4px rgba(255, 220, 130, 0.6),
+    inset 0 -4px 8px rgba(20, 4, 2, 0.8);
+  color: #fff3d0;
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  transform: rotate(-6deg);
+  animation: ilmSealFloat 4s ease-in-out infinite;
+}
+.seal-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 0 rgba(255, 220, 130, 0.8), 0 -1px 0 rgba(20, 4, 2, 0.8);
+}
+.seal-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 183, 0, 0.6);
+  animation: ilmSealRing 2s ease-out infinite;
+}
+@keyframes ilmSealFloat {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50% { transform: rotate(-6deg) translateY(-4px); }
+}
+@keyframes ilmSealRing {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.ilm-oath-text {
+  flex: 1;
+}
+.ilm-oath-text p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 0 0 6px 0;
+  letter-spacing: 0.5px;
+}
+.ilm-oath-text p:last-child {
+  margin-bottom: 0;
+  color: var(--gold-l);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 183, 0, 0.4);
+}
+.ilm-oath-sign {
+  position: absolute;
+  bottom: 8px; right: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-mute);
+  letter-spacing: 1.5px;
+  opacity: 0.5;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .iron-law-monument { padding: 30px 16px 24px; }
+  .ilm-creed-title { letter-spacing: 2px; }
+  .ilm-body { padding: 18px 14px; }
+  .ilm-rules li { padding: 12px 14px; }
+  .ilm-oath { flex-direction: column; text-align: center; padding: 20px 14px; }
+  .ilm-oath-seal { margin: 0 auto; }
+  .ilm-oath-sign { position: static; text-align: center; margin-top: 10px; display: block; }
+}
+/* ============================================================
+   ✦ 铁律 · 神圣金印 (Sacred Law)
+   ============================================================ */
+.sacred-law {
+  position: relative;
+  margin: 24px 0;
+  padding: 42px 28px 34px;
+  border-radius: 20px;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 45, 85, 0.15), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255, 183, 0, 0.1), transparent 70%),
+    linear-gradient(180deg, #0a0407 0%, #14060c 50%, #060204 100%);
+  border: 1px solid rgba(255, 183, 0, 0.25);
+  box-shadow: 
+    0 0 80px rgba(255, 45, 85, 0.15),
+    inset 0 0 60px rgba(255, 45, 85, 0.05),
+    inset 0 1px 0 rgba(255, 183, 0, 0.4);
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+/* 背景环境光 */
+.law-ambient-glow {
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 45, 85, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(255, 183, 0, 0.08) 0%, transparent 40%);
+  filter: blur(50px);
+  animation: lawAmbient 10s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes lawAmbient {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  100% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+}
+
+/* 顶部流光 */
+.law-shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--red), var(--gold), transparent);
+  animation: lawShimmer 4s ease-in-out infinite;
+  opacity: 0.8;
+  z-index: 1;
+}
+@keyframes lawShimmer {
+  0%, 100% { opacity: 0.3; transform: translateX(-30%); }
+  50% { opacity: 1; transform: translateX(30%); }
+}
+
+/* 核心戒律区 */
+.law-core {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 36px;
+}
+.law-icon-halo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px; height: 72px;
+  margin-bottom: 22px;
+}
+.law-icon-halo i {
+  font-size: 2rem;
+  color: var(--red-l);
+  filter: drop-shadow(0 0 16px rgba(255, 45, 85, 0.9));
+  animation: lawIconPulse 2.5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+.halo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 45, 85, 0.6);
+  animation: haloSpin 8s linear infinite;
+}
+.halo-ring.delay {
+  inset: -8px;
+  border-color: rgba(255, 183, 0, 0.4);
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+@keyframes lawIconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.law-title {
+  font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  background: linear-gradient(180deg, #fff3d0 0%, var(--gold-l) 40%, var(--gold-d) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(255, 183, 0, 0.5));
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  line-height: 1.3;
+}
+.law-subtitle {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+.law-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 200px;
+  margin: 0 auto;
+}
+.law-divider span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.law-divider i {
+  font-size: 0.4rem;
+  color: var(--gold);
+  filter: drop-shadow(0 0 8px var(--gold));
+  animation: lawDotPulse 2s ease-in-out infinite;
+}
+@keyframes lawDotPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* 注解与铁律列表 */
+.law-body {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 183, 0, 0.15);
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 183, 0, 0.05);
+}
+.law-intro {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.law-intro strong {
+  color: var(--gold-l);
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.6);
+  padding: 0 4px;
+}
+
+.law-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.law-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 45, 85, 0.02);
+  border: 1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  cursor: default;
+}
+.law-list li:last-child { margin-bottom: 0; }
+
+/* 铁律节点 */
+.law-node {
+  flex-shrink: 0;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red), 0 0 24px var(--red);
+  margin-right: 16px;
+  opacity: 0.5;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.law-node::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--red);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+.law-text {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  transition: all 0.4s ease;
+}
+
+.law-list li:hover {
+  background: rgba(255, 45, 85, 0.08);
+  border-color: rgba(255, 45, 85, 0.3);
+  transform: translateX(6px);
+  box-shadow: 
+    0 0 24px rgba(255, 45, 85, 0.2),
+    inset 0 0 20px rgba(255, 45, 85, 0.05);
+}
+.law-list li:hover .law-node {
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 20px var(--red), 0 0 40px var(--red);
+}
+.law-list li:hover .law-node::after {
+  opacity: 1;
+  transform: scale(1.5);
+}
+.law-list li:hover .law-text {
+  color: #fff3d0;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.6);
+}
+
+/* 誓言契约区 */
+.law-oath {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 24px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 183, 0, 0.08), rgba(255, 45, 85, 0.04));
+  border: 1px dashed rgba(255, 183, 0, 0.4);
+  box-shadow: 
+    0 0 40px rgba(255, 183, 0, 0.1),
+    inset 0 0 40px rgba(255, 183, 0, 0.05);
+  transition: all 0.4s ease;
+}
+.law-oath:hover {
+  border-color: var(--gold);
+  box-shadow: 
+    0 0 60px rgba(255, 183, 0, 0.2),
+    inset 0 0 50px rgba(255, 183, 0, 0.1);
+}
+
+/* 誓言印章 */
+.oath-seal {
+  position: relative;
+  flex-shrink: 0;
+  width: 64px; height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e6a815, #8a1c10);
+  box-shadow: 
+    0 0 24px rgba(255, 183, 0, 0.6),
+    inset 0 2px 6px rgba(255, 220, 130, 0.6),
+    inset 0 -6px 12px rgba(20, 4, 2, 0.8);
+  transform: rotate(-8deg);
+  animation: oathFloat 4s ease-in-out infinite;
+}
+.seal-char {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #fff3d0;
+  text-shadow: 0 1px 0 rgba(255, 220, 130, 0.8), 0 -1px 0 rgba(20, 4, 2, 0.8);
+  position: relative;
+  z-index: 2;
+}
+.seal-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 183, 0, 0.6);
+  animation: sealRingPulse 2.5s ease-out infinite;
+}
+@keyframes oathFloat {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-8deg) translateY(-6px); }
+}
+@keyframes sealRingPulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.oath-text {
+  flex: 1;
+}
+.oath-text p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+.oath-text p:last-child {
+  margin-bottom: 0;
+  color: var(--gold-l);
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.5);
+}
+.oath-sign {
+  position: absolute;
+  bottom: 10px; right: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-mute);
+  letter-spacing: 1.5px;
+  opacity: 0.6;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .sacred-law { padding: 32px 16px 24px; }
+  .law-title { letter-spacing: 2px; }
+  .law-body { padding: 20px 16px; }
+  .law-list li { padding: 14px 14px; }
+  .law-oath { flex-direction: column; text-align: center; padding: 24px 16px; }
+  .oath-seal { margin: 0 auto; }
+  .oath-sign { position: static; text-align: center; margin-top: 12px; display: block; }
+}
 </style>
 </head>
 <body>
@@ -6010,25 +6688,67 @@
     </div>
   </section>
 
-  <section id="s2" aria-labelledby="s2-title">
-    <h2 id="s2-title"><i class="fas fa-shield-halved" aria-hidden="true"></i> 铁律 · 不可砸财神</h2>
-    <div class="creed">
-      <i class="fas fa-ban big" aria-hidden="true"></i>
-      <p>只迎财神，不砸财神</p>
-      <p>谁砸财神，财神就绕过谁家走</p>
+ <section id="s2" aria-labelledby="s2-title">
+  <h2 id="s2-title"><i class="fas fa-shield-halved" aria-hidden="true"></i> 铁律 · 不可砸财神</h2>
+
+  <!-- 全新设计：神圣金印 · 链上圣谕 -->
+  <div class="sacred-law">
+    <!-- 背景光斑与流光 -->
+    <div class="law-ambient-glow" aria-hidden="true"></div>
+    <div class="law-shimmer" aria-hidden="true"></div>
+    
+    <!-- 核心戒律区 -->
+    <div class="law-core">
+      <div class="law-icon-halo">
+        <i class="fas fa-ban" aria-hidden="true"></i>
+        <div class="halo-ring"></div>
+        <div class="halo-ring delay"></div>
+      </div>
+      <h3 class="law-title">只迎财神，不砸财神</h3>
+      <p class="law-subtitle">谁砸财神，财神就绕过谁家走</p>
+      <div class="law-divider" aria-hidden="true">
+        <span></span><i class="fas fa-circle"></i><span></span>
+      </div>
     </div>
-    <p>这句话不是市场操纵，而是<strong>社区文化自律</strong>。它约束的是行为，守护的是共识。</p>
-    <ul>
-      <li>不恶意诋毁社区；</li>
-      <li>不欺诈信任你的人；</li>
-      <li>不制造恐慌收割他人；</li>
-      <li>不短视背叛长期共识。</li>
-    </ul>
-    <div class="quote">
-      <p>你接财神进门，就要好好供着。<br>
-      坚定持有，传播共识，建设社区，就是给财神爷上香。</p>
+
+    <!-- 注解与铁律列表 -->
+    <div class="law-body">
+      <p class="law-intro">这句话不是市场操纵，而是<strong>社区文化自律</strong>。它约束的是行为，守护的是共识。</p>
+      
+      <ul class="law-list">
+        <li>
+          <span class="law-node" aria-hidden="true"></span>
+          <span class="law-text">不恶意诋毁社区；</span>
+        </li>
+        <li>
+          <span class="law-node" aria-hidden="true"></span>
+          <span class="law-text">不欺诈信任你的人；</span>
+        </li>
+        <li>
+          <span class="law-node" aria-hidden="true"></span>
+          <span class="law-text">不制造恐慌收割他人；</span>
+        </li>
+        <li>
+          <span class="law-node" aria-hidden="true"></span>
+          <span class="law-text">不短视背叛长期共识。</span>
+        </li>
+      </ul>
     </div>
-  </section>
+
+    <!-- 誓言契约区 -->
+    <div class="law-oath">
+      <div class="oath-seal" aria-hidden="true">
+        <span class="seal-char">财</span>
+        <div class="seal-ring"></div>
+      </div>
+      <div class="oath-text">
+        <p>你接财神进门，就要好好供着。</p>
+        <p>坚定持有，传播共识，建设社区，就是给财神爷上香。</p>
+      </div>
+      <div class="oath-sign" aria-hidden="true">SIGNED: CAISHEN.DAO</div>
+    </div>
+  </div>
+</section>
 
   <section id="s3" aria-labelledby="s3-title">
     <h2 id="s3-title"><i class="fas fa-gem" aria-hidden="true"></i> 资产 · 我们有什么</h2>
