@@ -4465,16 +4465,48 @@
       0 0 calc(24px * var(--glow-strength)) rgba(255, 45, 85, .45);
   }
 
-    /* ---- 中间的桥：完整连接两侧图标的桥面 ---- */
+  /* ---- 中间的桥：流动光点 + 虚线，两层同步 ---- */
   .mb-track{
+    /* 主题色（未点亮时） */
+    --mb-flow-speed: 4.2s;
+    --mb-flow-color: rgba(255, 183, 0, .28);
+    --mb-flow-size:  22px;
+    --mb-dash-color: var(--border-gold);
+    --mb-anchor-color: var(--border-gold);
+
     position: relative;
     height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: visible;
+    padding: 0 10px;
+
+    background-color: transparent;
+    background-image:
+      /* 第一层：流动光点（径向圆点，沿 X 轴重复） */
+      radial-gradient(circle 3px at 50% 50%,
+        var(--mb-flow-color) 0,
+        transparent 100%),
+      /* 第二层：虚线（沿 X 轴重复） */
+      linear-gradient(90deg,
+        var(--mb-dash-color) 0 5px,
+        transparent 5px 11px);
+    background-size:
+      var(--mb-flow-size) 100%,
+      11px 1px;
+    background-position:
+      0 50%,
+      6px 50%;
+    background-repeat: repeat-x, repeat-x;
+    background-origin: content-box;
+    background-clip: content-box;
+
+    animation: mbFlow var(--mb-flow-speed) linear infinite;
+    transition: filter .5s ease;
   }
-  /* 两端锚点（小圆点） + 中间虚线 */
+
+  /* 两端锚点 */
   .mb-track::before,
   .mb-track::after{
     content: "";
@@ -4483,37 +4515,41 @@
     width: 5px; height: 5px;
     margin-top: -2.5px;
     border-radius: 50%;
-    background: var(--border-gold);
+    background: var(--mb-anchor-color);
     transform: translateY(-.5px);
-    transition: all .5s ease;
     opacity: .55;
+    transition: all .5s ease;
   }
   .mb-track::before{ left: 0;  }
   .mb-track::after { right: 0; }
 
-  /* 虚线由 .mb-track-pulse 之前的伪元素承载 —— 用新的方式实现 */
-  /* 这里我们用 .mb-track 自身的内联背景做虚线，避免过多的伪元素冲突 */
-  .mb-track{
-    background-image: linear-gradient(90deg,
-      var(--border-gold) 0 5px,
-      transparent 5px 11px);
-    background-size: 11px 1px;
-    background-repeat: repeat-x;
-    background-position: 6px 50%;
-    /* 让虚线不延伸到最后，留出两端锚点空间 */
-    background-clip: content-box;
-    padding: 0 10px;
-    transition: background .5s ease;
+  /* 流光动画：只动第一层（光点），第二层（虚线）保持不动 */
+  @keyframes mbFlow{
+    from {
+      background-position:
+        0 50%,
+        6px 50%;
+    }
+    to {
+      background-position:
+        22px 50%,
+        6px 50%;
+    }
   }
+
+  /* 点亮后：加速 + 提亮 + 叠辉光 */
   .mb-row.lit .mb-track{
-    background-image: linear-gradient(90deg,
-      var(--gold) 0 5px,
-      transparent 5px 11px);
-    filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--gold));
+    --mb-flow-speed:  1.6s;
+    --mb-flow-color:  var(--gold-l);
+    --mb-dash-color:  var(--gold);
+    --mb-anchor-color: var(--gold);
+
+    filter:
+      drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--gold))
+      drop-shadow(0 0 calc(10px * var(--glow-strength)) rgba(255, 45, 85, .35));
   }
   .mb-row.lit .mb-track::before,
   .mb-row.lit .mb-track::after{
-    background: var(--gold);
     opacity: 1;
     box-shadow:
       0 0 calc(6px * var(--glow-strength)) var(--gold),
@@ -4600,11 +4636,13 @@
     .mb-track-pulse{ width: 8px; height: 8px; margin-top: -4px; }
   }
 
-  @media (prefers-reduced-motion: reduce){
+   @media (prefers-reduced-motion: reduce){
     .mb-row,
     .mb-icon,
     .mb-name,
+    .mb-track,
     .mb-track::before,
+    .mb-track::after,
     .mb-track-arrow{
       transition-duration: .001ms !important;
     }
@@ -4614,7 +4652,11 @@
     .mb-bar-count b.bump{
       animation-duration: .001ms !important;
     }
-    /* 无动画时，脉冲直接消失 */
+    /* 流光停止 */
+    .mb-track{
+      animation: none !important;
+    }
+    /* 大脉冲隐藏 */
     .mb-row.lit .mb-track-pulse{ opacity: 0; }
   }
 </style>
