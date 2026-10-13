@@ -33,17 +33,13 @@
 <link rel="preload" as="image" href="caishen.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<!-- 主题初始化（避免闪烁） -->
 <script>
   (function(){
     var t = 'dark';
     try {
       var saved = localStorage.getItem('caishen_theme');
-      if (saved === 'light' || saved === 'dark') {
-        t = saved;
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        t = 'light';
-      }
+      if (saved === 'light' || saved === 'dark') { t = saved; }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { t = 'light'; }
     } catch (_) {}
     document.documentElement.setAttribute('data-theme', t);
     var meta = document.querySelector('meta[name="theme-color"]');
@@ -128,9 +124,6 @@
     --hud-dot:   #26ff8f;
   }
 
-  /* ============================================================
-     主题变量 —— 亮色（庙宇日间版）
-     ============================================================ */
   [data-theme="light"]{
     color-scheme: light;
 
@@ -171,9 +164,6 @@
     --hud-dot:   #0e7a4d;
   }
 
-  /* ============================================================
-     @property：让品牌色 CSS 变量可过渡
-     ============================================================ */
   @property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
   @property --red-d          { syntax: '<color>';  inherits: true; initial-value: #cc0e30; }
   @property --red-l          { syntax: '<color>';  inherits: true; initial-value: #ff6b85; }
@@ -197,9 +187,6 @@
       --glow-strength .9s cubic-bezier(.4, 0, .2, 1);
   }
 
-  /* ============================================================
-     基础
-     ============================================================ */
   body{
     background-color: var(--bg-page);
     background-image:
@@ -261,9 +248,7 @@
     border: 0;
   }
 
-  /* ============================================================
-     HUD 角标
-     ============================================================ */
+  /* ============ HUD 角标 ============ */
   .hud{
     position: fixed;
     z-index: 9996;
@@ -310,9 +295,7 @@
     .hud-bl { display: none; }
   }
 
-  /* ============================================================
-     主题切换按钮
-     ============================================================ */
+  /* ============ 主题切换按钮 ============ */
   #themeToggle{
     position: fixed;
     top: 52px;
@@ -366,19 +349,15 @@
 
   @media (max-width: 720px){
     #themeToggle{
-      top: 44px;
-      right: 10px;
-      width: 34px;
-      height: 34px;
+      top: 44px; right: 10px;
+      width: 34px; height: 34px;
       border-radius: 5px;
     }
     #themeToggle .icon-dark,
     #themeToggle .icon-light{ font-size: .78rem; }
   }
 
-  /* ============================================================
-     顶部进度条
-     ============================================================ */
+  /* ============ 进度条 ============ */
   #progress{
     position: fixed;
     top: 0; left: 0;
@@ -391,9 +370,7 @@
       0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .4);
   }
 
-  /* ============================================================
-     香火粒子层
-     ============================================================ */
+  /* ============ 香火粒子层 ============ */
   #smoke-canvas{
     position: fixed;
     inset: 0;
@@ -402,9 +379,7 @@
     z-index: 1500;
   }
 
-  /* ============================================================
-     赛博庙门
-     ============================================================ */
+  /* ============ 赛博庙门 ============ */
   #gate{
     position: fixed;
     inset: 0;
@@ -448,17 +423,10 @@
     inset: 0;
     background-image:
       radial-gradient(circle at 50% 8%, rgba(255, 183, 0, .15), transparent 42%),
-      linear-gradient(180deg,
-        transparent 0%,
-        transparent 34%,
-        rgba(255, 183, 0, .28) 34.4%,
-        rgba(255, 183, 0, .28) 34.6%,
-        transparent 34.8%,
-        transparent 65%,
-        rgba(255, 183, 0, .28) 65.4%,
-        rgba(255, 183, 0, .28) 65.6%,
-        transparent 65.8%,
-        transparent 100%);
+      linear-gradient(180deg, transparent 0%, transparent 34%,
+        rgba(255, 183, 0, .28) 34.4%, rgba(255, 183, 0, .28) 34.6%, transparent 34.8%,
+        transparent 65%, rgba(255, 183, 0, .28) 65.4%, rgba(255, 183, 0, .28) 65.6%,
+        transparent 65.8%, transparent 100%);
     pointer-events: none;
   }
   .gate-door::after{
@@ -487,28 +455,22 @@
     border-radius: 50%;
     background: radial-gradient(circle at 32% 30%, #ffe9b8 0%, #ffb700 38%, #a06f00 78%, #4a3203 100%);
     box-shadow:
-      0 0 12px rgba(255, 183, 0, .8),
-      0 0 32px rgba(255, 183, 0, .45),
+      0 0 12px rgba(255, 183, 0, .8), 0 0 32px rgba(255, 183, 0, .45),
       0 0 60px rgba(255, 45, 85, .35),
-      inset 0 -3px 8px rgba(0,0,0,.5),
-      inset 0  3px 8px rgba(255,245,205,.55);
+      inset 0 -3px 8px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,245,205,.55);
     transform: translateY(-50%);
     z-index: 5;
     animation: doorKnobGlow 3s ease-in-out infinite;
   }
   @keyframes doorKnobGlow{
     0%, 100% { box-shadow:
-      0 0 12px rgba(255, 183, 0, .8),
-      0 0 32px rgba(255, 183, 0, .45),
+      0 0 12px rgba(255, 183, 0, .8), 0 0 32px rgba(255, 183, 0, .45),
       0 0 60px rgba(255, 45, 85, .35),
-      inset 0 -3px 8px rgba(0,0,0,.5),
-      inset 0  3px 8px rgba(255,245,205,.55); }
+      inset 0 -3px 8px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,245,205,.55); }
     50%      { box-shadow:
-      0 0 18px rgba(255, 183, 0, 1),
-      0 0 44px rgba(255, 183, 0, .7),
+      0 0 18px rgba(255, 183, 0, 1), 0 0 44px rgba(255, 183, 0, .7),
       0 0 80px rgba(255, 45, 85, .55),
-      inset 0 -3px 8px rgba(0,0,0,.5),
-      inset 0  3px 8px rgba(255,245,205,.7); }
+      inset 0 -3px 8px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,245,205,.7); }
   }
   .door-knob::after{
     content: "";
@@ -523,8 +485,7 @@
 
   .gate-hint{
     position: absolute;
-    left: 50%;
-    top: 72%;
+    left: 50%; top: 72%;
     transform: translateX(-50%);
     z-index: 6;
     display: flex;
@@ -553,9 +514,7 @@
     50%      { transform: scale(1.16); opacity: 1;  }
   }
 
-  /* ============================================================
-     摇签
-     ============================================================ */
+  /* ============ 摇签 ============ */
   .fortune-stage{
     position: absolute;
     inset: 0;
@@ -606,7 +565,7 @@
     justify-content: center;
     box-shadow:
       inset 0 -16px 26px rgba(0,0,0,.7),
-      inset 0  10px 16px rgba(255, 183, 0, .18),
+      inset 0 10px 16px rgba(255, 183, 0, .18),
       0 0 22px rgba(255, 183, 0, .5);
   }
   .tube-char{
@@ -689,8 +648,7 @@
 
   .fc-deity{
     position: relative;
-    width: 92px;
-    height: 92px;
+    width: 92px; height: 92px;
     margin: -62px auto 12px;
     border-radius: 50%;
     background: radial-gradient(circle at 50% 40%, #2a0a10, #0a0205);
@@ -709,19 +667,14 @@
   }
   @keyframes deityRingPulse{
     0%, 100% { box-shadow:
-      0 0 0 4px rgba(10, 6, 8, .9),
-      0 0 24px rgba(255, 183, 0, .7),
-      0 0 60px rgba(255, 45, 85, .4),
-      inset 0 0 30px rgba(255, 183, 0, .2); }
+      0 0 0 4px rgba(10, 6, 8, .9), 0 0 24px rgba(255, 183, 0, .7),
+      0 0 60px rgba(255, 45, 85, .4), inset 0 0 30px rgba(255, 183, 0, .2); }
     50%      { box-shadow:
-      0 0 0 4px rgba(10, 6, 8, .9),
-      0 0 32px rgba(255, 183, 0, .95),
-      0 0 80px rgba(255, 45, 85, .55),
-      inset 0 0 40px rgba(255, 183, 0, .3); }
+      0 0 0 4px rgba(10, 6, 8, .9), 0 0 32px rgba(255, 183, 0, .95),
+      0 0 80px rgba(255, 45, 85, .55), inset 0 0 40px rgba(255, 183, 0, .3); }
   }
   .fc-deity img{
-    width: 128%;
-    height: 128%;
+    width: 128%; height: 128%;
     object-fit: cover;
     object-position: center 32%;
     display: block;
@@ -761,9 +714,7 @@
     font-weight: 800;
     letter-spacing: 2px;
     cursor: pointer;
-    box-shadow:
-      0 0 22px rgba(255, 45, 85, .5),
-      inset 0 0 22px rgba(255, 45, 85, .1);
+    box-shadow: 0 0 22px rgba(255, 45, 85, .5), inset 0 0 22px rgba(255, 45, 85, .1);
     transition: all .22s ease;
     font-family: 'JetBrains Mono', 'Noto Serif SC', monospace;
     text-transform: uppercase;
@@ -791,18 +742,14 @@
     .fc-deity{ width: 78px; height: 78px; margin-top: -52px; }
   }
 
-  /* ============================================================
-     主容器
-     ============================================================ */
+  /* ============ 主容器 ============ */
   .wrap{
     max-width: 820px;
     margin: 0 auto;
     padding-top: 18px;
   }
 
-  /* ============================================================
-     HERO
-     ============================================================ */
+  /* ============ HERO ============ */
   .hero{
     position: relative;
     overflow: hidden;
@@ -906,15 +853,13 @@
   .hero-deity img{
     position: relative;
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: contain;
     filter:
       drop-shadow(0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .7))
       drop-shadow(0 0 calc(56px * var(--glow-strength)) rgba(255, 45, 85, .55))
       drop-shadow(0 16px 34px rgba(0,0,0,.75))
-      saturate(1.2)
-      contrast(1.05);
+      saturate(1.2) contrast(1.05);
     animation: deityFloat 5.5s ease-in-out infinite;
     z-index: 1;
   }
@@ -929,9 +874,7 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ============================================================
-     H1 + Glitch
-     ============================================================ */
+  /* ============ H1 + Glitch ============ */
   .hero h1{
     font-size: clamp(1.85rem, 8vw, 2.9rem);
     font-weight: 900;
@@ -969,14 +912,12 @@
     isolation: isolate;
     animation: glitchShake 7s infinite steps(1, end);
   }
-
   .glitch::before,
   .glitch::after{
     content: attr(data-text);
     position: absolute;
     top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     color: inherit;
     background: transparent;
     overflow: hidden;
@@ -988,7 +929,6 @@
     font: inherit;
     font-family: inherit;
   }
-
   .glitch::before{
     color: var(--red);
     text-shadow:
@@ -1003,7 +943,6 @@
       0 0 calc(20px * var(--glow-strength)) var(--cyan);
     animation: glitchCyan 7.5s infinite steps(1, end);
   }
-
   @keyframes glitchRed{
     0%, 92%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
     92.5% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(15% 0 55% 0); }
@@ -1013,7 +952,6 @@
     94.5% { opacity: 1; transform: translate(-4px, 1px);  clip-path: inset(50% 0 35% 0); }
     95%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
   }
-
   @keyframes glitchCyan{
     0%, 88%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
     88.5% { opacity: 1; transform: translate(5px, 1px);   clip-path: inset(25% 0 55% 0); }
@@ -1023,7 +961,6 @@
     90.5% { opacity: 1; transform: translate(4px, 2px);   clip-path: inset(35% 0 45% 0); }
     91%   { opacity: 0; transform: translate(0, 0);       clip-path: inset(0 0 0 0); }
   }
-
   @keyframes glitchShake{
     0%, 92%, 100% { transform: translate(0, 0); }
     92.5% { transform: translate(1px, -1px); }
@@ -1032,16 +969,13 @@
     94%   { transform: translate(-1px, -1px); }
     94.5% { transform: translate(0, 0); }
   }
-
   .hero h1:hover .glitch::before,
   .hero h1:hover .glitch::after{
     opacity: 1;
     animation-duration: 1.8s;
   }
 
-  /* ============================================================
-     副标题 & chips
-     ============================================================ */
+  /* ============ 副标题 & chips ============ */
   .hero-sub{
     margin-top: 14px;
     font-size: clamp(.9rem, 3.5vw, 1.02rem);
@@ -1101,9 +1035,7 @@
   }
   .hero-chips i{ color: var(--gold); font-size: .85em; }
 
-  /* ============================================================
-     免责声明
-     ============================================================ */
+  /* ============ 免责声明 ============ */
   .notice{
     display: flex;
     gap: 10px;
@@ -1154,7 +1086,6 @@
     0%, 100% { opacity: .3; transform: translateX(-12%); }
     50%      { opacity: 1;  transform: translateX(12%);  }
   }
-
   .toc-head{
     display: flex;
     align-items: center;
@@ -1191,7 +1122,6 @@
     font-weight: 500;
     margin-left: 4px;
   }
-
   .toc-head-meta{
     display: inline-flex;
     align-items: baseline;
@@ -1215,7 +1145,6 @@
     list-style: none;
     margin: 0;
     padding: 6px 0 10px;
-    counter-reset: toc;
   }
 
   .toc-item{
@@ -1256,7 +1185,6 @@
     padding-left: 26px;
     outline: none;
   }
-
   .toc-idx{
     font-family: 'JetBrains Mono', monospace;
     font-size: .74rem;
@@ -1280,7 +1208,6 @@
     opacity: 1;
     text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
   }
-
   .toc-sym{
     font-size: 1.5rem;
     line-height: 1;
@@ -1300,7 +1227,6 @@
       drop-shadow(0 0 calc(8px * var(--glow-strength)) var(--gold))
       drop-shadow(0 0 calc(20px * var(--glow-strength)) var(--gold));
   }
-
   .toc-body{
     display: flex;
     flex-direction: column;
@@ -1339,7 +1265,6 @@
     transition: color .3s ease;
   }
   .toc-item:hover .toc-sub{ color: var(--text-dim); }
-
   .toc-en{
     font-family: 'JetBrains Mono', monospace;
     font-size: .66rem;
@@ -1356,7 +1281,6 @@
     color: var(--red-l);
     text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .55);
   }
-
   .toc-state{
     display: inline-flex;
     align-items: center;
@@ -1372,8 +1296,7 @@
     transition: color .3s ease;
   }
   .toc-dot{
-    width: 7px;
-    height: 7px;
+    width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--text-mute);
     opacity: .5;
@@ -1399,7 +1322,6 @@
     transform: translateX(0);
     filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--gold));
   }
-
   .toc-item.done{ border-left-color: rgba(38, 255, 143, .55); }
   .toc-item.done .toc-dot{
     background: #26ff8f;
@@ -1418,7 +1340,6 @@
     color: var(--gold);
     text-shadow: 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .55);
   }
-
   .toc-item.done::before{
     background: linear-gradient(90deg,
       rgba(38, 255, 143, .10) 0%,
@@ -1466,7 +1387,6 @@
     .toc-zh{ font-size: .92rem; }
     .toc-sub{ font-size: .66rem; }
   }
-
   @media (max-width: 480px){
     .toc-head{ padding: 12px 14px; font-size: .62rem; }
     .toc-head-meta b{ font-size: .92rem; }
@@ -1483,9 +1403,7 @@
     .toc-arrow{ display: none; }
   }
 
-  /* ============================================================
-     章节
-     ============================================================ */
+  /* ============ 章节通用 ============ */
   section{ margin-top: 38px; position: relative; }
 
   h2{
@@ -1818,56 +1736,6 @@
       0 0 40px rgba(255, 45, 85, .5);
   }
 
-  .table-wrap{
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 18px 0 24px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--panel-bg-2);
-    box-shadow:
-      0 0 calc(30px * var(--glow-strength)) rgba(255, 45, 85, .1),
-      inset 0 0 60px rgba(255, 45, 85, .02);
-    transition: background .35s ease;
-  }
-  table{
-    width: 100%;
-    min-width: 480px;
-    border-collapse: collapse;
-    font-size: .88rem;
-  }
-  th{
-    background: linear-gradient(135deg, rgba(255, 45, 85, .12), rgba(255, 45, 85, .04));
-    color: var(--gold-l);
-    font-weight: 800;
-    text-align: left;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border-hi);
-    white-space: nowrap;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-size: .74rem;
-    font-family: 'JetBrains Mono', monospace;
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .5);
-  }
-  td{
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-    background: transparent;
-    line-height: 1.65;
-    color: var(--text);
-  }
-  tr:last-child td{ border-bottom: none; }
-  tbody tr{ transition: background .2s ease; }
-  tbody tr:hover td{ background: rgba(255, 45, 85, .05); }
-  td:first-child{
-    font-weight: 700;
-    color: var(--gold-l);
-    white-space: nowrap;
-    font-family: 'JetBrains Mono', 'Noto Serif SC', monospace;
-  }
-
   .road{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -2083,10 +1951,8 @@
   }
   .charm-cta-deity{
     position: absolute;
-    right: -16px;
-    bottom: -16px;
-    width: 130px;
-    height: 130px;
+    right: -16px; bottom: -16px;
+    width: 130px; height: 130px;
     pointer-events: none;
     z-index: 0;
     opacity: .9;
@@ -2179,13 +2045,10 @@
     text-shadow: none;
   }
 
-  /* ============================================================
-     香炉进度
-     ============================================================ */
+  /* ============ 香炉进度 ============ */
   #censer{
     position: fixed;
-    left: 16px;
-    bottom: 22px;
+    left: 16px; bottom: 22px;
     width: 82px;
     padding: 8px 6px 10px;
     background: var(--panel-bg);
@@ -2216,8 +2079,7 @@
 
   .censer-deity{
     position: absolute;
-    left: 50%;
-    bottom: 100%;
+    left: 50%; bottom: 100%;
     width: 78px; height: 78px;
     margin-left: -39px;
     margin-bottom: 10px;
@@ -2262,10 +2124,7 @@
     position: relative;
   }
   .censer-sticks span.lit{
-    background: linear-gradient(180deg,
-      var(--gold-l) 0%,
-      var(--gold)   55%,
-      var(--gold-d) 100%);
+    background: linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 55%, var(--gold-d) 100%);
     height: 22px;
     opacity: 1;
     box-shadow:
@@ -2275,20 +2134,12 @@
   .censer-sticks span.lit::before{
     content: "";
     position: absolute;
-    top: -3px;
-    left: 50%;
+    top: -3px; left: 50%;
     transform: translateX(-50%);
-    width: 5px;
-    height: 5px;
+    width: 5px; height: 5px;
     border-radius: 50%;
-    background: radial-gradient(circle,
-      var(--gold-l) 0%,
-      var(--gold)   40%,
-      var(--red)    80%,
-      transparent   100%);
-    box-shadow:
-      0 0 8px  var(--gold),
-      0 0 16px var(--red);
+    background: radial-gradient(circle, var(--gold-l) 0%, var(--gold) 40%, var(--red) 80%, transparent 100%);
+    box-shadow: 0 0 8px var(--gold), 0 0 16px var(--red);
     animation: emberGlow 1.8s ease-in-out infinite;
   }
   @keyframes emberGlow{
@@ -2297,8 +2148,7 @@
   }
 
   .censer-svg{
-    width: 56px;
-    height: 42px;
+    width: 56px; height: 42px;
     display: block;
     margin: 0 auto;
     filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .4));
@@ -2317,7 +2167,6 @@
     font-size: .76rem;
     text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .8);
   }
-
   #censer.full{
     border-color: var(--gold);
     background:
@@ -2352,9 +2201,7 @@
     text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
   }
 
-  /* ============================================================
-     财神符弹窗
-     ============================================================ */
+  /* ============ 财神符弹窗 ============ */
   #charmModal{
     position: fixed;
     inset: 0;
@@ -2483,8 +2330,7 @@
   }
   .charm-preview img{
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: contain;
     position: relative;
     z-index: 2;
@@ -2539,13 +2385,10 @@
   }
   .charm-actions button:active{ transform: scale(.96); }
 
-  /* ============================================================
-     Toast
-     ============================================================ */
+  /* ============ Toast ============ */
   #toast{
     position: fixed;
-    left: 50%;
-    bottom: 100px;
+    left: 50%; bottom: 100px;
     transform: translateX(-50%) translateY(20px);
     z-index: 2100;
     padding: 12px 24px;
@@ -2585,9 +2428,7 @@
     box-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .5);
   }
 
-  /* ============================================================
-     页脚
-     ============================================================ */
+  /* ============ 页脚 ============ */
   footer{
     margin-top: 46px;
     padding: clamp(28px, 6vw, 44px) clamp(18px, 5vw, 32px);
@@ -2674,13 +2515,10 @@
   }
   footer .f-warn i{ color: #ff2d55; margin-right: 4px; text-shadow: 0 0 6px rgba(255, 45, 85, .8); }
 
-  /* ============================================================
-     回到顶部
-     ============================================================ */
+  /* ============ 回到顶部 ============ */
   #toTop{
     position: fixed;
-    right: 16px;
-    bottom: 22px;
+    right: 16px; bottom: 22px;
     width: 46px; height: 46px;
     border-radius: 8px;
     border: 1px solid var(--red);
@@ -2712,9 +2550,7 @@
   }
   #toTop:active{ transform: scale(.92); }
 
-  /* ============================================================
-     响应式
-     ============================================================ */
+  /* ============ 响应式（主） ============ */
   @media (max-width: 480px){
     body{ padding: 0 9px 48px; font-size: 15px; line-height: 1.72; }
     .hero{ border-radius: 14px; }
@@ -2723,8 +2559,6 @@
     h2{ padding: 11px 16px; gap: 10px; border-radius: 4px; font-size: 1rem; }
     .grid-3{ grid-template-columns: 1fr; }
     .quote{ padding: 18px 16px 18px 22px; font-size: .9rem; }
-    table{ font-size: .82rem; min-width: 400px; }
-    th, td{ padding: 10px 12px; }
     .notice{ font-size: .72rem; padding: 12px 13px; }
     .join-item{ padding: 16px 16px; gap: 12px; }
     .join-icon{ width: 40px; height: 40px; font-size: .95rem; }
@@ -2741,13 +2575,11 @@
     .charm-cta-deity{ width: 96px; height: 96px; right: -10px; bottom: -10px; }
     .charm-cta-inner{ max-width: 78%; }
   }
-
   @media (max-width: 360px){
     .hero-chips span{ font-size: .68rem; padding: 5px 10px; }
     #censer{ transform: scale(.9); transform-origin: bottom left; }
     .charm-cta-deity{ width: 80px; height: 80px; }
   }
-
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior: auto; }
     *, *::before, *::after{
@@ -2761,318 +2593,6 @@
   ::selection{ background: rgba(255, 45, 85, .4); color: var(--gold-l); }
 
   /* ============================================================
-     ✦ 文化基因组扫描仪
-     ============================================================ */
-  .scanner{
-    margin: 22px 0;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background:
-      linear-gradient(rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 100% 22px,
-      linear-gradient(90deg, rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 22px 100%,
-      linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
-    overflow: hidden;
-    position: relative;
-    box-shadow:
-      0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .10),
-      inset 0 0 60px rgba(255, 45, 85, .03);
-    transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
-  }
-  .scanner::after{
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg,
-      transparent, var(--red) 20%, var(--gold) 50%, var(--red) 80%, transparent);
-    opacity: .6;
-    animation: scannerTop 5s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes scannerTop{
-    0%, 100% { opacity: .25; transform: translateX(-14%); }
-    50%      { opacity: .95; transform: translateX(14%);  }
-  }
-
-  .scanner-bar{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 18px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(90deg, rgba(255, 45, 85, .10), transparent 65%);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .7rem;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    position: relative;
-  }
-  .scanner-dot{
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow:
-      0 0 calc(8px * var(--glow-strength)) var(--gold),
-      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .6);
-    animation: scanPulse 1.8s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-  @keyframes scanPulse{
-    0%, 100% { opacity: .5; transform: scale(1); }
-    50%      { opacity: 1; transform: scale(1.35); }
-  }
-  .scanner-title{
-    color: var(--gold-l);
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .6);
-  }
-  .scanner-live{
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    color: var(--red-l);
-    font-size: .62rem;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-  }
-  .scanner-live i{
-    font-size: .48rem;
-    animation: scanPulse 1.4s ease-in-out infinite;
-    filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--red));
-  }
-
-  .scanner-rows{
-    list-style: none;
-    margin: 0;
-    padding: 8px 0;
-  }
-  .scan-row{
-    padding: 14px 18px;
-    position: relative;
-    border-bottom: 1px dashed var(--border);
-    opacity: .38;
-    transition: opacity .6s ease;
-  }
-  .scan-row:last-child{ border-bottom: none; }
-  .scan-row.active{ opacity: 1; }
-  .scan-head{
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 9px;
-    flex-wrap: wrap;
-  }
-  .scan-idx{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .68rem;
-    font-weight: 800;
-    color: var(--red);
-    letter-spacing: 1px;
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
-    flex-shrink: 0;
-  }
-  .scan-name{
-    font-size: .94rem;
-    font-weight: 800;
-    color: var(--gold-l);
-    letter-spacing: .5px;
-    flex: 1;
-    min-width: 0;
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .25);
-    transition: text-shadow .4s ease;
-  }
-  .scan-row.active .scan-name{
-    text-shadow:
-      0 0 calc(12px * var(--glow-strength)) var(--gold),
-      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .35);
-  }
-  .scan-pct{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .82rem;
-    font-weight: 800;
-    color: var(--text-mute);
-    letter-spacing: .5px;
-    flex-shrink: 0;
-    transition: color .4s ease, text-shadow .4s ease;
-  }
-  .scan-row.active .scan-pct{
-    color: var(--gold);
-    text-shadow:
-      0 0 calc(10px * var(--glow-strength)) var(--gold),
-      0 0 calc(22px * var(--glow-strength)) rgba(255, 183, 0, .45);
-  }
-  .scan-pct i{
-    font-style: normal;
-    opacity: .55;
-    font-size: .72rem;
-    margin-left: 1px;
-  }
-  .scan-track{
-    position: relative;
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(255, 45, 85, .08);
-    border: 1px solid var(--border);
-    margin-bottom: 11px;
-    overflow: visible;
-  }
-  .scan-fill{
-    height: 100%;
-    width: 0;
-    border-radius: 3px;
-    background: linear-gradient(90deg,
-      var(--gold-d) 0%,
-      var(--gold)   55%,
-      var(--red)    100%);
-    box-shadow:
-      0 0 calc(10px * var(--glow-strength)) var(--gold),
-      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .45);
-    transition: width 1.15s cubic-bezier(.22, 1, .36, 1);
-    position: relative;
-  }
-  .scan-fill::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 3px;
-    background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, .55) 50%,
-      transparent);
-    background-size: 22px 100%;
-    background-repeat: no-repeat;
-    animation: scanFlow 1.4s linear infinite;
-    opacity: 0;
-    transition: opacity .3s ease;
-  }
-  .scan-row.active .scan-fill::after{ opacity: 1; }
-  @keyframes scanFlow{
-    from { background-position: -22px 0; }
-    to   { background-position: calc(100% + 22px) 0; }
-  }
-  .scan-fill::before{
-    content: "";
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    width: 12px;
-    height: 12px;
-    margin-top: -6px;
-    border-radius: 50%;
-    background: var(--gold-l);
-    box-shadow:
-      0 0 calc(10px * var(--glow-strength)) var(--gold),
-      0 0 calc(20px * var(--glow-strength)) var(--gold),
-      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .5);
-    opacity: 0;
-    transition: opacity .3s ease;
-  }
-  .scan-row.active .scan-fill::before{ opacity: 1; }
-  .scan-desc{
-    font-size: .82rem;
-    line-height: 1.7;
-    color: var(--text-dim);
-    margin: 0;
-    transition: color .4s ease;
-  }
-  .scan-row.active .scan-desc{ color: var(--text); }
-
-  .scanner-result{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 14px 18px;
-    padding: 20px 18px 22px;
-    border-top: 1px solid var(--border);
-    background: linear-gradient(180deg, transparent, rgba(255, 45, 85, .07));
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all .8s cubic-bezier(.22, 1, .36, 1);
-  }
-  .scanner-result.show{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .scanner-result::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 120%, rgba(255, 45, 85, .25), transparent 70%);
-    pointer-events: none;
-    animation: resultGlow 3s ease-in-out infinite;
-  }
-  @keyframes resultGlow{
-    0%, 100% { opacity: .55; }
-    50%      { opacity: 1;   }
-  }
-  .scanner-result > *{ position: relative; z-index: 1; }
-  .result-label{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .64rem;
-    font-weight: 700;
-    letter-spacing: 2.4px;
-    color: var(--text-mute);
-    padding: 4px 10px;
-    border: 1px solid var(--border-gold);
-    border-radius: 3px;
-    text-transform: uppercase;
-  }
-  .result-verdict{
-    font-size: clamp(.95rem, 3.6vw, 1.12rem);
-    font-weight: 900;
-    letter-spacing: 1.5px;
-    color: var(--gold-l);
-    text-shadow:
-      0 0 calc(14px * var(--glow-strength)) var(--gold),
-      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .45);
-  }
-  .result-stamp{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: 1.8px;
-    color: var(--red-l);
-    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
-    padding: 5px 12px;
-    border: 1px dashed var(--red);
-    border-radius: 3px;
-    transform: rotate(-2deg);
-    background: rgba(255, 45, 85, .05);
-  }
-
-  @media (max-width: 480px){
-    .scanner-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
-    .scanner-live{ font-size: .56rem; letter-spacing: 2px; }
-    .scan-row{ padding: 12px 14px; }
-    .scan-idx{ font-size: .62rem; }
-    .scan-name{ font-size: .88rem; }
-    .scan-pct{ font-size: .76rem; }
-    .scan-desc{ font-size: .78rem; }
-    .scanner-result{ padding: 16px 14px 18px; gap: 10px 14px; }
-    .result-verdict{ font-size: .92rem; letter-spacing: 1px; }
-    .result-stamp{ font-size: .64rem; letter-spacing: 1.4px; padding: 4px 9px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .scan-fill,
-    .scanner-result{
-      transition-duration: .001ms !important;
-    }
-    .scan-fill::after,
-    .scanner::after,
-    .scanner-result::before,
-    .scanner-dot,
-    .scanner-live i{
-      animation-duration: .001ms !important;
-    }
-  }
-
-  /* ============================================================
      ✦ 缘起 · 财神请柬
      ============================================================ */
   .invitation{
@@ -3083,9 +2603,7 @@
     background:
       radial-gradient(ellipse 100% 60% at 50% 0%,   rgba(255, 45, 85, .12), transparent 65%),
       radial-gradient(ellipse 80% 50% at 50% 100%,  rgba(255, 183, 0, .08), transparent 65%),
-      repeating-linear-gradient(0deg,
-        rgba(0, 0, 0, .015) 0 2px,
-        transparent 2px 4px),
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, .015) 0 2px, transparent 2px 4px),
       linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
     border: 1px solid var(--border-hi);
     box-shadow:
@@ -3096,7 +2614,6 @@
     overflow: hidden;
     transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
   }
-
   .inv-corner{
     position: absolute;
     width: 22px; height: 22px;
@@ -3112,21 +2629,20 @@
   }
   .inv-corner::before{ width: 100%; height: 1px; }
   .inv-corner::after { width: 1px; height: 100%; }
-  .inv-corner-tl{ top: 12px;    left: 12px;   }
-  .inv-corner-tr{ top: 12px;    right: 12px;  }
-  .inv-corner-bl{ bottom: 12px; left: 12px;   }
-  .inv-corner-br{ bottom: 12px; right: 12px;  }
-  .inv-corner-tl::before, .inv-corner-tl::after{ top: 0;    left: 0;  }
-  .inv-corner-tr::before, .inv-corner-tr::after{ top: 0;    right: 0; }
-  .inv-corner-bl::before, .inv-corner-bl::after{ bottom: 0; left: 0;  }
+  .inv-corner-tl{ top: 12px; left: 12px; }
+  .inv-corner-tr{ top: 12px; right: 12px; }
+  .inv-corner-bl{ bottom: 12px; left: 12px; }
+  .inv-corner-br{ bottom: 12px; right: 12px; }
+  .inv-corner-tl::before, .inv-corner-tl::after{ top: 0; left: 0; }
+  .inv-corner-tr::before, .inv-corner-tr::after{ top: 0; right: 0; }
+  .inv-corner-bl::before, .inv-corner-bl::after{ bottom: 0; left: 0; }
   .inv-corner-br::before, .inv-corner-br::after{ bottom: 0; right: 0; }
 
   .inv-stamp{
     position: absolute;
     top: 26px;
     right: clamp(22px, 4vw, 36px);
-    width: 62px;
-    height: 62px;
+    width: 62px; height: 62px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3139,10 +2655,7 @@
     pointer-events: none;
     z-index: 2;
   }
-  .invitation.stamped .inv-stamp{
-    opacity: 1;
-    transform: rotate(-8deg) scale(1);
-  }
+  .invitation.stamped .inv-stamp{ opacity: 1; transform: rotate(-8deg) scale(1); }
   .inv-stamp-frame{
     position: absolute;
     inset: 0;
@@ -3169,17 +2682,12 @@
     font-weight: 900;
     font-size: 1.05rem;
     line-height: 1.05;
-    letter-spacing: 0;
     text-align: center;
     text-shadow:
       0 0 calc(6px * var(--glow-strength)) var(--red),
       0 0 calc(16px * var(--glow-strength)) rgba(255, 45, 85, .45);
   }
-
-  .inv-head{
-    margin-bottom: 16px;
-    padding-right: 80px;
-  }
+  .inv-head{ margin-bottom: 16px; padding-right: 80px; }
   .inv-title{
     font-size: clamp(1.05rem, 4vw, 1.28rem);
     font-weight: 800;
@@ -3200,13 +2708,11 @@
     color: var(--text-mute);
     text-transform: uppercase;
   }
-
   .inv-sep{
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 0 0 18px;
-    padding-right: 0;
   }
   .inv-sep-line{
     flex: 1;
@@ -3219,7 +2725,6 @@
     background: var(--gold);
     box-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold);
   }
-
   .inv-body{ position: relative; }
   .inv-line{
     position: relative;
@@ -3235,10 +2740,8 @@
   .inv-line::before{
     content: "";
     position: absolute;
-    left: 2px;
-    top: .85em;
-    width: 6px;
-    height: 6px;
+    left: 2px; top: .85em;
+    width: 6px; height: 6px;
     background: var(--red);
     transform: rotate(45deg);
     box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--red);
@@ -3254,7 +2757,6 @@
     background: var(--gold);
     box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
   }
-
   .inv-dual{
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -3263,9 +2765,7 @@
     margin: 20px 0 22px;
     opacity: 0;
     transform: scale(.94);
-    transition:
-      opacity 1s ease .1s,
-      transform 1s cubic-bezier(.34, 1.4, .64, 1) .1s;
+    transition: opacity 1s ease .1s, transform 1s cubic-bezier(.34, 1.4, .64, 1) .1s;
   }
   .inv-side{
     display: flex;
@@ -3364,7 +2864,6 @@
     margin-top: 2px;
     opacity: .9;
   }
-
   .inv-vs{
     display: flex;
     flex-direction: column;
@@ -3393,7 +2892,6 @@
     0%, 100% { opacity: .75; transform: scale(1); }
     50%      { opacity: 1;   transform: scale(1.18); }
   }
-
   .inv-sign{
     margin-top: 22px;
     padding-top: 22px;
@@ -3456,15 +2954,11 @@
   .inv-final-fire::after{
     content: "";
     position: absolute;
-    left: 50%;
-    bottom: -8px;
-    width: 60%;
-    height: 6px;
+    left: 50%; bottom: -8px;
+    width: 60%; height: 6px;
     transform: translateX(-50%);
     background: radial-gradient(ellipse at center,
-      rgba(255, 183, 0, .8) 0%,
-      rgba(255, 45, 85, .5) 40%,
-      transparent 80%);
+      rgba(255, 183, 0, .8) 0%, rgba(255, 45, 85, .5) 40%, transparent 80%);
     filter: blur(3px);
     animation: invFireGlow 1.8s ease-in-out infinite;
   }
@@ -3493,15 +2987,8 @@
     color: var(--red);
     filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--red));
   }
-
-  .invitation.seen .inv-line{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .invitation.seen .inv-dual{
-    opacity: 1;
-    transform: scale(1);
-  }
+  .invitation.seen .inv-line{ opacity: 1; transform: translateY(0); }
+  .invitation.seen .inv-dual{ opacity: 1; transform: scale(1); }
 
   @media (max-width: 480px){
     .invitation{ padding: 26px 18px 24px; }
@@ -3526,23 +3013,303 @@
     .inv-sign-final{ gap: 8px; }
     .inv-sign-seal{ font-size: .56rem; letter-spacing: 1.6px; }
   }
-
   @media (prefers-reduced-motion: reduce){
-    .inv-stamp,
-    .inv-line,
-    .inv-dual{ transition-duration: .001ms !important; }
+    .inv-stamp, .inv-line, .inv-dual{ transition-duration: .001ms !important; }
     .invitation.seen .inv-line,
     .invitation.seen .inv-dual,
-    .invitation.stamped .inv-stamp{
-      opacity: 1;
-      transform: none;
-    }
-    .inv-vs-mark,
-    .inv-final-fire::after{ animation-duration: .001ms !important; }
+    .invitation.stamped .inv-stamp{ opacity: 1; transform: none; }
+    .inv-vs-mark, .inv-final-fire::after{ animation-duration: .001ms !important; }
   }
 
   /* ============================================================
-     ✦ 是什么 · 赛博财神庙（链上神殿）
+     ✦ 文化基因组扫描仪
+     ============================================================ */
+  .scanner{
+    margin: 22px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 100% 22px,
+      linear-gradient(90deg, rgba(255, 45, 85, .035) 1px, transparent 1px) 0 0 / 22px 100%,
+      linear-gradient(180deg, var(--panel-bg) 0%, var(--panel-bg-deep) 100%);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .10),
+      inset 0 0 60px rgba(255, 45, 85, .03);
+    transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
+  }
+  .scanner::after{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent, var(--red) 20%, var(--gold) 50%, var(--red) 80%, transparent);
+    opacity: .6;
+    animation: scannerTop 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes scannerTop{
+    0%, 100% { opacity: .25; transform: translateX(-14%); }
+    50%      { opacity: .95; transform: translateX(14%);  }
+  }
+  .scanner-bar{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(90deg, rgba(255, 45, 85, .10), transparent 65%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    position: relative;
+  }
+  .scanner-dot{
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow:
+      0 0 calc(8px * var(--glow-strength)) var(--gold),
+      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .6);
+    animation: scanPulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes scanPulse{
+    0%, 100% { opacity: .5; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.35); }
+  }
+  .scanner-title{
+    color: var(--gold-l);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .6);
+  }
+  .scanner-live{
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--red-l);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+  }
+  .scanner-live i{
+    font-size: .48rem;
+    animation: scanPulse 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--red));
+  }
+  .scanner-rows{
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+  }
+  .scan-row{
+    padding: 14px 18px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+    opacity: .38;
+    transition: opacity .6s ease;
+  }
+  .scan-row:last-child{ border-bottom: none; }
+  .scan-row.active{ opacity: 1; }
+  .scan-head{
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 9px;
+    flex-wrap: wrap;
+  }
+  .scan-idx{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: 1px;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
+    flex-shrink: 0;
+  }
+  .scan-name{
+    font-size: .94rem;
+    font-weight: 800;
+    color: var(--gold-l);
+    letter-spacing: .5px;
+    flex: 1;
+    min-width: 0;
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .25);
+    transition: text-shadow .4s ease;
+  }
+  .scan-row.active .scan-name{
+    text-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  }
+  .scan-pct{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    font-weight: 800;
+    color: var(--text-mute);
+    letter-spacing: .5px;
+    flex-shrink: 0;
+    transition: color .4s ease, text-shadow .4s ease;
+  }
+  .scan-row.active .scan-pct{
+    color: var(--gold);
+    text-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(22px * var(--glow-strength)) rgba(255, 183, 0, .45);
+  }
+  .scan-pct i{
+    font-style: normal;
+    opacity: .55;
+    font-size: .72rem;
+    margin-left: 1px;
+  }
+  .scan-track{
+    position: relative;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 45, 85, .08);
+    border: 1px solid var(--border);
+    margin-bottom: 11px;
+    overflow: visible;
+  }
+  .scan-fill{
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold-d) 0%, var(--gold) 55%, var(--red) 100%);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) rgba(255, 45, 85, .45);
+    transition: width 1.15s cubic-bezier(.22, 1, .36, 1);
+    position: relative;
+  }
+  .scan-fill::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55) 50%, transparent);
+    background-size: 22px 100%;
+    background-repeat: no-repeat;
+    animation: scanFlow 1.4s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .scan-row.active .scan-fill::after{ opacity: 1; }
+  @keyframes scanFlow{
+    from { background-position: -22px 0; }
+    to   { background-position: calc(100% + 22px) 0; }
+  }
+  .scan-fill::before{
+    content: "";
+    position: absolute;
+    right: -6px; top: 50%;
+    width: 12px; height: 12px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: var(--gold-l);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(20px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .5);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .scan-row.active .scan-fill::before{ opacity: 1; }
+  .scan-desc{
+    font-size: .82rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin: 0;
+    transition: color .4s ease;
+  }
+  .scan-row.active .scan-desc{ color: var(--text); }
+  .scanner-result{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px 18px;
+    padding: 20px 18px 22px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent, rgba(255, 45, 85, .07));
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .8s cubic-bezier(.22, 1, .36, 1);
+  }
+  .scanner-result.show{ opacity: 1; transform: translateY(0); }
+  .scanner-result::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(255, 45, 85, .25), transparent 70%);
+    pointer-events: none;
+    animation: resultGlow 3s ease-in-out infinite;
+  }
+  @keyframes resultGlow{
+    0%, 100% { opacity: .55; }
+    50%      { opacity: 1;   }
+  }
+  .scanner-result > *{ position: relative; z-index: 1; }
+  .result-label{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    color: var(--text-mute);
+    padding: 4px 10px;
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .result-verdict{
+    font-size: clamp(.95rem, 3.6vw, 1.12rem);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 calc(14px * var(--glow-strength)) var(--gold),
+      0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .45);
+  }
+  .result-stamp{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--red-l);
+    text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--red);
+    padding: 5px 12px;
+    border: 1px dashed var(--red);
+    border-radius: 3px;
+    transform: rotate(-2deg);
+    background: rgba(255, 45, 85, .05);
+  }
+  @media (max-width: 480px){
+    .scanner-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
+    .scanner-live{ font-size: .56rem; letter-spacing: 2px; }
+    .scan-row{ padding: 12px 14px; }
+    .scan-idx{ font-size: .62rem; }
+    .scan-name{ font-size: .88rem; }
+    .scan-pct{ font-size: .76rem; }
+    .scan-desc{ font-size: .78rem; }
+    .scanner-result{ padding: 16px 14px 18px; gap: 10px 14px; }
+    .result-verdict{ font-size: .92rem; letter-spacing: 1px; }
+    .result-stamp{ font-size: .64rem; letter-spacing: 1.4px; padding: 4px 9px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scan-fill, .scanner-result{ transition-duration: .001ms !important; }
+    .scan-fill::after, .scanner::after, .scanner-result::before,
+    .scanner-dot, .scanner-live i{ animation-duration: .001ms !important; }
+  }
+
+  /* ============================================================
+     ✦ 是什么 · 赛博财神庙
      ============================================================ */
   .cyber-temple{
     position: relative;
@@ -3575,8 +3342,8 @@
       linear-gradient(var(--gold), var(--gold)) 100% 0 / 100% 1px no-repeat,
       linear-gradient(var(--gold), var(--gold)) 100% 0 / 1px 100% no-repeat;
   }
-  .cyber-temple::before{ top: 14px;    left: 14px;   }
-  .cyber-temple::after { bottom: 14px; right: 14px;  }
+  .cyber-temple::before{ top: 14px; left: 14px; }
+  .cyber-temple::after { bottom: 14px; right: 14px; }
 
   .ct-roof{
     text-align: center;
@@ -3646,7 +3413,6 @@
     color: var(--text-mute);
     text-transform: uppercase;
   }
-
   .ct-intro{
     font-size: clamp(.92rem, 3.7vw, 1rem);
     line-height: 1.85;
@@ -3685,7 +3451,6 @@
     font-weight: 800;
     text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .5);
   }
-
   .ct-pillars{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -3699,11 +3464,7 @@
     left: -6px; right: -6px;
     bottom: -10px;
     height: 2px;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      var(--gold) 20%,
-      var(--gold) 80%,
-      transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold) 80%, transparent 100%);
     box-shadow: 0 0 calc(10px * var(--glow-strength)) var(--gold);
     border-radius: 2px;
     opacity: .8;
@@ -3733,10 +3494,8 @@
     overflow: hidden;
     transition:
       transform .35s cubic-bezier(.34, 1.4, .64, 1),
-      border-color .35s ease,
-      box-shadow .35s ease,
-      background .35s ease,
-      opacity .35s ease;
+      border-color .35s ease, box-shadow .35s ease,
+      background .35s ease, opacity .35s ease;
   }
   .ct-pillar::before{
     content: "";
@@ -3744,15 +3503,9 @@
     inset: 6px 14px;
     background-image:
       linear-gradient(90deg,
-        transparent 0,
-        transparent 30%,
-        rgba(255, 183, 0, .06) 30%,
-        rgba(255, 183, 0, .06) 31%,
-        transparent 31%,
-        transparent 69%,
-        rgba(255, 183, 0, .06) 69%,
-        rgba(255, 183, 0, .06) 70%,
-        transparent 70%,
+        transparent 0, transparent 30%,
+        rgba(255, 183, 0, .06) 30%, rgba(255, 183, 0, .06) 31%, transparent 31%,
+        transparent 69%, rgba(255, 183, 0, .06) 69%, rgba(255, 183, 0, .06) 70%, transparent 70%,
         transparent 100%);
     pointer-events: none;
     opacity: .8;
@@ -3763,17 +3516,13 @@
     position: absolute;
     left: -4px; right: -4px;
     height: 4px;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      var(--gold) 25%,
-      var(--gold) 75%,
-      transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 25%, var(--gold) 75%, transparent 100%);
     border-radius: 2px;
     box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
     opacity: .75;
     transition: all .35s ease;
   }
-  .ct-pillar-cap{ top: -2px;    }
+  .ct-pillar-cap{ top: -2px; }
   .ct-pillar-foot{ bottom: -2px; }
   .ct-pillar-inner{
     position: relative;
@@ -3814,7 +3563,6 @@
     transform: translateY(2px);
     transition: all .4s cubic-bezier(.34, 1.4, .64, 1);
   }
-
   .ct-pillar:not([data-kind="dump"]):hover,
   .ct-pillar:not([data-kind="dump"]):focus-visible{
     outline: none;
@@ -3824,10 +3572,8 @@
     border-bottom-color: var(--gold-l);
     background:
       linear-gradient(180deg,
-        rgba(255, 45, 85, .14) 0%,
-        rgba(255, 45, 85, .06) 40%,
-        rgba(255, 183, 0, .08) 60%,
-        rgba(255, 183, 0, .16) 100%);
+        rgba(255, 45, 85, .14) 0%, rgba(255, 45, 85, .06) 40%,
+        rgba(255, 183, 0, .08) 60%, rgba(255, 183, 0, .16) 100%);
     box-shadow:
       0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .5),
       0 0 calc(56px * var(--glow-strength)) rgba(255, 45, 85, .3),
@@ -3868,7 +3614,6 @@
       0 0 calc(12px * var(--glow-strength)) var(--gold),
       0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .45);
   }
-
   .ct-pillar[data-kind="dump"]:hover,
   .ct-pillar[data-kind="dump"]:focus-visible{
     outline: none;
@@ -3890,9 +3635,7 @@
     80%      { transform: translateX(2px); }
   }
   .ct-pillar[data-kind="dump"]:hover .ct-pillar-icon,
-  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-icon{
-    color: var(--text-mute);
-  }
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-icon{ color: var(--text-mute); }
   .ct-pillar[data-kind="dump"]:hover .ct-pillar-action,
   .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-action{
     color: var(--text-mute);
@@ -3901,9 +3644,7 @@
     text-decoration-thickness: 2px;
   }
   .ct-pillar[data-kind="dump"]:hover .ct-pillar-rule,
-  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-rule{
-    background: rgba(120, 120, 130, .5);
-  }
+  .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-rule{ background: rgba(120, 120, 130, .5); }
   .ct-pillar[data-kind="dump"]:hover .ct-pillar-result,
   .ct-pillar[data-kind="dump"]:focus-visible .ct-pillar-result{
     color: var(--text-mute);
@@ -3923,11 +3664,7 @@
     top: 0; left: -6px; right: -6px;
     height: 2px;
     background: linear-gradient(90deg,
-      transparent 0%,
-      var(--gold) 25%,
-      var(--gold-l) 50%,
-      var(--gold) 75%,
-      transparent 100%);
+      transparent 0%, var(--gold) 25%, var(--gold-l) 50%, var(--gold) 75%, transparent 100%);
     border-radius: 2px;
     box-shadow:
       0 0 calc(12px * var(--glow-strength)) var(--gold),
@@ -4021,7 +3758,6 @@
     border: 1px dashed var(--border-gold);
     border-radius: 3px;
   }
-
   .ct-roof,
   .ct-intro,
   .ct-bridge,
@@ -4030,9 +3766,7 @@
   .ct-base-eq{
     opacity: 0;
     transform: translateY(10px);
-    transition:
-      opacity .8s ease,
-      transform .8s cubic-bezier(.22, 1, .36, 1);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
   }
   .cyber-temple.seen .ct-roof{ opacity: 1; transform: translateY(0); transition-delay: .05s; }
   .cyber-temple.seen .ct-intro{ opacity: 1; transform: translateY(0); transition-delay: .30s; }
@@ -4059,21 +3793,13 @@
     .ct-node{ padding: 4px 10px 4px 8px; font-size: .66rem; letter-spacing: .8px; }
     .ct-eq-tag{ font-size: .52rem; letter-spacing: 1.6px; }
   }
-
   @media (prefers-reduced-motion: reduce){
-    .ct-roof,
-    .ct-intro,
-    .ct-bridge,
-    .ct-pillar,
-    .ct-base-nodes,
-    .ct-base-eq{
+    .ct-roof, .ct-intro, .ct-bridge, .ct-pillar, .ct-base-nodes, .ct-base-eq{
       opacity: 1 !important;
       transform: none !important;
       transition-duration: .001ms !important;
     }
-    .ct-base-beam,
-    .ct-node-dot,
-    .ct-pillar[data-kind="dump"]:hover{
+    .ct-base-beam, .ct-node-dot, .ct-pillar[data-kind="dump"]:hover{
       animation-duration: .001ms !important;
     }
   }
@@ -4160,9 +3886,7 @@
       0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .45);
     transition: all .3s ease;
   }
-  .mb-bar-count b.bump{
-    animation: mbCountBump .5s cubic-bezier(.34, 1.6, .64, 1);
-  }
+  .mb-bar-count b.bump{ animation: mbCountBump .5s cubic-bezier(.34, 1.6, .64, 1); }
   @keyframes mbCountBump{
     0%   { transform: scale(1);    color: var(--gold); }
     40%  { transform: scale(1.35); color: #26ff8f;
@@ -4198,9 +3922,7 @@
     opacity: .32;
     transition: opacity .7s ease;
   }
-  .mb-row + .mb-row{
-    border-top: 1px dashed var(--border);
-  }
+  .mb-row + .mb-row{ border-top: 1px dashed var(--border); }
   .mb-row.lit{ opacity: 1; }
   .mb-side{
     display: flex;
@@ -4268,16 +3990,12 @@
     content: "";
     position: absolute;
     top: 0; left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg,
-      transparent, rgba(255, 233, 184, .75) 50%, transparent);
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 233, 184, .75) 50%, transparent);
     transition: left .7s cubic-bezier(.22, 1, .36, 1);
     pointer-events: none;
   }
-  .mb-row.lit .mb-side-chain .mb-icon::before{
-    left: 140%;
-  }
+  .mb-row.lit .mb-side-chain .mb-icon::before{ left: 140%; }
   .mb-name{
     font-size: .84rem;
     font-weight: 800;
@@ -4310,7 +4028,6 @@
     --mb-flow-size:  22px;
     --mb-dash-color: var(--border-gold);
     --mb-anchor-color: var(--border-gold);
-
     position: relative;
     height: 46px;
     display: flex;
@@ -4318,25 +4035,15 @@
     justify-content: center;
     overflow: visible;
     padding: 0 10px;
-
     background-color: transparent;
     background-image:
-      radial-gradient(circle 3px at 50% 50%,
-        var(--mb-flow-color) 0,
-        transparent 100%),
-      linear-gradient(90deg,
-        var(--mb-dash-color) 0 5px,
-        transparent 5px 11px);
-    background-size:
-      var(--mb-flow-size) 100%,
-      11px 1px;
-    background-position:
-      0 50%,
-      6px 50%;
+      radial-gradient(circle 3px at 50% 50%, var(--mb-flow-color) 0, transparent 100%),
+      linear-gradient(90deg, var(--mb-dash-color) 0 5px, transparent 5px 11px);
+    background-size: var(--mb-flow-size) 100%, 11px 1px;
+    background-position: 0 50%, 6px 50%;
     background-repeat: repeat-x, repeat-x;
     background-origin: content-box;
     background-clip: content-box;
-
     animation: mbFlow var(--mb-flow-speed) linear infinite;
     transition: filter .5s ease;
   }
@@ -4353,7 +4060,7 @@
     opacity: .55;
     transition: all .5s ease;
   }
-  .mb-track::before{ left: 0;  }
+  .mb-track::before{ left: 0; }
   .mb-track::after { right: 0; }
   @keyframes mbFlow{
     from { background-position: 0    50%, 6px 50%; }
@@ -4364,7 +4071,6 @@
     --mb-flow-color:  var(--gold-l);
     --mb-dash-color:  var(--gold);
     --mb-anchor-color: var(--gold);
-
     filter:
       drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--gold))
       drop-shadow(0 0 calc(10px * var(--glow-strength)) rgba(255, 45, 85, .35));
@@ -4378,16 +4084,11 @@
   }
   .mb-track-pulse{
     position: absolute;
-    top: 50%;
-    left: 0;
+    top: 50%; left: 0;
     width: 10px; height: 10px;
     margin-top: -5px;
     border-radius: 50%;
-    background: radial-gradient(circle,
-      #fff3d0 0%,
-      var(--gold) 40%,
-      var(--red) 75%,
-      transparent 100%);
+    background: radial-gradient(circle, #fff3d0 0%, var(--gold) 40%, var(--red) 75%, transparent 100%);
     box-shadow:
       0 0 calc(12px * var(--glow-strength)) var(--gold),
       0 0 calc(24px * var(--glow-strength)) var(--red);
@@ -4395,9 +4096,7 @@
     pointer-events: none;
     z-index: 2;
   }
-  .mb-row.lit .mb-track-pulse{
-    animation: mbPulseTravel 1.15s cubic-bezier(.4, 0, .2, 1) forwards;
-  }
+  .mb-row.lit .mb-track-pulse{ animation: mbPulseTravel 1.15s cubic-bezier(.4, 0, .2, 1) forwards; }
   @keyframes mbPulseTravel{
     0%   { left: 0;                  opacity: 0; transform: scale(.6); }
     8%   { opacity: 1;  transform: scale(1.15); }
@@ -4440,23 +4139,16 @@
     .mb-track-pulse{ width: 8px; height: 8px; margin-top: -4px; }
   }
   @media (prefers-reduced-motion: reduce){
-    .mb-row,
-    .mb-icon,
-    .mb-name,
-    .mb-track,
-    .mb-track::before,
-    .mb-track::after,
-    .mb-track-arrow{ transition-duration: .001ms !important; }
-    .mapping-bridge::after,
-    .mb-bar-dot,
-    .mb-row.lit .mb-track-pulse,
+    .mb-row, .mb-icon, .mb-name, .mb-track,
+    .mb-track::before, .mb-track::after, .mb-track-arrow{ transition-duration: .001ms !important; }
+    .mapping-bridge::after, .mb-bar-dot, .mb-row.lit .mb-track-pulse,
     .mb-bar-count b.bump{ animation-duration: .001ms !important; }
     .mb-track{ animation: none !important; }
     .mb-row.lit .mb-track-pulse{ opacity: 0; }
   }
 
   /* ============================================================
-     ✦ 我们的信仰 · 三炷香（香龛修正 + 火漆印底座 + 点击重燃）
+     ✦ 我们的信仰 · 三炷香（香龛修复 + 火漆印 + 匾额 + 底座一体）
      ============================================================ */
   .faith-shrine{
     position: relative;
@@ -4537,23 +4229,23 @@
       0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .45);
     transition: all .3s ease;
   }
-  .fs-bar-count b.bump{
-    animation: fsCountBump .55s cubic-bezier(.34, 1.6, .64, 1);
-  }
+  .fs-bar-count b.bump{ animation: fsCountBump .55s cubic-bezier(.34, 1.6, .64, 1); }
   @keyframes fsCountBump{
     0%   { transform: scale(1);    color: var(--gold); }
     40%  { transform: scale(1.4);  color: #26ff8f;
            text-shadow: 0 0 12px #26ff8f, 0 0 24px rgba(38, 255, 143, .55); }
     100% { transform: scale(1);    color: var(--gold); }
   }
-   .fs-grid{
+
+  /* ---- 三张卡片网格：底部 padding 归零，为地基梁留空间 ---- */
+  .fs-grid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    padding: 22px 18px 0;   /* ← 底 padding 从 18px 改为 0 */
+    padding: 22px 18px 0;
   }
 
-  /* ---- 单张卡：横向布局 ---- */
+  /* ---- 单张卡 ---- */
   .faith-card{
     position: relative;
     padding: 22px 18px 22px;
@@ -4570,32 +4262,28 @@
     min-height: 240px;
     text-align: left;
     transition:
-      border-color .8s ease,
-      box-shadow .8s ease,
-      background .8s ease,
-      opacity .8s ease,
-      transform .8s cubic-bezier(.22, 1, .36, 1);
+      border-color .8s ease, box-shadow .8s ease, background .8s ease,
+      opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
   }
+  /* 顶部燃烧线 */
   .faith-card::before{
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg,
-      transparent, var(--gold), var(--gold-l), var(--gold), transparent);
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-l), var(--gold), transparent);
     box-shadow: 0 0 calc(10px * var(--glow-strength)) var(--gold);
     opacity: 0;
     transform: scaleX(.2);
     transition: opacity .8s ease, transform .8s cubic-bezier(.34, 1.4, .64, 1);
   }
-    /* 卡片底部：一条向下的"余晖"，让卡片和地基梁不再断层 */
+  .faith-card.lit::before{ opacity: 1; transform: scaleX(1); }
+  /* ★ 卡片底部：向下的金色余晖，衔接地基梁 */
   .faith-card::after{
     content: "";
     position: absolute;
-    left: 50%;
-    bottom: -14px;
-    width: 1px;
-    height: 14px;
+    left: 50%; bottom: -14px;
+    width: 1px; height: 14px;
     background: linear-gradient(180deg,
       var(--gold) 0%,
       rgba(255, 183, 0, .3) 60%,
@@ -4607,12 +4295,7 @@
   }
   .faith-card.lit::after{
     opacity: 1;
-    box-shadow:
-      0 0 calc(6px * var(--glow-strength)) var(--gold);
-  }
-  .faith-card.lit::before{
-    opacity: 1;
-    transform: scaleX(1);
+    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
   }
   .faith-card.lit{
     border-color: var(--border-hi);
@@ -4626,8 +4309,7 @@
   }
   .fc-code{
     position: absolute;
-    top: 10px;
-    right: 12px;
+    top: 10px; right: 12px;
     font-family: 'JetBrains Mono', monospace;
     font-size: .56rem;
     font-weight: 700;
@@ -4640,9 +4322,7 @@
     text-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5);
   }
 
-  /* ============================================================
-     香龛：图标徽章 + 香柱 + 香炉底座
-     ============================================================ */
+  /* ============ 香龛 ============ */
   .incense{
     position: relative;
     width: 100%;
@@ -4656,11 +4336,9 @@
   /* ---- 图标徽章 ---- */
   .incense-emblem{
     position: absolute;
-    top: 0;
-    left: 50%;
+    top: 0; left: 50%;
     transform: translateX(-50%) scale(.72);
-    width: 44px;
-    height: 44px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -4677,10 +4355,8 @@
     opacity: .4;
     transition:
       transform .9s cubic-bezier(.34, 1.5, .64, 1),
-      opacity .7s ease,
-      color .7s ease,
-      border-color .7s ease,
-      box-shadow .7s ease;
+      opacity .7s ease, color .7s ease,
+      border-color .7s ease, box-shadow .7s ease;
   }
   .faith-card.lit .incense-emblem{
     opacity: 1;
@@ -4702,20 +4378,16 @@
     50%      { transform: translateX(-50%) translateY(-3px)  scale(1.03); }
   }
 
-  /* ---- 香柱（4px，从香头到香炉） ---- */
+  /* ---- 香柱 ---- */
   .incense-stick{
     position: absolute;
-    bottom: 20px;
-    left: 50%;
+    bottom: 20px; left: 50%;
     transform: translateX(-50%);
     width: 4px;
     height: 0;
     border-radius: 2px;
     background: linear-gradient(180deg,
-      var(--gold-l) 0%,
-      var(--gold) 25%,
-      var(--red) 70%,
-      var(--red-d) 100%);
+      var(--gold-l) 0%, var(--gold) 25%, var(--red) 70%, var(--red-d) 100%);
     box-shadow:
       0 0 calc(8px  * var(--glow-strength)) rgba(255, 183, 0, .6),
       0 0 calc(16px * var(--glow-strength)) rgba(255, 45, 85, .35),
@@ -4724,24 +4396,18 @@
     z-index: 2;
   }
   .faith-card.lit .incense-stick{
-    /* 香龛 190px；顶部到 52px；底部 20px → 高度 = 190 - 52 - 20 = 118px = calc(100% - 72px) */
     height: calc(100% - 72px);
   }
 
-  /* ---- 香头（top 定位，紧贴徽章底） ---- */
+  /* ---- 香头（紧贴徽章底 8px） ---- */
   .incense-tip{
     position: absolute;
-    left: 50%;
-    top: 52px;
+    left: 50%; top: 52px;
     transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     background: radial-gradient(circle,
-      #fff3d0 0%,
-      var(--gold) 35%,
-      var(--red) 70%,
-      transparent 100%);
+      #fff3d0 0%, var(--gold) 35%, var(--red) 70%, transparent 100%);
     box-shadow:
       0 0 calc(10px * var(--glow-strength)) var(--gold),
       0 0 calc(22px * var(--glow-strength)) var(--red),
@@ -4762,24 +4428,18 @@
   /* ---- 青烟 ---- */
   .incense-smoke{
     position: absolute;
-    left: 50%;
-    top: 56px;
+    left: 50%; top: 56px;
     transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: radial-gradient(circle,
-      rgba(255, 233, 184, .9) 0%,
-      rgba(255, 183, 0, .5) 40%,
-      transparent 75%);
+      rgba(255, 233, 184, .9) 0%, rgba(255, 183, 0, .5) 40%, transparent 75%);
     filter: blur(1.5px);
     opacity: 0;
     pointer-events: none;
     z-index: 3;
   }
-  .faith-card.lit .incense-smoke{
-    animation: fsSmokeRise 3.2s ease-out infinite;
-  }
+  .faith-card.lit .incense-smoke{ animation: fsSmokeRise 3.2s ease-out infinite; }
   .faith-card.lit .incense-smoke.s1{ animation-delay: 0s;   }
   .faith-card.lit .incense-smoke.s2{ animation-delay: 1.05s; }
   .faith-card.lit .incense-smoke.s3{ animation-delay: 2.1s;  }
@@ -4790,14 +4450,12 @@
     100% { opacity: 0;    transform: translate(calc(-50% + 16px), -100px) scale(2.2); }
   }
 
-  /* ---- 香炉：58×22 钵形 + 开口 + 三足 ---- */
+  /* ---- 香炉（58×22 钵形 + 开口 + 三足） ---- */
   .incense-burner{
     position: absolute;
-    left: 50%;
-    bottom: 0;
+    left: 50%; bottom: 0;
     transform: translateX(-50%);
-    width: 58px;
-    height: 22px;
+    width: 58px; height: 22px;
     border-radius: 42% 42% 26% 26% / 68% 68% 32% 32%;
     background:
       linear-gradient(180deg,
@@ -4822,9 +4480,7 @@
     height: 8px;
     border-radius: 50%;
     background: radial-gradient(ellipse at center,
-      rgba(0, 0, 0, .8) 0%,
-      rgba(0, 0, 0, .5) 55%,
-      transparent 100%);
+      rgba(0, 0, 0, .8) 0%, rgba(0, 0, 0, .5) 55%, transparent 100%);
     box-shadow:
       inset 0 3px 6px rgba(0, 0, 0, .9),
       inset 0 -1px 2px rgba(255, 220, 130, .2);
@@ -4837,8 +4493,7 @@
     width: 38px; height: 4px;
     border-radius: 2px;
     background: linear-gradient(180deg,
-      rgba(90, 55, 18, .95) 0%,
-      rgba(40, 22, 6, 1) 100%);
+      rgba(90, 55, 18, .95) 0%, rgba(40, 22, 6, 1) 100%);
     box-shadow:
       0 1px 3px rgba(0, 0, 0, .8),
       inset 0 1px 1px rgba(255, 200, 100, .2);
@@ -4896,9 +4551,7 @@
     transition: color .8s ease;
     text-align: left;
   }
-  .faith-card.lit .faith-desc{
-    color: var(--text);
-  }
+  .faith-card.lit .faith-desc{ color: var(--text); }
 
   /* ---- 入场 ---- */
   .faith-card{
@@ -4911,32 +4564,25 @@
   }
 
   /* ============================================================
-     ✦ 底座 · 火漆印
+     ✦ 底座：地基梁 + 下落通道 + 火漆印
      ============================================================ */
-    .fs-base{
+  .fs-base{
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
-    padding: 18px 22px 24px;   /* 顶 padding 从 4 加到 18，给地基梁留空间 */
-    margin-top: 0;
+    padding: 22px 22px 24px;
   }
-
-  /* ---- 地基梁：一条横贯的金线，把三张卡和印章串起来 ---- */
+  /* 地基梁 */
   .fs-base::before{
     content: "";
     position: absolute;
-    top: 0; left: 18px; right: 18px;
+    top: 14px; left: 18px; right: 18px;
     height: 1px;
     background: linear-gradient(90deg,
-      transparent 0%,
-      var(--border-gold) 12%,
-      var(--gold) 30%,
-      var(--gold-l) 50%,
-      var(--gold) 70%,
-      var(--border-gold) 88%,
-      transparent 100%);
+      transparent 0%, var(--border-gold) 12%, var(--gold) 30%,
+      var(--gold-l) 50%, var(--gold) 70%, var(--border-gold) 88%, transparent 100%);
     opacity: .55;
     box-shadow:
       0 0 calc(8px  * var(--glow-strength)) rgba(255, 183, 0, .45),
@@ -4951,32 +4597,18 @@
       0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .5),
       0 0 calc(48px * var(--glow-strength)) rgba(255, 45, 85, .25);
   }
-
-  /* ---- 三根下落通道：从三张卡底部各引一条短金线 ---- */
+  /* 三条下落通道 */
   .fs-base::after{
     content: "";
     position: absolute;
-    top: -18px;                 /* 从卡片底部开始 */
-    left: 0; right: 0;
-    height: 18px;
+    top: 0; left: 0; right: 0;
+    height: 14px;
     pointer-events: none;
     background-image:
-      /* 左：对应第一张卡中线（约 1/6 处） */
-      linear-gradient(180deg,
-        var(--border-gold) 0%,
-        transparent 100%),
-      /* 中：对应第二张卡中线 */
-      linear-gradient(180deg,
-        var(--border-gold) 0%,
-        transparent 100%),
-      /* 右：对应第三张卡中线 */
-      linear-gradient(180deg,
-        var(--border-gold) 0%,
-        transparent 100%);
-    background-size:
-      1px 100%,
-      1px 100%,
-      1px 100%;
+      linear-gradient(180deg, var(--border-gold) 0%, transparent 100%),
+      linear-gradient(180deg, var(--border-gold) 0%, transparent 100%),
+      linear-gradient(180deg, var(--border-gold) 0%, transparent 100%);
+    background-size: 1px 100%, 1px 100%, 1px 100%;
     background-position:
       calc(16.666% + 0px) 0,
       calc(50% + 0px) 0,
@@ -4989,6 +4621,7 @@
     opacity: 1;
     filter: drop-shadow(0 0 calc(4px * var(--glow-strength)) var(--gold));
   }
+  /* 两侧渐隐线 */
   .fs-base-line{
     flex: 1;
     max-width: 70px;
@@ -5001,15 +4634,16 @@
     box-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5);
   }
 
-  /* ---- 火漆印本体 ---- */
-    .fs-base-seal{
+  /* ============================================================
+     火漆印
+     ============================================================ */
+  .fs-base-seal{
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    padding: 13px 30px 14px;
+    padding: 18px 30px 12px;
 
-    /* 火漆主体：左上高光 + 右下暗角 + 暗红蜡基色 */
     background:
       radial-gradient(ellipse 70% 90% at 28% 22%,
         rgba(255, 200, 100, .38) 0%,
@@ -5018,19 +4652,14 @@
       radial-gradient(ellipse 70% 90% at 74% 82%,
         rgba(30, 5, 3, .55) 0%,
         transparent 65%),
-      linear-gradient(148deg,
-        #b32818 0%,
-        #8a1c10 45%,
-        #5a0e08 100%);
+      linear-gradient(148deg, #b32818 0%, #8a1c10 45%, #5a0e08 100%);
 
-    /* ★ 关键修复：用 px 固定值，稳定圆角 pill，微不规则
-       4 个角的半径差异控制在 4px 内，看起来像"手捏过"但不歪 */
-    border-radius: 34px 38px 32px 36px / 36px 32px 38px 34px;
+    /* ★ 固定小圆角，稳定矩形 */
+    border-radius: 10px 12px 10px 11px / 11px 10px 12px 10px;
 
-    transform: rotate(-2deg);
+    transform: rotate(-1.5deg);
     transform-origin: center;
 
-    /* 立体：顶部高光 + 底部暗角 + 左右内阴影 + 外阴影 */
     box-shadow:
       inset 0  3px 4px rgba(255, 220, 130, .38),
       inset 0 -5px 8px rgba(20, 4, 2, .72),
@@ -5054,57 +4683,106 @@
     user-select: none;
     transition:
       transform .9s cubic-bezier(.34, 1.4, .64, 1),
-      background .9s ease,
-      box-shadow .9s ease,
-      color .9s ease,
-      text-shadow .9s ease;
+      background .9s ease, box-shadow .9s ease,
+      color .9s ease, text-shadow .9s ease;
   }
-  /* 外圈模糊红晕 */
-    .fs-base-seal::before{
+  /* 外圈红晕（无顶部弧光） */
+  .fs-base-seal::before{
     content: "";
     position: absolute;
     inset: -10px;
     border-radius: 50%;
     background:
-      /* 上沿一道弧光，让印章与地基梁视觉相连 */
-      radial-gradient(ellipse 60% 40% at 50% 0%,
-        rgba(255, 200, 100, .35) 0%,
-        rgba(255, 183, 0, .12) 45%,
-        transparent 70%),
-      /* 外圈暖红晕 */
-      radial-gradient(ellipse,
-        rgba(138, 28, 16, .35) 0%,
-        rgba(138, 28, 16, .12) 45%,
-        transparent 72%);
-    filter: blur(6px);
+      radial-gradient(ellipse 90% 80% at 50% 50%,
+        rgba(138, 28, 16, .38) 0%,
+        rgba(138, 28, 16, .12) 50%,
+        transparent 75%);
+    filter: blur(7px);
     opacity: .75;
     z-index: -1;
     pointer-events: none;
     transition: all .9s ease;
   }
-  /* 底部蜡滴 */
-    .fs-base-seal::after{
+  /* 底部蜡痕（不规则扁平，不是圆点） */
+  .fs-base-seal::after{
     content: "";
     position: absolute;
-    bottom: -6px;
-    left: 30%;
-    width: 10px;
-    height: 9px;
-    /* 蜡滴是不规则的小椭圆，非纯圆 */
-    border-radius: 46% 54% 48% 52% / 60% 62% 38% 40%;
-    background: radial-gradient(circle at 38% 30%,
-      #c93422 0%,
-      #8a1c10 55%,
-      #4a0a05 100%);
-    box-shadow:
-      0 2px 4px rgba(0, 0, 0, .55),
-      inset 0 1px 1px rgba(255, 200, 100, .38);
-    transform: rotate(-8deg);
+    bottom: -3px; left: 26%;
+    width: 16px; height: 5px;
+    border-radius: 50% 45% 55% 48% / 40% 60% 55% 45%;
+    background:
+      radial-gradient(ellipse at 42% 35%,
+        rgba(180, 45, 28, .9) 0%,
+        rgba(110, 20, 12, .75) 55%,
+        rgba(50, 10, 6, .5) 100%);
+    filter: blur(.5px);
+    opacity: .85;
+    transform: rotate(-10deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
     pointer-events: none;
     transition: all .9s ease;
   }
 
-    .fs-base-seal-dot{
+  /* ---- 匾额装饰 ---- */
+  .fs-base-seal-plaque{
+    position: absolute;
+    top: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 76%;
+    max-width: 180px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  /* 匾额横线 */
+  .fs-base-seal-plaque::before{
+    content: "";
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1.5px;
+    margin-top: -.75px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 18%,
+      var(--gold-l) 50%,
+      var(--gold) 82%,
+      transparent 100%);
+    box-shadow:
+      0 0 calc(6px  * var(--glow-strength)) rgba(255, 183, 0, .7),
+      0 0 calc(14px * var(--glow-strength)) rgba(255, 183, 0, .35);
+    border-radius: 2px;
+    transition: all .9s ease;
+  }
+  /* 中间菱形 */
+  .fs-base-seal-plaque-mid{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 7px; height: 7px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: linear-gradient(135deg, #ffe9b8 0%, var(--gold) 100%);
+    border: 1px solid var(--gold-l);
+    box-shadow:
+      0 0 calc(8px  * var(--glow-strength)) var(--gold),
+      0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .5),
+      inset 0 0 3px rgba(255, 255, 255, .7);
+    transition: all .9s ease;
+  }
+  /* 左端回勾 */
+  .fs-base-seal-plaque::after{
+    content: "";
+    position: absolute;
+    top: 50%; left: 0;
+    width: 5px; height: 5px;
+    margin-top: -2.5px;
+    border: 1.2px solid var(--gold);
+    border-right: none;
+    border-bottom: none;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 calc(4px * var(--glow-strength)) var(--gold);
+    transition: all .9s ease;
+  }
+
+  .fs-base-seal-dot{
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -5114,21 +4792,19 @@
     box-shadow: inset 0 1px 1px rgba(255, 240, 200, .5);
     transition: all .9s ease;
   }
-  .fs-base-text{
-    transition: all .9s ease;
-  }
+  .fs-base-text{ transition: all .9s ease; }
 
   /* ---- 悬停 / 聚焦 ---- */
   .fs-base-seal:hover,
   .fs-base-seal:focus-visible{
     outline: none;
-    transform: rotate(-2.4deg) translateY(-2px) scale(1.03);
+    transform: rotate(-1.5deg) translateY(-2px) scale(1.03);
     box-shadow:
-      inset 0  2px 4px rgba(255, 230, 150, .45),
-      inset 0 -4px 6px rgba(20, 4, 2, .7),
-      inset 3px 0  6px rgba(20, 4, 2, .35),
-      inset -3px 0 6px rgba(20, 4, 2, .35),
-      0 6px 14px rgba(0, 0, 0, .65),
+      inset 0  3px 5px rgba(255, 230, 150, .5),
+      inset 0 -5px 8px rgba(20, 4, 2, .72),
+      inset 4px 0  8px rgba(20, 4, 2, .32),
+      inset -4px 0 8px rgba(20, 4, 2, .32),
+      0 7px 16px rgba(0, 0, 0, .68),
       0 2px 6px rgba(0, 0, 0, .5),
       0 0 calc(16px * var(--glow-strength)) rgba(168, 35, 21, .55);
     color: #ffe9b8;
@@ -5137,49 +4813,64 @@
   /* ---- 点亮：金红火漆 ---- */
   .faith-shrine.done .fs-base-seal{
     background:
-      radial-gradient(ellipse at 32% 28%,
+      radial-gradient(ellipse 70% 90% at 28% 22%,
         rgba(255, 240, 180, .55) 0%,
-        rgba(255, 183, 0, .3) 30%,
-        transparent 55%),
-      radial-gradient(ellipse at 68% 78%,
+        rgba(255, 183, 0, .3) 40%,
+        transparent 62%),
+      radial-gradient(ellipse 70% 90% at 74% 82%,
         rgba(60, 8, 4, .6) 0%,
-        transparent 60%),
-      linear-gradient(148deg,
-        #e6a815 0%,
-        #b32818 45%,
-        #7a1410 100%);
+        transparent 65%),
+      linear-gradient(148deg, #e6a815 0%, #b32818 45%, #7a1410 100%);
     color: #fff3d0;
     text-shadow:
       0  1px 0 rgba(255, 220, 130, .65),
       0  0 calc(10px * var(--glow-strength)) var(--gold),
       0 -1px 0 rgba(20, 4, 2, .6);
     box-shadow:
-      inset 0  2px 4px rgba(255, 245, 220, .65),
-      inset 0 -4px 6px rgba(40, 8, 4, .7),
-      inset 3px 0  6px rgba(40, 8, 4, .4),
-      inset -3px 0 6px rgba(40, 8, 4, .4),
-      0 4px 12px rgba(0, 0, 0, .65),
+      inset 0  3px 5px rgba(255, 245, 220, .7),
+      inset 0 -5px 8px rgba(40, 8, 4, .72),
+      inset 4px 0  8px rgba(40, 8, 4, .4),
+      inset -4px 0 8px rgba(40, 8, 4, .4),
+      0 5px 14px rgba(0, 0, 0, .68),
       0 0 calc(20px * var(--glow-strength)) var(--gold),
       0 0 calc(44px * var(--glow-strength)) rgba(255, 45, 85, .4);
-    transform: rotate(-2.4deg) translateY(-1px) scale(1.02);
+    transform: rotate(-1.5deg) translateY(-1px) scale(1.02);
   }
   .faith-shrine.done .fs-base-seal::before{
     opacity: 1;
     background:
-      radial-gradient(ellipse,
+      radial-gradient(ellipse 90% 80% at 50% 50%,
         rgba(255, 183, 0, .45) 0%,
-        rgba(255, 45, 85, .2) 45%,
-        transparent 72%);
+        rgba(255, 45, 85, .2) 50%,
+        transparent 75%);
   }
   .faith-shrine.done .fs-base-seal::after{
-    background: radial-gradient(circle at 38% 30%,
-      #e6a815 0%,
-      #b32818 55%,
-      #7a1410 100%);
+    background:
+      radial-gradient(ellipse at 42% 35%,
+        rgba(255, 200, 90, .95) 0%,
+        rgba(200, 90, 20, .8) 55%,
+        rgba(90, 20, 10, .55) 100%);
     box-shadow:
-      0 2px 5px rgba(0, 0, 0, .6),
-      0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .55),
-      inset 0 1px 1px rgba(255, 220, 130, .7);
+      0 1px 3px rgba(0, 0, 0, .55),
+      0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .6);
+  }
+  .faith-shrine.done .fs-base-seal-plaque::before{
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 15%,
+      var(--gold-l) 50%,
+      var(--gold) 85%,
+      transparent 100%);
+    box-shadow:
+      0 0 calc(10px * var(--glow-strength)) var(--gold),
+      0 0 calc(24px * var(--glow-strength)) rgba(255, 183, 0, .5);
+  }
+  .faith-shrine.done .fs-base-seal-plaque-mid{
+    background: linear-gradient(135deg, #fff5dc 0%, var(--gold-l) 100%);
+    box-shadow:
+      0 0 calc(12px * var(--glow-strength)) var(--gold),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .6),
+      inset 0 0 4px rgba(255, 255, 255, .9);
   }
   .faith-shrine.done .fs-base-seal-dot{
     background: #ffe9b8;
@@ -5189,9 +4880,7 @@
       0 0 calc(12px * var(--glow-strength)) rgba(255, 183, 0, .65);
     animation: fsBaseDot 2.4s ease-in-out infinite;
   }
-  .faith-shrine.done .fs-base-seal-dot:last-child{
-    animation-delay: 1.2s;
-  }
+  .faith-shrine.done .fs-base-seal-dot:last-child{ animation-delay: 1.2s; }
   @keyframes fsBaseDot{
     0%, 100% { opacity: .55; transform: scale(1);   }
     50%      { opacity: 1;   transform: scale(1.4); }
@@ -5202,12 +4891,12 @@
     animation: fsSealPress .45s cubic-bezier(.34, 1.4, .64, 1);
   }
   @keyframes fsSealPress{
-    0%   { transform: rotate(-2.4deg) scale(1);    }
-    40%  { transform: rotate(-2.4deg) scale(.92);  }
-    100% { transform: rotate(-2.4deg) scale(1);    }
+    0%   { transform: rotate(-1.5deg) scale(1);    }
+    40%  { transform: rotate(-1.5deg) scale(.92);  }
+    100% { transform: rotate(-1.5deg) scale(1);    }
   }
 
-  /* ---- 重置模式：禁用所有过渡，让动画真的从头开始 ---- */
+  /* ---- 重置模式 ---- */
   .faith-shrine.resetting .faith-card,
   .faith-shrine.resetting .incense-stick,
   .faith-shrine.resetting .incense-tip,
@@ -5220,7 +4909,10 @@
   .faith-shrine.resetting .fs-base-seal::after,
   .faith-shrine.resetting .fs-base-seal-dot,
   .faith-shrine.resetting .fs-base-line,
-  .faith-shrine.resetting .faith-card::before{
+  .faith-shrine.resetting .fs-base::before,
+  .faith-shrine.resetting .fs-base::after,
+  .faith-shrine.resetting .faith-card::before,
+  .faith-shrine.resetting .faith-card::after{
     transition-duration: 0s !important;
     animation: none !important;
   }
@@ -5230,7 +4922,7 @@
     .fs-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
     .fs-bar-count{ font-size: .56rem; }
     .fs-bar-count b{ font-size: .82rem; }
-    .fs-grid{ padding: 18px 12px 14px; gap: 10px; }
+    .fs-grid{ padding: 18px 12px 0; gap: 10px; }
     .faith-card{
       padding: 18px 14px;
       grid-template-columns: 92px 1fr;
@@ -5248,14 +4940,14 @@
     .faith-desc{ font-size: .78rem; }
     .fc-code{ font-size: .52rem; }
 
-    .fs-base{ padding: 16px 14px 18px; gap: 10px; }
+    .fs-base{ padding: 20px 14px 18px; gap: 10px; }
     .fs-base-line{ max-width: 50px; }
-    .fs-base-seal{ font-size: .7rem; letter-spacing: 2px; padding: 9px 18px 10px; }
-    .fs-base-seal::after{ width: 8px; height: 8px; bottom: -6px; }
+    .fs-base-seal{ font-size: .72rem; letter-spacing: 2.2px; padding: 16px 22px 11px; }
+    .fs-base-seal::after{ width: 14px; height: 4.5px; bottom: -3px; }
   }
 
   @media (max-width: 480px){
-      .fs-grid{
+    .fs-grid{
       grid-template-columns: 1fr;
       padding: 14px 10px 0;
       gap: 10px;
@@ -5277,38 +4969,34 @@
     .faith-desc{ font-size: .74rem; line-height: 1.7; }
     .fc-code{ font-size: .5rem; }
 
-    .fs-base{ gap: 8px; padding: 16px 12px 16px; }
+    .fs-base{ gap: 8px; padding: 20px 12px 16px; }
     .fs-base-line{ max-width: 32px; }
     .fs-base-seal{
-      font-size: .64rem;
+      font-size: .66rem;
       letter-spacing: 1.6px;
-      padding: 8px 14px 9px;
+      padding: 15px 16px 10px;
       gap: 8px;
     }
-    .fs-base-seal-dot{ width: 4px; height: 4px; }
-    .fs-base-seal::after{ width: 7px; height: 7px; bottom: -5px; left: 20%; }
+    .fs-base-seal-dot{ width: 5px; height: 5px; }
+    .fs-base-seal::after{ width: 12px; height: 4px; bottom: -3px; left: 24%; }
+    .fs-base-seal-plaque{ top: -7px; max-width: 140px; }
+    .fs-base-seal-plaque-mid{ width: 6px; height: 6px; }
+    /* 移动端下落通道简化到中线 */
+    .fs-base::after{
+      background-size: 0 0, 1px 100%, 0 0;
+      background-position: 50% 0, 50% 0, 50% 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
-    .faith-card,
-    .incense-stick,
-    .incense-tip,
-    .incense-emblem,
-    .incense-burner,
-    .faith-title,
-    .faith-desc,
-    .faith-shrine::after{
+    .faith-card, .incense-stick, .incense-tip, .incense-emblem,
+    .incense-burner, .faith-title, .faith-desc, .faith-shrine::after{
       transition-duration: .001ms !important;
       animation-duration: .001ms !important;
     }
-    .faith-card{
-      opacity: 1 !important;
-      transform: none !important;
-    }
-    .incense-stick{
-      height: calc(100% - 72px) !important;
-    }
-    .incense-tip { opacity: 1 !important; }
+    .faith-card{ opacity: 1 !important; transform: none !important; }
+    .incense-stick{ height: calc(100% - 72px) !important; }
+    .incense-tip{ opacity: 1 !important; }
     .incense-emblem{
       opacity: 1 !important;
       transform: translateX(-50%) scale(1) !important;
@@ -5325,7 +5013,6 @@
 
 <a href="#main" class="sr-only">跳到主要内容</a>
 
-<!-- HUD 角标 -->
 <div class="hud hud-tl" aria-hidden="true">
   <i class="fas fa-circle-nodes"></i> SYS.ONLINE
 </div>
@@ -5336,7 +5023,6 @@
   <i class="fas fa-shield-halved"></i> 数字香火 · 不可砸财神
 </div>
 
-<!-- 主题切换 -->
 <button id="themeToggle" type="button" aria-label="切换明暗模式" title="切换明暗模式">
   <i class="fas fa-moon icon-dark" aria-hidden="true"></i>
   <i class="fas fa-sun icon-light" aria-hidden="true"></i>
@@ -5344,7 +5030,6 @@
 
 <canvas id="smoke-canvas" aria-hidden="true"></canvas>
 
-<!-- 赛博庙门 -->
 <div id="gate" role="dialog" aria-label="财神到入场仪式" aria-modal="true">
   <div class="gate-door gate-door-left"><div class="door-knob"></div></div>
   <div class="gate-door gate-door-right"><div class="door-knob"></div></div>
@@ -5374,7 +5059,6 @@
 
 <div id="progress" role="progressbar" aria-label="阅读进度" aria-hidden="true"></div>
 
-<!-- 香炉进度 -->
 <div id="censer" role="button" tabindex="0" aria-label="阅读进度 0/6，读完可领财神符">
   <div class="censer-deity" aria-hidden="true">
     <img src="caishen.png" alt="" loading="lazy" decoding="async" />
@@ -5401,18 +5085,13 @@
 
 <main id="main" class="wrap">
 
-  <!-- HERO -->
   <header class="hero" role="banner">
     <div class="hero-badge">
       <i class="fas fa-dragon" aria-hidden="true"></i> 文化 × MEME × 链上共识
     </div>
 
     <div class="hero-deity" aria-hidden="true">
-      <img src="caishen.png"
-           alt=""
-           loading="eager"
-           decoding="async"
-           fetchpriority="high" />
+      <img src="caishen.png" alt="" loading="eager" decoding="async" fetchpriority="high" />
     </div>
 
     <h1>
@@ -5587,7 +5266,6 @@
         <p class="inv-line">
           在纽约的地铁里，在吉隆坡的茶餐室，在伦敦的唐人街，只要春节一到，总有一句"恭喜发财"响起。
         </p>
-
         <p class="inv-line inv-line-em">
           它不需要翻译，不需要解释。
         </p>
@@ -5659,33 +5337,25 @@
             <span class="scan-name">文化最大公约数</span>
             <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
           </div>
-          <div class="scan-track" aria-hidden="true">
-            <div class="scan-fill"></div>
-          </div>
+          <div class="scan-track" aria-hidden="true"><div class="scan-fill"></div></div>
           <p class="scan-desc">只要有华人的地方，就有财神、红包、春联、"恭喜发财"。文化范围 = 全球华人半径。</p>
         </li>
-
         <li class="scan-row" data-i="1">
           <div class="scan-head">
             <span class="scan-idx mono">[002]</span>
             <span class="scan-name">情绪最大公约数</span>
             <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
           </div>
-          <div class="scan-track" aria-hidden="true">
-            <div class="scan-fill"></div>
-          </div>
+          <div class="scan-track" aria-hidden="true"><div class="scan-fill"></div></div>
           <p class="scan-desc">财神不只是钱，是好运、团圆、希望、开门红——中国人对美好生活最直白的祝愿。</p>
         </li>
-
         <li class="scan-row" data-i="2">
           <div class="scan-head">
             <span class="scan-idx mono">[003]</span>
             <span class="scan-name">传播最大公约数</span>
             <span class="scan-pct mono" aria-hidden="true"><b>0</b><i>%</i></span>
           </div>
-          <div class="scan-track" aria-hidden="true">
-            <div class="scan-fill"></div>
-          </div>
+          <div class="scan-track" aria-hidden="true"><div class="scan-fill"></div></div>
           <p class="scan-desc">"财神到"三个字，本身就是祝福、表情包、一首歌、一场仪式，天生适合传播。</p>
         </li>
       </ol>
@@ -5736,7 +5406,6 @@
           </span>
           <span class="ct-pillar-foot" aria-hidden="true"></span>
         </button>
-
         <button class="ct-pillar" data-kind="spread" type="button" role="listitem" aria-label="传播他，他就滋养你">
           <span class="ct-pillar-cap" aria-hidden="true"></span>
           <span class="ct-pillar-inner">
@@ -5747,7 +5416,6 @@
           </span>
           <span class="ct-pillar-foot" aria-hidden="true"></span>
         </button>
-
         <button class="ct-pillar" data-kind="dump" type="button" role="listitem" aria-label="你砸他，他就绕过你">
           <span class="ct-pillar-cap" aria-hidden="true"></span>
           <span class="ct-pillar-inner">
@@ -5806,7 +5474,6 @@
             <span class="mb-name">钱包</span>
           </div>
         </li>
-
         <li class="mb-row">
           <div class="mb-side mb-side-real">
             <span class="mb-icon"><i class="fas fa-hands-praying" aria-hidden="true"></i></span>
@@ -5821,7 +5488,6 @@
             <span class="mb-name">转发</span>
           </div>
         </li>
-
         <li class="mb-row">
           <div class="mb-side mb-side-real">
             <span class="mb-icon"><i class="fas fa-door-open" aria-hidden="true"></i></span>
@@ -5836,7 +5502,6 @@
             <span class="mb-name">持有</span>
           </div>
         </li>
-
         <li class="mb-row">
           <div class="mb-side mb-side-real">
             <span class="mb-icon"><i class="fas fa-gem" aria-hidden="true"></i></span>
@@ -5851,7 +5516,6 @@
             <span class="mb-name">建设</span>
           </div>
         </li>
-
         <li class="mb-row">
           <div class="mb-side mb-side-real">
             <span class="mb-icon"><i class="fas fa-store" aria-hidden="true"></i></span>
@@ -5881,7 +5545,6 @@
       </header>
 
       <div class="fs-grid">
-        <!-- 第一炷：信财神 -->
         <article class="faith-card" data-i="0">
           <span class="fc-code" aria-hidden="true">FAITH.001</span>
           <div class="incense" aria-hidden="true">
@@ -5899,7 +5562,6 @@
           </div>
         </article>
 
-        <!-- 第二炷：信传播 -->
         <article class="faith-card" data-i="1">
           <span class="fc-code" aria-hidden="true">FAITH.002</span>
           <div class="incense" aria-hidden="true">
@@ -5917,7 +5579,6 @@
           </div>
         </article>
 
-        <!-- 第三炷：信长期 -->
         <article class="faith-card" data-i="2">
           <span class="fc-code" aria-hidden="true">FAITH.003</span>
           <div class="incense" aria-hidden="true">
@@ -5939,6 +5600,9 @@
       <footer class="fs-base">
         <span class="fs-base-line" aria-hidden="true"></span>
         <button class="fs-base-seal" type="button" aria-label="重新上香" title="重新上香">
+          <span class="fs-base-seal-plaque" aria-hidden="true">
+            <span class="fs-base-seal-plaque-mid"></span>
+          </span>
           <span class="fs-base-seal-dot" aria-hidden="true"></span>
           <span class="fs-base-text">三信一体 · 数字香火</span>
           <span class="fs-base-seal-dot" aria-hidden="true"></span>
@@ -6117,7 +5781,6 @@
   <i class="fas fa-arrow-up" aria-hidden="true"></i>
 </button>
 
-<!-- 财神符弹窗 -->
 <div id="charmModal" role="dialog" aria-label="我的财神符" aria-modal="true">
   <div class="charm-box">
     <button class="charm-close" type="button" aria-label="关闭">
@@ -6145,7 +5808,7 @@
 
 <script>
 /* ============================================================
-   主题切换（含事件广播）
+   主题切换
    ============================================================ */
 (function () {
   var KEY = 'caishen_theme';
@@ -6166,7 +5829,6 @@
     var current = document.documentElement.getAttribute('data-theme') || 'dark';
     var next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
-
     if (window.__smokeBurst) {
       var r = btn.getBoundingClientRect();
       window.__smokeBurst(r.left + r.width / 2, r.top + r.height / 2, 8, 14, 0.22);
@@ -6446,7 +6108,6 @@ window.__metalScrape = (function () {
     isTransitioning = true;
   }
   window.__switchParticleTheme = switchPalette;
-
   window.addEventListener('caishen:theme', function (e) {
     var theme = (e && e.detail && e.detail.theme) || 'dark';
     switchPalette(theme);
