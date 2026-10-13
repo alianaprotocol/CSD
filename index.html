@@ -31,6 +31,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 
 <link rel="preload" as="image" href="caishen.png">
+<link rel="preload" as="image" href="door-left.png">
+<link rel="preload" as="image" href="door-right.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <script>
@@ -45,34 +47,6 @@
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', t === 'light' ? '#fff7ed' : '#060305');
   })();
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://caishen.xyz/#website",
-      "url": "https://caishen.xyz/",
-      "name": "$财神到",
-      "alternateName": "财神到",
-      "description": "全球华人第一文化 Meme IP，链上的赛博财神庙，属于社区的数字香火。",
-      "inLanguage": "zh-CN",
-      "publisher": { "@id": "https://caishen.xyz/#brand" },
-      "image": "https://caishen.xyz/caishen.png"
-    },
-    {
-      "@type": "Brand",
-      "@id": "https://caishen.xyz/#brand",
-      "name": "$财神到",
-      "slogan": "财神到，财运到",
-      "description": "只迎财神，不砸财神。全球华人的数字香火。",
-      "url": "https://caishen.xyz/",
-      "logo": "https://caishen.xyz/caishen.png"
-    }
-  ]
-}
 </script>
 
 <style>
@@ -357,7 +331,7 @@
   }
 
   /* ============================================================
-     赛博庙门 · 3D 宫门
+     赛博庙门 · 3D 宫门（图片纯净版）
      ============================================================ */
   #gate{
     position: fixed;
@@ -379,7 +353,7 @@
     background: radial-gradient(ellipse 70% 60% at 50% 50%, #3a070c 0%, #180304 55%, #000 100%);
   }
 
-  /* ---- 门内神庙 ---- */
+  /* ---- 门内神庙光晕 ---- */
   .gate-inner{
     position: absolute;
     inset: 0;
@@ -514,39 +488,12 @@
   }
 
   /* ============================================================
-     ✦ 门板 —— 5 层叠加 + 厚度内阴影
+     ✦ 门板（图片版，右门不镜像翻转）
      ============================================================ */
   .gate-door{
     position: absolute;
     top: 0; bottom: 0;
     width: 50.1%;
-    background:
-      /* ① 细微木纹线条 */
-      repeating-linear-gradient(90deg,
-        transparent 0px,
-        rgba(255, 180, 100, 0.03) 3px,
-        transparent 8px,
-        rgba(0, 0, 0, 0.05) 15px,
-        transparent 25px,
-        rgba(255, 180, 100, 0.02) 35px,
-        transparent 50px
-      ),
-      /* ② 木结痂 / 斑驳 */
-      radial-gradient(ellipse 25% 10% at 20% 30%, rgba(80, 20, 10, 0.5) 0%, transparent 80%),
-      radial-gradient(ellipse 30% 15% at 80% 60%, rgba(80, 20, 10, 0.4) 0%, transparent 80%),
-      radial-gradient(ellipse 20% 8% at 45% 85%, rgba(80, 20, 10, 0.3) 0%, transparent 80%),
-      /* ③ 顶部高光 */
-      linear-gradient(180deg,
-        rgba(255, 190, 100, .12) 0%,
-        rgba(255, 170, 80, .05)  12%,
-        transparent 26%),
-      /* ④ 底部暗角 */
-      linear-gradient(0deg,
-        rgba(0, 0, 0, .62) 0%,
-        rgba(0, 0, 0, .34) 16%,
-        transparent 34%),
-      /* ⑤ 基底红木渐变 */
-      linear-gradient(180deg, #4a0d08 0%, #2e0505 50%, #140202 100%);
     transition:
       transform 1.8s cubic-bezier(.66, 0, .34, 1),
       box-shadow .9s ease;
@@ -554,25 +501,41 @@
     overflow: hidden;
     transform-style: preserve-3d;
     backface-visibility: hidden;
+    background-color: #2a0805;
   }
   .gate-door-left {
     left: 0;
     transform-origin: left center;
-    border-right: 1px solid rgba(0, 0, 0, .85);
+    border-right: 1px solid rgba(0, 0, 0, .9);
     box-shadow:
       inset -22px 0 34px rgba(0, 0, 0, .82),
-      inset   0  0 180px rgba(0, 0, 0, .9),
-      inset   0  0 0 1px rgba(212, 160, 23, .12);
+      inset   0  0 120px rgba(0, 0, 0, .7);
   }
   .gate-door-right {
     right: 0;
     transform-origin: right center;
-    border-left: 1px solid rgba(0, 0, 0, .85);
+    border-left: 1px solid rgba(0, 0, 0, .9);
     box-shadow:
       inset  22px 0 34px rgba(0, 0, 0, .82),
-      inset   0  0 180px rgba(0, 0, 0, .9),
-      inset   0  0 0 1px rgba(212, 160, 23, .12);
+      inset   0  0 120px rgba(0, 0, 0, .7);
   }
+
+  /* 门板内图片 */
+  .gate-door .door-image{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    filter: saturate(1.05) contrast(1.02);
+  }
+
+  /* 门板内侧边缘高光条（极细，修饰图片边缘） */
   .gate-door::before{
     content: "";
     position: absolute;
@@ -600,343 +563,31 @@
   }
 
   /* ============================================================
-     ✦ 门板内嵌面板
-     ============================================================ */
-  .door-panel{
-    position: absolute;
-    left: 14%; right: 14%;
-    border: 1px solid rgba(212, 160, 23, .38);
-    border-radius: 3px;
-    background:
-      linear-gradient(180deg,
-        rgba(84, 24, 13, .3) 0%,
-        rgba(32, 6, 4, .5)   50%,
-        rgba(14, 2, 1, .7)   100%);
-    box-shadow:
-      inset 0 0 20px rgba(0, 0, 0, .6),
-      inset 0 4px 0 rgba(0, 0, 0, .4),
-      inset 0 -3px 0 rgba(0, 0, 0, .6),
-      inset 3px 0 0 rgba(0, 0, 0, .4),
-      inset -3px 0 0 rgba(0, 0, 0, .4),
-      inset 0 1px 0 rgba(255, 220, 130, .12),
-      0 1px 2px rgba(255, 183, 0, .06),
-      0 0 0 1px rgba(0, 0, 0, .4);
-  }
-  .door-panel::before{
-    content: "";
-    position: absolute;
-    inset: 5px;
-    border: 1px solid rgba(212, 160, 23, .20);
-    border-radius: 2px;
-    pointer-events: none;
-  }
-  .door-panel::after{
-    content: "";
-    position: absolute;
-    inset: 9px;
-    pointer-events: none;
-    opacity: .68;
-    background:
-      linear-gradient(var(--gold-d), var(--gold-d)) 0 0 / 11px 1px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 0 0 / 1px 11px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 100% 0 / 11px 1px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 100% 0 / 1px 11px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 0 100% / 11px 1px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 0 100% / 1px 11px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 100% 100% / 11px 1px no-repeat,
-      linear-gradient(var(--gold-d), var(--gold-d)) 100% 100% / 1px 11px no-repeat;
-    filter: drop-shadow(0 0 3px rgba(255, 183, 0, .5));
-  }
-  .door-panel-top{ top: 14%; height: 12%; }
-  .door-panel-mid{ top: 32%; height: 34%; }
-  .door-panel-bot{ top: 72%; height: 16%; }
-
-  /* ============================================================
-     ✦ 门钉
-     ============================================================ */
-  .door-studs{
-    position: absolute;
-    top: 36%; left: 50%;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 16px 24px;
-    z-index: 4;
-    pointer-events: none;
-  }
-  .door-studs span{
-    display: block;
-    width: 13px; height: 13px;
-    border-radius: 50%;
-    position: relative;
-    background:
-      radial-gradient(circle at 34% 26%,
-        rgba(255, 255, 255, .98) 0%,
-        rgba(255, 246, 214, .62) 16%,
-        rgba(255, 240, 190, .18) 34%,
-        transparent 50%),
-      radial-gradient(circle at 50% 52%,
-        #fff3d0 0%,
-        #f2d070 14%,
-        #d4a017 34%,
-        #a8760a 56%,
-        #6b4a04 76%,
-        #2a1802 94%,
-        #150c01 100%),
-      radial-gradient(circle at 66% 74%,
-        rgba(0, 0, 0, .58) 0%,
-        rgba(0, 0, 0, .22) 40%,
-        transparent 62%);
-    box-shadow:
-      inset 0  2px 3px rgba(255, 248, 214, .8),
-      inset 0 -2px 4px rgba(0, 0, 0, .85),
-      0 0 8px rgba(255, 183, 0, .62),
-      0 0 18px rgba(255, 183, 0, .28),
-      0 2px 5px rgba(0, 0, 0, .88),
-      0 5px 11px rgba(0, 0, 0, .5);
-  }
-  .door-studs span::after{
-    content: "";
-    position: absolute;
-    left: 22%; top: 16%;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 250, 230, .8) 40%,
-      transparent 78%);
-    filter: blur(.4px);
-    pointer-events: none;
-  }
-  .door-studs span::before{
-    content: "";
-    position: absolute;
-    inset: 3px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 38% 30%,
-      rgba(255, 245, 220, .5) 0%,
-      transparent 62%);
-    pointer-events: none;
-  }
-
-  /* ============================================================
-     ✦ 兽面铺首 + 衔环（重构版）
-     ============================================================ */
-  .door-porter{
-    position: absolute;
-    top: 50%;
-    width: 90px;
-    height: 140px;
-    transform: translateY(-50%);
-    z-index: 6;
-  }
-  .gate-door-left  .door-porter{ right: 12px; }
-  .gate-door-right .door-porter{ left:  12px; }
-
-  /* ---- 兽面底座 ---- */
-  .porter-beast{
-    position: absolute;
-    top: 0; left: 0;
-    width: 90px; height: 90px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 25%, #ffe9a8 0%, #c8951a 30%, #6b4a04 70%, #1d1000 100%);
-    box-shadow:
-      inset 0 5px 10px rgba(255, 240, 200, .6),
-      inset 0 -5px 12px rgba(0, 0, 0, .9),
-      0 0 20px rgba(255, 183, 0, .6),
-      0 8px 20px rgba(0, 0, 0, .9);
-    z-index: 2;
-  }
-  .porter-beast::before{
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 30%, #7c5808 0%, #2e1a00 70%, #000 100%);
-    box-shadow:
-      inset 0 4px 8px rgba(0, 0, 0, .9),
-      inset 0 -2px 6px rgba(255, 200, 80, .3);
-  }
-  .porter-beast::after{
-    content: "";
-    position: absolute;
-    inset: 4px;
-    border-radius: 50%;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at 50%  3%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 79% 15%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 97% 50%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 79% 85%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 50% 97%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 21% 85%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 3%  50%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px),
-      radial-gradient(circle at 21% 15%,  rgba(255, 246, 214, .95) 0 2px, transparent 3px);
-    filter: drop-shadow(0 0 3px rgba(255, 183, 0, .9));
-  }
-
-  /* ---- 兽角 ---- */
-  .pb-horn{
-    position: absolute;
-    width: 20px; height: 12px;
-    background: linear-gradient(180deg, #ffe9a8, #8a5e0a);
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,.8);
-    z-index: 3;
-  }
-  .pb-horn-l { top: -6px; left: 6px; transform: rotate(-30deg); }
-  .pb-horn-r { top: -6px; right: 6px; transform: rotate(30deg); }
-
-  /* ---- 眉毛 ---- */
-  .pb-brow{
-    position: absolute;
-    width: 24px; height: 6px;
-    top: 28px;
-    background: linear-gradient(180deg, #ffe9a8, #a06f00);
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.8);
-    z-index: 4;
-  }
-  .pb-brow-l { left: 12px; transform: rotate(-12deg); }
-  .pb-brow-r { right: 12px; transform: rotate(12deg); }
-
-  /* ---- 眼睛 ---- */
-  .pb-eye{
-    position: absolute;
-    width: 16px; height: 10px;
-    top: 40px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #ff8a8a 0%, #cc0e30 50%, #3b0008 100%);
-    box-shadow:
-      inset 0 0 5px rgba(0,0,0,.9),
-      0 0 10px rgba(255,45,85,.9),
-      0 0 20px rgba(255,45,85,.5);
-    z-index: 4;
-  }
-  .pb-eye-l { left: 16px; transform: rotate(-10deg); }
-  .pb-eye-r { right: 16px; transform: rotate(10deg); }
-
-  /* ---- 鼻子 ---- */
-  .pb-nose{
-    position: absolute;
-    left: 50%; top: 50px;
-    width: 24px; height: 16px;
-    margin-left: -12px;
-    background: linear-gradient(180deg, #c8951a, #4a3203);
-    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,.8), 0 1px 2px rgba(255,220,130,.3);
-    z-index: 4;
-  }
-  .pb-nose::after{
-    content: "";
-    position: absolute;
-    top: 4px; left: 50%;
-    width: 8px; height: 6px;
-    margin-left: -4px;
-    background: #1d1000;
-    border-radius: 50%;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
-  }
-
-  /* ---- 嘴巴 ---- */
-  .pb-mouth{
-    position: absolute;
-    left: 50%; top: 68px;
-    width: 40px; height: 12px;
-    margin-left: -20px;
-    border-bottom: 3px solid #c8951a;
-    border-radius: 0 0 50% 50% / 0 0 100% 100%;
-    background: transparent;
-    box-shadow: 0 2px 4px rgba(0,0,0,.6), inset 0 -2px 4px rgba(0,0,0,.8);
-    z-index: 4;
-  }
-
-  /* ---- 悬挂扣 ---- */
-  .porter-hook{
-    position: absolute;
-    left: 50%; top: 74px;
-    width: 14px; height: 18px;
-    margin-left: -7px;
-    background: linear-gradient(180deg, #ffe9a8, #6b4a04);
-    border-radius: 50% 50% 20% 20%;
-    box-shadow: inset 0 2px 4px rgba(255,255,255,.5), 0 2px 6px rgba(0,0,0,.9);
-    z-index: 5;
-  }
-
-  /* ---- 门环 ---- */
-  .porter-ring{
-    position: absolute;
-    left: 50%; top: 88px;
-    width: 54px; height: 54px;
-    margin-left: -27px;
-    border-radius: 50%;
-    border: 5px solid #d4a017;
-    background: transparent;
-    background-image: linear-gradient(135deg, #fff3d0 0%, #e0b028 30%, #a06f00 70%, #4a3203 100%);
-    background-clip: padding-box;
-    box-shadow:
-      inset 0 0 8px rgba(0,0,0,.8),
-      0 0 15px rgba(255,183,0,.8),
-      0 8px 16px rgba(0,0,0,.8);
-    transform-origin: 50% -14px;
-    z-index: 6;
-    animation: ringIdle 5s ease-in-out infinite;
-  }
-  .porter-ring::after{
-    content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-top-color: rgba(255, 255, 255, 0.9);
-    border-left-color: rgba(255, 255, 255, 0.1);
-    transform: rotate(-45deg);
-    pointer-events: none;
-  }
-  @keyframes ringIdle{
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50%      { transform: translateY(2px) rotate(2deg); }
-  }
-  .porter-ring.knock{
-    animation: ringKnock .42s cubic-bezier(.36, .07, .19, .97);
-  }
-  @keyframes ringKnock{
-    0%   { transform: translateX(0)    rotate(0deg); }
-    15%  { transform: translateX(-9px) rotate(-14deg); }
-    35%  { transform: translateX(7px)  rotate(11deg); }
-    55%  { transform: translateX(-5px) rotate(-7deg); }
-    75%  { transform: translateX(3px)  rotate(4deg); }
-    100% { transform: translateX(0)    rotate(0deg); }
-  }
-
-  /* ============================================================
-     ✦ 门缝光带
+     ✦ 门缝光带（更细、更柔和）
      ============================================================ */
   .gate-seam{
     position: absolute;
     top: 0; bottom: 22px;
     left: 50%;
-    width: 5px;
-    margin-left: -2.5px;
+    width: 3px;
+    margin-left: -1.5px;
     border-radius: 3px;
     z-index: 5;
-    opacity: .38;
+    opacity: .45;
     transition: opacity 1.8s ease;
     pointer-events: none;
     background:
       linear-gradient(180deg,
         transparent 0%,
-        rgba(255, 255, 255, .85) 14%,
-        #ffffff 42%,
-        #ffffff 58%,
-        rgba(255, 255, 255, .85) 86%,
+        rgba(255, 255, 255, .7) 14%,
+        rgba(255, 255, 255, .95) 42%,
+        rgba(255, 255, 255, .95) 58%,
+        rgba(255, 255, 255, .7) 86%,
         transparent 100%);
     box-shadow:
-      0 0 6px 1px rgba(255, 255, 255, .95),
-      0 0 22px 5px rgba(255, 183, 0, .9),
-      0 0 56px 12px rgba(255, 45, 85, .55),
-      0 0 3px 0 rgba(255, 255, 255, .9);
+      0 0 5px 1px rgba(255, 255, 255, .75),
+      0 0 16px 4px rgba(255, 183, 0, .7),
+      0 0 40px 8px rgba(255, 45, 85, .35);
   }
   #gate.open .gate-seam{ opacity: 0; }
   #gate.gone .gate-seam{ opacity: 0; }
@@ -1037,31 +688,6 @@
     filter: blur(18px);
     pointer-events: none;
   }
-  .gate-carpet::after{
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 80%;
-    height: 40%;
-    transform: translateX(-50%);
-    background:
-      radial-gradient(circle at 20% 60%, rgba(255, 233, 184, .6) 0 2px, transparent 3px),
-      radial-gradient(circle at 35% 80%, rgba(255, 233, 184, .5) 0 1.5px, transparent 2.5px),
-      radial-gradient(circle at 50% 45%, rgba(255, 233, 184, .7) 0 2.5px, transparent 3.5px),
-      radial-gradient(circle at 65% 70%, rgba(255, 233, 184, .5) 0 2px, transparent 3px),
-      radial-gradient(circle at 82% 55%, rgba(255, 233, 184, .6) 0 2px, transparent 3px),
-      radial-gradient(circle at 42% 92%, rgba(255, 233, 184, .4) 0 1.5px, transparent 2.5px),
-      radial-gradient(circle at 60% 88%, rgba(255, 233, 184, .4) 0 1.5px, transparent 2.5px);
-    filter: blur(1px);
-    opacity: .9;
-    pointer-events: none;
-    animation: carpetSparkle 3s ease-in-out infinite;
-  }
-  @keyframes carpetSparkle{
-    0%, 100% { opacity: .6; transform: translateX(-50%) scale(1); }
-    50%      { opacity: 1;  transform: translateX(-50%) scale(1.02); }
-  }
 
   /* ---- 3D 转开 ---- */
   #gate.open .gate-door-left {
@@ -1079,15 +705,17 @@
       -40px 0 80px rgba(0, 0, 0, .75);
   }
 
-  /* ---- 叩门提示 ---- */
+  /* ---- 叩门提示（下移，加半透明底） ---- */
   .gate-hint{
     position: absolute;
-    left: 50%; top: 72%;
+    left: 50%;
+    top: 78%;
     transform: translateX(-50%);
     z-index: 8;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 14px;
     color: #ffe9b8;
     font-size: .92rem;
@@ -1101,7 +729,12 @@
     pointer-events: none;
     white-space: nowrap;
     font-family: 'Noto Serif SC', 'JetBrains Mono', monospace;
-    text-transform: uppercase;
+    background: rgba(0, 0, 0, .42);
+    padding: 12px 26px;
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 183, 0, .25);
     animation: hintFloat 3s ease-in-out infinite;
   }
   @keyframes hintFloat{
@@ -1336,11 +969,12 @@
   .fc-btn:active{ transform: translateY(0) scale(.97); }
 
   @media (max-width: 480px){
-    .door-porter{
-      transform: translateY(-50%) scale(.78);
-      transform-origin: center;
+    .gate-hint{
+      font-size: .78rem;
+      letter-spacing: 2.5px;
+      top: 76%;
+      padding: 10px 18px;
     }
-    .gate-hint{ font-size: .78rem; letter-spacing: 2.5px; }
     .gate-hint i{ font-size: 1.5rem; }
     .fortune-tube{ width: 96px; height: 148px; }
     .tube-body{ height: 94px; }
@@ -5488,7 +5122,7 @@
 <canvas id="smoke-canvas" aria-hidden="true"></canvas>
 
 <!-- ============================================================
-     赛博庙门 · 3D 宫门
+     赛博庙门 · 3D 宫门（图片版）
      ============================================================ -->
 <div id="gate" role="dialog" aria-label="财神到入场仪式" aria-modal="true">
 
@@ -5508,68 +5142,14 @@
     <span class="lintel-bar"></span>
   </div>
 
-  <!-- 左门 -->
+  <!-- 左门（图片） -->
   <div class="gate-door gate-door-left">
-    <div class="door-panel door-panel-top" aria-hidden="true"></div>
-    <div class="door-panel door-panel-mid" aria-hidden="true"></div>
-    <div class="door-panel door-panel-bot" aria-hidden="true"></div>
-
-    <div class="door-studs" aria-hidden="true">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-
-    <div class="door-porter">
-      <span class="porter-beast" aria-hidden="true">
-        <span class="pb-horn pb-horn-l"></span>
-        <span class="pb-horn pb-horn-r"></span>
-        <span class="pb-ear pb-ear-l"></span>
-        <span class="pb-ear pb-ear-r"></span>
-        <span class="pb-brow pb-brow-l"></span>
-        <span class="pb-brow pb-brow-r"></span>
-        <span class="pb-eye pb-eye-l"></span>
-        <span class="pb-eye pb-eye-r"></span>
-        <span class="pb-nose"></span>
-        <span class="pb-mouth"></span>
-      </span>
-      <span class="porter-hook" aria-hidden="true"></span>
-      <span class="porter-ring" aria-hidden="true"></span>
-    </div>
+    <img class="door-image" src="door-left.jpg" alt="财神左门" loading="eager" decoding="async" draggable="false">
   </div>
 
-  <!-- 右门 -->
+  <!-- 右门（图片，独立不镜像） -->
   <div class="gate-door gate-door-right">
-    <div class="door-panel door-panel-top" aria-hidden="true"></div>
-    <div class="door-panel door-panel-mid" aria-hidden="true"></div>
-    <div class="door-panel door-panel-bot" aria-hidden="true"></div>
-
-    <div class="door-studs" aria-hidden="true">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-    </div>
-
-    <div class="door-porter">
-      <span class="porter-beast" aria-hidden="true">
-        <span class="pb-horn pb-horn-l"></span>
-        <span class="pb-horn pb-horn-r"></span>
-        <span class="pb-ear pb-ear-l"></span>
-        <span class="pb-ear pb-ear-r"></span>
-        <span class="pb-brow pb-brow-l"></span>
-        <span class="pb-brow pb-brow-r"></span>
-        <span class="pb-eye pb-eye-l"></span>
-        <span class="pb-eye pb-eye-r"></span>
-        <span class="pb-nose"></span>
-        <span class="pb-mouth"></span>
-      </span>
-      <span class="porter-hook" aria-hidden="true"></span>
-      <span class="porter-ring" aria-hidden="true"></span>
-    </div>
+    <img class="door-image" src="door-right.jpg" alt="财神右门" loading="eager" decoding="async" draggable="false">
   </div>
 
   <!-- 门缝光带 -->
@@ -5581,7 +5161,7 @@
   <!-- 门槛 -->
   <div class="gate-sill" aria-hidden="true"></div>
 
-  <!-- 叩门提示 -->
+  <!-- 叩门提示（下移，加半透明底） -->
   <div class="gate-hint">
     <i class="fas fa-hand-pointer" aria-hidden="true"></i>
     <span>轻叩门环 · 财神开门</span>
@@ -5596,6 +5176,7 @@
     <div class="fortune-hint">点击签筒 · 摇出今日财神签</div>
   </div>
 
+  <!-- 财神签弹窗 -->
   <div class="fortune-card" id="fortuneCard" role="dialog" aria-label="今日财神签" aria-modal="true">
     <div class="fc-deity" aria-hidden="true">
       <img src="caishen.png" alt="" loading="eager" decoding="async" />
@@ -6703,13 +6284,13 @@ window.__metalScrape = (function () {
 (function () {
   var gate = document.getElementById('gate');
   if (!gate) return;
-  var SKIP_KEY = 'caishen_entered_v7';
+  var SKIP_KEY = 'caishen_entered_v8';
   var FORTUNE_KEY = 'caishen_fortune_v1';
   var entered = false;
   try { entered = sessionStorage.getItem(SKIP_KEY) === '1'; } catch (_) {}
   if (entered) { gate.classList.add('hidden'); document.body.style.overflow = ''; return; }
   document.body.style.overflow = 'hidden';
-  document.body.classList.add('gate-active'); // 隐藏 HUD 与主题按钮
+  document.body.classList.add('gate-active');
 
   var hint     = gate.querySelector('.gate-hint');
   var stage    = gate.querySelector('.fortune-stage');
@@ -6825,13 +6406,6 @@ window.__metalScrape = (function () {
     initAudio();
     playKnock();
 
-    var rings = gate.querySelectorAll('.porter-ring');
-    rings.forEach(function (ring) {
-      ring.classList.remove('knock');
-      void ring.offsetWidth;
-      ring.classList.add('knock');
-    });
-
     if (gate.animate) {
       try {
         gate.animate([
@@ -6908,7 +6482,7 @@ window.__metalScrape = (function () {
     try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
     gate.classList.add('gone');
     clearInterval(gateSmokeTimer);
-    document.body.classList.remove('gate-active'); // 恢复 HUD 与主题按钮
+    document.body.classList.remove('gate-active');
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
     if (window.__smokeBurst) {
       for (var i = 0; i < 5; i++) {
@@ -6931,7 +6505,7 @@ window.__metalScrape = (function () {
       try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
       gate.classList.add('gone');
       clearInterval(gateSmokeTimer);
-      document.body.classList.remove('gate-active'); // 恢复 HUD 与主题按钮
+      document.body.classList.remove('gate-active');
       document.body.style.overflow = '';
       setTimeout(function () { gate.classList.add('hidden'); }, 1200);
     }
