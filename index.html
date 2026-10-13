@@ -4748,27 +4748,31 @@
     padding: 22px 18px 18px;
   }
 
-  /* ---- 单张卡 ---- */
+    /* ---- 单张卡：横向布局，左香龛 / 右文字 ---- */
   .faith-card{
     position: relative;
-    padding: 22px 16px 20px;
+    padding: 22px 18px 22px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background:
-      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 183, 0, .04), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 30% 0%, rgba(255, 183, 0, .04), transparent 60%),
       linear-gradient(180deg, rgba(20, 8, 12, .55), rgba(10, 5, 8, .7));
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 104px 1fr;
+    gap: 16px;
     align-items: center;
-    text-align: center;
-    min-height: 300px;
+    min-height: 220px;
+    text-align: left;
     transition:
       border-color .8s ease,
       box-shadow .8s ease,
-      background .8s ease;
+      background .8s ease,
+      opacity .8s ease,
+      transform .8s cubic-bezier(.22, 1, .36, 1);
   }
-  /* 顶部一条"燃烧线"——点亮时显现 */
+
+  /* 顶部一条"燃烧线" */
   .faith-card::before{
     content: "";
     position: absolute;
@@ -4785,23 +4789,22 @@
     opacity: 1;
     transform: scaleX(1);
   }
-  /* 点亮时整张卡亮起 */
   .faith-card.lit{
     border-color: var(--border-hi);
     background:
-      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255, 45, 85, .10), transparent 65%),
-      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255, 183, 0, .06), transparent 65%),
+      radial-gradient(ellipse 90% 60% at 30% 0%, rgba(255, 45, 85, .10), transparent 65%),
+      radial-gradient(ellipse 80% 50% at 30% 100%, rgba(255, 183, 0, .06), transparent 65%),
       linear-gradient(180deg, rgba(28, 10, 15, .7), rgba(14, 6, 9, .85));
     box-shadow:
       0 0 calc(30px * var(--glow-strength)) rgba(255, 45, 85, .22),
       inset 0 0 40px rgba(255, 45, 85, .05);
   }
 
-  /* 卡左上的编号 */
+  /* 编号 */
   .fc-code{
     position: absolute;
     top: 10px;
-    left: 12px;
+    right: 12px;            /* 从左上改到右上，避让图标 */
     font-family: 'JetBrains Mono', monospace;
     font-size: .56rem;
     font-weight: 700;
@@ -4814,19 +4817,74 @@
     text-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5);
   }
 
-  /* ---- 香 ---- */
+  /* ============================================================
+     香龛：图标徽章 + 香柱 + 香炉底座，三者竖成一体
+     ============================================================ */
   .incense{
     position: relative;
     width: 100%;
-    height: 128px;
+    height: 170px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-bottom: 16px;
+    flex-shrink: 0;
   }
 
+  /* ---- 图标徽章（浮在香柱顶端） ---- */
+  .incense-emblem{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(.7);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    color: var(--text-mute);
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255, 183, 0, .08), rgba(20, 8, 12, .8));
+    border: 1.5px solid var(--border-gold);
+    box-shadow:
+      inset 0 0 12px rgba(0, 0, 0, .45),
+      0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .15);
+    z-index: 3;
+    opacity: .35;
+    transition:
+      transform .9s cubic-bezier(.34, 1.5, .64, 1),
+      opacity .7s ease,
+      color .7s ease,
+      border-color .7s ease,
+      box-shadow .7s ease;
+  }
+  .faith-card.lit .incense-emblem{
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    color: var(--gold-l);
+    border-color: var(--gold);
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255, 233, 184, .18), rgba(60, 20, 12, .85));
+    box-shadow:
+      inset 0 -3px 8px rgba(0, 0, 0, .45),
+      inset 0  3px 8px rgba(255, 233, 184, .28),
+      0 0 calc(14px * var(--glow-strength)) rgba(255, 183, 0, .55),
+      0 0 calc(28px * var(--glow-strength)) rgba(255, 183, 0, .28),
+      0 0 calc(60px * var(--glow-strength)) rgba(255, 45, 85, .22);
+    animation: fsEmblemFloat 3.4s ease-in-out infinite;
+  }
+  @keyframes fsEmblemFloat{
+    0%, 100% { transform: translateX(-50%) translateY(0)     scale(1);    }
+    50%      { transform: translateX(-50%) translateY(-3px)  scale(1.03); }
+  }
+
+  /* ---- 香柱（从底座向上长到徽章） ---- */
   .incense-stick{
-    position: relative;
+    position: absolute;
+    bottom: 18px;               /* 香炉底座上方 */
+    left: 50%;
+    transform: translateX(-50%);
     width: 3px;
     height: 0;
     border-radius: 2px;
@@ -4836,21 +4894,21 @@
       var(--red) 70%,
       var(--red-d) 100%);
     box-shadow:
-      0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5),
-      inset 0 0 4px rgba(255, 233, 184, .5);
+      0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .55),
+      inset 0 0 4px rgba(255, 233, 184, .6);
     transition: height 1.3s cubic-bezier(.5, 0, .2, 1);
+    z-index: 2;
   }
   .faith-card.lit .incense-stick{
-    height: 100%;
+    height: calc(100% - 64px);  /* 徽章底部（~52px）到香炉顶（~12px） */
   }
 
-  /* 香头 */
+  /* ---- 香头（香柱顶端小红点） ---- */
   .incense-tip{
     position: absolute;
     left: 50%;
-    bottom: 100%;                /* 贴在香柱顶端 */
+    bottom: calc(100% - 56px);  /* 停在徽章下方 */
     margin-left: -5px;
-    margin-bottom: -2px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -4861,10 +4919,10 @@
       transparent 100%);
     box-shadow:
       0 0 calc(10px * var(--glow-strength)) var(--gold),
-      0 0 calc(20px * var(--glow-strength)) var(--red),
-      0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .45);
+      0 0 calc(22px * var(--glow-strength)) var(--red);
     opacity: 0;
-    transition: opacity .5s ease 1.2s;   /* 香柱长完后才点亮 */
+    transition: opacity .5s ease 1.2s;
+    z-index: 2;
   }
   .faith-card.lit .incense-tip{
     opacity: 1;
@@ -4872,26 +4930,26 @@
   }
   @keyframes fsTipPulse{
     0%, 100% { transform: scale(1);   }
-    50%      { transform: scale(1.25); }
+    50%      { transform: scale(1.3); }
   }
 
-  /* 青烟 */
+  /* ---- 青烟（从香头向上飘） ---- */
   .incense-smoke{
     position: absolute;
     left: 50%;
-    bottom: 100%;
+    bottom: calc(100% - 56px);
     margin-left: -3px;
-    margin-bottom: 6px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: radial-gradient(circle,
-      rgba(255, 233, 184, .85) 0%,
+      rgba(255, 233, 184, .9) 0%,
       rgba(255, 183, 0, .5) 40%,
       transparent 75%);
     filter: blur(1.5px);
     opacity: 0;
     pointer-events: none;
+    z-index: 1;
   }
   .faith-card.lit .incense-smoke{
     animation: fsSmokeRise 3.2s ease-out infinite;
@@ -4900,25 +4958,98 @@
   .faith-card.lit .incense-smoke.s2{ animation-delay: 1.05s; }
   .faith-card.lit .incense-smoke.s3{ animation-delay: 2.1s;  }
   @keyframes fsSmokeRise{
-    0%   { opacity: 0; transform: translate(-50%, 0)    scale(.5);  }
+    0%   { opacity: 0;    transform: translate(-50%, 0)                       scale(.5); }
     15%  { opacity: .85; }
-    75%  { opacity: .35; transform: translate(calc(-50% + 10px), -90px) scale(1.8); }
-    100% { opacity: 0;   transform: translate(calc(-50% + 18px), -120px) scale(2.4); }
+    75%  { opacity: .35;  transform: translate(calc(-50% + 10px), -70px)      scale(1.6); }
+    100% { opacity: 0;    transform: translate(calc(-50% + 16px), -100px)     scale(2.2); }
   }
 
-  /* ---- 标题 & 描述 ---- */
+  /* ---- 香炉底座（新增） ---- */
+  .incense-burner{
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 52px;
+    height: 18px;
+    border-radius: 50% 50% 22% 22% / 60% 60% 40% 40%;
+    background:
+      linear-gradient(180deg,
+        rgba(120, 80, 20, .55) 0%,
+        rgba(60, 30, 10, .85) 55%,
+        rgba(30, 15, 5, .95) 100%);
+    border: 1.5px solid rgba(180, 130, 40, .55);
+    box-shadow:
+      inset 0 -4px 8px rgba(0, 0, 0, .7),
+      inset 0  2px 6px rgba(255, 220, 130, .18),
+      0 2px 6px rgba(0, 0, 0, .55);
+    z-index: 2;
+    opacity: .45;
+    transition: all .9s ease .3s;
+  }
+  /* 香炉顶口 */
+  .incense-burner::before{
+    content: "";
+    position: absolute;
+    top: -2px; left: 4px; right: 4px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+      rgba(0, 0, 0, .6) 0%,
+      rgba(0, 0, 0, .3) 60%,
+      transparent 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .8);
+  }
+  /* 香炉底部足 */
+  .incense-burner::after{
+    content: "";
+    position: absolute;
+    bottom: -3px; left: 50%;
+    transform: translateX(-50%);
+    width: 32px; height: 3px;
+    border-radius: 2px;
+    background: rgba(80, 50, 15, .8);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .7);
+  }
+  .faith-card.lit .incense-burner{
+    opacity: 1;
+    border-color: var(--gold);
+    background:
+      linear-gradient(180deg,
+        rgba(180, 120, 30, .55) 0%,
+        rgba(120, 60, 15, .85) 55%,
+        rgba(60, 20, 8, .95) 100%);
+    box-shadow:
+      inset 0 -4px 8px rgba(0, 0, 0, .6),
+      inset 0  2px 6px rgba(255, 220, 130, .28),
+      0 2px 6px rgba(0, 0, 0, .55),
+      0 0 calc(14px * var(--glow-strength)) rgba(255, 183, 0, .45),
+      0 0 calc(30px * var(--glow-strength)) rgba(255, 45, 85, .22);
+  }
+
+  /* ============================================================
+     右侧文字区
+     ============================================================ */
+  .faith-body{
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
   .faith-title{
-    font-size: 1.02rem;
+    font-size: 1.12rem;
     font-weight: 800;
     color: var(--gold-l);
-    letter-spacing: 2px;
+    letter-spacing: 2.4px;
     line-height: 1.3;
-    margin: 0 0 10px;
+    margin: 0;
     border: none;
     padding: 0;
     font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
     transition: all .8s ease;
     opacity: .55;
+    text-align: left;
   }
   .faith-card.lit .faith-title{
     color: var(--gold);
@@ -4929,64 +5060,21 @@
   }
 
   .faith-desc{
-    font-size: .82rem;
+    font-size: .84rem;
     line-height: 1.75;
     color: var(--text-dim);
     margin: 0;
     transition: color .8s ease;
+    text-align: left;
   }
   .faith-card.lit .faith-desc{
     color: var(--text);
   }
 
-  /* ---- 底座 ---- */
-  .fs-base{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 0 22px 22px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: 2.4px;
-    color: var(--text-mute);
-    text-transform: uppercase;
-  }
-  .fs-base-line{
-    flex: 1;
-    max-width: 120px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
-    transition: all .8s ease;
-  }
-  .faith-shrine.done .fs-base-line{
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    box-shadow: 0 0 calc(6px * var(--glow-strength)) rgba(255, 183, 0, .5);
-  }
-  .fs-base-dot{
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--border-gold);
-    transition: all .8s ease;
-  }
-  .faith-shrine.done .fs-base-dot{
-    background: var(--gold);
-    box-shadow: 0 0 calc(6px * var(--glow-strength)) var(--gold);
-  }
-  .fs-base-text{
-    transition: all .8s ease;
-    white-space: nowrap;
-  }
-  .faith-shrine.done .fs-base-text{
-    color: var(--gold-l);
-    text-shadow: 0 0 calc(10px * var(--glow-strength)) rgba(255, 183, 0, .55);
-  }
-
-  /* ---- 入场：卡片本身淡入 ---- */
+  /* ---- 入场：卡片淡入（opacity 从 0 开始） ---- */
   .faith-card{
     opacity: 0;
     transform: translateY(14px);
-    transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
   }
   .faith-card.seen{
     opacity: 1;
@@ -4998,55 +5086,53 @@
     .fs-bar{ padding: 10px 14px; font-size: .62rem; letter-spacing: 1.6px; }
     .fs-bar-count{ font-size: .56rem; }
     .fs-bar-count b{ font-size: .82rem; }
-    .fs-grid{ padding: 18px 12px 14px; gap: 8px; }
-    .faith-card{ padding: 18px 10px 16px; min-height: 270px; }
-    .incense{ height: 110px; margin-bottom: 12px; }
-    .faith-title{ font-size: .92rem; letter-spacing: 1.4px; }
-    .faith-desc{ font-size: .76rem; }
+    .fs-grid{ padding: 18px 12px 14px; gap: 10px; }
+    .faith-card{
+      padding: 18px 14px;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      min-height: 200px;
+    }
+    .incense{ height: 150px; }
+    .incense-emblem{ width: 40px; height: 40px; font-size: 1rem; }
+    .incense-burner{ width: 46px; height: 16px; }
+    .faith-card.lit .incense-stick{ height: calc(100% - 58px); }
+    .faith-title{ font-size: 1rem; letter-spacing: 1.8px; }
+    .faith-desc{ font-size: .78rem; }
     .fc-code{ font-size: .52rem; }
     .fs-base{ padding: 0 14px 16px; font-size: .54rem; letter-spacing: 1.8px; }
   }
 
   @media (max-width: 480px){
-    /* 移动端上下堆叠 */
+    /* 移动端：三张卡上下堆叠，卡内仍横向布局 */
     .fs-grid{
       grid-template-columns: 1fr;
-      padding: 16px 12px 12px;
+      padding: 14px 10px 10px;
       gap: 10px;
     }
     .faith-card{
-      min-height: auto;
-      padding: 18px 16px 18px;
-      /* 移动端香在左、文字在右：横向布局 */
-      display: grid;
-      grid-template-columns: 90px 1fr;
-      grid-template-rows: auto auto;
-      align-items: center;
-      gap: 0 14px;
-      text-align: left;
+      min-height: 168px;
+      padding: 16px 12px;
+      grid-template-columns: 76px 1fr;
+      gap: 10px;
     }
-    .incense{
-      grid-row: 1 / span 2;
-      height: 100px;
-      width: 90px;
-      margin: 0;
-    }
-    .faith-title{
-      grid-column: 2;
-      margin: 0 0 6px;
-      align-self: end;
-    }
-    .faith-desc{
-      grid-column: 2;
-      align-self: start;
-      font-size: .78rem;
-    }
+    .incense{ height: 130px; }
+    .incense-emblem{ width: 36px; height: 36px; font-size: .9rem; }
+    .incense-burner{ width: 40px; height: 14px; }
+    .faith-card.lit .incense-stick{ height: calc(100% - 52px); }
+    .incense-tip{ bottom: calc(100% - 50px); }
+    .incense-smoke{ bottom: calc(100% - 50px); }
+    .faith-title{ font-size: .92rem; letter-spacing: 1.4px; }
+    .faith-desc{ font-size: .74rem; line-height: 1.7; }
+    .fc-code{ font-size: .5rem; }
   }
 
-  @media (prefers-reduced-motion: reduce){
+   @media (prefers-reduced-motion: reduce){
     .faith-card,
     .incense-stick,
     .incense-tip,
+    .incense-emblem,
+    .incense-burner,
     .faith-title,
     .faith-desc,
     .faith-shrine::after{
@@ -5057,8 +5143,15 @@
       opacity: 1 !important;
       transform: none !important;
     }
-    .incense-stick{ height: 100% !important; }
+    .incense-stick{
+      height: calc(100% - 64px) !important;
+    }
     .incense-tip { opacity: 1 !important; }
+    .incense-emblem{
+      opacity: 1 !important;
+      transform: translateX(-50%) scale(1) !important;
+    }
+    .incense-burner{ opacity: 1 !important; }
     .incense-smoke{ animation: none !important; }
     .fs-bar-dot{ animation-duration: .001ms !important; }
   }
@@ -5635,28 +5728,40 @@
 
       <div class="fs-grid">
         <!-- 第一炷：信财神 -->
-        <article class="faith-card" data-i="0">
+                <article class="faith-card" data-i="0">
           <span class="fc-code" aria-hidden="true">FAITH.001</span>
+
           <div class="incense" aria-hidden="true">
+            <div class="incense-emblem">
+              <i class="fas fa-coins"></i>
+            </div>
             <span class="incense-stick"></span>
             <span class="incense-tip"></span>
             <span class="incense-smoke s1"></span>
             <span class="incense-smoke s2"></span>
             <span class="incense-smoke s3"></span>
+            <span class="incense-burner"></span>
           </div>
-          <h4 class="faith-title">信财神</h4>
-          <p class="faith-desc">财富是善愿，不是贪婪。接财神，是接一份对未来的期许。</p>
+
+          <div class="faith-body">
+            <h4 class="faith-title">信财神</h4>
+            <p class="faith-desc">财富是善愿，不是贪婪。接财神，是接一份对未来的期许。</p>
+          </div>
         </article>
 
         <!-- 第二炷：信传播 -->
         <article class="faith-card" data-i="1">
           <span class="fc-code" aria-hidden="true">FAITH.002</span>
-          <div class="incense" aria-hidden="true">
+           <div class="incense" aria-hidden="true">
+            <div class="incense-emblem">
+              <i class="fas fa-bullhorn"></i>
+            </div>
             <span class="incense-stick"></span>
             <span class="incense-tip"></span>
             <span class="incense-smoke s1"></span>
             <span class="incense-smoke s2"></span>
             <span class="incense-smoke s3"></span>
+            <span class="incense-burner"></span>
           </div>
           <h4 class="faith-title">信传播</h4>
           <p class="faith-desc">每一次转发，都是上香；每一次分享，都是给财神爷添火。</p>
@@ -5665,12 +5770,16 @@
         <!-- 第三炷：信长期 -->
         <article class="faith-card" data-i="2">
           <span class="fc-code" aria-hidden="true">FAITH.003</span>
-          <div class="incense" aria-hidden="true">
+         <div class="incense" aria-hidden="true">
+            <div class="incense-emblem">
+              <i class="fas fa-hourglass-half"></i>
+            </div>
             <span class="incense-stick"></span>
             <span class="incense-tip"></span>
             <span class="incense-smoke s1"></span>
             <span class="incense-smoke s2"></span>
             <span class="incense-smoke s3"></span>
+            <span class="incense-burner"></span>
           </div>
           <h4 class="faith-title">信长期</h4>
           <p class="faith-desc">财神偏爱团结的社区。长期主义，社区自律，彼此成就。</p>
