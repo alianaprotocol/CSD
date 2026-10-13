@@ -33,6 +33,7 @@
 <link rel="preload" as="image" href="caishen.png">
 <link rel="preload" as="image" href="door-left.png">
 <link rel="preload" as="image" href="door-right.png">
+<link rel="preload" as="image" href="bag.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <script>
@@ -201,7 +202,6 @@
     border: 0;
   }
 
-  /* ============ 门页激活时隐藏 HUD 与主题按钮 ============ */
   body.gate-active .hud,
   body.gate-active #themeToggle {
     opacity: 0;
@@ -353,7 +353,6 @@
     background: radial-gradient(ellipse 70% 60% at 50% 50%, #3a070c 0%, #180304 55%, #000 100%);
   }
 
-  /* ---- 门内神庙光晕 ---- */
   .gate-inner{
     position: absolute;
     inset: 0;
@@ -414,7 +413,6 @@
     pointer-events: none;
   }
 
-  /* ---- 门楣横匾 ---- */
   .gate-lintel{
     position: absolute;
     top: 5%;
@@ -487,9 +485,6 @@
       0 1px 0 rgba(255, 245, 205, .55);
   }
 
-  /* ============================================================
-     ✦ 门板（图片版，右门不镜像翻转）
-     ============================================================ */
   .gate-door{
     position: absolute;
     top: 0; bottom: 0;
@@ -519,8 +514,6 @@
       inset  22px 0 34px rgba(0, 0, 0, .82),
       inset   0  0 120px rgba(0, 0, 0, .7);
   }
-
-  /* 门板内图片 */
   .gate-door .door-image{
     position: absolute;
     inset: 0;
@@ -534,8 +527,6 @@
     -webkit-user-drag: none;
     filter: saturate(1.05) contrast(1.02);
   }
-
-  /* 门板内侧边缘高光条（极细，修饰图片边缘） */
   .gate-door::before{
     content: "";
     position: absolute;
@@ -562,9 +553,6 @@
       box-shadow .9s ease .08s;
   }
 
-  /* ============================================================
-     ✦ 门缝光带（更细、更柔和）
-     ============================================================ */
   .gate-seam{
     position: absolute;
     top: 0; bottom: 22px;
@@ -592,9 +580,6 @@
   #gate.open .gate-seam{ opacity: 0; }
   #gate.gone .gate-seam{ opacity: 0; }
 
-  /* ============================================================
-     ✦ 门槛
-     ============================================================ */
   .gate-sill{
     position: absolute;
     left: 0; right: 0;
@@ -641,7 +626,6 @@
   .gate-sill::before{ left: 6%; }
   .gate-sill::after { right: 6%; }
 
-  /* ---- 光毯 ---- */
   .gate-carpet{
     position: absolute;
     left: 50%;
@@ -689,7 +673,6 @@
     pointer-events: none;
   }
 
-  /* ---- 3D 转开 ---- */
   #gate.open .gate-door-left {
     transform: rotateY(-82deg) translateZ(-10px);
     box-shadow:
@@ -705,7 +688,6 @@
       -40px 0 80px rgba(0, 0, 0, .75);
   }
 
-  /* ---- 叩门提示（下移，加半透明底） ---- */
   .gate-hint{
     position: absolute;
     left: 50%;
@@ -757,7 +739,9 @@
     50%      { transform: scale(1.16); opacity: 1;  }
   }
 
-  /* ============ 摇签 ============ */
+  /* ============================================================
+     ✦ 财神锦囊 · 今日财神录
+     ============================================================ */
   .fortune-stage{
     position: absolute;
     inset: 0;
@@ -766,207 +750,478 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 34px;
-    padding: 24px;
+    padding: 20px;
     opacity: 0;
     pointer-events: none;
     transition: opacity .9s ease .2s;
   }
   .fortune-stage.show{ opacity: 1; pointer-events: auto; }
 
-  .fortune-tube{
+  /* ---- 财神锦囊（本地图片） ---- */
+  .bag{
     position: relative;
-    width: 108px; height: 168px;
+    width: 150px;
+    height: 200px;
     cursor: pointer;
-    transition: transform .35s ease, opacity .5s ease;
-    filter:
-      drop-shadow(0 0 18px rgba(255, 183, 0, .5))
-      drop-shadow(0 18px 30px rgba(0,0,0,.8));
     -webkit-tap-highlight-color: transparent;
+    animation: bagFloat 3.6s ease-in-out infinite;
+    will-change: transform;
   }
-  .fortune-tube:hover{ transform: translateY(-5px); }
-  .fortune-tube.shaking{ animation: tubeShake .65s cubic-bezier(.36,.07,.19,.97); }
-  @keyframes tubeShake{
-    0%,100% { transform: rotate(0) translateY(0); }
-    12%     { transform: rotate(-9deg) translateY(-3px); }
-    28%     { transform: rotate( 8deg) translateY(-6px); }
-    44%     { transform: rotate(-7deg) translateY(-4px); }
-    60%     { transform: rotate( 6deg) translateY(-3px); }
-    78%     { transform: rotate(-3deg) translateY(-1px); }
+  @keyframes bagFloat{
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
   }
-  .tube-body{
+  .bag-img{
     position: absolute;
-    bottom: 0; left: 0;
+    inset: 0;
     width: 100%;
-    height: 108px;
-    border-radius: 10px 10px 44% 44% / 10px 10px 20% 20%;
-    background: linear-gradient(180deg, #4a1108 0%, #2a0805 48%, #100202 100%);
-    border: 2px solid #ffb700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow:
-      inset 0 -16px 26px rgba(0,0,0,.7),
-      inset 0 10px 16px rgba(255, 183, 0, .18),
-      0 0 22px rgba(255, 183, 0, .5);
-  }
-  .tube-char{
-    color: #ffd966;
-    font-size: 2.2rem;
-    font-weight: 900;
-    text-shadow: 0 0 12px rgba(255, 183, 0, .9), 0 2px 8px rgba(0,0,0,.9);
-    font-family: 'Noto Serif SC', 'Songti SC', serif;
-  }
-  .tube-sticks{
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 76px; height: 62px;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    pointer-events: none;
-  }
-  .tube-sticks span{
+    height: 100%;
+    object-fit: contain;
     display: block;
-    width: 6px;
-    border-radius: 3px 3px 0 0;
-    background: linear-gradient(180deg, #ffe9b8 0%, #ffb700 55%, #8a6008 100%);
-    box-shadow: 0 0 8px rgba(255, 183, 0, .9);
+    user-select: none;
+    -webkit-user-drag: none;
+    filter:
+      drop-shadow(0 14px 22px rgba(0, 0, 0, .85))
+      drop-shadow(0 0 18px rgba(255, 183, 0, .35));
+    z-index: 2;
   }
-  .tube-sticks span:nth-child(1){ height: 46px; transform: rotate(-7deg); }
-  .tube-sticks span:nth-child(2){ height: 54px; }
-  .tube-sticks span:nth-child(3){ height: 50px; transform: rotate( 7deg); }
-  .fortune-hint{
-    color: #ffd966;
-    font-size: .82rem;
-    letter-spacing: 3px;
-    font-weight: 700;
-    text-shadow: 0 0 12px rgba(255, 183, 0, .8);
-    animation: hintFade 2.6s ease-in-out infinite;
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
+  /* 备用 CSS 锦囊（图片加载失败时） */
+  .bag-fallback-inner{
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
-  @keyframes hintFade{
-    0%,100% { opacity: .5; }
-    50%     { opacity: 1;  }
+  .bag.bag-noimg .bag-img{ display: none; }
+  .bag.bag-noimg .bag-fallback-inner{ display: block; }
+  .fb-body{
+    position: absolute;
+    left: 8px; right: 8px; bottom: 0;
+    height: 150px;
+    border-radius: 40% 40% 46% 46% / 18% 18% 55% 55%;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 20%, #ff5c72 0%, transparent 60%),
+      linear-gradient(180deg, #c81633 0%, #9b0e26 45%, #5a0616 100%);
+    box-shadow:
+      inset 0 -18px 24px rgba(0, 0, 0, .55),
+      inset 0 6px 14px rgba(255, 200, 200, .28),
+      0 12px 26px rgba(0, 0, 0, .75);
+    overflow: hidden;
+  }
+  .fb-char{
+    position: absolute;
+    left: 50%; top: 52%;
+    transform: translate(-50%, -50%);
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 12px var(--gold),
+      0 0 24px rgba(255, 183, 0, .55),
+      0 2px 6px rgba(0, 0, 0, .9);
+  }
+  .fb-top{
+    position: absolute;
+    left: 50%; top: 30px;
+    width: 84px; height: 28px;
+    margin-left: -42px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 30%, #c81633 0%, #6b0a1c 100%);
+    box-shadow:
+      inset 0 -3px 6px rgba(0, 0, 0, .7),
+      inset 0 2px 4px rgba(255, 200, 200, .25);
+  }
+  .fb-tie{
+    position: absolute;
+    left: 50%; top: 46px;
+    width: 82px; height: 14px;
+    margin-left: -41px;
+    border-radius: 50% / 60%;
+    background: linear-gradient(180deg, #ffe9a8 0%, #d4a017 45%, #6b4a04 100%);
+    box-shadow:
+      inset 0 -2px 4px rgba(0, 0, 0, .55),
+      inset 0 2px 3px rgba(255, 245, 220, .65),
+      0 0 10px rgba(255, 183, 0, .55);
   }
 
-  .fortune-card{
+  .bag-halo{
+    position: absolute;
+    left: 50%; top: 55%;
+    width: 260px; height: 260px;
+    margin-left: -130px; margin-top: -130px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255, 183, 0, .22) 0%,
+      rgba(255, 45, 85, .10) 40%,
+      transparent 72%);
+    pointer-events: none;
+    z-index: 0;
+    animation: haloPulse 3.6s ease-in-out infinite;
+  }
+  @keyframes haloPulse{
+    0%, 100% { opacity: .75; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.06); }
+  }
+
+  .bag-hint{
+    position: absolute;
+    left: 50%; bottom: -46px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: var(--gold-l);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 183, 0, .8);
+    animation: hintFade 2.6s ease-in-out infinite;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  @keyframes hintFade{
+    0%, 100% { opacity: .55; }
+    50%      { opacity: 1;   }
+  }
+
+  .bag.opening{
+    animation: bagOpen .55s ease-out forwards;
+  }
+  @keyframes bagOpen{
+    0%   { transform: translateY(-8px) scale(1); opacity: 1; }
+    35%  { transform: translateY(-14px) scale(1.06) rotate(-3deg); opacity: 1; }
+    60%  { transform: translateY(-10px) scale(.92) rotate(2deg); opacity: .9; }
+    100% { transform: translateY(6px) scale(.55); opacity: 0; }
+  }
+
+  .flash{
     position: absolute;
     left: 50%; top: 50%;
-    transform: translate(-50%, -42%) scale(.92);
-    width: min(430px, 88vw);
-    padding: 22px 30px 30px;
-    border-radius: 18px;
-    background: linear-gradient(158deg, rgba(24, 10, 15, .96) 0%, rgba(14, 6, 9, .98) 100%);
-    border: 1px solid #ffb700;
+    width: 20px; height: 20px;
+    margin-left: -10px; margin-top: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255, 245, 220, .9) 0%,
+      rgba(255, 183, 0, .5) 40%,
+      transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 4;
+  }
+  .flash.on{ animation: flashBurst .55s ease-out forwards; }
+  @keyframes flashBurst{
+    0%   { opacity: .9; transform: scale(1); }
+    100% { opacity: 0;  transform: scale(18); }
+  }
+
+  /* ---- 今日财神录 · 鎏金卷轴 ---- */
+  .scroll-card{
+    position: absolute;
+    left: 50%; top: 50%;
+    width: min(380px, 92vw);
+    padding: 26px 24px 22px;
+    border-radius: 16px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255, 200, 100, .18) 0%, transparent 62%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 45, 85, .10) 0%, transparent 62%),
+      linear-gradient(160deg, #1c0a12 0%, #0c0408 100%);
+    border: 1.5px solid var(--gold);
     box-shadow:
-      0 34px 90px rgba(0,0,0,.85),
-      0 0 40px rgba(255, 183, 0, .35),
-      inset 0 0 60px rgba(255, 45, 85, .08);
+      0 0 46px rgba(255, 183, 0, .35),
+      0 28px 70px rgba(0, 0, 0, .88),
+      inset 0 0 46px rgba(255, 183, 0, .05);
     text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: all .85s cubic-bezier(.2,.85,.3,1);
-    z-index: 8;
-    overflow: visible;
+    transform: translate(-50%, -50%) scale(.88);
+    transition: opacity .45s ease, transform .45s cubic-bezier(.34, 1.4, .64, 1);
+    z-index: 5;
+    overflow: hidden;
   }
-  .fortune-card.show{
+  .scroll-card.show{
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
   }
-  .fortune-card::before{
+  .scroll-card::before{
     content: "";
     position: absolute;
-    inset: 8px;
-    border: 1px dashed rgba(255, 183, 0, .35);
-    border-radius: 12px;
+    inset: 9px;
+    border: 1px dashed rgba(255, 183, 0, .32);
+    border-radius: 10px;
     pointer-events: none;
   }
-  .fc-deity{
+  .scroll-card::after{
+    content: "";
+    position: absolute;
+    inset: 18px;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--gold-l), var(--gold-l)) 0 0 / 14px 1.5px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 0 0 / 1.5px 14px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 100% 0 / 14px 1.5px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 100% 0 / 1.5px 14px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 0 100% / 14px 1.5px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 0 100% / 1.5px 14px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 100% 100% / 14px 1.5px no-repeat,
+      linear-gradient(var(--gold-l), var(--gold-l)) 100% 100% / 1.5px 14px no-repeat;
+    opacity: .85;
+  }
+  .sc-deity{
     position: relative;
-    width: 92px; height: 92px;
-    margin: -62px auto 12px;
+    width: 76px; height: 76px;
+    margin: -52px auto 10px;
     border-radius: 50%;
     background: radial-gradient(circle at 50% 40%, #2a0a10, #0a0205);
-    border: 2px solid #ffb700;
+    border: 2px solid var(--gold);
     box-shadow:
-      0 0 0 4px rgba(10, 6, 8, .9),
+      0 0 0 4px rgba(10, 6, 8, .92),
+      0 0 0 5px rgba(255, 183, 0, .35),
       0 0 24px rgba(255, 183, 0, .7),
-      0 0 60px rgba(255, 45, 85, .4),
-      inset 0 0 30px rgba(255, 183, 0, .2);
+      0 0 48px rgba(255, 45, 85, .3);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     z-index: 2;
-    animation: deityRingPulse 3.5s ease-in-out infinite;
   }
-  @keyframes deityRingPulse{
-    0%, 100% { box-shadow:
-      0 0 0 4px rgba(10, 6, 8, .9), 0 0 24px rgba(255, 183, 0, .7),
-      0 0 60px rgba(255, 45, 85, .4), inset 0 0 30px rgba(255, 183, 0, .2); }
-    50%      { box-shadow:
-      0 0 0 4px rgba(10, 6, 8, .9), 0 0 32px rgba(255, 183, 0, .95),
-      0 0 80px rgba(255, 45, 85, .55), inset 0 0 40px rgba(255, 183, 0, .3); }
-  }
-  .fc-deity img{
+  .sc-deity img{
     width: 128%; height: 128%;
     object-fit: cover;
     object-position: center 32%;
-    display: block;
     transform: translateY(-6%);
-    filter: saturate(1.15) contrast(1.05);
   }
-  .fc-label{
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: 5px;
-    color: #ff2d55;
-    margin-bottom: 14px;
-    text-shadow: 0 0 10px rgba(255, 45, 85, .8);
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-  }
-  .fc-text{
-    font-size: clamp(1.18rem, 4.6vw, 1.5rem);
-    font-weight: 800;
-    line-height: 1.8;
-    color: #ffd966;
-    margin-bottom: 22px;
-    padding: 0 8px;
+  .sc-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.02rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: var(--gold-l);
+    text-shadow:
+      0 0 10px var(--gold),
+      0 0 22px rgba(255, 183, 0, .55),
+      0 0 44px rgba(255, 45, 85, .25);
+    margin-bottom: 4px;
+    padding-left: 6px;
     font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
-    letter-spacing: 1px;
-    text-shadow: 0 0 16px rgba(255, 183, 0, .55), 0 2px 8px rgba(0,0,0,.8);
   }
-  .fc-btn{
-    display: inline-block;
-    padding: 12px 32px;
-    border: 1px solid #ff2d55;
+  .sc-title::before,
+  .sc-title::after{
+    content: "✦";
+    font-size: .58rem;
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold);
+    opacity: .85;
+  }
+  .sc-subtitle{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .56rem;
+    letter-spacing: 3.2px;
+    color: #6b5744;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .sc-divider{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+  }
+  .sc-divider span{
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: .7;
+  }
+  .sc-divider i{
+    font-size: .55rem;
+    color: var(--gold);
+    text-shadow: 0 0 6px var(--gold);
+  }
+  .sc-bless{
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 26px 7px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #2e0a14 0%, #180406 100%);
+    border: 1px solid var(--gold);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 183, 0, .18),
+      inset 0 2px 6px rgba(255, 220, 140, .18),
+      inset 0 -3px 6px rgba(0, 0, 0, .65),
+      0 0 16px rgba(255, 183, 0, .35);
+    color: var(--gold-l);
+    font-size: .96rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    padding-left: 34px;
+    text-shadow:
+      0 0 10px var(--gold),
+      0 0 20px rgba(255, 183, 0, .55),
+      0 1px 0 rgba(255, 245, 205, .35);
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .sc-text{
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.75;
+    color: #ffe9b8;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-shadow: 0 0 10px rgba(255, 183, 0, .35);
+    padding: 0 6px;
+  }
+  .sc-grid{
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .sc-cell{
+    position: relative;
+    padding: 9px 12px 9px 14px;
     border-radius: 6px;
-    background: linear-gradient(135deg, rgba(255, 45, 85, .15), rgba(204, 14, 48, .25));
-    color: #ffd966;
-    font-size: .88rem;
+    background: linear-gradient(180deg, rgba(255, 183, 0, .07) 0%, rgba(255, 183, 0, .02) 100%);
+    border: 1px solid rgba(255, 183, 0, .22);
+    text-align: left;
+  }
+  .sc-cell::before{
+    content: "";
+    position: absolute;
+    left: 0; top: 22%; bottom: 22%;
+    width: 2px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, var(--gold), transparent 90%);
+    opacity: .75;
+  }
+  .sc-cell-label{
+    font-size: .56rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    color: #8a7052;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .sc-cell-value{
+    font-size: .86rem;
+    font-weight: 800;
+    color: var(--gold-l);
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 8px rgba(255, 183, 0, .4);
+  }
+  .sc-line{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px 10px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .sc-line::before{
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 1px;
+  }
+  .sc-line.good{
+    background: linear-gradient(90deg, rgba(38, 255, 143, .10) 0%, rgba(38, 255, 143, .03) 100%);
+    border: 1px solid rgba(38, 255, 143, .24);
+  }
+  .sc-line.good::before{
+    background: linear-gradient(180deg, #26ff8f, transparent 95%);
+    box-shadow: 0 0 6px #26ff8f;
+  }
+  .sc-line.bad{
+    background: linear-gradient(90deg, rgba(255, 45, 85, .10) 0%, rgba(255, 45, 85, .03) 100%);
+    border: 1px solid rgba(255, 45, 85, .24);
+  }
+  .sc-line.bad::before{
+    background: linear-gradient(180deg, var(--red), transparent 95%);
+    box-shadow: 0 0 6px var(--red);
+  }
+  .sc-line-label{
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .84rem;
+    font-weight: 900;
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    position: relative;
+  }
+  .sc-line.good .sc-line-label{
+    background: radial-gradient(circle at 35% 30%, rgba(38, 255, 143, .3), rgba(38, 255, 143, .08));
+    border: 1px solid rgba(38, 255, 143, .55);
+    color: #c6ffe2;
+    text-shadow: 0 0 8px rgba(38, 255, 143, .8);
+    box-shadow: 0 0 8px rgba(38, 255, 143, .35);
+  }
+  .sc-line.bad .sc-line-label{
+    background: radial-gradient(circle at 35% 30%, rgba(255, 45, 85, .3), rgba(255, 45, 85, .08));
+    border: 1px solid rgba(255, 45, 85, .55);
+    color: #ffd0d6;
+    text-shadow: 0 0 8px rgba(255, 45, 85, .8);
+    box-shadow: 0 0 8px rgba(255, 45, 85, .35);
+  }
+  .sc-line-value{
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--gold-l);
+    letter-spacing: .5px;
+    line-height: 1.5;
+  }
+  .sc-line.good .sc-line-value{
+    color: #c6ffe2;
+    text-shadow: 0 0 6px rgba(38, 255, 143, .3);
+  }
+  .sc-line.bad .sc-line-value{
+    color: #ffc8d0;
+    text-shadow: 0 0 6px rgba(255, 45, 85, .3);
+  }
+  .sc-btn{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 28px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--red);
+    background: linear-gradient(135deg, rgba(255, 45, 85, .22), rgba(160, 13, 40, .32));
+    color: var(--gold-l);
+    font-size: .82rem;
     font-weight: 800;
     letter-spacing: 2px;
     cursor: pointer;
-    box-shadow: 0 0 22px rgba(255, 45, 85, .5), inset 0 0 22px rgba(255, 45, 85, .1);
-    transition: all .22s ease;
+    box-shadow:
+      0 0 20px rgba(255, 45, 85, .5),
+      inset 0 0 16px rgba(255, 45, 85, .12),
+      inset 0 1px 0 rgba(255, 200, 200, .25);
+    transition: transform .18s ease, box-shadow .18s ease;
+    text-shadow: 0 0 8px rgba(255, 183, 0, .6);
+    -webkit-tap-highlight-color: transparent;
     font-family: 'JetBrains Mono', 'Noto Serif SC', monospace;
     text-transform: uppercase;
-    -webkit-tap-highlight-color: transparent;
   }
-  .fc-btn:hover{
-    transform: translateY(-2px);
-    box-shadow:
-      0 0 32px rgba(255, 45, 85, .8),
-      0 0 60px rgba(255, 45, 85, .35),
-      inset 0 0 30px rgba(255, 45, 85, .2);
-    text-shadow: 0 0 10px rgba(255, 183, 0, .9);
+  .sc-btn:active{ transform: scale(.96); }
+  @media (hover: hover){
+    .sc-btn:hover{
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 32px rgba(255, 45, 85, .85),
+        inset 0 0 24px rgba(255, 45, 85, .22),
+        inset 0 1px 0 rgba(255, 200, 200, .3);
+    }
   }
-  .fc-btn:active{ transform: translateY(0) scale(.97); }
 
   @media (max-width: 480px){
     .gate-hint{
@@ -976,13 +1231,28 @@
       padding: 10px 18px;
     }
     .gate-hint i{ font-size: 1.5rem; }
-    .fortune-tube{ width: 96px; height: 148px; }
-    .tube-body{ height: 94px; }
-    .tube-char{ font-size: 2rem; }
-    .fortune-card{ padding: 20px 22px 24px; }
-    .fc-deity{ width: 78px; height: 78px; margin-top: -52px; }
     .gate-lintel{ width: 80%; }
     .lintel-text{ letter-spacing: 8px; }
+
+    .bag{ width: 128px; height: 172px; }
+    .fb-body{ height: 128px; }
+    .fb-char{ font-size: 44px; }
+    .fb-top{ top: 26px; width: 72px; margin-left: -36px; height: 24px; }
+    .fb-tie{ top: 40px; width: 72px; margin-left: -36px; }
+
+    .scroll-card{ padding: 22px 16px 18px; }
+    .sc-deity{ width: 64px; height: 64px; margin-top: -44px; }
+    .sc-title{ letter-spacing: 4px; font-size: .92rem; }
+    .sc-subtitle{ font-size: .52rem; letter-spacing: 2.4px; margin-bottom: 12px; }
+    .sc-bless{ font-size: .86rem; letter-spacing: 6px; padding: 5px 20px 6px 26px; margin-bottom: 12px; }
+    .sc-text{ font-size: .94rem; margin-bottom: 14px; }
+    .sc-grid{ gap: 6px; margin-bottom: 8px; }
+    .sc-cell{ padding: 8px 9px 8px 11px; }
+    .sc-cell-value{ font-size: .78rem; }
+    .sc-line{ padding: 9px 10px; margin-bottom: 6px; }
+    .sc-line-label{ width: 24px; height: 24px; font-size: .78rem; }
+    .sc-line-value{ font-size: .74rem; }
+    .sc-btn{ padding: 10px 22px; font-size: .78rem; }
   }
 
   /* ============ 主容器 ============ */
@@ -1264,7 +1534,6 @@
   }
   .hero-chips i{ color: var(--gold); font-size: .85em; }
 
-  /* ============ 免责声明 ============ */
   .notice{
     display: flex;
     gap: 10px;
@@ -5126,14 +5395,12 @@
      ============================================================ -->
 <div id="gate" role="dialog" aria-label="财神到入场仪式" aria-modal="true">
 
-  <!-- 门内神庙 -->
   <div class="gate-inner" aria-hidden="true">
     <span class="gate-inner-glow"></span>
     <span class="gate-inner-rays"></span>
     <span class="gate-inner-hall"></span>
   </div>
 
-  <!-- 门楣横匾 -->
   <div class="gate-lintel" aria-hidden="true">
     <span class="lintel-bar"></span>
     <span class="lintel-frame">
@@ -5142,48 +5409,81 @@
     <span class="lintel-bar"></span>
   </div>
 
-  <!-- 左门（图片） -->
   <div class="gate-door gate-door-left">
     <img class="door-image" src="door-left.png" alt="财神左门" loading="eager" decoding="async" draggable="false">
   </div>
 
-  <!-- 右门（图片，独立不镜像） -->
   <div class="gate-door gate-door-right">
     <img class="door-image" src="door-right.png" alt="财神右门" loading="eager" decoding="async" draggable="false">
   </div>
 
-  <!-- 门缝光带 -->
   <div class="gate-seam" aria-hidden="true"></div>
 
-  <!-- 光毯 -->
   <div class="gate-carpet" aria-hidden="true"></div>
 
-  <!-- 门槛 -->
   <div class="gate-sill" aria-hidden="true"></div>
 
-  <!-- 叩门提示（下移，加半透明底） -->
   <div class="gate-hint">
     <i class="fas fa-hand-pointer" aria-hidden="true"></i>
     <span>轻叩门环 · 财神开门</span>
   </div>
 
-  <!-- 摇签台 -->
+  <!-- 财神锦囊 + 今日财神录 -->
   <div class="fortune-stage">
-    <div class="fortune-tube" id="fortuneTube" role="button" aria-label="摇签筒" tabindex="0">
-      <div class="tube-sticks" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="tube-body"><span class="tube-char">财</span></div>
+    <div class="bag" id="fortuneBag" role="button" tabindex="0" aria-label="点击财神锦囊，开出今日财神录">
+      <div class="bag-halo" aria-hidden="true"></div>
+      <img class="bag-img" src="bag.png" alt="财神锦囊" draggable="false" loading="eager" decoding="async">
+      <div class="bag-fallback-inner" aria-hidden="true">
+        <div class="fb-top"></div>
+        <div class="fb-body">
+          <span class="fb-char">财</span>
+        </div>
+        <div class="fb-tie"></div>
+      </div>
+      <div class="bag-hint">点击锦囊 · 开财神录</div>
     </div>
-    <div class="fortune-hint">点击签筒 · 摇出今日财神签</div>
-  </div>
 
-  <!-- 财神签弹窗 -->
-  <div class="fortune-card" id="fortuneCard" role="dialog" aria-label="今日财神签" aria-modal="true">
-    <div class="fc-deity" aria-hidden="true">
-      <img src="caishen.png" alt="" loading="eager" decoding="async" />
+    <div class="flash" id="fortuneFlash" aria-hidden="true"></div>
+
+    <div class="scroll-card" id="fortuneScroll" role="dialog" aria-label="今日财神录" aria-modal="true">
+      <div class="sc-deity" aria-hidden="true">
+        <img src="caishen.png" alt="" loading="eager" decoding="async">
+      </div>
+      <div class="sc-title">今日财神录</div>
+      <div class="sc-subtitle">CAISHEN · DAILY RECORD</div>
+
+      <div class="sc-divider" aria-hidden="true">
+        <span></span><i class="fas fa-coins"></i><span></span>
+      </div>
+
+      <div class="sc-bless" id="scBless">恭喜发财</div>
+      <div class="sc-text" id="scText">财神到，财运到，开门见喜。</div>
+
+      <div class="sc-grid">
+        <div class="sc-cell">
+          <div class="sc-cell-label">财神方位</div>
+          <div class="sc-cell-value" id="scDir">正西</div>
+        </div>
+        <div class="sc-cell">
+          <div class="sc-cell-label">今日干支 · 值日</div>
+          <div class="sc-cell-value" id="scGanzhi">庚申日 · 开日</div>
+        </div>
+      </div>
+
+      <div class="sc-line good">
+        <div class="sc-line-label">宜</div>
+        <div class="sc-line-value" id="scGood">出行 · 求财 · 祈福</div>
+      </div>
+
+      <div class="sc-line bad">
+        <div class="sc-line-label">忌</div>
+        <div class="sc-line-value" id="scBad">动土 · 开仓 · 诉讼</div>
+      </div>
+
+      <button class="sc-btn" type="button" id="fortuneEnter">
+        <i class="fas fa-scroll" aria-hidden="true"></i> 收下财神录 · 进庙
+      </button>
     </div>
-    <div class="fc-label">今日财神签</div>
-    <div class="fc-text"></div>
-    <button class="fc-btn" type="button">收下财神签 · 进庙</button>
   </div>
 </div>
 
@@ -5361,7 +5661,6 @@
     </ul>
   </nav>
 
-  <!-- ① 缘起 -->
   <section id="s0" aria-labelledby="s0-title">
     <h2 id="s0-title"><i class="fas fa-feather" aria-hidden="true"></i> 缘起 · 为什么是财神</h2>
 
@@ -5482,7 +5781,6 @@
     </div>
   </section>
 
-  <!-- ② 是什么 -->
   <section id="s1" aria-labelledby="s1-title">
     <h2 id="s1-title"><i class="fas fa-temple" aria-hidden="true"></i> 是什么 · 赛博财神庙</h2>
 
@@ -5712,7 +6010,6 @@
     </div>
   </section>
 
-  <!-- ③ 铁律 -->
   <section id="s2" aria-labelledby="s2-title">
     <h2 id="s2-title"><i class="fas fa-shield-halved" aria-hidden="true"></i> 铁律 · 不可砸财神</h2>
     <div class="creed">
@@ -5733,7 +6030,6 @@
     </div>
   </section>
 
-  <!-- ④ 资产 -->
   <section id="s3" aria-labelledby="s3-title">
     <h2 id="s3-title"><i class="fas fa-gem" aria-hidden="true"></i> 资产 · 我们有什么</h2>
     <p>$财神到 的 IP 系统由四块构成，每一块都指向同一个词：<strong>财神到</strong>。</p>
@@ -5761,7 +6057,6 @@
     </div>
   </section>
 
-  <!-- ⑤ 路线 -->
   <section id="s4" aria-labelledby="s4-title">
     <h2 id="s4-title"><i class="fas fa-stairs" aria-hidden="true"></i> 路线 · 我们往哪走</h2>
     <div class="road">
@@ -5790,7 +6085,6 @@
     </div>
   </section>
 
-  <!-- ⑥ 加入 -->
   <section id="s5" aria-labelledby="s5-title">
     <h2 id="s5-title"><i class="fas fa-handshake-angle" aria-hidden="true"></i> 加入 · 你怎么参与</h2>
     <p>财神不渡无缘之人，但财神偏爱团结的社区。三种方式，任选其一：</p>
@@ -6279,53 +6573,141 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ② 赛博庙门 · 摇签 · 进庙
+   ② 赛博庙门 · 财神锦囊 · 今日财神录
    ============================================================ */
 (function () {
-  var gate = document.getElementById('gate');
+  /* ---- 真实黄历算法 ---- */
+  var GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+  var ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  var JIANCHU = ['建', '除', '满', '平', '定', '执', '破', '危', '成', '收', '开', '闭'];
+
+  var JC_YI = [
+    '出行 · 求财 · 祈福',
+    '除旧 · 疗病 · 扫舍',
+    '祭祀 · 开市 · 纳财',
+    '修整 · 嫁娶 · 平治',
+    '祭祀 · 嫁娶 · 修造',
+    '捕捉 · 修造 · 纳福',
+    '破旧 · 求医 · 布新',
+    '安床 · 祭祀 · 祈福',
+    '嫁娶 · 开市 · 入学',
+    '纳财 · 收敛 · 感恩',
+    '开市 · 交易 · 入学',
+    '筑堤 · 收敛 · 静心'
+  ];
+  var JC_JI = [
+    '动土 · 开仓 · 诉讼',
+    '嫁娶 · 远行 · 签约',
+    '服药 · 栽种 · 动土',
+    '开渠 · 栽种 · 远行',
+    '诉讼 · 出行 · 动土',
+    '开市 · 出行 · 动土',
+    '嫁娶 · 开市 · 签约',
+    '登高 · 行船 · 远行',
+    '诉讼 · 动土 · 拆卸',
+    '开市 · 出行 · 动土',
+    '安葬 · 动土 · 诉讼',
+    '开市 · 出行 · 盲动'
+  ];
+
+  function getJDN(y, m, d) {
+    var a  = Math.floor((14 - m) / 12);
+    var yy = y + 4800 - a;
+    var mm = m + 12 * a - 3;
+    return d
+         + Math.floor((153 * mm + 2) / 5)
+         + 365 * yy
+         + Math.floor(yy / 4)
+         - Math.floor(yy / 100)
+         + Math.floor(yy / 400)
+         - 32045;
+  }
+  function getGanzhi(date) {
+    var jdn    = getJDN(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    var ganIdx = (jdn + 9) % 10;
+    var zhiIdx = (jdn + 1) % 12;
+    return {
+      jdn: jdn,
+      ganIdx: ganIdx,
+      zhiIdx: zhiIdx,
+      text: GAN[ganIdx] + ZHI[zhiIdx] + '日'
+    };
+  }
+  function getMonthZhiIdx(month, day) {
+    var md = month * 100 + day;
+    if (md >= 204 && md < 306)   return 2;
+    if (md >= 306 && md < 405)   return 3;
+    if (md >= 405 && md < 506)   return 4;
+    if (md >= 506 && md < 606)   return 5;
+    if (md >= 606 && md < 707)   return 6;
+    if (md >= 707 && md < 808)   return 7;
+    if (md >= 808 && md < 908)   return 8;
+    if (md >= 908 && md < 1008)  return 9;
+    if (md >= 1008 && md < 1107) return 10;
+    if (md >= 1107 && md < 1207) return 11;
+    if (md >= 1207 || md < 106)  return 0;
+    return 1;
+  }
+  function getJianchuIdx(dayZhiIdx, monthZhiIdx) {
+    return (dayZhiIdx - monthZhiIdx + 12) % 12;
+  }
+  function getCaishenDirection(ganIdx) {
+    return ['东北', '西南', '正北', '正西', '正南'][ganIdx % 5];
+  }
+
+  /* ---- 财神录祝福语 ---- */
+  var RECORDS = [
+    { bless: '恭喜发财', text: '财神到，财运到，开门见喜。' },
+    { bless: '财源滚滚', text: '心诚则灵，香火自旺，财源自来。' },
+    { bless: '招财进宝', text: '只迎财神，不砸财神，长红可期。' },
+    { bless: '金玉满堂', text: '转发一次，上香一炷，福报自积。' },
+    { bless: '日进斗金', text: '财神不渡无缘之人，今日有缘。' },
+    { bless: '八方来财', text: '西方有 Doge，东方有财神。' },
+    { bless: '大吉大利', text: '全球华人，同接一神。' },
+    { bless: '富贵长红', text: '守住财神，账户长红。' },
+    { bless: '红红火火', text: '主题曲一响，财神到现场。' },
+    { bless: '钱包鼓鼓', text: '公屏接财神，钱包开门迎。' }
+  ];
+
+  /* ---- 元素引用 ---- */
+  var gate       = document.getElementById('gate');
   if (!gate) return;
-  var SKIP_KEY = 'caishen_entered_v8';
-  var FORTUNE_KEY = 'caishen_fortune_v1';
-  var entered = false;
+  var SKIP_KEY   = 'caishen_entered_v9';
+  var entered    = false;
   try { entered = sessionStorage.getItem(SKIP_KEY) === '1'; } catch (_) {}
-  if (entered) { gate.classList.add('hidden'); document.body.style.overflow = ''; return; }
+  if (entered) {
+    gate.classList.add('hidden');
+    document.body.style.overflow = '';
+    return;
+  }
   document.body.style.overflow = 'hidden';
   document.body.classList.add('gate-active');
 
-  var hint     = gate.querySelector('.gate-hint');
-  var stage    = gate.querySelector('.fortune-stage');
-  var tube     = document.getElementById('fortuneTube');
-  var card     = document.getElementById('fortuneCard');
-  var cardText = card.querySelector('.fc-text');
-  var cardLabel= card.querySelector('.fc-label');
-  var btn      = card.querySelector('.fc-btn');
+  var hint       = gate.querySelector('.gate-hint');
+  var stage      = gate.querySelector('.fortune-stage');
+  var bag        = document.getElementById('fortuneBag');
+  var flash      = document.getElementById('fortuneFlash');
+  var scrollCard = document.getElementById('fortuneScroll');
+  var blessEl    = document.getElementById('scBless');
+  var textEl     = document.getElementById('scText');
+  var dirEl      = document.getElementById('scDir');
+  var ganzhiEl   = document.getElementById('scGanzhi');
+  var goodEl     = document.getElementById('scGood');
+  var badEl      = document.getElementById('scBad');
+  var enterBtn   = document.getElementById('fortuneEnter');
 
   var opened = false, drawn = false;
 
-  var FORTUNES = [
-    { label: '上上签', text: '财神到，财运到，开门见喜。' },
-    { label: '上上签', text: '心诚则灵，香火自旺，财源自来。' },
-    { label: '上吉签', text: '只迎财神，不砸财神，长红可期。' },
-    { label: '上吉签', text: '转发一次，上香一炷，福报自积。' },
-    { label: '中吉签', text: '财神不渡无缘之人，今日有缘。' },
-    { label: '上上签', text: '西方有 Doge，东方有财神。' },
-    { label: '上吉签', text: '全球华人，同接一神。' },
-    { label: '上上签', text: '守住财神，账户长红。' },
-    { label: '上上签', text: '主题曲一响，财神到现场。' },
-    { label: '上吉签', text: '公屏接财神，钱包开门迎。' }
-  ];
-
+  /* ---- 音频 ---- */
   var audioCtx = null;
   function initAudio() {
     if (audioCtx) return;
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
   }
-
   function playKnock() {
     if (!audioCtx) return;
     try {
       var t = audioCtx.currentTime;
-
       var osc1 = audioCtx.createOscillator();
       var gain1 = audioCtx.createGain();
       osc1.type = 'sine';
@@ -6335,16 +6717,6 @@ window.__metalScrape = (function () {
       gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
       osc1.connect(gain1); gain1.connect(audioCtx.destination);
       osc1.start(t); osc1.stop(t + 0.24);
-
-      var osc1b = audioCtx.createOscillator();
-      var gain1b = audioCtx.createGain();
-      osc1b.type = 'triangle';
-      osc1b.frequency.setValueAtTime(680, t);
-      osc1b.frequency.exponentialRampToValueAtTime(240, t + 0.08);
-      gain1b.gain.setValueAtTime(0.05, t);
-      gain1b.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-      osc1b.connect(gain1b); gain1b.connect(audioCtx.destination);
-      osc1b.start(t); osc1b.stop(t + 0.14);
 
       var t2 = t + 0.30;
       var osc2 = audioCtx.createOscillator();
@@ -6361,18 +6733,6 @@ window.__metalScrape = (function () {
       gain2.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.95);
       osc2.connect(filter2); filter2.connect(gain2); gain2.connect(audioCtx.destination);
       osc2.start(t2); osc2.stop(t2 + 1.0);
-
-      var t3 = t + 0.32;
-      var osc3 = audioCtx.createOscillator();
-      var gain3 = audioCtx.createGain();
-      osc3.type = 'sine';
-      osc3.frequency.setValueAtTime(62, t3);
-      osc3.frequency.exponentialRampToValueAtTime(28, t3 + 0.8);
-      gain3.gain.setValueAtTime(0.0001, t3);
-      gain3.gain.exponentialRampToValueAtTime(0.045, t3 + 0.04);
-      gain3.gain.exponentialRampToValueAtTime(0.0001, t3 + 1.1);
-      osc3.connect(gain3); gain3.connect(audioCtx.destination);
-      osc3.start(t3); osc3.stop(t3 + 1.15);
     } catch (_) {}
   }
   function playWoodfish() {
@@ -6390,6 +6750,7 @@ window.__metalScrape = (function () {
     } catch (_) {}
   }
 
+  /* ---- 门内烟雾 ---- */
   function gateSmoke() {
     if (drawn) return;
     var cx = window.innerWidth / 2;
@@ -6400,6 +6761,7 @@ window.__metalScrape = (function () {
   var gateSmokeTimer = setInterval(gateSmoke, 620);
   gateSmoke();
 
+  /* ---- 打开门 ---- */
   gate.addEventListener('click', function openOnce() {
     if (opened) return;
     opened = true;
@@ -6423,7 +6785,6 @@ window.__metalScrape = (function () {
 
       var cx = window.innerWidth / 2;
       var cy = window.innerHeight / 2;
-
       if (window.__smokeBurst) {
         for (var i = 0; i < 3; i++) {
           (function (k) {
@@ -6448,35 +6809,63 @@ window.__metalScrape = (function () {
     }, 160);
   });
 
-  function shakeTube() {
+  /* ---- 财神锦囊 ---- */
+  function pickRecord() {
+    var today  = new Date();
+    var gz     = getGanzhi(today);
+    var mz     = getMonthZhiIdx(today.getMonth() + 1, today.getDate());
+    var jcIdx  = getJianchuIdx(gz.zhiIdx, mz);
+    var dir    = getCaishenDirection(gz.ganIdx);
+    var idx    = gz.jdn % RECORDS.length;
+    var r      = RECORDS[idx];
+    return {
+      bless:   r.bless,
+      text:    r.text,
+      dir:     dir,
+      ganzhi:  gz.text,
+      jianchu: JIANCHU[jcIdx],
+      good:    JC_YI[jcIdx],
+      bad:     JC_JI[jcIdx]
+    };
+  }
+  function render(record) {
+    blessEl.textContent  = record.bless;
+    textEl.textContent   = record.text;
+    dirEl.textContent    = record.dir;
+    ganzhiEl.textContent = record.ganzhi + ' · ' + record.jianchu + '日';
+    goodEl.textContent   = record.good;
+    badEl.textContent    = record.bad;
+  }
+
+  function openBag() {
     if (drawn) return;
     drawn = true;
     initAudio(); playWoodfish();
-    tube.classList.add('shaking');
-    var rect = tube.getBoundingClientRect();
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
-    if (window.__smokeBurst) window.__smokeBurst(cx, cy, 12, 16, 0.20);
+
+    render(pickRecord());
+
+    if (window.__smokeBurst) {
+      var r = bag.getBoundingClientRect();
+      window.__smokeBurst(r.left + r.width / 2, r.top + r.height / 2, 10, 18, 0.20);
+    }
+
+    flash.classList.add('on');
+    setTimeout(function () { flash.classList.remove('on'); }, 600);
+
+    bag.classList.add('opening');
+    bag.style.pointerEvents = 'none';
+
     setTimeout(function () {
-      var f = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
-      cardLabel.textContent = f.label + ' · 今日财神签';
-      cardText.textContent = f.text;
-      card.classList.add('show');
-      try { sessionStorage.setItem(FORTUNE_KEY, JSON.stringify(f)); } catch (_) {}
-      tube.style.opacity = '0.22';
-      tube.style.transform = 'scale(0.85) translateY(28px)';
-      tube.style.pointerEvents = 'none';
-      var hintEl = stage.querySelector('.fortune-hint');
-      if (hintEl) hintEl.style.opacity = '0';
-      if (window.__smokeBurst) window.__smokeBurst(cx, cy, 18, 22, 0.25);
-    }, 720);
+      scrollCard.classList.add('show');
+    }, 260);
   }
-  tube.addEventListener('click', function (e) { e.stopPropagation(); shakeTube(); });
-  tube.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); shakeTube(); }
+  bag.addEventListener('click', function (e) { e.stopPropagation(); openBag(); });
+  bag.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBag(); }
   });
 
-  btn.addEventListener('click', function (e) {
+  /* ---- 进庙 ---- */
+  enterBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     initAudio(); playWoodfish();
     try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
@@ -6498,7 +6887,7 @@ window.__metalScrape = (function () {
     setTimeout(function () { gate.classList.add('hidden'); }, 1200);
   });
 
-  card.addEventListener('click', function (e) { e.stopPropagation(); });
+  scrollCard.addEventListener('click', function (e) { e.stopPropagation(); });
 
   window.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !gate.classList.contains('gone')) {
@@ -6702,17 +7091,28 @@ window.__metalScrape = (function () {
   var ctaBtn = document.getElementById('charmCtaBtn');
   if (!modal) return;
   var currentDataUrl = null;
-  var FORTUNE_KEY = 'caishen_fortune_v1';
   window.addEventListener('caishen:theme', function () { currentDataUrl = null; });
+
   function getFortune() {
-    try {
-      var raw = sessionStorage.getItem(FORTUNE_KEY);
-      if (!raw) return { label: '上上签', text: '财神到，财运到，开门见喜。' };
-      return JSON.parse(raw);
-    } catch (_) {
-      return { label: '上上签', text: '财神到，财运到，开门见喜。' };
+    /* 用真实黄历生成祝福语，作为财神符文案 */
+    var GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    var ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    function getJDN(y,m,d){
+      var a=Math.floor((14-m)/12), yy=y+4800-a, mm=m+12*a-3;
+      return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;
     }
+    var today = new Date();
+    var jdn = getJDN(today.getFullYear(), today.getMonth()+1, today.getDate());
+    var ganIdx = (jdn + 9) % 10;
+    var zhiIdx = (jdn + 1) % 12;
+    var BLESS = ['恭喜发财','财源滚滚','招财进宝','金玉满堂','日进斗金','八方来财','大吉大利','富贵长红','红红火火','钱包鼓鼓'];
+    return {
+      label: BLESS[jdn % BLESS.length],
+      text: GAN[ganIdx] + ZHI[zhiIdx] + '日 · 财神方位' +
+            ['东北','西南','正北','正西','正南'][ganIdx % 5]
+    };
   }
+
   var DARK_THEME = {
     bgFrom: '#0a0408', bgMid: '#12060c', bgTo: '#080204',
     gridColor: 'rgba(255, 45, 85, 0.08)', topGlow: 'rgba(255, 45, 85, 0.28)',
@@ -6752,20 +7152,6 @@ window.__metalScrape = (function () {
   function getCharmTheme() {
     var t = document.documentElement.getAttribute('data-theme') || 'dark';
     return t === 'light' ? LIGHT_THEME : DARK_THEME;
-  }
-  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    var chars = String(text).split('');
-    var lines = [], line = '';
-    for (var i = 0; i < chars.length; i++) {
-      var test = line + chars[i];
-      if (ctx.measureText(test).width > maxWidth && line !== '') {
-        lines.push(line); line = chars[i];
-      } else { line = test; }
-    }
-    if (line) lines.push(line);
-    var startY = y - (lines.length - 1) * lineHeight / 2;
-    for (var j = 0; j < lines.length; j++) ctx.fillText(lines[j], x, startY + j * lineHeight);
-    return lines.length;
   }
   function neonText(ctx, text, x, y, font, color, glowColor, glowSize) {
     ctx.save();
@@ -6910,7 +7296,7 @@ window.__metalScrape = (function () {
     ctx.fillText('财神到，财运到', W / 2, 1284);
     ctx.fillStyle = T.urlColor;
     ctx.font = '500 20px "JetBrains Mono", Consolas, monospace';
-    ctx.fillText('caishen.xyz', W / 2, H - 132);
+    ctx.fillText('caishendao.world', W / 2, H - 132);
     var today = new Date();
     var dateStr = today.getFullYear() + '.' +
       String(today.getMonth() + 1).padStart(2, '0') + '.' +
