@@ -1261,7 +1261,7 @@ window.__metalScrape = (function () {
     var zhiIdx = (jdn + 1) % 12;
     var BLESS = ['恭喜发财','财源滚滚','招财进宝','金玉满堂','日进斗金','八方来财','大吉大利','富贵长红','红红火火','钱包鼓鼓'];
     return {
-      label: BLESS[jdn % BLESS.length],
+      label: BLESS[Math.floor(Math.random() * BLESS.length)],
       text: GAN[ganIdx] + ZHI[zhiIdx] + '日 · 财神方位' + ['东北','西南','正北','正西','正南'][ganIdx % 5]
     };
   }
