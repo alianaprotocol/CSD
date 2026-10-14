@@ -1233,7 +1233,7 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ⑤ 财神符生成 (含金色宝印与质感升级)
+   ⑤ 财神符生成 (V3.0 终极赛博重构 · 大印居中镇底 · 9:16 全屏)
    ============================================================ */
 (function () {
   var modal = document.getElementById('charmModal');
@@ -1266,44 +1266,26 @@ window.__metalScrape = (function () {
     };
   }
 
-  var DARK_THEME = {
-    bgFrom: '#0a0408', bgMid: '#14070d', bgTo: '#050103',
-    gridColor: 'rgba(255, 45, 85, 0.06)', gridColor2: 'rgba(255, 183, 0, 0.03)',
-    topGlow: 'rgba(255, 45, 85, 0.35)', vignette: 'rgba(0, 0, 0, 0.85)',
-    borderOuter: '#ff2d55', borderInner: 'rgba(255, 183, 0, 0.7)',
-    cornerColor: '#ffb700', titleColor: '#ffe9b8', titleGlow: '#ffb700',
-    signColor: '#fff3d0', signGlow: '#ff2d55'
-  };
-  var LIGHT_THEME = {
-    bgFrom: '#fff7ed', bgMid: '#fff9ec', bgTo: '#fce8c4',
-    gridColor: 'rgba(192, 57, 43, 0.08)', gridColor2: 'rgba(212, 160, 23, 0.05)',
-    topGlow: 'rgba(212, 160, 23, 0.25)', vignette: 'rgba(120, 60, 20, 0.18)',
-    borderOuter: '#c0392b', borderInner: 'rgba(184, 134, 11, 0.8)',
-    cornerColor: '#b8860b', titleColor: '#8e1c10', titleGlow: '#d4a017',
-    signColor: '#5a2e0e', signGlow: '#a82315'
-  };
-  function getCharmTheme() {
-    var t = document.documentElement.getAttribute('data-theme') || 'dark';
-    return t === 'light' ? LIGHT_THEME : DARK_THEME;
-  }
-
-  // 3D 浮雕文字辅助函数
-  function draw3DText(ctx, text, x, y, font, color, glowColor, depth) {
+  // 3D 金属浮雕文字引擎 (赛博融合)
+  function draw3DText(ctx, text, x, y, font, color, glowColor, depth, isDark) {
     ctx.save();
     ctx.font = font;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(0,0,0,0.8)';
-    // 阴影层
+    
+    // 1. 深度阴影层
+    ctx.fillStyle = 'rgba(0,0,0,0.85)';
     ctx.fillText(text, x + depth, y + depth);
-    // 发光层
-    ctx.shadowColor = glowColor; ctx.shadowBlur = 25;
+    
+    // 2. 赛博发光层
+    ctx.shadowColor = glowColor; ctx.shadowBlur = isDark ? 45 : 20;
     ctx.fillStyle = color;
     ctx.fillText(text, x, y);
-    // 高光层
+    
+    // 3. 金属高光层
     ctx.shadowBlur = 0;
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.fillText(text, x - 1, y - 1);
+    ctx.fillText(text, x - 2, y - 2);
     ctx.restore();
   }
 
@@ -1312,8 +1294,8 @@ window.__metalScrape = (function () {
     ctx.translate(cx, cy);
     ctx.fillStyle = 'rgba(255, 45, 85, 0.15)';
     ctx.fillRect(-size / 2, -size / 2, size, size);
-    ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 2;
-    ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 12;
+    ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 3;
+    ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 15;
     ctx.strokeRect(-size / 2, -size / 2, size, size);
     ctx.shadowBlur = 0;
     ctx.fillStyle = T.borderOuter;
@@ -1324,37 +1306,52 @@ window.__metalScrape = (function () {
     ctx.restore();
   }
 
-  function drawDeity(ctx, cx, cy, size, T) {
-    // 光环底座
-    var glow = ctx.createRadialGradient(cx, cy, size * 0.15, cx, cy, size * 0.8);
-    glow.addColorStop(0, 'rgba(255, 183, 0, 0.45)');
-    glow.addColorStop(0.5, 'rgba(255, 45, 85, 0.15)');
+  function drawDeity(ctx, cx, cy, size, T, isDark) {
+    // 赛博能量背景光环
+    var glow = ctx.createRadialGradient(cx, cy, size * 0.1, cx, cy, size * 0.85);
+    glow.addColorStop(0, isDark ? 'rgba(255, 183, 0, 0.6)' : 'rgba(212, 160, 23, 0.4)');
+    glow.addColorStop(0.4, isDark ? 'rgba(255, 45, 85, 0.2)' : 'rgba(192, 57, 43, 0.1)');
     glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
-    ctx.beginPath(); ctx.arc(cx, cy, size * 0.8, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, size * 0.85, 0, Math.PI * 2); ctx.fill();
 
-    // 多层符文虚线环
+    // 赛博符文环 (多圈同心圆 + 数据节点)
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 183, 0, 0.6)'; ctx.lineWidth = 2;
-    ctx.setLineDash([12, 16]);
-    ctx.beginPath(); ctx.arc(cx, cy, size * 0.66, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.4)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(cx, cy, size * 0.58, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)'; 
+    ctx.lineWidth = 3;
+    ctx.setLineDash([18, 24]);
+    ctx.beginPath(); ctx.arc(cx, cy, size * 0.72, 0, Math.PI * 2); ctx.stroke();
+    
+    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.5)' : 'rgba(192, 57, 43, 0.5)'; 
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 18]);
+    ctx.beginPath(); ctx.arc(cx, cy, size * 0.64, 0, Math.PI * 2); ctx.stroke();
+
+    // 数据流节点 (模拟算力中心)
+    ctx.setLineDash([]);
+    ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)';
+    for (var i = 0; i < 16; i++) {
+      var angle = (i / 16) * Math.PI * 2;
+      var nx = cx + Math.cos(angle) * size * 0.72;
+      var ny = cy + Math.sin(angle) * size * 0.72;
+      ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2); ctx.fill();
+    }
     ctx.restore();
 
-    // 财神图片
+    // 绘制财神像
     var state = window.__deityState || {};
     if (state.usable && window.__deityImg) {
       try {
         ctx.save();
-        ctx.shadowColor = 'rgba(255, 183, 0, 0.9)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 10;
+        ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)'; 
+        ctx.shadowBlur = 50; ctx.shadowOffsetY = 15;
         ctx.drawImage(window.__deityImg, cx - size / 2, cy - size / 2, size, size);
         ctx.restore(); return;
       } catch (e) {}
     }
-    // 回退绘制
+    // 回退方案
     var r = size * 0.4;
-    ctx.fillStyle = '#ffb700';
+    ctx.fillStyle = isDark ? '#ffb700' : '#d4a017';
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#1a0609';
     ctx.font = '900 ' + Math.round(size * 0.5) + 'px "Noto Serif SC", serif';
@@ -1366,8 +1363,8 @@ window.__metalScrape = (function () {
     var imageData = ctx.getImageData(0, 0, W, H);
     var data = imageData.data;
     for (var i = 0; i < data.length; i += 4) {
-      if (Math.random() < 0.05) {
-        var noise = (Math.random() - 0.5) * 40;
+      if (Math.random() < 0.04) {
+        var noise = (Math.random() - 0.5) * 35;
         data[i] += noise; data[i+1] += noise; data[i+2] += noise;
       }
     }
@@ -1375,172 +1372,187 @@ window.__metalScrape = (function () {
   }
 
   function generateCharm() {
-    var W = 1080, H = 1440;
+    // 9:16 黄金全屏比例，专为手机分享打造
+    var W = 1080, H = 1920;
     var canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
-    var T = getCharmTheme();
-    var fortune = getFortune();
+    var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
+    
+    var T = {
+      bgFrom: isDark ? '#080205' : '#fff7ed',
+      bgMid: isDark ? '#12060c' : '#fff9ec',
+      bgTo: isDark ? '#040102' : '#fce8c4',
+      gridColor: isDark ? 'rgba(255, 45, 85, 0.08)' : 'rgba(192, 57, 43, 0.08)',
+      gridColor2: isDark ? 'rgba(255, 183, 0, 0.04)' : 'rgba(212, 160, 23, 0.05)',
+      borderOuter: isDark ? '#ff2d55' : '#c0392b',
+      borderInner: isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)',
+      cornerColor: isDark ? '#ffb700' : '#b8860b',
+      titleColor: isDark ? '#ffe9b8' : '#8e1c10',
+      titleGlow: isDark ? '#ffb700' : '#d4a017',
+      signColor: isDark ? '#fff3d0' : '#5a2e0e',
+      signGlow: isDark ? '#ff2d55' : '#a82315',
+      textColor: isDark ? '#ffe9b8' : '#2e1e0e',
+      textMuted: isDark ? 'rgba(255, 183, 0, 0.6)' : 'rgba(142, 28, 16, 0.7)'
+    };
 
-    // 1. 深邃背景与全息网格
+    // 1. 极致深邃背景与双重透视网格
     var bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, T.bgFrom); bg.addColorStop(.5, T.bgMid); bg.addColorStop(1, T.bgTo);
+    bg.addColorStop(0, T.bgFrom); bg.addColorStop(.4, T.bgMid); bg.addColorStop(1, T.bgTo);
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
-    // 绘制两层网格 (粗线与细线)
     ctx.save();
-    ctx.strokeStyle = T.gridColor; ctx.lineWidth = 1;
-    for (var gx = 0; gx < W; gx += 60) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
-    for (var gy = 0; gy < H; gy += 60) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
     ctx.strokeStyle = T.gridColor2; ctx.lineWidth = 1;
-    for (var gx2 = 0; gx2 < W; gx2 += 20) { ctx.beginPath(); ctx.moveTo(gx2, 0); ctx.lineTo(gx2, H); ctx.stroke(); }
-    for (var gy2 = 0; gy2 < H; gy2 += 20) { ctx.beginPath(); ctx.moveTo(0, gy2); ctx.lineTo(W, gy2); ctx.stroke(); }
+    for (var gx = 0; gx < W; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+    for (var gy = 0; gy < H; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+    ctx.strokeStyle = T.gridColor; ctx.lineWidth = 2;
+    for (var gx2 = 0; gx2 < W; gx2 += 120) { ctx.beginPath(); ctx.moveTo(gx2, 0); ctx.lineTo(gx2, H); ctx.stroke(); }
+    for (var gy2 = 0; gy2 < H; gy2 += 120) { ctx.beginPath(); ctx.moveTo(0, gy2); ctx.lineTo(W, gy2); ctx.stroke(); }
     ctx.restore();
 
-    // 2. 顶部与底部光晕
-    var glowTop = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, H * 0.6);
-    glowTop.addColorStop(0, T.topGlow); glowTop.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = glowTop; ctx.fillRect(0, 0, W, H);
+    // 2. 全息氛围光
+    var topGlow = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, H * 0.55);
+    topGlow.addColorStop(0, isDark ? 'rgba(255, 45, 85, 0.45)' : 'rgba(212, 160, 23, 0.35)');
+    topGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = topGlow; ctx.fillRect(0, 0, W, H);
 
-    // 3. 暗角
-    var vignette = ctx.createRadialGradient(W / 2, H * 0.5, W * 0.3, W / 2, H * 0.5, W * 0.95);
-    vignette.addColorStop(0, 'rgba(0,0,0,0)'); vignette.addColorStop(1, T.vignette);
-    ctx.fillStyle = vignette; ctx.fillRect(0, 0, W, H);
+    var bottomGlow = ctx.createRadialGradient(W / 2, H, 0, W / 2, H, H * 0.4);
+    bottomGlow.addColorStop(0, isDark ? 'rgba(255, 183, 0, 0.15)' : 'rgba(192, 57, 43, 0.1)');
+    bottomGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = bottomGlow; ctx.fillRect(0, 0, W, H);
 
-    // 4. 外框与角落装饰
+    // 3. 外框与角落赛博切割线
     ctx.save();
     ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 3;
     ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 30;
-    ctx.strokeRect(40, 40, W - 80, H - 80);
+    ctx.strokeRect(50, 50, W - 100, H - 100);
     ctx.restore();
     ctx.save();
-    ctx.strokeStyle = T.borderInner; ctx.lineWidth = 1;
-    ctx.strokeRect(65, 65, W - 130, H - 130);
-    // 四个角落的斜切光
-    ctx.strokeStyle = T.cornerColor; ctx.lineWidth = 5;
-    var cl = 50;
+    ctx.strokeStyle = T.borderInner; ctx.lineWidth = 2;
+    ctx.strokeRect(75, 75, W - 150, H - 150);
+    
+    ctx.strokeStyle = T.cornerColor; ctx.lineWidth = 6;
+    var cl = 60;
     ctx.beginPath();
-    ctx.moveTo(40, 40 + cl); ctx.lineTo(40, 40); ctx.lineTo(40 + cl, 40);
-    ctx.moveTo(W - 40 - cl, 40); ctx.lineTo(W - 40, 40); ctx.lineTo(W - 40, 40 + cl);
-    ctx.moveTo(40, H - 40 - cl); ctx.lineTo(40, H - 40); ctx.lineTo(40 + cl, H - 40);
-    ctx.moveTo(W - 40 - cl, H - 40); ctx.lineTo(W - 40, H - 40); ctx.lineTo(W - 40, H - 40 - cl);
+    ctx.moveTo(50, 50 + cl); ctx.lineTo(50, 50); ctx.lineTo(50 + cl, 50);
+    ctx.moveTo(W - 50 - cl, 50); ctx.lineTo(W - 50, 50); ctx.lineTo(W - 50, 50 + cl);
+    ctx.moveTo(50, H - 50 - cl); ctx.lineTo(50, H - 50); ctx.lineTo(50 + cl, H - 50);
+    ctx.moveTo(W - 50 - cl, H - 50); ctx.lineTo(W - 50, H - 50); ctx.lineTo(W - 50, H - 50 - cl);
     ctx.stroke();
     ctx.restore();
 
-    // 5. 顶部代码文字 (全息感)
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.8)';
-    ctx.font = '600 20px "JetBrains Mono", monospace';
+    // 4. 顶部代码文字 (全息感)
+    ctx.fillStyle = T.cornerColor;
+    ctx.font = '600 24px "JetBrains Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 120);
+    ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 140);
 
-    // 6. 绘制财神 (位置稍微上移，为底部留出空间)
-    drawDeity(ctx, W / 2, 430, 480, T);
+    // 5. 绘制财神像 (尺寸 600，视觉极其震撼)
+    drawDeity(ctx, W / 2, 500, 600, T, isDark);
 
-    // 7. 主标题：财神符 (加粗 3D 效果)
-    draw3DText(ctx, '财 神 符', W / 2, 740,
-      '900 110px "Noto Serif SC", "Songti SC", serif',
-      T.titleColor, T.titleGlow, 8);
+    // 6. 主标题：财神符 (150px 超大字号 3D 金属浮雕)
+    draw3DText(ctx, '财 神 符', W / 2, 900,
+      '900 150px "Noto Serif SC", "Songti SC", serif',
+      T.titleColor, T.titleGlow, 12, isDark);
 
-    // 8. 分割线
+    // 7. 赛博分割线
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.6)'; ctx.lineWidth = 2;
-    ctx.shadowColor = '#ff2d55'; ctx.shadowBlur = 15;
-    ctx.beginPath(); ctx.moveTo(W / 2 - 250, 840); ctx.lineTo(W / 2 + 250, 840); ctx.stroke();
+    ctx.strokeStyle = isDark ? '#ff2d55' : '#c0392b'; 
+    ctx.lineWidth = 4;
+    ctx.shadowColor = isDark ? '#ff2d55' : '#c0392b'; 
+    ctx.shadowBlur = 25;
+    ctx.beginPath(); ctx.moveTo(W / 2 - 350, 1010); ctx.lineTo(W / 2 + 350, 1010); ctx.stroke();
     ctx.restore();
-    // 分割线中心菱形
-    ctx.fillStyle = '#ffb700';
-    ctx.save(); ctx.translate(W / 2, 840); ctx.rotate(Math.PI / 4); ctx.fillRect(-6, -6, 12, 12); ctx.restore();
+    // 中心菱形
+    ctx.fillStyle = T.cornerColor;
+    ctx.save(); ctx.translate(W / 2, 1010); ctx.rotate(Math.PI / 4); ctx.fillRect(-10, -10, 20, 20); ctx.restore();
 
-    // 9. 祝福语信息框 (亚克力玻璃底框)
+    // 8. 核心祝福语信息框 (超大玻璃拟态面板)
     var boxW = W - 160;
-    var boxH = 180;
+    var boxH = 280;
     var boxX = (W - boxW) / 2;
-    var boxY = 880;
+    var boxY = 1070;
+    
     ctx.save();
-    // 背景
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.05)';
-    ctx.strokeStyle = 'rgba(255, 183, 0, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.roundRect(boxX, boxY, boxW, boxH, 16);
-    ctx.fill();
-    ctx.stroke();
-    // 内边框
-    ctx.strokeStyle = 'rgba(255, 45, 85, 0.2)';
+    // 玻璃底框
+    ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.05)' : 'rgba(255, 255, 255, 0.6)';
+    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.4)' : 'rgba(192, 57, 43, 0.3)';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.roundRect(boxX, boxY, boxW, boxH, 24); ctx.fill(); ctx.stroke();
+    // 内发光边框
+    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.3)' : 'rgba(212, 160, 23, 0.2)';
     ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(boxX + 10, boxY + 10, boxW - 20, boxH - 20, 10);
-    ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(boxX + 15, boxY + 15, boxW - 30, boxH - 30, 16); ctx.stroke();
     ctx.restore();
 
-    // 10. 祝福文字 (居中排版)
-    ctx.fillStyle = '#ff2d55';
-    ctx.font = '700 24px "JetBrains Mono", monospace';
+    // 9. 祝福语大字号排版 (视觉焦点)
+    ctx.fillStyle = isDark ? '#ff2d55' : '#c0392b';
+    ctx.font = '700 32px "JetBrains Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 925);
+    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1130);
 
-    draw3DText(ctx, fortune.text, W / 2, 1000,
-      '800 54px "Noto Serif SC", "Songti SC", serif',
-      T.signColor, T.signGlow, 4);
+    // 大幅放大每日祝福语 (64px)
+    draw3DText(ctx, fortune.text, W / 2, 1220,
+      '800 64px "Noto Serif SC", "Songti SC", serif',
+      T.signColor, T.signGlow, 6, isDark);
 
-    // 11. 随机标语 (底部区域)
-    var MAIN_SLOGANS = [
-      '招财进宝 · 日进斗金', '财源广进 · 金玉满堂', '五路财神 · 八方来财',
-      '财神到家 · 富贵荣华', '财源亨通 · 生意兴隆', '招财纳福 · 迎祥接财',
-      '金库充盈 · 银库满仓', '财星高照 · 鸿运当头', '开门见财 · 抬头见喜',
-      '正财偏财 · 滚滚而来', '福禄双全 · 富贵盈门', '五方财神 · 齐来送财'
+    // 10. 随机吉祥话
+    var SLOGANS = [
+      '五路财神 · 八方来财', '招财进宝 · 日进斗金', '金库充盈 · 银库满仓',
+      '财星高照 · 鸿运当头', '正财偏财 · 滚滚而来', '福禄双全 · 富贵盈门'
     ];
-    var randomSlogan = MAIN_SLOGANS[Math.floor(Math.random() * MAIN_SLOGANS.length)];
+    var randomSlogan = SLOGANS[Math.floor(Math.random() * SLOGANS.length)];
+    draw3DText(ctx, randomSlogan, W / 2, 1390,
+      '700 52px "Noto Serif SC", "Songti SC", serif',
+      T.titleColor, T.titleGlow, 4, isDark);
 
-    ctx.fillStyle = '#ffd966';
-    ctx.font = '700 44px "Noto Serif SC", serif';
-    ctx.shadowColor = '#ffb700'; ctx.shadowBlur = 20;
-    ctx.fillText(randomSlogan, W / 2, 1160);
-    ctx.shadowBlur = 0;
+    ctx.fillStyle = T.textMuted;
+    ctx.font = '500 36px "Noto Serif SC", serif';
+    ctx.fillText('财神到，财运到', W / 2, 1470);
 
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.8)';
-    ctx.font = '500 28px "Noto Serif SC", serif';
-    ctx.fillText('财神到，财运到', W / 2, 1225);
-
-    // 12. 底部信息
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.6)';
-    ctx.font = '600 22px "JetBrains Mono", monospace';
-    ctx.fillText('caishendao.world', W / 2, 1320);
+    // 11. 底部链上契约数据 (与日期融合，放大字号)
+    ctx.fillStyle = T.textMuted;
+    ctx.font = '600 26px "JetBrains Mono", monospace';
+    ctx.fillText('CAISHEN.DAO · ON-CHAIN CONTRACT', W / 2, 1600);
 
     var today = new Date();
     var dateStr = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
-    ctx.fillStyle = 'rgba(255, 45, 85, 0.5)';
-    ctx.font = '400 18px "JetBrains Mono", monospace';
-    ctx.fillText(dateStr, W / 2, 1360);
+    
+    // 日期和哈希值并排，放大字号，极致清晰
+    ctx.fillStyle = T.cornerColor;
+    ctx.font = '700 36px "JetBrains Mono", monospace';
+    ctx.fillText(dateStr + '  //  #' + Math.floor(Math.random() * 9000 + 1000), W / 2, 1670);
 
-    // 13. 核心升级：本地金色宝印 (叠影与高光融合)
-    var sealSize = 180;
-    var sealX = W - sealSize - 50;
-    var sealY = H - sealSize - 50;
+    // 12. 【核心升级】金色大印：完美放置于底部正中央，作为终极授权章！
+    var sealSize = 280; // 超大尺寸
+    var sealX = (W - sealSize) / 2; // 居中 X 坐标
+    var sealY = H - sealSize - 60;  // 底部留出 60px 边距
     
     if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
       ctx.save();
-      // 绘制宝印底部的金色光晕，让它看起来是"发光的"
-      ctx.shadowColor = 'rgba(255, 183, 0, 1)';
-      ctx.shadowBlur = 45;
-      ctx.globalCompositeOperation = 'screen';
+      // 底层光晕：让印章如悬浮的纯金能量体
+      ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)';
+      ctx.shadowBlur = isDark ? 70 : 30;
+      ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
       ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
       
-      // 再绘制一次，利用叠加模式增加金属反光
-      ctx.shadowBlur = 15;
-      ctx.globalAlpha = 0.8;
+      // 上层高光：强化金属浮雕感
+      ctx.shadowBlur = 20;
+      ctx.globalAlpha = 0.9;
       ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
       ctx.restore();
     } else {
       // 回退方案：使用代码绘制的印章
-      drawSeal(ctx, W - 150, H - 158, 118, T);
+      drawSeal(ctx, W / 2, H - sealSize / 2 - 60, sealSize * 0.8, T);
     }
 
-    // 右下角的编号
-    ctx.fillStyle = 'rgba(255, 183, 0, 0.4)';
-    ctx.font = '500 18px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText('# ' + Math.floor(Math.random() * 9000 + 1000), 80, H - 100);
+    // 13. 底部两侧赛博元素填充（让画面极度饱和）
+    ctx.fillStyle = T.textMuted;
+    ctx.font = '600 20px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('VERIFIED ON-CHAIN', 80, H - 100);
+    ctx.textAlign = 'right';
+    ctx.fillText('BLOCK #19254871', W - 80, H - 100);
 
     // 14. 最后叠加噪点，强化金属质感
     addCanvasNoise(ctx, W, H);
@@ -1553,7 +1565,6 @@ window.__metalScrape = (function () {
     }
   }
 
-  // 触发与弹窗逻辑 (保持不变)
   function openCharm() {
     var state = window.__deityState || {};
     if (!state.ready && state.reason === 'loading') {
