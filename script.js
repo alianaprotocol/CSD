@@ -1370,15 +1370,50 @@ window.__metalScrape = (function () {
     }
     ctx.putImageData(imageData, 0, 0);
   }
-
-  function generateCharm() {
-    // 9:16 黄金全屏比例，专为手机分享打造
+  // 精准农历计算工具（基于标准万年历算法）
+  function getLunarDate(date) {
+    var lunarInfo = [0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,0x0d520];
+    var GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    var ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    var MONTHS = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+    var DAYS = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+    var baseDate = new Date(1900, 0, 31);
+    var offset = Math.floor((date - baseDate) / 86400000);
+    var i, temp = 0;
+    for (i = 1900; i < 2100 && offset > 0; i++) {
+      temp = 0;
+      for (var j = 0; j < 12; j++) { temp += (lunarInfo[i - 1900] & (0x10000 >> j)) ? 30 : 29; }
+      if (lunarInfo[i - 1900] & 0xf) temp += (lunarInfo[i - 1900] & 0x10000) ? 30 : 29;
+      if (offset < temp) break;
+      offset -= temp;
+    }
+    var lunarYear = i, leapMonth = lunarInfo[lunarYear - 1900] & 0xf, isLeap = false;
+    for (var m = 1; m <= 12; m++) {
+      var daysInMonth = (lunarInfo[lunarYear - 1900] & (0x10000 >> m)) ? 30 : 29;
+      if (leapMonth > 0 && m == (leapMonth + 1) && !isLeap) { --m; isLeap = true; daysInMonth = (lunarInfo[lunarYear - 1900] & 0x10000) ? 30 : 29; }
+      if (isLeap && m == (leapMonth + 1)) isLeap = false;
+      if (offset < daysInMonth) break;
+      offset -= daysInMonth;
+    }
+    var lunarDay = offset + 1;
+    return {
+      year: GAN[(lunarYear - 4) % 10] + ZHI[(lunarYear - 4) % 12],
+      month: (leapMonth > 0 && isLeap) ? '闰' + MONTHS[m - 1] : MONTHS[m - 1],
+      day: DAYS[lunarDay - 1]
+    };
+  }
+    function generateCharm() {
     var W = 1080, H = 1920;
     var canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
     var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     var fortune = getFortune();
+    
+    // 获取农历
+    var today = new Date();
+    var lunar = getLunarDate(today);
+    var dateStr = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
     
     var T = {
       bgFrom: isDark ? '#080205' : '#fff7ed',
@@ -1393,15 +1428,15 @@ window.__metalScrape = (function () {
       titleGlow: isDark ? '#ffb700' : '#d4a017',
       signColor: isDark ? '#fff3d0' : '#5a2e0e',
       signGlow: isDark ? '#ff2d55' : '#a82315',
-      textColor: isDark ? '#ffe9b8' : '#2e1e0e',
       textMuted: isDark ? 'rgba(255, 183, 0, 0.6)' : 'rgba(142, 28, 16, 0.7)'
     };
 
-    // 1. 极致深邃背景与双重透视网格
+    // 1. 背景
     var bg = ctx.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0, T.bgFrom); bg.addColorStop(.4, T.bgMid); bg.addColorStop(1, T.bgTo);
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
+    // 2. 网格
     ctx.save();
     ctx.strokeStyle = T.gridColor2; ctx.lineWidth = 1;
     for (var gx = 0; gx < W; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
@@ -1411,7 +1446,7 @@ window.__metalScrape = (function () {
     for (var gy2 = 0; gy2 < H; gy2 += 120) { ctx.beginPath(); ctx.moveTo(0, gy2); ctx.lineTo(W, gy2); ctx.stroke(); }
     ctx.restore();
 
-    // 2. 全息氛围光
+    // 3. 氛围光
     var topGlow = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, H * 0.55);
     topGlow.addColorStop(0, isDark ? 'rgba(255, 45, 85, 0.45)' : 'rgba(212, 160, 23, 0.35)');
     topGlow.addColorStop(1, 'rgba(0,0,0,0)');
@@ -1422,7 +1457,7 @@ window.__metalScrape = (function () {
     bottomGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = bottomGlow; ctx.fillRect(0, 0, W, H);
 
-    // 3. 外框与角落赛博切割线
+    // 4. 外框
     ctx.save();
     ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 3;
     ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 30;
@@ -1431,7 +1466,6 @@ window.__metalScrape = (function () {
     ctx.save();
     ctx.strokeStyle = T.borderInner; ctx.lineWidth = 2;
     ctx.strokeRect(75, 75, W - 150, H - 150);
-    
     ctx.strokeStyle = T.cornerColor; ctx.lineWidth = 6;
     var cl = 60;
     ctx.beginPath();
@@ -1442,120 +1476,102 @@ window.__metalScrape = (function () {
     ctx.stroke();
     ctx.restore();
 
-    // 4. 顶部代码文字 (全息感)
+    // 5. 顶部代码
     ctx.fillStyle = T.cornerColor;
     ctx.font = '600 24px "JetBrains Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 140);
 
-    // 5. 绘制财神像 (尺寸 600，视觉极其震撼)
-    drawDeity(ctx, W / 2, 500, 600, T, isDark);
+    // 6. 财神像
+    drawDeity(ctx, W / 2, 460, 560, T, isDark);
 
-    // 6. 主标题：财神符 (150px 超大字号 3D 金属浮雕)
-    draw3DText(ctx, '财 神 符', W / 2, 900,
+    // 7. 主标题
+    draw3DText(ctx, '财 神 符', W / 2, 840,
       '900 150px "Noto Serif SC", "Songti SC", serif',
       T.titleColor, T.titleGlow, 12, isDark);
 
-    // 7. 赛博分割线
+    // 8. 分割线
     ctx.save();
     ctx.strokeStyle = isDark ? '#ff2d55' : '#c0392b'; 
     ctx.lineWidth = 4;
     ctx.shadowColor = isDark ? '#ff2d55' : '#c0392b'; 
     ctx.shadowBlur = 25;
-    ctx.beginPath(); ctx.moveTo(W / 2 - 350, 1010); ctx.lineTo(W / 2 + 350, 1010); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W / 2 - 350, 940); ctx.lineTo(W / 2 + 350, 940); ctx.stroke();
     ctx.restore();
-    // 中心菱形
     ctx.fillStyle = T.cornerColor;
-    ctx.save(); ctx.translate(W / 2, 1010); ctx.rotate(Math.PI / 4); ctx.fillRect(-10, -10, 20, 20); ctx.restore();
+    ctx.save(); ctx.translate(W / 2, 940); ctx.rotate(Math.PI / 4); ctx.fillRect(-10, -10, 20, 20); ctx.restore();
 
-    // 8. 核心祝福语信息框 (超大玻璃拟态面板)
+    // 9. 信息框
     var boxW = W - 160;
-    var boxH = 280;
+    var boxH = 220;
     var boxX = (W - boxW) / 2;
-    var boxY = 1070;
+    var boxY = 990;
     
     ctx.save();
-    // 玻璃底框
     ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.05)' : 'rgba(255, 255, 255, 0.6)';
     ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.4)' : 'rgba(192, 57, 43, 0.3)';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.roundRect(boxX, boxY, boxW, boxH, 24); ctx.fill(); ctx.stroke();
-    // 内发光边框
     ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.3)' : 'rgba(212, 160, 23, 0.2)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.roundRect(boxX + 15, boxY + 15, boxW - 30, boxH - 30, 16); ctx.stroke();
     ctx.restore();
 
-    // 9. 祝福语大字号排版 (视觉焦点)
+    // 10. 祝福语
     ctx.fillStyle = isDark ? '#ff2d55' : '#c0392b';
-    ctx.font = '700 32px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1130);
+    ctx.font = '700 30px "JetBrains Mono", monospace';
+    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1045);
 
-    // 大幅放大每日祝福语 (64px)
-    draw3DText(ctx, fortune.text, W / 2, 1220,
+    draw3DText(ctx, fortune.text, W / 2, 1125,
       '800 64px "Noto Serif SC", "Songti SC", serif',
       T.signColor, T.signGlow, 6, isDark);
 
-    // 10. 随机吉祥话
+    // 11. 随机吉祥话
     var SLOGANS = [
       '五路财神 · 八方来财', '招财进宝 · 日进斗金', '金库充盈 · 银库满仓',
       '财星高照 · 鸿运当头', '正财偏财 · 滚滚而来', '福禄双全 · 富贵盈门'
     ];
     var randomSlogan = SLOGANS[Math.floor(Math.random() * SLOGANS.length)];
-    draw3DText(ctx, randomSlogan, W / 2, 1390,
+    draw3DText(ctx, randomSlogan, W / 2, 1290,
       '700 52px "Noto Serif SC", "Songti SC", serif',
       T.titleColor, T.titleGlow, 4, isDark);
 
     ctx.fillStyle = T.textMuted;
     ctx.font = '500 36px "Noto Serif SC", serif';
-    ctx.fillText('财神到，财运到', W / 2, 1470);
+    ctx.fillText('财神到，财运到', W / 2, 1370);
 
-    // 11. 底部链上契约数据 (与日期融合，放大字号)
+    // 12. 落款、日期（公历+农历）
     ctx.fillStyle = T.textMuted;
     ctx.font = '600 26px "JetBrains Mono", monospace';
-    ctx.fillText('CAISHEN.DAO · ON-CHAIN CONTRACT', W / 2, 1600);
+    ctx.fillText('CAISHEN.DAO · ON-CHAIN CONTRACT', W / 2, 1430);
 
-    var today = new Date();
-    var dateStr = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
-    
-    // 日期和哈希值并排，放大字号，极致清晰
     ctx.fillStyle = T.cornerColor;
-    ctx.font = '700 36px "JetBrains Mono", monospace';
-    ctx.fillText(dateStr + '  //  #' + Math.floor(Math.random() * 9000 + 1000), W / 2, 1670);
+    ctx.font = '700 32px "JetBrains Mono", monospace';
+    ctx.fillText('公历 ' + dateStr, W / 2, 1485);
 
-    // 12. 【核心升级】金色大印：完美放置于底部正中央，作为终极授权章！
-    var sealSize = 280; // 超大尺寸
-    var sealX = (W - sealSize) / 2; // 居中 X 坐标
-    var sealY = H - sealSize - 60;  // 底部留出 60px 边距
+    ctx.fillStyle = T.titleColor;
+    ctx.font = '700 32px "Noto Serif SC", "Songti SC", serif';
+    ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + '月' + lunar.day, W / 2, 1535);
+
+    // 13. 金色大印（尺寸 320，位置适中，底部留白 60px）
+    var sealSize = 320;
+    var sealX = (W - sealSize) / 2;
+    var sealY = 1580; // 1580 + 320 = 1900，完美留白 20px (注：1920 - 1900 = 20px, 用户要求不要贴边，留 20px 有点少，改为 1560 -> 60px)
     
+    // 修正：为了不贴边，sealY 改为 1540，底部留白 60px
+    sealY = 1540; 
+
     if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
       ctx.save();
-      // 底层光晕：让印章如悬浮的纯金能量体
-      ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)';
-      ctx.shadowBlur = isDark ? 70 : 30;
-      ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
-      ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
-      
-      // 上层高光：强化金属浮雕感
-      ctx.shadowBlur = 20;
-      ctx.globalAlpha = 0.9;
+      ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.9)';
+      ctx.shadowBlur = isDark ? 60 : 30;
       ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
       ctx.restore();
     } else {
-      // 回退方案：使用代码绘制的印章
-      drawSeal(ctx, W / 2, H - sealSize / 2 - 60, sealSize * 0.8, T);
+      drawSeal(ctx, W / 2, sealY + sealSize / 2, sealSize * 0.8, T);
     }
 
-    // 13. 底部两侧赛博元素填充（让画面极度饱和）
-    ctx.fillStyle = T.textMuted;
-    ctx.font = '600 20px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('VERIFIED ON-CHAIN', 80, H - 100);
-    ctx.textAlign = 'right';
-    ctx.fillText('BLOCK #19254871', W - 80, H - 100);
-
-    // 14. 最后叠加噪点，强化金属质感
+    // 14. 噪点
     addCanvasNoise(ctx, W, H);
 
     try {
