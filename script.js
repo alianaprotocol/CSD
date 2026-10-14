@@ -1378,6 +1378,7 @@ window.__metalScrape = (function () {
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
     var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
+    var fortune = getFortune();
     
     var T = {
       bgFrom: isDark ? '#080205' : '#fff7ed',
