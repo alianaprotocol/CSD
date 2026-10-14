@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
+<title>财神生态圈 · 产品文档</title>
+<style>
+  :root{
+    color-scheme: light dark;
+
+    --ink:#14181d;
+    --ink-2:#2f3841;
+    --ink-3:#5b6672;
+    --muted:#8a939d;
+    --line:#e2e6ea;
+    --line-2:#eef1f4;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --red:#a91f27;
+    --red-dark:#7e161c;
+    --red-soft:#fbf4f4;
+    --gold:#a8821c;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+    --cyber:#ff2d55;
+    --cyber-d:#cc0e30;
+    --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255, 45, 85, .45);
+    --cyber-glow-soft:rgba(255, 45, 85, .18);
+    --cyber-glow-faint:rgba(255, 45, 85, .06);
+
+    --toc-bg:rgba(255,255,255,.92);
+    --abstract-from:#fcfcfd;
+    --abstract-to:#ffffff;
+    --lead-fade:rgba(251,244,244,0);
+    --hover-bg:rgba(20,24,29,.05);
+    --thead-bg:#f4f6f8;
+    --zebra-bg:#fbfcfd;
+    --sum-line:#efd2d4;
+    --scroll-thumb:#d2d8dd;
+    --code-bg:#f4f6f8;
+
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+    --sp-7:28px; --sp-9:36px; --sp-10:44px;
+    --r:3px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-size:14.5px;
+    line-height:1.75;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--cyber);
+    outline-offset:3px;
+    border-radius:4px;
+    box-shadow:0 0 0 4px var(--cyber-glow-soft);
+  }
+
+  .doc{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--card);
+    min-height:100vh;
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+    position:relative;
+    overflow-x:clip;
+    padding:0 26px;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .doc::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,
+      var(--cyber) 0%,
+      var(--cyber) 42%,
+      var(--gold) 42%,
+      var(--gold) 100%);
+    z-index:2;
+    box-shadow:
+      0 0 12px var(--cyber-glow),
+      0 0 24px var(--cyber-glow-soft);
+  }
+  .wrap{padding:0;}
+
+  .num{
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum" 1;
+    letter-spacing:-.01em;
+  }
+
+  /* ============ 文件抬头 ============ */
+  .masthead{
+    padding:var(--sp-9) 0 26px;
+    border-bottom:1.5px solid var(--ink);
+    position:relative;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:-1.5px;
+    width:34%;
+    height:1.5px;
+    background:linear-gradient(90deg, var(--cyber), transparent);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 var(--sp-3);
+    line-height:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    display:block;
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber), 0 0 12px var(--cyber-glow);
+    flex:none;
+  }
+  .doc-title{
+    margin:0;
+    font-size:clamp(22px,5.6vw,27px);
+    font-weight:700;
+    letter-spacing:-.012em;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .doc-sub{
+    margin:var(--sp-2) 0 0;
+    font-size:13px;
+    color:var(--ink-3);
+    letter-spacing:.02em;
+    line-height:1.5;
+  }
+
+  .mast-meta{
+    display:flex;flex-wrap:wrap;
+    gap:var(--sp-3) 30px;
+    margin-top:24px;
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+  }
+  .mast-meta .cell{min-width:0;}
+  .mast-meta .k{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 5px;
+    line-height:1;
+  }
+  .mast-meta .v{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-.005em;
+    line-height:1.4;
+  }
+
+  /* ============ 目录 ============ */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    gap:6px;
+    margin:0 -26px;
+    padding:10px 26px;
+    background:var(--toc-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-link{
+    flex:none;
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-3);
+    text-decoration:none;
+    background:transparent;
+    border:1px solid transparent;
+    transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;
+    letter-spacing:.02em;
+    white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toc-link:hover{
+    background:var(--bg);
+    color:var(--ink);
+    border-color:var(--cyber-glow-soft);
+  }
+  .toc-link.active{
+    background:var(--cyber-d);
+    color:#fff;
+    border-color:var(--cyber);
+    box-shadow:
+      0 4px 14px -4px var(--cyber-glow),
+      0 0 0 1px var(--cyber-glow-soft);
+  }
+
+  /* ============ 摘要 ============ */
+  .abstract{
+    padding:var(--sp-7) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
+  }
+  .abstract p{
+    margin:0;
+    font-size:14px;
+    line-height:1.95;
+    color:var(--ink-2);
+  }
+  .abstract b{color:var(--ink);font-weight:700;}
+  .abstract .hl{
+    color:var(--cyber);
+    font-weight:700;
+    border-bottom:2px solid var(--cyber-glow-soft);
+    padding-bottom:1px;
+  }
+
+  /* ============ 区块 ============ */
+  .sec{
+    padding:var(--sp-9) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+    scroll-margin-top:56px;
+  }
+  .sec:last-of-type{
+    border-bottom:0;
+    padding-bottom:var(--sp-10);
+  }
+  .sec-head{
+    display:flex;align-items:baseline;gap:var(--sp-3);
+    margin:0 0 var(--sp-5);
+  }
+  .sec-idx{
+    flex:none;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--cyber);
+    padding:3px 8px;
+    line-height:1;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:4px;
+    background:var(--cyber-glow-faint);
+  }
+  .sec-title{
+    margin:0;
+    font-size:16.5px;
+    font-weight:700;
+    letter-spacing:-.008em;
+    line-height:1.35;
+    color:var(--ink);
+  }
+  .sec-title span{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:400;
+    color:var(--muted);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    margin-top:5px;
+    line-height:1;
+  }
+  .sec-lead{
+    margin:0 0 var(--sp-5);
+    font-size:13.5px;
+    color:var(--ink-3);
+    line-height:1.8;
+  }
+
+  /* ============ 定义列表 ============ */
+  .def{
+    border-top:1px solid var(--line);
+  }
+  .def-row{
+    display:grid;
+    grid-template-columns:118px 1fr;
+    gap:var(--sp-5);
+    padding:12px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+    transition:background-color .2s ease, padding-left .25s ease;
+    position:relative;
+  }
+  .def-row:hover{
+    background:var(--cyber-glow-faint);
+    padding-left:8px;
+  }
+  .def-row:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:10px;bottom:10px;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .def-row:last-child{border-bottom:0;}
+  .def-k{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .def-row:hover .def-k{color:var(--cyber);}
+  .def-v{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.75;
+    min-width:0;
+  }
+  .def-v b{color:var(--ink);font-weight:700;}
+  .def-v code{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink);
+    background:var(--code-bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:1px 6px;
+    line-height:1.6;
+  }
+
+  /* ============ 本位对照 ============ */
+  .basis{
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:var(--r);
+    background:linear-gradient(135deg,var(--cyber-glow-faint),transparent);
+    padding:var(--sp-4) var(--sp-5);
+    margin-bottom:var(--sp-5);
+  }
+  .basis-title{
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    margin-bottom:12px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .basis-title::before{
+    content:"";
+    display:block;
+    width:14px;height:1px;
+    background:var(--cyber);
+  }
+  .basis-row{
+    display:grid;
+    grid-template-columns:52px 1fr;
+    gap:var(--sp-4);
+    padding:10px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+  }
+  .basis-row:last-child{border-bottom:0;padding-bottom:0;}
+  .basis-row:first-of-type{padding-top:0;}
+  .basis-k{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    color:var(--ink-2);
+    letter-spacing:.06em;
+  }
+  .basis-v{
+    font-size:13.5px;
+    color:var(--ink);
+    line-height:1.7;
+  }
+  .basis-v b{
+    color:var(--cyber-d);
+    font-weight:700;
+  }
+
+  /* ============ 分段控件 ============ */
+  .segmented{
+    display:flex;gap:2px;
+    padding:3px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    margin-bottom:var(--sp-5);
+  }
+  .segmented button{
+    flex:1;
+    padding:9px 8px;
+    border:none;
+    border-radius:2px;
+    background:transparent;
+    color:var(--ink-3);
+    font-size:12.5px;font-weight:600;
+    font-family:inherit;
+    letter-spacing:.02em;
+    cursor:pointer;
+    transition:background-color .18s ease,color .18s ease;
+  }
+  .segmented button.active{
+    background:var(--cyber-d);
+    color:#fff;
+    box-shadow:0 2px 8px -3px var(--cyber-glow);
+  }
+  .panel{display:none;}
+  .panel.active{display:block;animation:fadeIn .22s ease;}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(4px);}
+    to{opacity:1;transform:none;}
+  }
+
+  /* ============ 表格 ============ */
+  .tbl-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:var(--card);
+    scrollbar-width:thin;
+  }
+  .tbl-scroll::-webkit-scrollbar{height:4px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{
+    background:linear-gradient(90deg, var(--cyber), var(--gold));
+    border-radius:2px;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:13px;
+  }
+  th,td{
+    padding:11px var(--sp-4);
+    text-align:right;
+    white-space:nowrap;
+    border-bottom:1px solid var(--line-2);
+    line-height:1.5;
+    position:relative;
+  }
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    background:var(--thead-bg);
+    color:var(--ink-3);
+    font-weight:600;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  tbody tr:last-child td{border-bottom:0;}
+  tbody tr:nth-child(even){background:var(--zebra-bg);}
+  tbody tr{transition:background-color .18s ease;}
+  tbody tr:hover{background:var(--cyber-glow-faint);}
+  tbody tr:hover td:first-child::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  tbody td{color:var(--ink-2);}
+  tbody td:first-child{
+    color:var(--ink);
+    font-weight:600;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.04em;
+  }
+  .hl{
+    color:var(--cyber)!important;
+    font-weight:700!important;
+  }
+
+  /* ============ 计算块 ============ */
+  .calc{
+    background:var(--code-bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:var(--mono);
+    font-size:12.5px;
+    line-height:2;
+    color:var(--ink-2);
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .calc-label{
+    color:var(--muted);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .calc-line{color:var(--ink);}
+  .calc-line .op{color:var(--muted);margin:0 4px;}
+  .calc-line .n{color:var(--ink-2);}
+  .calc-line .r{color:var(--cyber);font-weight:700;}
+  .calc-line .u{color:var(--muted);font-size:11.5px;margin-left:2px;}
+
+  /* ============ 说明条 ============ */
+  .caption{
+    margin:var(--sp-4) 0 0;
+    padding:2px 0 2px var(--sp-3);
+    border-left:2px solid var(--line);
+    font-size:12px;
+    line-height:1.9;
+    color:var(--muted);
+  }
+  .caption b{color:var(--ink-2);font-weight:600;}
+  .caption.gold{border-left-color:var(--gold);}
+  .caption.red{border-left-color:var(--cyber);}
+  .caption.red b{color:var(--cyber-d);}
+
+  /* ============ 产品矩阵 ============ */
+  .matrix{
+    border-top:1px solid var(--line);
+  }
+  .matrix-row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:var(--sp-2) var(--sp-4);
+    padding:16px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+    transition:background-color .2s ease, padding-left .25s ease;
+    position:relative;
+  }
+  .matrix-row:hover{
+    background:var(--cyber-glow-faint);
+    padding-left:8px;
+  }
+  .matrix-row:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:12px;bottom:12px;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .matrix-name{
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1.5;
+    letter-spacing:-.005em;
+  }
+  .matrix-status{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .matrix-status.live{
+    color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+  }
+  .matrix-status.plan{
+    color:var(--muted);
+    background:var(--bg);
+    border:1px solid var(--line);
+  }
+  .matrix-desc{
+    grid-column:1 / -1;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.75;
+  }
+
+  /* ============ 权益网格 ============ */
+  .benefits{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .benefit{
+    padding:var(--sp-4);
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    min-width:0;
+    transition:background-color .2s ease;
+    position:relative;
+  }
+  .benefit:hover{background:var(--cyber-glow-faint);}
+  .benefit:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .benefit-idx{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:var(--muted);
+    margin-bottom:6px;
+    line-height:1;
+    display:block;
+  }
+  .benefit:hover .benefit-idx{color:var(--cyber);}
+  .benefit-t{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    letter-spacing:-.005em;
+  }
+  .benefit-d{
+    margin-top:4px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.65;
+  }
+
+  /* ============ 闭环 ============ */
+  .loop{
+    border-top:1px solid var(--line);
+  }
+  .loop-row{
+    display:grid;
+    grid-template-columns:88px 1fr;
+    gap:var(--sp-4);
+    padding:14px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+    transition:background-color .2s ease, padding-left .25s ease;
+    position:relative;
+  }
+  .loop-row:hover{
+    background:var(--cyber-glow-faint);
+    padding-left:8px;
+  }
+  .loop-row:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:12px;bottom:12px;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .loop-k{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    line-height:1.7;
+  }
+  .loop-v{
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink);
+    line-height:1.7;
+  }
+
+  /* ============ 风险列表 ============ */
+  .risks{
+    border-top:1px solid var(--line);
+    counter-reset:risk;
+  }
+  .risks li{
+    counter-increment:risk;
+    position:relative;
+    padding:12px 0 12px 34px;
+    font-size:12.5px;
+    color:var(--ink-3);
+    line-height:1.8;
+    border-bottom:1px solid var(--line-2);
+    list-style:none;
+  }
+  .risks li:last-child{border-bottom:0;}
+  .risks li::before{
+    content:counter(risk,decimal-leading-zero);
+    position:absolute;
+    left:0;top:13px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--cyber);
+    opacity:.75;
+    letter-spacing:.02em;
+  }
+
+  /* ============ 说明卡片 ============ */
+  .note{
+    padding:12px 16px;
+    border-radius:var(--r);
+    font-size:12.5px;
+    line-height:1.75;
+    margin:14px 0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:12px;
+    align-items:start;
+  }
+  .note-tag{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding-top:2px;
+    line-height:1.6;
+  }
+  .note-body{min-width:0;}
+
+  .note.info{
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+  }
+  .note.info .note-tag{color:var(--cyber);}
+  .note.info .note-body{color:var(--ink-2);}
+  .note.info .note-body b{color:var(--ink);}
+
+  .note.warn{
+    background:var(--red-soft);
+    border:1px solid var(--sum-line);
+  }
+  .note.warn .note-tag{color:var(--red-dark);}
+  .note.warn .note-body{color:var(--ink-2);}
+  .note.warn .note-body b{color:var(--red-dark);}
+
+  .note.gold{
+    background:rgba(168,130,28,.06);
+    border:1px solid rgba(168,130,28,.2);
+  }
+  .note.gold .note-tag{color:var(--gold);}
+  .note.gold .note-body{color:var(--ink-2);}
+  .note.gold .note-body b{color:var(--ink);}
+
+  /* ============ 对比网格 ============ */
+  .compare{
+    display:grid;
+    grid-template-columns:1fr;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    overflow:hidden;
+    background:var(--card);
+    margin-top:var(--sp-4);
+  }
+  @media(min-width:520px){.compare{grid-template-columns:1fr 1fr;}}
+  .compare-col{
+    padding:var(--sp-4) var(--sp-5);
+    border-bottom:1px solid var(--line-2);
+    min-width:0;
+  }
+  @media(min-width:520px){
+    .compare-col{border-bottom:0;border-right:1px solid var(--line-2);}
+    .compare-col:last-child{border-right:0;}
+  }
+  .compare-col:last-child{border-bottom:0;}
+  .compare-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:8px;
+    padding-bottom:10px;
+    margin-bottom:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .compare-name{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.005em;
+  }
+  .compare-tag{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    color:var(--muted);
+  }
+  .compare-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+    padding:6px 0;
+    font-size:12.5px;
+    border-bottom:1px dashed var(--line-2);
+  }
+  .compare-line:last-child{border-bottom:0;}
+  .compare-line .k{color:var(--muted);}
+  .compare-line .v{
+    color:var(--ink);
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    text-align:right;
+    white-space:nowrap;
+  }
+  .compare-line .v.red{color:var(--cyber);}
+
+  /* ============ FAQ ============ */
+  .faq{
+    border-top:1px solid var(--line);
+  }
+  .faq-item{
+    border-bottom:1px solid var(--line-2);
+  }
+  .faq-item:last-child{border-bottom:0;}
+  .faq-item summary{
+    padding:16px 0;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    line-height:1.5;
+    letter-spacing:-.005em;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .15s ease;
+    position:relative;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";
+    font-family:var(--mono);
+    font-size:17px;
+    font-weight:400;
+    color:var(--muted);
+    flex:none;
+    line-height:1;
+    transition:color .18s ease, transform .3s ease;
+  }
+  .faq-item[open] summary::after{
+    content:"−";
+    color:var(--cyber);
+    transform:rotate(180deg);
+  }
+  .faq-item summary:hover{color:var(--cyber);}
+  .faq-item[open] summary{color:var(--cyber-d);}
+  .faq-item[open] summary::before{
+    content:"";
+    position:absolute;
+    left:-10px;top:12px;bottom:12px;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .faq-a{
+    padding:0 24px 16px 0;
+    font-size:13px;
+    line-height:1.85;
+    color:var(--ink-3);
+    animation: faqIn .3s ease;
+  }
+  @keyframes faqIn{
+    from{opacity:0; transform:translateY(-4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .faq-a b{color:var(--ink-2);font-weight:600;}
+
+  /* ============ 页脚 ============ */
+  .doc-foot{
+    padding:26px 0 var(--sp-10);
+    border-top:1px solid var(--line);
+    margin-top:32px;
+    position:relative;
+  }
+  .doc-foot::before{
+    content:"";
+    position:absolute;
+    top:-1px;left:0;
+    width:34%;
+    height:1px;
+    background:linear-gradient(90deg, var(--cyber), transparent);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .foot-row{
+    display:flex;justify-content:space-between;
+    gap:var(--sp-4);flex-wrap:wrap;
+    padding:var(--sp-2) 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .foot-row:last-of-type{border-bottom:0;}
+  .foot-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.8;
+    flex:none;
+  }
+  .foot-v{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-3);
+    line-height:1.8;
+    word-break:break-all;
+    text-align:right;
+  }
+  .disc{
+    margin-top:var(--sp-5);
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.95;
+  }
+
+  /* ============ 深色模式 ============ */
+  @media (prefers-color-scheme: dark){
+    :root{
+      color-scheme: dark;
+
+      --ink:#e6eaf0;
+      --ink-2:#b0b8c2;
+      --ink-3:#8892a0;
+      --muted:#6a7480;
+      --line:#252c36;
+      --line-2:#1a2029;
+      --bg:#0a0e14;
+      --card:#10161e;
+      --red:#e63946;
+      --red-dark:#ff5a6a;
+      --red-soft:#241418;
+      --gold:#d4a82a;
+
+      --cyber:#ff2d55;
+      --cyber-d:#cc0e30;
+      --cyber-l:#ff6b85;
+      --cyber-glow:rgba(255, 45, 85, .55);
+      --cyber-glow-soft:rgba(255, 45, 85, .22);
+      --cyber-glow-faint:rgba(255, 45, 85, .08);
+
+      --toc-bg:rgba(16,22,30,.92);
+      --abstract-from:#161c25;
+      --abstract-to:#10161e;
+      --lead-fade:rgba(42,20,24,0);
+      --hover-bg:rgba(230,236,240,.06);
+      --thead-bg:#181e26;
+      --zebra-bg:#141a22;
+      --sum-line:#3a1e22;
+      --scroll-thumb:#3a424d;
+      --code-bg:#0d131a;
+    }
+  }
+
+  /* ============ 小屏 ============ */
+  @media (max-width:480px){
+    .doc{padding:0 22px;}
+    .toc{margin:0 -22px;padding:10px 22px;}
+    .def-row{grid-template-columns:96px 1fr;gap:var(--sp-3);}
+    .benefits{grid-template-columns:1fr;}
+    .matrix-row{gap:var(--sp-1) var(--sp-3);}
+  }
+
+  @media (max-width:400px){
+    .mast-meta{gap:var(--sp-3) 20px;}
+    .def-row{grid-template-columns:1fr;gap:var(--sp-1);}
+    .loop-row{grid-template-columns:1fr;gap:var(--sp-1);}
+    .foot-row{flex-direction:column;gap:2px;}
+    .foot-v{text-align:left;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      transition-duration:.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ============ 文件抬头 ============ -->
+  <header class="wrap masthead">
+    <div class="eyebrow">Product Documentation</div>
+    <h1 class="doc-title">财神生态圈</h1>
+    <p class="doc-sub">产品体系文档 · 内部参阅</p>
+
+    <div class="mast-meta">
+      <div class="cell">
+        <span class="k">Version</span>
+        <span class="v num">V2.5</span>
+      </div>
+      <div class="cell">
+        <span class="k">Existing</span>
+        <span class="v">燃香赐福 · 聚宝盆</span>
+      </div>
+      <div class="cell">
+        <span class="k">Planned</span>
+        <span class="v num">6 Products</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ 目录 ============ -->
+  <nav class="toc" aria-label="文档导航">
+    <a class="toc-link" href="#overview">总览</a>
+    <a class="toc-link" href="#incense">燃香赐福</a>
+    <a class="toc-link" href="#treasure">聚宝盆</a>
+    <a class="toc-link" href="#nft">财神 NFT</a>
+    <a class="toc-link" href="#culture">文化院</a>
+    <a class="toc-link" href="#mall">商城</a>
+    <a class="toc-link" href="#game">小游戏</a>
+    <a class="toc-link" href="#loop">生态闭环</a>
+    <a class="toc-link" href="#risk">风险提示</a>
+  </nav>
+
+  <!-- ============ 摘要 ============ -->
+  <section class="wrap abstract">
+    <p>
+      财神生态圈以 <b>$财神到</b> 为核心，连接信仰、资产、文化、教育、娱乐、消费与治理。
+      现有双引擎为 <span class="hl">燃香赐福</span> 与 <span class="hl">聚宝盆</span>，
+      未来将拓展财神 NFT、财神文化院、财神商城、财神小游戏、财神 DAO 与财神福报，
+      形成完整的链上财神宇宙。本文档用于团队内部理解产品机制与规划方向。
+    </p>
+  </section>
+
+  <!-- ============ 01 总览 ============ -->
+  <section class="wrap sec" id="overview">
+    <div class="sec-head">
+      <span class="sec-idx">01</span>
+      <h2 class="sec-title">总览<span>Product Overview</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      财神生态圈由现有双引擎与未来六大板块构成，形成从信仰到资产、从文化到娱乐的完整闭环。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">主标语</span>
+        <span class="def-v">燃香赐福，聚宝盆聚财，财神宇宙由此展开</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">副标语</span>
+        <span class="def-v">拜财神，聚财气，建生态，共福报</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">核心资产</span>
+        <span class="def-v"><b>$财神到</b></span>
+      </div>
+    </div>
+
+    <p class="caption">
+      <b>说明：</b>以下产品矩阵分为「现有项目」与「规划中」两类，规划中项目的具体上线时间与规则以官方公告为准。
+    </p>
+
+    <div class="matrix" style="margin-top:20px;">
+      <div class="matrix-row">
+        <div class="matrix-name">燃香赐福</div>
+        <span class="matrix-status live">Existing</span>
+        <div class="matrix-desc">财神直播间限定。燃香打入黑洞，赐福按币本位每日释放，连续 365 天。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">聚宝盆</div>
+        <span class="matrix-status live">Existing</span>
+        <div class="matrix-desc">质押 $财神到，单宝或双宝组合，多周期生息，收益按日线性释放。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">财神 NFT</div>
+        <span class="matrix-status plan">Planned</span>
+        <div class="matrix-desc">极少数创世竞拍。独有权益与生态分红，作为财神生态圈的创世身份凭证。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">财神文化院</div>
+        <span class="matrix-status plan">Planned</span>
+        <div class="matrix-desc">风水命理教育板块。文化传承、知识学习与命理师、风水师入驻服务网络。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">财神商城</div>
+        <span class="matrix-status plan">Planned</span>
+        <div class="matrix-desc">财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神到 支付。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">财神小游戏</div>
+        <span class="matrix-status plan">Planned</span>
+        <div class="matrix-desc">玩游戏赚 $财神到，购买道具皮肤，NFT 道具可交易。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 燃香赐福 ============ -->
+  <section class="wrap sec" id="incense">
+    <div class="sec-head">
+      <span class="sec-idx">02</span>
+      <h2 class="sec-title">燃香赐福<span>Existing Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      每日财神直播间限定活动。燃香打入黑洞，链上公开可查，不可撤回。赐福按币本位每日释放，连续 365 天。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">开放时间</span>
+        <span class="def-v">财神直播间限定，限额限量，按实际情况动态开放，以直播间公告为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">总额度</span>
+        <span class="def-v"><b>20M 固定</b>，额满即止</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">燃香方式</span>
+        <span class="def-v">打入黑洞，不可撤回</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">赐福方式</span>
+        <span class="def-v">币本位返还，连续 365 天</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">每日释放</span>
+        <span class="def-v"><code>0.688%</code></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">总返还率</span>
+        <span class="def-v"><code>251.12%</code></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">领取入口</span>
+        <span class="def-v"><code>lock.jup.ag</code></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">领取时间</span>
+        <span class="def-v">T+1 起可领取</span>
+      </div>
+    </div>
+
+    <p class="caption" style="margin-top:20px;">
+      <b>示例：</b>以 10,000 为例，每日领取 68.8，连续 365 天，总计领取 25,112。示例仅用于说明，实际以官方页面为准。
+    </p>
+
+    <div class="note warn" style="margin-top:20px;">
+      <span class="note-tag">Notice</span>
+      <div class="note-body">
+        燃香不可撤回；活动限额限量，额满即止；开放时间不设固定场次，以直播间公告为准；
+        单地址限额，防刷机制已启用；建议 24 个月内领取有效，逾期视为放弃。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 聚宝盆 ============ -->
+  <section class="wrap sec" id="treasure">
+    <div class="sec-head">
+      <span class="sec-idx">03</span>
+      <h2 class="sec-title">聚宝盆<span>Existing Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      质押 $财神到，支持单宝与双宝组合，多周期生息。收益按日线性释放，本金到期返还。
+    </p>
+
+    <!-- 本位对照 -->
+    <div class="basis">
+      <div class="basis-title">计算本位对照</div>
+      <div class="basis-row">
+        <span class="basis-k">单宝</span>
+        <span class="basis-v"><b>币本位计算，币本位发放。</b></span>
+      </div>
+      <div class="basis-row">
+        <span class="basis-k">双宝</span>
+        <span class="basis-v"><b>金本位计算，币本位发放，本金原路返还。</b></span>
+      </div>
+    </div>
+
+    <!-- 质押方案 -->
+    <div class="segmented" id="segTreasure">
+      <button class="active" data-panel="single">单宝质押</button>
+      <button data-panel="double">双宝聚财</button>
+      <button data-panel="all">APY 总表</button>
+    </div>
+
+    <div class="panel active" id="panel-single">
+      <div class="note info" style="margin-top:0;">
+        <span class="note-tag">Plan</span>
+        <div class="note-body"><b>质押组合：</b>100% $财神到</div>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>周期</th>
+              <th>APY</th>
+              <th>到期总收益率</th>
+              <th>总返还倍数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>30 天</td><td class="hl">40%</td><td>3.29%</td><td>1.0329</td></tr>
+            <tr><td>90 天</td><td class="hl">80%</td><td>19.73%</td><td>1.1973</td></tr>
+            <tr><td>120 天</td><td class="hl">110%</td><td>36.16%</td><td>1.3616</td></tr>
+            <tr><td>180 天</td><td class="hl">170%</td><td>83.84%</td><td>1.8384</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-double">
+      <div class="note info" style="margin-top:0;">
+        <span class="note-tag">Plan</span>
+        <div class="note-body"><b>质押组合：</b>60% $财神到 + 40% BG / FIST / LUCKY99</div>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>周期</th>
+              <th>APY</th>
+              <th>到期总收益率</th>
+              <th>总返还倍数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>30 天</td><td class="hl">55%</td><td>4.52%</td><td>1.0452</td></tr>
+            <tr><td>90 天</td><td class="hl">105%</td><td>25.89%</td><td>1.2589</td></tr>
+            <tr><td>120 天</td><td class="hl">140%</td><td>46.03%</td><td>1.4603</td></tr>
+            <tr><td>180 天</td><td class="hl">200%</td><td>98.63%</td><td>1.9863</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-all">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>模式</th>
+              <th>质押组合</th>
+              <th>30 天</th>
+              <th>90 天</th>
+              <th>120 天</th>
+              <th>180 天</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>单宝质押</td>
+              <td>100% $财神到</td>
+              <td class="hl">40%</td>
+              <td class="hl">80%</td>
+              <td class="hl">110%</td>
+              <td class="hl">170%</td>
+            </tr>
+            <tr>
+              <td>双宝聚财</td>
+              <td>60% + 40% 合作币</td>
+              <td class="hl">55%</td>
+              <td class="hl">105%</td>
+              <td class="hl">140%</td>
+              <td class="hl">200%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">以上为建议参数，实际 APY 以官方质押页面实时显示为准。</p>
+    </div>
+
+    <!-- 收益释放规则 -->
+    <div class="sec-head" style="margin-top:36px;">
+      <span class="sec-idx">03·A</span>
+      <h2 class="sec-title">收益释放规则<span>Daily Linear Release</span></h2>
+    </div>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">释放方式</span>
+        <span class="def-v"><b>按日线性释放</b>，T+1 起每日释放</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">每日释放</span>
+        <span class="def-v"><code>质押本金 × APY ÷ 365</code></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">双宝计算</span>
+        <span class="def-v">按总质押 USDT 等值计算，收益以 $财神到 结算，合作币按入场时价格快照</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">领取方式</span>
+        <span class="def-v">每日可领取，未领取可累积，建议 24 个月内领取有效</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">本金返还</span>
+        <span class="def-v">本金到期原路返还，收益释放完毕后质押结束</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">年化口径</span>
+        <span class="def-v">APY 为简单年化，按日线性释放，<b>非复利</b></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">提前解锁</span>
+        <span class="def-v">不支持；如后续开放，罚金规则以官方页面为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">APY 调整</span>
+        <span class="def-v">可动态调整，每周公示，已质押部分建议锁定入场 APY</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">合作币风控</span>
+        <span class="def-v">需审计、流动性充足；若脱锚，官方有权暂停该组合</span>
+      </div>
+    </div>
+
+    <!-- 单宝计算示例 -->
+    <div class="sec-head" style="margin-top:36px;">
+      <span class="sec-idx">03·B</span>
+      <h2 class="sec-title">单宝计算示例<span>Single · 币本位 · 180 天 / APY 170%</span></h2>
+    </div>
+
+    <div class="note info" style="margin-top:0;">
+      <span class="note-tag">Basis</span>
+      <div class="note-body">
+        单宝 100% $财神到，<b>币本位计算，币本位发放</b>。收益数量只与质押的 $财神到 数量有关，不涉及 USDT 折算。
+      </div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">计算公式</span>
+      <div class="calc-line">每日释放 <span class="op">=</span> 质押本金 <span class="op">×</span> APY <span class="op">÷</span> <span class="n">365</span></div>
+      <div class="calc-line">总收益 <span class="op">=</span> 每日释放 <span class="op">×</span> 质押天数</div>
+      <div class="calc-line">到期总返还 <span class="op">=</span> 本金 <span class="op">+</span> 总收益</div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">示例 · 质押 10,000 枚 $财神到 · 180 天 · APY 170%</span>
+      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">170%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">46.5753</span><span class="u">枚/天</span></div>
+      <div class="calc-line">总收益 <span class="op">=</span> <span class="n">46.5753</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">8,383.56</span><span class="u">枚</span></div>
+      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">8,383.56</span> <span class="op">=</span> <span class="r">18,383.56</span><span class="u">枚</span></div>
+    </div>
+
+    <div class="tbl-scroll" style="margin-top:16px;">
+      <table>
+        <thead>
+          <tr>
+            <th>周期</th>
+            <th>APY</th>
+            <th>每日释放</th>
+            <th>总收益</th>
+            <th>到期总返还</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>30 天</td><td class="hl">40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
+          <tr><td>90 天</td><td class="hl">80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
+          <tr><td>120 天</td><td class="hl">110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
+          <tr><td>180 天</td><td class="hl">170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">单位：枚 $财神到。示例仅用于说明，实际以官方页面为准。</p>
+
+    <!-- 双宝计算示例 -->
+    <div class="sec-head" style="margin-top:36px;">
+      <span class="sec-idx">03·C</span>
+      <h2 class="sec-title">双宝计算示例<span>Double · 金本位计算 · 180 天 / APY 200%</span></h2>
+    </div>
+
+    <div class="note info" style="margin-top:0;">
+      <span class="note-tag">Basis</span>
+      <div class="note-body">
+        双宝 60% $财神到 + 40% 合作币，<b>金本位计算，币本位发放，本金原路返还</b>。收益按总投入 USDT 等值计算，发放 $财神到。
+      </div>
+    </div>
+
+    <div class="note gold">
+      <span class="note-tag">Assume</span>
+      <div class="note-body">
+        <b>假设价格：</b>$财神到 = 0.015 USDT，BG = 0.0003 USDT<br>
+        <b>双宝比例：</b>60% $财神到 + 40% BG<br>
+        <b>周期 / APY：</b>180 天 / 200%
+      </div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第一步 · 按价值配比（总投入 1,000 USDT）</span>
+      <div class="calc-line">$财神到部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">600</span><span class="u">USDT</span></div>
+      <div class="calc-line">$财神到数量 <span class="op">=</span> <span class="n">600</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">40,000</span><span class="u">枚</span></div>
+      <div class="calc-line">BG 部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">400</span><span class="u">USDT</span></div>
+      <div class="calc-line">BG 数量 <span class="op">=</span> <span class="n">400</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">1,333,333.33</span><span class="u">枚</span></div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第二步 · 按总 USDT 等值算每日释放</span>
+      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">5.4795</span><span class="u">USDT/天</span></div>
+      <div class="calc-line">折 $财神到 <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u">枚/天</span></div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第三步 · 180 天总释放与到期返还</span>
+      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神到</span></div>
+      <div class="calc-line">到期返还本金 <span class="op">=</span> <span class="r">40,000 枚 $财神到 + 1,333,333.33 枚 BG</span></div>
+      <div class="calc-line">总返还价值 <span class="op">≈</span> <span class="r">1,986.30 USDT 等值</span></div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">Risk</span>
+      <div class="note-body">
+        BG 价格波动会影响本金法币价值，但返还的是原数量的 BG。收益以 $财神到 发放，不按 BG 结算。合作币存在脱锚、流动性不足等风险。
+      </div>
+    </div>
+
+    <!-- 反向计算示例 -->
+    <div class="sec-head" style="margin-top:36px;">
+      <span class="sec-idx">03·D</span>
+      <h2 class="sec-title">反向计算示例<span>Reverse · 手上有 10,000 枚 $财神到</span></h2>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第一步 · 按 60% 反推总投入</span>
+      <div class="calc-line">$财神到价值 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">150</span><span class="u">USDT</span></div>
+      <div class="calc-line">总投入价值 <span class="op">=</span> <span class="n">150</span> <span class="op">÷</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">250</span><span class="u">USDT</span></div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第二步 · 算 BG 部分与数量</span>
+      <div class="calc-line">BG 部分价值 <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">100</span><span class="u">USDT</span></div>
+      <div class="calc-line">BG 数量 <span class="op">=</span> <span class="n">100</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">333,333.33</span><span class="u">枚</span></div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">第三步 · 180 天 / APY 200% 收益</span>
+      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.3699</span><span class="u">USDT/天</span></div>
+      <div class="calc-line">折 $财神到 <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u">枚/天</span></div>
+      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神到</span></div>
+      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="r">10,000 枚 $财神到 + 333,333.33 枚 BG</span></div>
+    </div>
+
+    <!-- 对比总结 -->
+    <div class="sec-head" style="margin-top:36px;">
+      <span class="sec-idx">03·E</span>
+      <h2 class="sec-title">单宝 vs 双宝<span>Comparison</span></h2>
+    </div>
+
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="compare-name">单宝质押</span>
+          <span class="compare-tag">Single</span>
+        </div>
+        <div class="compare-line"><span class="k">质押组合</span><span class="v">100% $财神到</span></div>
+        <div class="compare-line"><span class="k">计算本位</span><span class="v red">币本位</span></div>
+        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神到</span></div>
+        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神到</span></div>
+        <div class="compare-line"><span class="k">价格风险</span><span class="v">仅 $财神到</span></div>
+        <div class="compare-line"><span class="k">计算复杂度</span><span class="v">低</span></div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="compare-name">双宝聚财</span>
+          <span class="compare-tag">Double</span>
+        </div>
+        <div class="compare-line"><span class="k">质押组合</span><span class="v">60% + 40% 合作币</span></div>
+        <div class="compare-line"><span class="k">计算本位</span><span class="v red">金本位</span></div>
+        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神到</span></div>
+        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神到 + 合作币</span></div>
+        <div class="compare-line"><span class="k">价格风险</span><span class="v">$财神到 + 合作币</span></div>
+        <div class="compare-line"><span class="k">计算复杂度</span><span class="v">中</span></div>
+      </div>
+    </div>
+
+    <p class="caption" style="margin-top:16px;">
+      <b>总结：</b>单宝币本位计算、币本位发放；双宝金本位计算、币本位发放、本金原路返还。
+      双宝最终发的还是 $财神到，不是 USDT，所以不是纯金本位。
+    </p>
+  </section>
+
+  <!-- ============ 04 财神 NFT ============ -->
+  <section class="wrap sec" id="nft">
+    <div class="sec-head">
+      <span class="sec-idx">04</span>
+      <h2 class="sec-title">财神 NFT<span>Planned Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      极少数创世竞拍。作为财神生态圈的创世身份凭证，每一枚唯一编号，持有者享有专属权益与生态分红。
+    </p>
+
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>等级</th>
+            <th>数量</th>
+            <th>定位</th>
+            <th>分红权重</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>财神金身</td><td class="hl">2 枚</td><td>创世至尊</td><td>最高</td></tr>
+          <tr><td>招财尊</td><td class="hl">16 枚</td><td>创世核心</td><td>高</td></tr>
+          <tr><td>财神令</td><td class="hl">90 枚</td><td>创世成员</td><td>基础</td></tr>
+          <tr><td>合计</td><td class="hl">108 枚</td><td>极少数创世</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">以官方最终公告为准。</p>
+
+    <div class="sec-head" style="margin-top:32px;">
+      <span class="sec-idx">04·A</span>
+      <h2 class="sec-title">NFT 独有权益<span>Exclusive Benefits</span></h2>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit">
+        <span class="benefit-idx">01</span>
+        <div class="benefit-t">身份权益</div>
+        <div class="benefit-d">创世身份、专属标识、勋章、直播间展示</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">02</span>
+        <div class="benefit-t">生态分红</div>
+        <div class="benefit-d">按等级权重参与生态分红池分配</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">03</span>
+        <div class="benefit-t">燃香赐福</div>
+        <div class="benefit-d">优先参与权、专属额度、专属通道</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">04</span>
+        <div class="benefit-t">聚宝盆</div>
+        <div class="benefit-d">专属 APY 加成、专属质押池、优先体验新周期</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">05</span>
+        <div class="benefit-t">财神商城</div>
+        <div class="benefit-d">终身折扣、专属商品、联名优先购、限量周边</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">06</span>
+        <div class="benefit-t">文化院</div>
+        <div class="benefit-d">课程免费或折扣、1v1 咨询、线下课优先</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">07</span>
+        <div class="benefit-t">小游戏</div>
+        <div class="benefit-d">专属皮肤、道具、称号、地图、收益加成</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">08</span>
+        <div class="benefit-t">财神 DAO</div>
+        <div class="benefit-d">治理投票、提案权、金库监督权</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">09</span>
+        <div class="benefit-t">空投优先</div>
+        <div class="benefit-d">未来生态代币、NFT、权益空投优先</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">10</span>
+        <div class="benefit-t">线下活动</div>
+        <div class="benefit-d">财神峰会、闭门会、游学、祈福 VIP</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">11</span>
+        <div class="benefit-t">命名权</div>
+        <div class="benefit-d">殿堂、房间、课程、NPC、地图命名权</div>
+      </div>
+      <div class="benefit">
+        <span class="benefit-idx">12</span>
+        <div class="benefit-t">交易版税</div>
+        <div class="benefit-d">NFT 可自由交易，版税进入生态池与福报池</div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">Risk</span>
+      <div class="note-body">
+        生态分红不是固定收益，不承诺分红金额，取决于生态实际收入与治理决定。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 文化院 ============ -->
+  <section class="wrap sec" id="culture">
+    <div class="sec-head">
+      <span class="sec-idx">05</span>
+      <h2 class="sec-title">财神文化院<span>Planned Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      风水命理教育板块，涵盖易学基础、财神文化、民俗信仰与风水实战。以文化传承、知识学习、兴趣交流为核心。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">入门</span>
+        <span class="def-v">易学基础、财神文化、民俗信仰、风水入门</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">进阶</span>
+        <span class="def-v">家居风水、商业风水、八字命理、择日、姓名学</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">专业</span>
+        <span class="def-v">风水实战、命理咨询、案例研讨、讲师认证</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">形式</span>
+        <span class="def-v">直播课、录播课、训练营、线下课、游学、认证考试</span>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:32px;">
+      <span class="sec-idx">05·A</span>
+      <h2 class="sec-title">命理师与风水师入驻<span>Professional Network</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      开放命理师、风水师、易学讲师、民俗文化研究者入驻，打造财神生态圈的专业服务网络。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">入驻流程</span>
+        <span class="def-v">申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">服务形式</span>
+        <span class="def-v">付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">平台机制</span>
+        <span class="def-v">实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成</span>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">Notice</span>
+      <div class="note-body">
+        风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 商城 ============ -->
+  <section class="wrap sec" id="mall">
+    <div class="sec-head">
+      <span class="sec-idx">06</span>
+      <h2 class="sec-title">财神商城<span>Planned Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      财神生态圈的消费板块，售卖财神周边、文创商品、数字藏品、课程与咨询券。支持 $财神到 支付。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">商品方向</span>
+        <span class="def-v">财神像、香品、手串、护身符、开运摆件、联名服饰、文创礼品、数字藏品、礼品卡</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">课程咨询</span>
+        <span class="def-v">课程券、咨询券、线下活动门票</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">游戏道具</span>
+        <span class="def-v">小游戏道具、皮肤、NFT 道具</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">支付方式</span>
+        <span class="def-v">支持 <b>$财神到</b> 支付</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">NFT 折扣</span>
+        <span class="def-v">财神 NFT 持有者享折扣</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">积分抵扣</span>
+        <span class="def-v">积分与福气值可抵扣</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">供应链原则</span>
+        <span class="def-v">正品保障、溯源可查、联名优选、品质把控</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 小游戏 ============ -->
+  <section class="wrap sec" id="game">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
+      <h2 class="sec-title">财神小游戏<span>Planned Product</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      财神生态圈的娱乐板块。玩游戏可获取 $财神到，购买道具皮肤，NFT 道具可交易。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">玩法方向</span>
+        <span class="def-v">每日签到、招财转盘、财神消消乐、财神大冒险、财神庙经营、风水布局、答题闯关、PVE / PVP、排行榜赛季</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">奖励体系</span>
+        <span class="def-v">$财神到、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">道具与皮肤</span>
+        <span class="def-v">可购买、可升级、可合成、可交易</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">NFT 化</span>
+        <span class="def-v">稀有道具 NFT 化，支持自由交易，平台收取版税</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">版税流向</span>
+        <span class="def-v">部分进入生态分红池与福报池</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">防刷机制</span>
+        <span class="def-v">体力限制、冷却时间、随机奖励、反脚本、实名认证、排行榜监控、黑名单</span>
+      </div>
+    </div>
+
+    <div class="note gold">
+      <span class="note-tag">Loop</span>
+      <div class="note-body">
+        <b>经济循环：</b>玩游戏 → 赚 $财神到 → 买道具 / 皮肤 / 商城商品 → 质押 / 燃香 → NFT 道具交易 → 消耗 $财神到
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">Risk</span>
+      <div class="note-body">
+        游戏奖励为币本位，不承诺法币价值，数字资产价格波动风险较高。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 生态闭环 ============ -->
+  <section class="wrap sec" id="loop">
+    <div class="sec-head">
+      <span class="sec-idx">08</span>
+      <h2 class="sec-title">生态闭环<span>Ecosystem Loop</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，形成完整的财神宇宙。
+    </p>
+
+    <div class="loop">
+      <div class="loop-row">
+        <span class="loop-k">信仰入口</span>
+        <span class="loop-v">燃香赐福</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">资产入口</span>
+        <span class="loop-v">聚宝盆</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">身份入口</span>
+        <span class="loop-v">财神 NFT</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">文化入口</span>
+        <span class="loop-v">财神文化院</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">消费入口</span>
+        <span class="loop-v">财神商城</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">娱乐入口</span>
+        <span class="loop-v">财神小游戏</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">治理入口</span>
+        <span class="loop-v">财神 DAO</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">公益入口</span>
+        <span class="loop-v">财神福报</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">分红入口</span>
+        <span class="loop-v">财神 NFT 生态分红</span>
+      </div>
+    </div>
+
+    <p class="caption" style="margin-top:20px;">
+      <b>总结：</b>从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，财神生态圈正在形成一个完整的财神宇宙。
+    </p>
+  </section>
+
+  <!-- ============ 09 风险提示 ============ -->
+  <section class="wrap sec" id="risk">
+    <div class="sec-head">
+      <span class="sec-idx">09</span>
+      <h2 class="sec-title">风险提示<span>Disclosure</span></h2>
+    </div>
+
+    <p class="sec-lead">请团队成员与用户务必阅读。</p>
+
+    <ol class="risks">
+      <li>燃香即打入黑洞，资产不可撤回。</li>
+      <li>锁仓不可提前解锁，流动性受限。</li>
+      <li>币本位收益不保本法币价值，代币价格波动会影响实际收益。</li>
+      <li>活动为财神直播间限定，总额度 20M 固定，限额限量，额满即止。</li>
+      <li>开放时间与额度以直播间公告为准。</li>
+      <li>合作币存在脱锚、流动性不足等风险。</li>
+      <li>APY 可动态调整，以官方页面为准。</li>
+      <li>聚宝盆收益按日线性释放，APY 为简单年化，非复利。</li>
+      <li>财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
+      <li>生态分红取决于生态实际收入，不承诺分红金额，不保本。</li>
+      <li>风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
+      <li>财神小游戏奖励为币本位，不承诺法币价值。</li>
+      <li>本文档不构成投资建议，请理性参与。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 页脚 ============ -->
+  <footer class="wrap doc-foot">
+    <div class="foot-row">
+      <span class="foot-k">Document</span>
+      <span class="foot-v">财神生态圈 · Product Documentation V2.5</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Existing</span>
+      <span class="foot-v">燃香赐福 · 聚宝盆</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Planned</span>
+      <span class="foot-v">财神 NFT · 文化院 · 商城 · 小游戏 · DAO · 福报</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Status</span>
+      <span class="foot-v">Internal Review</span>
+    </div>
+    <div class="disc">
+      本文档为财神生态圈内部策划稿，仅供团队内部了解与讨论使用。<br>
+      所有规则、APY、额度、周期、分红比例以官方最新公告和页面为准，不构成投资建议。<br>
+      数字资产风险较高，请理性参与。
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    /* ---------- 聚宝盆分段切换 ---------- */
+    var seg = document.getElementById('segTreasure');
+    if (seg) {
+      seg.addEventListener('click', function (e) {
+        var btn = e.target.closest('button');
+        if (!btn) return;
+        seg.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var key = btn.getAttribute('data-panel');
+        document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+        var target = document.getElementById('panel-' + key);
+        if (target) target.classList.add('active');
+      });
+    }
+
+    /* ---------- 目录导航高亮 ---------- */
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+    if (links.length && 'IntersectionObserver' in window) {
+      var sections = links.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+
+      var linkMap = {};
+      links.forEach(function (a) { linkMap[a.getAttribute('href')] = a; });
+
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            links.forEach(function (a) { a.classList.remove('active'); });
+            var a = linkMap['#' + entry.target.id];
+            if (a) {
+              a.classList.add('active');
+              var toc = a.parentElement;
+              if (toc && toc.scrollWidth > toc.clientWidth) {
+                var t = a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2;
+                toc.scrollTo({ left: Math.max(0, t), behavior: 'smooth' });
+              }
+            }
+          }
+        });
+      }, {
+        rootMargin: '-56px 0px -70% 0px',
+        threshold: 0
+      });
+
+      sections.forEach(function (s) { obs.observe(s); });
+    }
+  })();
+</script>
+
+</body>
+</html>
