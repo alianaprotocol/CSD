@@ -102,24 +102,33 @@ window.__perf = (function () {
     }
   }
 
-  /* ---------- 6. 运行时 FPS 采样(仅 high/medium 启用) ---------- */
+  /* ---------- 6. 运行时 FPS 采样(仅 high/medium 启用) ----------
+     · samplingStopped: 是否"永久"停止(进入 low 或 reduceMotion)
+     · samplingActive : 当前是否有 rAF 循环在跑(防止重复挂载)
+  ------------------------------------------------------------ */
   var fpsBuf = [];
   var frameCount = 0;
   var windowStart = performance.now();
   var degraded = false;
   var samplingStopped = (tier === 'low' || signals.reduceMotion);
+  var samplingActive = false;
 
   function startFpsSampling() {
-    if (samplingStopped) return;
-    samplingStopped = false;
+    if (samplingStopped || samplingActive) return;
+    samplingActive = true;
     requestAnimationFrame(fpsLoop);
   }
 
   function fpsLoop(now) {
-    if (samplingStopped) return;
+    if (samplingStopped) {
+      samplingActive = false;
+      return;
+    }
     if (document.hidden) {
-      windowStart = now; frameCount = 0;
-      return requestAnimationFrame(fpsLoop);
+      windowStart = now;
+      frameCount = 0;
+      requestAnimationFrame(fpsLoop);
+      return;
     }
     frameCount++;
     var elapsed = now - windowStart;
@@ -139,8 +148,13 @@ window.__perf = (function () {
           var nextTier = (tier === 'high') ? 'medium' : 'low';
           console.info('[财神符] 检测到帧率偏低 (' + avg.toFixed(1) + ' fps),自动降级 → ' + nextTier);
           setTier(nextTier, { persist: false, silent: false, reason: 'auto-fps' });
-          samplingStopped = (nextTier === 'low');
-          return;
+          if (nextTier === 'low') {
+            // 已到最低档,彻底停采样
+            samplingStopped = true;
+            samplingActive = false;
+            return;
+          }
+          // 降到 medium:继续采样,但 degraded 已置位不再二次降级
         }
       }
     }
@@ -155,15 +169,20 @@ window.__perf = (function () {
     config = makeConfig(t);
     applyTier(t, true);
 
-    // 用户手动切回非 low 时,重置采样
-    if (opts.reason === 'manual' && t !== 'low' && !signals.reduceMotion) {
+    if (t === 'low' || signals.reduceMotion) {
+      // 进入 low:停止采样
+      samplingStopped = true;
+    } else if (opts.reason === 'manual') {
+      // 用户手动切回非 low:重置并重新启动采样
       degraded = false;
       fpsBuf = [];
       frameCount = 0;
       windowStart = performance.now();
-      samplingStopped = true;   // 让 startFpsSampling 有机会重启
+      samplingStopped = false;
       startFpsSampling();
+      console.info('[财神符] 已恢复帧率采样 (' + t + ')');
     }
+
     if (opts.persist) {
       try { localStorage.setItem(KEY, t); } catch (_) {}
     }
@@ -212,6 +231,124 @@ try {
   );
   console.info('[财神符] 手动切换: Ctrl/Cmd + Shift + P  (或在控制台调用 window.__perf.setTier("low"))');
 } catch (_) {}
+
+/* ============================================================
+   模态辅助 · Modal Helpers (inert 冻结 / 焦点陷阱回退)
+   ------------------------------------------------------------
+   · 优先使用 inert:彻底冻结背景(不可聚焦 + 不可点击 + aria 隐藏)
+   · 不支持 inert 的浏览器,回退到 trapFocus 手动循环 Tab
+   · #toast 豁免冻结:弹窗打开时 toast 依然可被屏幕阅读器播报
+   ============================================================ */
+var __modalHelpers = (function () {
+  var supportsInert = ('inert' in HTMLElement.prototype);
+
+  /* ---- 判断一个 body 子元素是否应该被"豁免"(即保持活动) ---- */
+  function isExempt(el, exceptList) {
+    if (!el || !el.tagName) return true;
+    var tag = el.tagName;
+    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT') return true;
+    if (tag === 'CANVAS' && el.id === 'smoke-canvas') return true;
+    if (el.id === 'toast') return true;                       // 弹窗内 toast 仍需播报
+    for (var i = 0; i < exceptList.length; i++) {
+      if (el === exceptList[i]) return true;
+    }
+    return false;
+  }
+
+  /* ---- 冻结背景:返回 release 函数 ---- */
+  function freeze(except) {
+    except = except || [];
+    if (!Array.isArray(except)) except = [except];
+
+    var frozen = [];
+
+    if (supportsInert) {
+      // 快照为数组:防止后续 DOM 变更影响遍历
+      var kids = Array.prototype.slice.call(document.body.children);
+      for (var i = 0; i < kids.length; i++) {
+        var el = kids[i];
+        if (isExempt(el, except)) continue;
+        el.setAttribute('inert', '');
+        el.setAttribute('aria-hidden', 'true');
+        frozen.push(el);
+      }
+      // 焦点移入 except 的第一个可聚焦元素
+      var first = findFirstFocusable(except[0]);
+      if (first) { try { first.focus(); } catch (_) {} }
+
+      return function releaseInert() {
+        for (var j = 0; j < frozen.length; j++) {
+          frozen[j].removeAttribute('inert');
+          frozen[j].removeAttribute('aria-hidden');
+        }
+      };
+    }
+
+    /* ---- 回退方案:trapFocus + pointer-events 屏蔽 ---- */
+    return (function () {
+      var release = trapFocus(except[0]);
+      var kids = Array.prototype.slice.call(document.body.children);
+      var blocked = [];
+      for (var i = 0; i < kids.length; i++) {
+        var el = kids[i];
+        if (isExempt(el, except)) continue;
+        el.style.pointerEvents = 'none';
+        blocked.push(el);
+      }
+      return function () {
+        release();
+        for (var j = 0; j < blocked.length; j++) {
+          blocked[j].style.pointerEvents = '';
+        }
+      };
+    })();
+  }
+
+  /* ---- 找容器内第一个可聚焦元素 ---- */
+  function findFirstFocusable(container) {
+    if (!container) return null;
+    var list = container.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), ' +
+      'select:not([disabled]), textarea:not([disabled]), ' +
+      '[tabindex]:not([tabindex="-1"])'
+    );
+    return list.length ? list[0] : null;
+  }
+
+  /* ---- Tab 循环回退 ---- */
+  function trapFocus(container) {
+    if (!container) return function () {};
+    var focusables = container.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), ' +
+      'select:not([disabled]), textarea:not([disabled]), ' +
+      '[tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusables.length) return function () {};
+
+    var first = focusables[0];
+    var last  = focusables[focusables.length - 1];
+
+    function onKey(e) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+    container.addEventListener('keydown', onKey);
+    try { first.focus(); } catch (_) {}
+
+    return function releaseTrap() {
+      container.removeEventListener('keydown', onKey);
+    };
+  }
+
+  return {
+    freeze: freeze,
+    supportsInert: supportsInert
+  };
+})();
 
 /* ============================================================
    主题切换
@@ -283,9 +420,9 @@ window.__deityImg = (function () {
     window.__deityState.ready = false;
     window.__deityState.usable = false;
     window.__deityState.reason = 'notfound';
-    console.warn('[财神符] 找不到 caishen.png，已降级为"财"字替代。');
+    console.warn('[财神符] 找不到 images/caishen.png，已降级为"财"字替代。');
   };
-  img.src = 'caishen.png';
+  img.src = 'images/caishen.png';
   return img;
 })();
 
@@ -446,7 +583,13 @@ window.__metalScrape = (function () {
     return;
   }
 
-  var dpr = Math.min(window.devicePixelRatio || 1, perf.dpr);
+  /* ---- dpr 每次 resize 重新计算,以适配跨屏拖动 / 系统缩放变化 ---- */
+  function getDpr() {
+    var maxDpr = window.__perf ? window.__perf.config().dpr : 2;
+    return Math.min(window.devicePixelRatio || 1, maxDpr);
+  }
+  var dpr = getDpr();
+
   var W = 0, H = 0;
   var particles = [];
   var MAX_PARTS = perf.particles;
@@ -519,9 +662,12 @@ window.__metalScrape = (function () {
       particles.splice(0, particles.length - MAX_PARTS);
     }
     canvas.style.opacity = (e.detail.tier === 'low') ? '0.7' : '1';
+    // 档位变化可能改变 dpr 上限,重算一次画布尺寸
+    resize();
   });
 
   function resize() {
+    dpr = getDpr();
     W = window.innerWidth; H = window.innerHeight;
     canvas.width = W * dpr; canvas.height = H * dpr;
     canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -744,13 +890,40 @@ window.__metalScrape = (function () {
   var SKIP_KEY   = 'caishen_entered_v9';
   var entered    = false;
   try { entered = sessionStorage.getItem(SKIP_KEY) === '1'; } catch (_) {}
-  if (entered) {
+
+  /* ---- 统一的门关闭函数:同时处理 aria 语义 ---- */
+  function hideGate() {
+    gate.setAttribute('aria-hidden', 'true');
+    gate.removeAttribute('aria-modal');
     gate.classList.add('hidden');
+  }
+  function dismissGate() {
+    try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
+    gate.setAttribute('aria-hidden', 'true');
+    gate.removeAttribute('aria-modal');
+    gate.classList.add('gone');
+
+    if (releaseFocus) { releaseFocus(); releaseFocus = null; }
+
+    if (gateSmokeTimer) {
+      clearInterval(gateSmokeTimer);
+      gateSmokeTimer = null;
+    }
+    document.body.classList.remove('gate-active');
+    document.body.style.overflow = '';
+    setTimeout(function () { gate.classList.add('hidden'); }, 1200);
+  }
+
+  if (entered) {
+    hideGate();
     document.body.style.overflow = '';
     return;
   }
   document.body.style.overflow = 'hidden';
   document.body.classList.add('gate-active');
+
+  /* ---- 冻结背景(inert / 焦点陷阱回退) ---- */
+  var releaseFocus = __modalHelpers.freeze([gate]);
 
   var hint       = gate.querySelector('.gate-hint');
   var stage      = gate.querySelector('.fortune-stage');
@@ -937,6 +1110,7 @@ window.__metalScrape = (function () {
 
     setTimeout(function () {
       scrollCard.classList.add('show');
+      try { scrollCard.focus(); } catch (_) {}
     }, 260);
   }
   bag.addEventListener('click', function (e) { e.stopPropagation(); openBag(); });
@@ -948,11 +1122,8 @@ window.__metalScrape = (function () {
   enterBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     initAudio(); playWoodfish();
-    try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
-    gate.classList.add('gone');
-    clearInterval(gateSmokeTimer);
-    gateSmokeTimer = null;
-    document.body.classList.remove('gate-active');
+    dismissGate();
+
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
     if (window.__smokeBurst) {
       for (var i = 0; i < 5; i++) {
@@ -964,21 +1135,13 @@ window.__metalScrape = (function () {
         })(i);
       }
     }
-    document.body.style.overflow = '';
-    setTimeout(function () { gate.classList.add('hidden'); }, 1200);
   });
 
   scrollCard.addEventListener('click', function (e) { e.stopPropagation(); });
 
   window.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !gate.classList.contains('gone')) {
-      try { sessionStorage.setItem(SKIP_KEY, '1'); } catch (_) {}
-      gate.classList.add('gone');
-      clearInterval(gateSmokeTimer);
-      gateSmokeTimer = null;
-      document.body.classList.remove('gate-active');
-      document.body.style.overflow = '';
-      setTimeout(function () { gate.classList.add('hidden'); }, 1200);
+      dismissGate();
     }
   });
 })();
@@ -1173,6 +1336,7 @@ window.__metalScrape = (function () {
   var ctaBtn = document.getElementById('charmCtaBtn');
   if (!modal) return;
   var currentDataUrl = null;
+  var releaseModalFocus = null;
   window.addEventListener('caishen:theme', function () { currentDataUrl = null; });
 
   function getFortune() {
@@ -1538,6 +1702,12 @@ window.__metalScrape = (function () {
     }
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
+
+    /* ---- 冻结背景 ---- */
+    if (!releaseModalFocus) {
+      releaseModalFocus = __modalHelpers.freeze([modal]);
+    }
+
     if (window.__smokeBurst) {
       var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
       for (var i = 0; i < 3; i++) {
@@ -1553,6 +1723,12 @@ window.__metalScrape = (function () {
   function closeCharm() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
+
+    /* ---- 解冻背景 ---- */
+    if (releaseModalFocus) {
+      releaseModalFocus();
+      releaseModalFocus = null;
+    }
   }
   window.__openCharm = openCharm;
   if (closeBtn) closeBtn.addEventListener('click', closeCharm);
@@ -1610,6 +1786,32 @@ window.__metalScrape = (function () {
       openCharm();
     });
   }
+})();
+
+/* ============================================================
+   ⑥ 社交图片加载失败回退(替代 HTML 内联 onerror)
+   ============================================================ */
+(function () {
+  var imgs = document.querySelectorAll('.social-img');
+  if (!imgs.length) return;
+
+  function showFallback(img) {
+    img.style.display = 'none';
+    var sib = img.nextElementSibling;
+    if (sib && sib.classList.contains('social-img-fallback')) {
+      sib.style.display = 'inline-block';
+    }
+  }
+
+  imgs.forEach(function (img) {
+    // 情况 A: 脚本运行时图片已经加载失败(defer 脚本晚于图片 error 事件)
+    if (img.complete && img.naturalWidth === 0) {
+      showFallback(img);
+      return;
+    }
+    // 情况 B: 正常监听后续 error 事件
+    img.addEventListener('error', function () { showFallback(img); });
+  });
 })();
 
 /* ============================================================
