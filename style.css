@@ -23,7 +23,7 @@
   --vignette-2:     rgba(0, 0, 0, .35);
   --text:      #f0e6d2;
   --text-dim:  #a58c6f;
-  --text-mute: #6b5744;
+  --text-mute: #8a7460;
   --panel-bg:       rgba(24, 10, 15, .72);
   --panel-bg-2:     rgba(14, 6, 10, .7);
   --panel-bg-deep:  rgba(6, 3, 5, .99);
@@ -34,6 +34,9 @@
   --glow-strength: 1;
   --hud-blink: 2s;
   --hud-dot:   #26ff8f;
+  --gold-glow:  255, 183, 0;
+  --red-glow:   255, 45, 85;
+  --cyan-glow:  0, 229, 255;
 }
 
 [data-theme="light"]{
@@ -41,9 +44,9 @@
   --red:      #c0392b;
   --red-d:    #8e1c10;
   --red-l:    #a82315;
-  --gold:     #b8860b;
-  --gold-d:   #8a6008;
-  --gold-l:   #a67a00;
+  --gold:     #8a6008; 
+  --gold-d:   #6b4a04;
+  --gold-l:   #7a5600; 
   --cyan:     #0e7a8a;
   --bg-page:        #fff7ed;
   --bg-grid-1:      rgba(192, 57, 43, .07);
@@ -56,7 +59,7 @@
   --vignette-2:     rgba(120, 60, 20, .12);
   --text:      #2e1e0e;
   --text-dim:  #6b4f2b;
-  --text-mute: #a8906e;
+  --text-mute: #8a7355; 
   --panel-bg:       rgba(255, 253, 249, .92);
   --panel-bg-2:     rgba(255, 250, 240, .85);
   --panel-bg-deep:  rgba(253, 240, 220, .96);
@@ -67,6 +70,9 @@
   --glow-strength: .55;
   --hud-blink: 3.4s;
   --hud-dot:   #0e7a4d;
+  --gold-glow:  184, 134, 11;
+  --red-glow:   192, 57, 43;
+  --cyan-glow:  14, 122, 138;
 }
 
 @property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
@@ -1025,7 +1031,7 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   font-family: 'JetBrains Mono', monospace;
   font-size: .56rem;
   letter-spacing: 3.2px;
-  color: #6b5744;
+  color: var(--text-mute);
   text-transform: uppercase;
   margin-bottom: 14px;
 }
@@ -1108,7 +1114,7 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   font-size: .56rem;
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 2px;
-  color: #8a7052;
+  color: var(--text-mute);
   text-transform: uppercase;
   margin-bottom: 3px;
 }
@@ -2564,7 +2570,7 @@ ul li::before{
 }
 .charm-cta p {
   font-size: .82rem;
-  color: #a58c6f;
+  color: var(--text-mute);
   margin-bottom: 20px;
   line-height: 1.7;
 }
@@ -6724,3 +6730,137 @@ html[data-perf="low"] .footer-warn {
 body.gate-active .sr-only[href="#main"] { display: none; }
 
 .social-img-fallback { display: none; }
+
+/* ============================================================
+   ✦ 精修 · 浅色主题金色降噪
+   ============================================================ */
+[data-theme="light"] .hero h1,
+[data-theme="light"] .hero h1 i,
+[data-theme="light"] .glitch,
+[data-theme="light"] .toc-zh,
+[data-theme="light"] .toc-head-title,
+[data-theme="light"] .toc-head-meta b,
+[data-theme="light"] h3,
+[data-theme="light"] h3 i,
+[data-theme="light"] p strong,
+[data-theme="light"] li strong,
+[data-theme="light"] .feat h4,
+[data-theme="light"] .road-item h5,
+[data-theme="light"] .join-body h5,
+[data-theme="light"] .ct-roof-title,
+[data-theme="light"] .ct-eq-word,
+[data-theme="light"] .ct-node,
+[data-theme="light"] .node-title,
+[data-theme="light"] .odyssey-card h5,
+[data-theme="light"] .gateway-content h5,
+[data-theme="light"] .inv-title,
+[data-theme="light"] .inv-final-gold,
+[data-theme="light"] .faith-title,
+[data-theme="light"] .sc-title,
+[data-theme="light"] .sc-bless,
+[data-theme="light"] .sc-cell-value {
+  text-shadow: 0 0 3px rgba(138, 96, 8, .18);
+}
+[data-theme="light"] .hero-badge,
+[data-theme="light"] .hero-chips span,
+[data-theme="light"] .notice strong {
+  text-shadow: none;
+}
+
+/* ============================================================
+   ✦ 精修 · 深色暗部减负
+   ============================================================ */
+html[data-theme="dark"] .hero {
+  box-shadow:
+    0 0 calc(48px * var(--glow-strength)) rgba(255, 45, 85, .22),
+    inset 0 0 60px rgba(255, 45, 85, .05);
+}
+html[data-theme="dark"] .cyber-temple,
+html[data-theme="dark"] .mapping-bridge,
+html[data-theme="dark"] .faith-shrine,
+html[data-theme="dark"] .scanner {
+  box-shadow:
+    0 0 calc(36px * var(--glow-strength)) rgba(255, 45, 85, .14),
+    inset 0 0 50px rgba(255, 45, 85, .03);
+}
+html[data-theme="dark"] .charm-cta {
+  box-shadow:
+    0 0 50px rgba(255, 45, 85, .18),
+    inset 0 0 50px rgba(255, 45, 85, .04),
+    inset 0 1px 0 rgba(255, 183, 0, .3);
+}
+html[data-theme="dark"] .cyber-footer,
+html[data-theme="dark"] .sacred-law {
+  box-shadow:
+    0 0 56px rgba(255, 45, 85, .12),
+    inset 0 0 50px rgba(0, 0, 0, .6);
+}
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .toc,
+html[data-theme="dark"] .invitation,
+html[data-theme="dark"] .asset-matrix,
+html[data-theme="dark"] .matrix-node,
+html[data-theme="dark"] .odyssey-card,
+html[data-theme="dark"] .gateway-card {
+  box-shadow:
+    0 0 calc(28px * var(--glow-strength)) rgba(255, 45, 85, .07),
+    inset 0 0 40px rgba(255, 45, 85, .02);
+}
+
+/* ============================================================
+   ✦ 精修 · 未激活态底线
+   ============================================================ */
+.scan-row { opacity: .52; }
+.mb-row   { opacity: .48; }
+@media (max-width: 720px) {
+  .scan-row { opacity: .58; }
+  .mb-row   { opacity: .54; }
+}
+
+/* ============================================================
+   ✦ 精修 · 冷色锚点
+   ============================================================ */
+:root                { --hud-dot: #00e5ff; }
+[data-theme="light"] { --hud-dot: #0e7a8a; }
+
+.toc-head-meta b {
+  color: var(--cyan);
+  text-shadow:
+    0 0 calc(8px * var(--glow-strength)) var(--cyan),
+    0 0 calc(20px * var(--glow-strength)) rgba(0, 229, 255, .35);
+}
+.scanner-live { color: var(--cyan); }
+.scanner-live i {
+  filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--cyan));
+}
+
+/* ============================================================
+   ✦ 精修 · 仪式块浅色描边
+   ============================================================ */
+[data-theme="light"] .creed {
+  border-color: var(--red);
+  box-shadow:
+    0 0 40px rgba(192, 57, 43, .18),
+    inset 0 0 60px rgba(192, 57, 43, .05);
+}
+[data-theme="light"] .chant {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 40px rgba(184, 134, 11, .16),
+    inset 0 0 60px rgba(184, 134, 11, .04);
+}
+[data-theme="light"] .charm-cta,
+[data-theme="light"] .sacred-law,
+[data-theme="light"] .cyber-footer {
+  border-color: rgba(184, 134, 11, .45);
+}
+
+/* ============================================================
+   ✦ 精修 · 死选择器清理(可选,不改也能跑)
+   ============================================================ */
+/* 下面这条规则里的 .ilm-body 在本文件里不存在,永远匹配不到,
+   顺手替换为实际存在的 .law-body(已经在低档规则里出现过) */
+html[data-perf="low"] .law-body {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
