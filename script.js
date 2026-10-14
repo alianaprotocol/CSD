@@ -1,30 +1,8 @@
 /* ============================================================
    智能性能模式 · Smart Performance Tier
-   ------------------------------------------------------------
-   档位:
-     high   —— 完整特效(默认桌面 + 中高端手机)
-     medium —— 削减粒子数量,降低 dpr 上限,轻微收敛阴影
-     low    —— 最少粒子,禁用音频/回滚粒子/关闭模糊,
-               关闭部分常驻动画(入场烟雾、环境光斑、装饰性阴影)
-
-   决策依据:
-     · navigator.hardwareConcurrency  —— CPU 核心数
-     · navigator.deviceMemory         —— 设备内存(GB,Chromium)
-     · navigator.connection           —— saveData / 慢网
-     · 移动端 UA + 视口宽度
-     · prefers-reduced-motion         —— 强制 low
-     · 运行时 FPS 采样(持续 3~4 秒 < 42fps 自动降档)
-
-   对外接口:
-     window.__perf.tier()          → 'high' | 'medium' | 'low'
-     window.__perf.config()        → 参数对象
-     window.__perf.setTier(t, {persist})  → 手动切换
-     window.addEventListener('caishen:perf', fn)   → 监听变化
    ============================================================ */
 window.__perf = (function () {
   var KEY = 'caishen_perf_mode';
-
-  /* ---------- 1. 设备信号采集 ---------- */
   var signals = {
     cores:     (navigator.hardwareConcurrency || 2),
     memory:    (navigator.deviceMemory || 4),
@@ -38,7 +16,6 @@ window.__perf = (function () {
     viewport:  Math.min(window.innerWidth, window.innerHeight)
   };
 
-  /* ---------- 2. 打分 (0 ~ 100) ---------- */
   function scoreDevice(s) {
     var n = 100;
     n -= Math.max(0, 4 - Math.min(s.cores, 4)) * 12;
@@ -58,14 +35,12 @@ window.__perf = (function () {
     return 'low';
   }
 
-  /* ---------- 3. 参数预设 ---------- */
   var PRESETS = {
     high:   { particles: 120, dpr: 2,   smokeInterval: 850,  dustOnScroll: true,  audioEnabled: true,  animSpeed: 1 },
     medium: { particles: 70,  dpr: 1.5, smokeInterval: 1400, dustOnScroll: true,  audioEnabled: true,  animSpeed: 1 },
     low:    { particles: 28,  dpr: 1,   smokeInterval: 2400, dustOnScroll: false, audioEnabled: false, animSpeed: 1 }
   };
 
-  /* ---------- 4. 决定初始档位 ---------- */
   var savedMode = null;
   try { savedMode = localStorage.getItem(KEY); } catch (_) {}
 
@@ -90,7 +65,6 @@ window.__perf = (function () {
     return c;
   }
 
-  /* ---------- 5. 应用到 DOM + 广播 ---------- */
   function applyTier(t, broadcast) {
     document.documentElement.setAttribute('data-perf', t);
     if (broadcast !== false) {
@@ -102,10 +76,6 @@ window.__perf = (function () {
     }
   }
 
-  /* ---------- 6. 运行时 FPS 采样(仅 high/medium 启用) ----------
-     · samplingStopped: 是否"永久"停止(进入 low 或 reduceMotion)
-     · samplingActive : 当前是否有 rAF 循环在跑(防止重复挂载)
-  ------------------------------------------------------------ */
   var fpsBuf = [];
   var frameCount = 0;
   var windowStart = performance.now();
@@ -149,19 +119,16 @@ window.__perf = (function () {
           console.info('[财神符] 检测到帧率偏低 (' + avg.toFixed(1) + ' fps),自动降级 → ' + nextTier);
           setTier(nextTier, { persist: false, silent: false, reason: 'auto-fps' });
           if (nextTier === 'low') {
-            // 已到最低档,彻底停采样
             samplingStopped = true;
             samplingActive = false;
             return;
           }
-          // 降到 medium:继续采样,但 degraded 已置位不再二次降级
         }
       }
     }
     requestAnimationFrame(fpsLoop);
   }
 
-  /* ---------- 7. 对外设置接口 ---------- */
   function setTier(t, opts) {
     if (t !== 'high' && t !== 'medium' && t !== 'low') return;
     opts = opts || {};
@@ -170,10 +137,8 @@ window.__perf = (function () {
     applyTier(t, true);
 
     if (t === 'low' || signals.reduceMotion) {
-      // 进入 low:停止采样
       samplingStopped = true;
     } else if (opts.reason === 'manual') {
-      // 用户手动切回非 low:重置并重新启动采样
       degraded = false;
       fpsBuf = [];
       frameCount = 0;
@@ -192,11 +157,9 @@ window.__perf = (function () {
     }
   }
 
-  /* ---------- 8. 首次应用(不广播:此时消费方尚未初始化) ---------- */
   applyTier(tier, false);
   startFpsSampling();
 
-  /* ---------- 9. 键盘快捷键: Ctrl/Cmd + Shift + P 循环档位 ---------- */
   window.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
       e.preventDefault();
@@ -207,7 +170,6 @@ window.__perf = (function () {
     }
   });
 
-  /* ---------- 10. 暴露 ---------- */
   return {
     tier:    function () { return tier; },
     config:  function () { return config; },
@@ -219,7 +181,6 @@ window.__perf = (function () {
   };
 })();
 
-// 启动日志
 try {
   var _p = window.__perf;
   console.info(
@@ -233,37 +194,29 @@ try {
 } catch (_) {}
 
 /* ============================================================
-   模态辅助 · Modal Helpers (inert 冻结 / 焦点陷阱回退)
-   ------------------------------------------------------------
-   · 优先使用 inert:彻底冻结背景(不可聚焦 + 不可点击 + aria 隐藏)
-   · 不支持 inert 的浏览器,回退到 trapFocus 手动循环 Tab
-   · #toast 豁免冻结:弹窗打开时 toast 依然可被屏幕阅读器播报
+   模态辅助 · Modal Helpers
    ============================================================ */
 var __modalHelpers = (function () {
   var supportsInert = ('inert' in HTMLElement.prototype);
 
-  /* ---- 判断一个 body 子元素是否应该被"豁免"(即保持活动) ---- */
   function isExempt(el, exceptList) {
     if (!el || !el.tagName) return true;
     var tag = el.tagName;
     if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT') return true;
     if (tag === 'CANVAS' && el.id === 'smoke-canvas') return true;
-    if (el.id === 'toast') return true;                       // 弹窗内 toast 仍需播报
+    if (el.id === 'toast') return true;
     for (var i = 0; i < exceptList.length; i++) {
       if (el === exceptList[i]) return true;
     }
     return false;
   }
 
-  /* ---- 冻结背景:返回 release 函数 ---- */
   function freeze(except) {
     except = except || [];
     if (!Array.isArray(except)) except = [except];
-
     var frozen = [];
 
     if (supportsInert) {
-      // 快照为数组:防止后续 DOM 变更影响遍历
       var kids = Array.prototype.slice.call(document.body.children);
       for (var i = 0; i < kids.length; i++) {
         var el = kids[i];
@@ -272,7 +225,6 @@ var __modalHelpers = (function () {
         el.setAttribute('aria-hidden', 'true');
         frozen.push(el);
       }
-      // 焦点移入 except 的第一个可聚焦元素
       var first = findFirstFocusable(except[0]);
       if (first) { try { first.focus(); } catch (_) {} }
 
@@ -284,7 +236,6 @@ var __modalHelpers = (function () {
       };
     }
 
-    /* ---- 回退方案:trapFocus + pointer-events 屏蔽 ---- */
     return (function () {
       var release = trapFocus(except[0]);
       var kids = Array.prototype.slice.call(document.body.children);
@@ -304,7 +255,6 @@ var __modalHelpers = (function () {
     })();
   }
 
-  /* ---- 找容器内第一个可聚焦元素 ---- */
   function findFirstFocusable(container) {
     if (!container) return null;
     var list = container.querySelectorAll(
@@ -315,7 +265,6 @@ var __modalHelpers = (function () {
     return list.length ? list[0] : null;
   }
 
-  /* ---- Tab 循环回退 ---- */
   function trapFocus(container) {
     if (!container) return function () {};
     var focusables = container.querySelectorAll(
@@ -344,10 +293,7 @@ var __modalHelpers = (function () {
     };
   }
 
-  return {
-    freeze: freeze,
-    supportsInert: supportsInert
-  };
+  return { freeze: freeze, supportsInert: supportsInert };
 })();
 
 /* ============================================================
@@ -388,7 +334,7 @@ var __modalHelpers = (function () {
 })();
 
 /* ============================================================
-   财神图加载
+   财神图 & 金色宝印预加载
    ============================================================ */
 window.__deityState = { ready: false, usable: false, reason: 'loading' };
 window.__deityImg = (function () {
@@ -423,6 +369,23 @@ window.__deityImg = (function () {
     console.warn('[财神符] 找不到 images/caishen.png，已降级为"财"字替代。');
   };
   img.src = 'images/caishen.png';
+  return img;
+})();
+
+/* 预加载本地金色财神宝印 */
+window.__goldenSealState = { ready: false };
+window.__goldenSealImg = (function () {
+  var img = new Image();
+  img.decoding = 'async';
+  img.onload = function () {
+    window.__goldenSealState.ready = true;
+    console.log('[财神符] 金色财神宝印已就绪 ✓');
+  };
+  img.onerror = function () {
+    window.__goldenSealState.ready = false;
+    console.warn('[财神符] 找不到 images/golden_seal.png，将使用代码绘制的印章。');
+  };
+  img.src = 'images/golden_seal.png';
   return img;
 })();
 
@@ -479,7 +442,6 @@ window.__metalScrape = (function () {
     window.addEventListener(evt, unlockOnFirstTouch, { once: true, passive: true });
   });
 
-  // 监听性能档位变化(提到循环外,只注册一次)
   window.addEventListener('caishen:perf', function (e) {
     enabled = e.detail.config.audioEnabled;
   });
@@ -576,14 +538,12 @@ window.__metalScrape = (function () {
   };
   var reduceMotion = window.__perf ? window.__perf.signals.reduceMotion : false;
 
-  // reduced-motion:不启动粒子循环,只暴露空接口,避免其他模块报错
   if (reduceMotion) {
     window.__spawnSmoke = function () {};
     window.__smokeBurst = function () {};
     return;
   }
 
-  /* ---- dpr 每次 resize 重新计算,以适配跨屏拖动 / 系统缩放变化 ---- */
   function getDpr() {
     var maxDpr = window.__perf ? window.__perf.config().dpr : 2;
     return Math.min(window.devicePixelRatio || 1, maxDpr);
@@ -595,8 +555,6 @@ window.__metalScrape = (function () {
   var MAX_PARTS = perf.particles;
   var BASE_SIZE = window.innerWidth < 600 ? 12 : 16;
   var SPRITE = 64;
-
-  // 性能档位相关缓存
   var dustOnScroll = perf.dustOnScroll;
 
   var PALETTES = {
@@ -647,13 +605,11 @@ window.__metalScrape = (function () {
   }
   window.__switchParticleTheme = switchPalette;
 
-  // 监听主题变化
   window.addEventListener('caishen:theme', function (e) {
     var theme = (e && e.detail && e.detail.theme) || 'dark';
     switchPalette(theme);
   });
 
-  // 监听性能档位变化(与主题分开,独立注册)
   window.addEventListener('caishen:perf', function (e) {
     var cfg = e.detail.config;
     MAX_PARTS = cfg.particles;
@@ -662,7 +618,6 @@ window.__metalScrape = (function () {
       particles.splice(0, particles.length - MAX_PARTS);
     }
     canvas.style.opacity = (e.detail.tier === 'low') ? '0.7' : '1';
-    // 档位变化可能改变 dpr 上限,重算一次画布尺寸
     resize();
   });
 
@@ -763,7 +718,6 @@ window.__metalScrape = (function () {
     burst(e.clientX, e.clientY, 2 + Math.floor(Math.random() * 3));
   }, { passive: true });
 
-  // 滚动扬尘:监听器只注册一次,内部用缓存的 dustOnScroll
   var lastY = window.scrollY, accum = 0;
   window.addEventListener('scroll', function () {
     if (!dustOnScroll) return;
@@ -778,7 +732,6 @@ window.__metalScrape = (function () {
     }
   }, { passive: true });
 
-  // 自动补烟:interval 来自 perf 配置
   setInterval(function () {
     if (document.hidden) return;
     if (particles.length > MAX_PARTS * 0.65) return;
@@ -793,62 +746,32 @@ window.__metalScrape = (function () {
    ② 赛博庙门 · 财神锦囊 · 今日财神录
    ============================================================ */
 (function () {
-  /* ---- 真实黄历算法 ---- */
   var GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
   var ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   var JIANCHU = ['建', '除', '满', '平', '定', '执', '破', '危', '成', '收', '开', '闭'];
 
   var JC_YI = [
-    '出行 · 求财 · 祈福',
-    '除旧 · 疗病 · 扫舍',
-    '祭祀 · 开市 · 纳财',
-    '修整 · 嫁娶 · 平治',
-    '祭祀 · 嫁娶 · 修造',
-    '捕捉 · 修造 · 纳福',
-    '破旧 · 求医 · 布新',
-    '安床 · 祭祀 · 祈福',
-    '嫁娶 · 开市 · 入学',
-    '纳财 · 收敛 · 感恩',
-    '开市 · 交易 · 入学',
-    '筑堤 · 收敛 · 静心'
+    '出行 · 求财 · 祈福', '除旧 · 疗病 · 扫舍', '祭祀 · 开市 · 纳财', '修整 · 嫁娶 · 平治',
+    '祭祀 · 嫁娶 · 修造', '捕捉 · 修造 · 纳福', '破旧 · 求医 · 布新', '安床 · 祭祀 · 祈福',
+    '嫁娶 · 开市 · 入学', '纳财 · 收敛 · 感恩', '开市 · 交易 · 入学', '筑堤 · 收敛 · 静心'
   ];
   var JC_JI = [
-    '动土 · 开仓 · 诉讼',
-    '嫁娶 · 远行 · 签约',
-    '服药 · 栽种 · 动土',
-    '开渠 · 栽种 · 远行',
-    '诉讼 · 出行 · 动土',
-    '开市 · 出行 · 动土',
-    '嫁娶 · 开市 · 签约',
-    '登高 · 行船 · 远行',
-    '诉讼 · 动土 · 拆卸',
-    '开市 · 出行 · 动土',
-    '安葬 · 动土 · 诉讼',
-    '开市 · 出行 · 盲动'
+    '动土 · 开仓 · 诉讼', '嫁娶 · 远行 · 签约', '服药 · 栽种 · 动土', '开渠 · 栽种 · 远行',
+    '诉讼 · 出行 · 动土', '开市 · 出行 · 动土', '嫁娶 · 开市 · 签约', '登高 · 行船 · 远行',
+    '诉讼 · 动土 · 拆卸', '开市 · 出行 · 动土', '安葬 · 动土 · 诉讼', '开市 · 出行 · 盲动'
   ];
 
   function getJDN(y, m, d) {
     var a  = Math.floor((14 - m) / 12);
     var yy = y + 4800 - a;
     var mm = m + 12 * a - 3;
-    return d
-         + Math.floor((153 * mm + 2) / 5)
-         + 365 * yy
-         + Math.floor(yy / 4)
-         - Math.floor(yy / 100)
-         + Math.floor(yy / 400)
-         - 32045;
+    return d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
   }
   function getGanzhi(date) {
     var jdn    = getJDN(date.getFullYear(), date.getMonth() + 1, date.getDate());
     var ganIdx = (jdn + 9) % 10;
     var zhiIdx = (jdn + 1) % 12;
-    return {
-      jdn: jdn,
-      ganIdx: ganIdx,
-      zhiIdx: zhiIdx,
-      text: GAN[ganIdx] + ZHI[zhiIdx] + '日'
-    };
+    return { jdn: jdn, ganIdx: ganIdx, zhiIdx: zhiIdx, text: GAN[ganIdx] + ZHI[zhiIdx] + '日' };
   }
   function getMonthZhiIdx(month, day) {
     var md = month * 100 + day;
@@ -873,16 +796,16 @@ window.__metalScrape = (function () {
   }
 
   var RECORDS = [
-  { bless: '恭喜发财', text: '财神已到门口，开门接福，见者有份。' },
-  { bless: '财源滚滚', text: '心诚香火旺，财路自然开，好运滚滚来。' },
-  { bless: '招财进宝', text: '接财神，迎元宝，只进不出，越接越旺。' },
-  { bless: '金玉满堂', text: '转发添一炷香，福气财运一起满仓。' },
-  { bless: '日进斗金', text: '财神不渡无缘人，今天你就是有缘人。' },
-  { bless: '八方来财', text: '东接福，西进宝，四面八方财路开。' },
-  { bless: '大吉大利', text: '天南地北同接福，财神进门万事兴。' },
-  { bless: '富贵长红', text: '接住财神，稳住好运，富贵一路长红。' },
-  { bless: '红红火火', text: '主题曲一响，财神登场，日子红红火火。' },
-  { bless: '钱包鼓鼓', text: '公屏接财神，开门迎好运，钱包鼓鼓。' }
+    { bless: '恭喜发财', text: '财神到，财运到，开门见喜。' },
+    { bless: '财源滚滚', text: '心诚则灵，香火自旺，财源自来。' },
+    { bless: '招财进宝', text: '只迎财神，不砸财神，长红可期。' },
+    { bless: '金玉满堂', text: '转发一次，上香一炷，福报自积。' },
+    { bless: '日进斗金', text: '财神不渡无缘之人，今日有缘。' },
+    { bless: '八方来财', text: '西方有 Doge，东方有财神。' },
+    { bless: '大吉大利', text: '全球华人，同接一神。' },
+    { bless: '富贵长红', text: '守住财神，账户长红。' },
+    { bless: '红红火火', text: '主题曲一响，财神到现场。' },
+    { bless: '钱包鼓鼓', text: '公屏接财神，钱包开门迎。' }
   ];
 
   var gate       = document.getElementById('gate');
@@ -891,7 +814,6 @@ window.__metalScrape = (function () {
   var entered    = false;
   try { entered = sessionStorage.getItem(SKIP_KEY) === '1'; } catch (_) {}
 
-  /* ---- 统一的门关闭函数:同时处理 aria 语义 ---- */
   function hideGate() {
     gate.setAttribute('aria-hidden', 'true');
     gate.removeAttribute('aria-modal');
@@ -904,7 +826,6 @@ window.__metalScrape = (function () {
     gate.classList.add('gone');
 
     if (releaseFocus) { releaseFocus(); releaseFocus = null; }
-
     if (gateSmokeTimer) {
       clearInterval(gateSmokeTimer);
       gateSmokeTimer = null;
@@ -922,7 +843,6 @@ window.__metalScrape = (function () {
   document.body.style.overflow = 'hidden';
   document.body.classList.add('gate-active');
 
-  /* ---- 冻结背景(inert / 焦点陷阱回退) ---- */
   var releaseFocus = __modalHelpers.freeze([gate]);
 
   var hint       = gate.querySelector('.gate-hint');
@@ -940,7 +860,6 @@ window.__metalScrape = (function () {
 
   var opened = false, drawn = false;
 
-  /* ---- 音频 ---- */
   var audioCtx = null;
   function initAudio() {
     if (audioCtx) return;
@@ -992,19 +911,16 @@ window.__metalScrape = (function () {
     } catch (_) {}
   }
 
-  /* ---- 门内烟雾 ---- */
   function gateSmoke() {
     if (drawn) return;
     var cx = window.innerWidth / 2;
     var cy = window.innerHeight * 0.55;
-    if (window.__smokeBurst) window.__smokeBurst(cx + (Math.random() - 0.5) * 180,
-                          cy + (Math.random() - 0.5) * 80, 3, 18, 0.15);
+    if (window.__smokeBurst) window.__smokeBurst(cx + (Math.random() - 0.5) * 180, cy + (Math.random() - 0.5) * 80, 3, 18, 0.15);
   }
   var gateSmokeInterval = (window.__perf && window.__perf.isLow()) ? 1600 : 620;
   var gateSmokeTimer = setInterval(gateSmoke, gateSmokeInterval);
   gateSmoke();
 
-  // 降级到 low 时,重建定时器(用更长间隔)
   window.addEventListener('caishen:perf', function (e) {
     if (!gateSmokeTimer) return;
     if (e.detail.tier === 'low' && gateSmokeInterval < 1600) {
@@ -1014,12 +930,10 @@ window.__metalScrape = (function () {
     }
   });
 
-  /* ---- 打开门 ---- */
   gate.addEventListener('click', function openOnce() {
     if (opened) return;
     opened = true;
-    initAudio();
-    playKnock();
+    initAudio(); playKnock();
 
     if (gate.animate) {
       try {
@@ -1036,14 +950,11 @@ window.__metalScrape = (function () {
       gate.classList.add('open');
       hint.style.opacity = '0';
 
-      var cx = window.innerWidth / 2;
-      var cy = window.innerHeight / 2;
+      var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
       if (window.__smokeBurst) {
         for (var i = 0; i < 3; i++) {
           (function (k) {
-            setTimeout(function () {
-              window.__smokeBurst(cx, cy, 14, 26, 0.28);
-            }, k * 100);
+            setTimeout(function () { window.__smokeBurst(cx, cy, 14, 26, 0.28); }, k * 100);
           })(i);
         }
       }
@@ -1062,7 +973,6 @@ window.__metalScrape = (function () {
     }, 160);
   });
 
-  /* ---- 财神锦囊 ---- */
   function pickRecord() {
     var today  = new Date();
     var gz     = getGanzhi(today);
@@ -1118,7 +1028,6 @@ window.__metalScrape = (function () {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBag(); }
   });
 
-  /* ---- 进庙 ---- */
   enterBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     initAudio(); playWoodfish();
@@ -1129,8 +1038,7 @@ window.__metalScrape = (function () {
       for (var i = 0; i < 5; i++) {
         (function (k) {
           setTimeout(function () {
-            window.__smokeBurst(cx + (Math.random() - 0.5) * 360,
-                                cy + (Math.random() - 0.5) * 260, 7, 22, 0.18);
+            window.__smokeBurst(cx + (Math.random() - 0.5) * 360, cy + (Math.random() - 0.5) * 260, 7, 22, 0.18);
           }, k * 90);
         })(i);
       }
@@ -1325,7 +1233,7 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ⑤ 财神符生成
+   ⑤ 财神符生成 (含金色宝印与质感升级)
    ============================================================ */
 (function () {
   var modal = document.getElementById('charmModal');
@@ -1354,8 +1262,7 @@ window.__metalScrape = (function () {
     var BLESS = ['恭喜发财','财源滚滚','招财进宝','金玉满堂','日进斗金','八方来财','大吉大利','富贵长红','红红火火','钱包鼓鼓'];
     return {
       label: BLESS[jdn % BLESS.length],
-      text: GAN[ganIdx] + ZHI[zhiIdx] + '日 · 财神方位' +
-            ['东北','西南','正北','正西','正南'][ganIdx % 5]
+      text: GAN[ganIdx] + ZHI[zhiIdx] + '日 · 财神方位' + ['东北','西南','正北','正西','正南'][ganIdx % 5]
     };
   }
 
@@ -1410,6 +1317,7 @@ window.__metalScrape = (function () {
     ctx.shadowBlur = 0; ctx.fillText(text, x, y);
     ctx.restore();
   }
+  
   function drawSeal(ctx, cx, cy, size, T) {
     ctx.save();
     ctx.translate(cx, cy);
@@ -1430,6 +1338,7 @@ window.__metalScrape = (function () {
     ctx.shadowBlur = 0;
     ctx.restore();
   }
+  
   function drawDeity(ctx, cx, cy, size, T) {
     var glow = ctx.createRadialGradient(cx, cy, size * 0.15, cx, cy, size * 0.72);
     glow.addColorStop(0, T.deityGlow1); glow.addColorStop(0.4, T.deityGlow2);
@@ -1467,6 +1376,7 @@ window.__metalScrape = (function () {
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('财', cx, cy + size * 0.02);
   }
+  
   function drawCoin(ctx, cx, cy, r, color, alpha) {
     ctx.save();
     ctx.globalAlpha = alpha;
@@ -1492,6 +1402,21 @@ window.__metalScrape = (function () {
     ctx.restore();
   }
 
+  // --- 新增：添加纸张/胶片噪点质感 ---
+  function addCanvasNoise(ctx, W, H) {
+    var imageData = ctx.getImageData(0, 0, W, H);
+    var data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      if (Math.random() < 0.04) { // 4% 的像素点受影响
+        var noise = (Math.random() - 0.5) * 30;
+        data[i] += noise;     // R
+        data[i+1] += noise;   // G
+        data[i+2] += noise;   // B
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
   function generateCharm() {
     var W = 1080, H = 1440;
     var canvas = document.createElement('canvas');
@@ -1501,32 +1426,32 @@ window.__metalScrape = (function () {
     var T = getCharmTheme();
     var fortune = getFortune();
 
+    // 1. 背景渐变
     var bg = ctx.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0, T.bgFrom); bg.addColorStop(.5, T.bgMid); bg.addColorStop(1, T.bgTo);
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
+    // 2. 网格线
     ctx.save();
     ctx.strokeStyle = T.gridColor; ctx.lineWidth = 1;
     for (var gx = 0; gx < W; gx += 44) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
     for (var gy = 0; gy < H; gy += 44) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
     ctx.restore();
 
+    // 3. 环境光晕
     var glowTop = ctx.createRadialGradient(W / 2, H * 0.26, 0, W / 2, H * 0.26, W * 0.98);
-    glowTop.addColorStop(0, T.topGlow);
-    glowTop.addColorStop(.5, 'rgba(0,0,0,0)');
-    glowTop.addColorStop(1, 'rgba(0,0,0,0)');
+    glowTop.addColorStop(0, T.topGlow); glowTop.addColorStop(.5, 'rgba(0,0,0,0)'); glowTop.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glowTop; ctx.fillRect(0, 0, W, H);
 
     var glowBottom = ctx.createRadialGradient(W / 2, H * 0.95, 0, W / 2, H * 0.95, W * 0.75);
-    glowBottom.addColorStop(0, 'rgba(255, 183, 0, 0.10)');
-    glowBottom.addColorStop(1, 'rgba(0,0,0,0)');
+    glowBottom.addColorStop(0, 'rgba(255, 183, 0, 0.10)'); glowBottom.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glowBottom; ctx.fillRect(0, 0, W, H);
 
     var vignette = ctx.createRadialGradient(W / 2, H * 0.55, W * 0.32, W / 2, H * 0.55, W * 0.96);
-    vignette.addColorStop(0, 'rgba(0,0,0,0)');
-    vignette.addColorStop(1, T.vignette);
+    vignette.addColorStop(0, 'rgba(0,0,0,0)'); vignette.addColorStop(1, T.vignette);
     ctx.fillStyle = vignette; ctx.fillRect(0, 0, W, H);
 
+    // 4. 边框绘制
     ctx.save();
     ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 2.5;
     ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 26;
@@ -1537,6 +1462,7 @@ window.__metalScrape = (function () {
     ctx.strokeRect(72, 72, W - 144, H - 144);
     ctx.restore();
 
+    // 5. 角落装饰
     ctx.save();
     ctx.strokeStyle = T.cornerColor; ctx.lineWidth = 4;
     ctx.shadowColor = T.cornerColor; ctx.shadowBlur = 16;
@@ -1560,6 +1486,7 @@ window.__metalScrape = (function () {
       ctx.restore();
     }
 
+    // 6. 装饰元素
     drawCoin(ctx, 150, 200, 22, T.cornerColor, .35);
     drawCoin(ctx, W - 150, 200, 22, T.cornerColor, .35);
     drawCoin(ctx, 150, H - 240, 18, T.cornerColor, .3);
@@ -1568,17 +1495,21 @@ window.__metalScrape = (function () {
     drawStar(ctx, W * .72, H * .37, 12, T.sepDot, .7);
     drawStar(ctx, W * .5,  H * .92, 10, T.sepDot, .5);
 
+    // 7. 顶部代码文字
     ctx.fillStyle = T.codeColor;
     ctx.font = '600 22px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 132);
 
+    // 8. 绘制财神
     drawDeity(ctx, W / 2, 440, 470, T);
 
+    // 9. 标题
     neonText(ctx, '财 神 符', W / 2, 760,
       '900 100px "Noto Serif SC", "Songti SC", serif',
       T.titleColor, T.titleGlow, 26);
 
+    // 10. 分割线
     ctx.save();
     ctx.strokeStyle = T.sepColor; ctx.lineWidth = 1;
     ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 12;
@@ -1589,46 +1520,47 @@ window.__metalScrape = (function () {
     ctx.save(); ctx.translate(W / 2 + 220, 856); ctx.rotate(Math.PI / 4); ctx.fillRect(-4, -4, 8, 8); ctx.restore();
     ctx.beginPath(); ctx.arc(W / 2, 856, 6, 0, Math.PI * 2); ctx.fill();
 
+    // --- 新增：祝福语背景框 (提升饱满度) ---
+    var boxW = W - 160;
+    var boxH = 150;
+    var boxX = (W - boxW) / 2;
+    var boxY = 890;
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 183, 0, 0.05)';
+    ctx.strokeStyle = 'rgba(255, 183, 0, 0.25)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(boxX, boxY, boxW, boxH, 12);
+    ctx.fill();
+    ctx.stroke();
+    // 给框加个更细的内边框
+    ctx.strokeStyle = 'rgba(255, 45, 85, 0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(boxX + 8, boxY + 8, boxW - 16, boxH - 16, 8);
+    ctx.stroke();
+    ctx.restore();
+
+    // 11. 祝福文字 (位置根据新底框微调)
     ctx.fillStyle = T.labelColor;
     ctx.font = '700 24px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 928);
+    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 935);
 
-    neonText(ctx, fortune.text, W / 2, 1030,
+    neonText(ctx, fortune.text, W / 2, 1000,
       '800 54px "Noto Serif SC", "Songti SC", "STSong", serif',
       T.signColor, T.signGlow, 18);
 
+    // 12. 随机标语
     var MAIN_SLOGANS = [
-      '招财进宝 · 日进斗金',
-      '财源广进 · 金玉满堂',
-      '五路财神 · 八方来财',
-      '财神到家 · 富贵荣华',
-      '日进斗金 · 财源滚滚',
-      '八方来财 · 四季发财',
-      '财源亨通 · 生意兴隆',
-      '招财纳福 · 迎祥接财',
-      '金库充盈 · 银库满仓',
-      '财星高照 · 鸿运当头',
-      '福财双至 · 好运连连',
-      '财气冲天 · 富贵满门',
-      '开门见财 · 抬头见喜',
-      '聚宝盆满 · 摇钱树高',
-      '钱途无量 · 财运亨通',
-      '正财偏财 · 滚滚而来',
-      '横财就手 · 好运常来',
-      '财来八方 · 福到万家',
-      '福禄双全 · 富贵盈门',
-      '财源不断 · 好运连年',
-      '五方财神 · 齐来送财',
-      '元宝如山 · 钞票如海',
-      '金银满屋 · 富贵有余',
-      '财源茂盛 · 万事如意',
-      '财神眷顾 · 好运常伴',
-      '财气满满 · 福气多多',
-      '黄金万两 · 白银千箱',
-      '家财万贯 · 福寿双全',
-      '财神送宝 · 富贵到老',
-      '接财接福 · 迎春迎喜'
+      '招财进宝 · 日进斗金', '财源广进 · 金玉满堂', '五路财神 · 八方来财', '财神到家 · 富贵荣华',
+      '日进斗金 · 财源滚滚', '八方来财 · 四季发财', '财源亨通 · 生意兴隆', '招财纳福 · 迎祥接财',
+      '金库充盈 · 银库满仓', '财星高照 · 鸿运当头', '福财双至 · 好运连连', '财气冲天 · 富贵满门',
+      '开门见财 · 抬头见喜', '聚宝盆满 · 摇钱树高', '钱途无量 · 财运亨通', '正财偏财 · 滚滚而来',
+      '横财就手 · 好运常来', '财来八方 · 福到万家', '福禄双全 · 富贵盈门', '财源不断 · 好运连年',
+      '五方财神 · 齐来送财', '元宝如山 · 钞票如海', '金银满屋 · 富贵有余', '财源茂盛 · 万事如意',
+      '财神眷顾 · 好运常伴', '财气满满 · 福气多多', '黄金万两 · 白银千箱', '家财万贯 · 福寿双全',
+      '财神送宝 · 富贵到老', '接财接福 · 迎春迎喜'
     ];
     var randomSlogan = MAIN_SLOGANS[Math.floor(Math.random() * MAIN_SLOGANS.length)];
 
@@ -1660,12 +1592,34 @@ window.__metalScrape = (function () {
     ctx.font = '400 18px "JetBrains Mono", Consolas, monospace';
     ctx.fillText(dateStr, W / 2, 1372);
 
-    drawSeal(ctx, W - 150, H - 158, 118, T);
+    // 13. 绘制印章 (优先使用本地金色宝印)
+    var sealSize = 140;
+    var sealX = W - sealSize - 50;
+    var sealY = H - sealSize - 50;
+    if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
+      ctx.save();
+      // 使用 screen 混合模式让金色宝印发光并与暗色背景完美融合
+      ctx.globalCompositeOperation = 'screen';
+      // 绘制底层光晕，让印章“浮”出来
+      ctx.shadowColor = 'rgba(255, 183, 0, 0.8)';
+      ctx.shadowBlur = 30;
+      ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
+      // 再画一次加强金属光泽
+      ctx.shadowBlur = 10;
+      ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
+      ctx.restore();
+    } else {
+      // 回退方案：使用代码绘制的印章
+      drawSeal(ctx, W - 150, H - 158, 118, T);
+    }
 
     ctx.fillStyle = T.noColor;
     ctx.font = '500 20px "JetBrains Mono", Consolas, monospace';
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText('# ' + Math.floor(Math.random() * 9000 + 1000), 96, H - 158);
+
+    // --- 新增：最后叠加噪点纹理，让画面更有纸张质感 ---
+    addCanvasNoise(ctx, W, H);
 
     try {
       return canvas.toDataURL('image/png');
@@ -1703,7 +1657,6 @@ window.__metalScrape = (function () {
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
 
-    /* ---- 冻结背景 ---- */
     if (!releaseModalFocus) {
       releaseModalFocus = __modalHelpers.freeze([modal]);
     }
@@ -1713,8 +1666,7 @@ window.__metalScrape = (function () {
       for (var i = 0; i < 3; i++) {
         (function (k) {
           setTimeout(function () {
-            window.__smokeBurst(cx + (Math.random() - 0.5) * 320,
-                                cy + (Math.random() - 0.5) * 320, 5, 20, 0.20);
+            window.__smokeBurst(cx + (Math.random() - 0.5) * 320, cy + (Math.random() - 0.5) * 320, 5, 20, 0.20);
           }, k * 100);
         })(i);
       }
@@ -1724,7 +1676,6 @@ window.__metalScrape = (function () {
     modal.classList.remove('show');
     document.body.style.overflow = '';
 
-    /* ---- 解冻背景 ---- */
     if (releaseModalFocus) {
       releaseModalFocus();
       releaseModalFocus = null;
@@ -1789,7 +1740,7 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ⑥ 社交图片加载失败回退(替代 HTML 内联 onerror)
+   ⑥ 社交图片加载失败回退
    ============================================================ */
 (function () {
   var imgs = document.querySelectorAll('.social-img');
@@ -1804,12 +1755,10 @@ window.__metalScrape = (function () {
   }
 
   imgs.forEach(function (img) {
-    // 情况 A: 脚本运行时图片已经加载失败(defer 脚本晚于图片 error 事件)
     if (img.complete && img.naturalWidth === 0) {
       showFallback(img);
       return;
     }
-    // 情况 B: 正常监听后续 error 事件
     img.addEventListener('error', function () { showFallback(img); });
   });
 })();
