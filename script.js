@@ -1978,3 +1978,77 @@ window.__metalScrape = (function () {
     });
   });
 })();
+/* ============================================================
+   ✦ Hero Chips · 复制 / 跳转
+   ============================================================ */
+(function () {
+  var chips = document.querySelectorAll('.hero-chip[data-action]');
+  if (!chips.length) return;
+
+  function showCopied(chip) {
+    var label = chip.querySelector('.hero-chip-label');
+    if (!label) return;
+    var original = label.textContent;
+    chip.classList.add('is-copied');
+    label.textContent = '已复制 ✓';
+    setTimeout(function () {
+      chip.classList.remove('is-copied');
+      label.textContent = original;
+    }, 1500);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        ta.style.pointerEvents = 'none';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject(new Error('execCommand failed'));
+      } catch (e) { reject(e); }
+    });
+  }
+
+  chips.forEach(function (chip) {
+    function activate() {
+      var action = chip.getAttribute('data-action');
+
+      if (action === 'copy') {
+        var text = chip.getAttribute('data-copy');
+        if (!text) return;
+        copyText(text).then(function () {
+          showCopied(chip);
+          if (window.__showToast) window.__showToast('合约地址已复制');
+        }).catch(function () {
+          if (window.__showToast) window.__showToast('复制失败，请长按手动复制');
+        });
+
+      } else if (action === 'link') {
+        var href = chip.getAttribute('data-href');
+        var target = chip.getAttribute('data-target');
+        if (!href) return;
+        if (target === '_blank') {
+          window.open(href, '_blank', 'noopener,noreferrer');
+        } else {
+          location.href = href;
+        }
+      }
+    }
+
+    chip.addEventListener('click', activate);
+    chip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
+    });
+  });
+})();
