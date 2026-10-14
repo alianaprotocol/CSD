@@ -1413,7 +1413,9 @@ window.__metalScrape = (function () {
     // 获取农历
     var today = new Date();
     var lunar = getLunarDate(today);
-    var dateStr = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
+    var weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    var weekday = weekdays[today.getDay()];
+    var dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日 ' + weekday;
     
     var T = {
       bgFrom: isDark ? '#080205' : '#fff7ed',
@@ -1517,10 +1519,11 @@ window.__metalScrape = (function () {
     ctx.beginPath(); ctx.roundRect(boxX + 15, boxY + 15, boxW - 30, boxH - 30, 16); ctx.stroke();
     ctx.restore();
 
-    // 10. 祝福语
+
+    // 10. 祝福语（红红火火放大）
     ctx.fillStyle = isDark ? '#ff2d55' : '#c0392b';
-    ctx.font = '700 30px "JetBrains Mono", monospace';
-    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1045);
+    ctx.font = '700 40px "JetBrains Mono", monospace';
+    ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1040);
 
     draw3DText(ctx, fortune.text, W / 2, 1125,
       '800 64px "Noto Serif SC", "Songti SC", serif',
@@ -1540,26 +1543,19 @@ window.__metalScrape = (function () {
     ctx.font = '500 36px "Noto Serif SC", serif';
     ctx.fillText('财神到，财运到', W / 2, 1370);
 
-    // 12. 落款、日期（公历+农历）
-    ctx.fillStyle = T.textMuted;
-    ctx.font = '600 26px "JetBrains Mono", monospace';
-    ctx.fillText('CAISHEN.DAO · ON-CHAIN CONTRACT', W / 2, 1430);
-
+    // 12. 日期（公历+农历，去掉落款，优化间距）
     ctx.fillStyle = T.cornerColor;
-    ctx.font = '700 32px "JetBrains Mono", monospace';
-    ctx.fillText('公历 ' + dateStr, W / 2, 1485);
+    ctx.font = '700 34px "Noto Serif SC", "Songti SC", serif';
+    ctx.fillText(dateStr, W / 2, 1440);
 
     ctx.fillStyle = T.titleColor;
-    ctx.font = '700 32px "Noto Serif SC", "Songti SC", serif';
-    ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + '月' + lunar.day, W / 2, 1535);
+    ctx.font = '700 34px "Noto Serif SC", "Songti SC", serif';
+    ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + '月 ' + lunar.day, W / 2, 1500);
 
-    // 13. 金色大印（尺寸 320，位置适中，底部留白 60px）
+    // 13. 金色大印（尺寸 300，底部留白 80px，与日期间距舒适）
     var sealSize = 300;
     var sealX = (W - sealSize) / 2;
-    var sealY = 1540; // 1580 + 320 = 1900，完美留白 20px (注：1920 - 1900 = 20px, 用户要求不要贴边，留 20px 有点少，改为 1560 -> 60px)
-    
-    // 修正：为了不贴边，sealY 改为 1540，底部留白 60px
-    sealY = 1520; 
+    var sealY = 1540; // 1540 + 300 = 1840，底部留白 80px
 
     if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
       ctx.save();
