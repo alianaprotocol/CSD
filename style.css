@@ -979,8 +979,8 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
 }
 .sc-deity{
   position: relative;
-  width: 84px; height: 84px;
-  margin: -52px auto 10px;
+  width: 88px; height: 88px;              /* 76 → 88，稍大一点 */
+  margin: -58px auto 8px;                 /* -52 → -58，跟着上移 */
   border-radius: 50%;
   background: radial-gradient(circle at 50% 40%, #2a0a10, #0a0205);
   border: 2px solid var(--gold);
@@ -996,10 +996,12 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   z-index: 2;
 }
 .sc-deity img{
-  object-fit: contain;      /* cover → contain */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;                    /* ★ 关键:cover → contain */
   object-position: center center;
-  padding: 5px;             /* 轻微留白，避免边缘贴框 */
-  transform: none;
+  transform: scale(1.08);                 /* ★ 轻微放大，让图更"占满"圆 */
+  transform-origin: center 30%;           /* ★ 放大时以偏上为中心，头不跑偏 */
 }
 .sc-title{
   display: flex;
