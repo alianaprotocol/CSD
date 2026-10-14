@@ -1469,8 +1469,18 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   padding: 0 6px;
   text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .9);
 }
-.hero-chips{ display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
-.hero-chips span{
+/* ============================================================
+   Hero Chips · 胶囊按钮
+   ============================================================ */
+.hero-chips{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.hero-chip{
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1485,13 +1495,60 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   letter-spacing: .5px;
   text-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 183, 0, .4);
   transition: all .25s ease;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
 }
-.hero-chips span:hover{
+
+.hero-chip:hover,
+.hero-chip:focus-visible{
+  outline: none;
   border-color: var(--gold);
   box-shadow: 0 0 calc(18px * var(--glow-strength)) rgba(255, 183, 0, .35);
   transform: translateY(-1px);
 }
-.hero-chips i{ color: var(--gold); font-size: .85em; }
+
+.hero-chip:active{
+  transform: translateY(0) scale(.97);
+}
+
+.hero-chip i{
+  color: var(--gold);
+  font-size: .85em;
+  flex-shrink: 0;
+  transition: all .25s ease;
+}
+
+.hero-chip-label{
+  white-space: nowrap;
+  transition: color .25s ease;
+}
+
+/* 复制成功状态 */
+.hero-chip.is-copied{
+  border-color: #26ff8f;
+  background: rgba(38, 255, 143, .1);
+  box-shadow:
+    0 0 calc(18px * var(--glow-strength)) rgba(38, 255, 143, .5),
+    inset 0 0 calc(12px * var(--glow-strength)) rgba(38, 255, 143, .12);
+}
+.hero-chip.is-copied i,
+.hero-chip.is-copied .hero-chip-label{
+  color: #26ff8f;
+  text-shadow: 0 0 10px rgba(38, 255, 143, .7);
+}
+
+/* 移动端尺寸 */
+@media (max-width: 480px){
+  .hero-chip{
+    font-size: .7rem;
+    padding: 5px 11px;
+    gap: 5px;
+  }
+}
 
 .notice{
   display: flex;
