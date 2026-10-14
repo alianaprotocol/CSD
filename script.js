@@ -1554,9 +1554,9 @@ window.__metalScrape = (function () {
     ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + '月' + lunar.day, W / 2, 1535);
 
     // 13. 金色大印（尺寸 320，位置适中，底部留白 60px）
-    var sealSize = 320;
+    var sealSize = 300;
     var sealX = (W - sealSize) / 2;
-    var sealY = 1580; // 1580 + 320 = 1900，完美留白 20px (注：1920 - 1900 = 20px, 用户要求不要贴边，留 20px 有点少，改为 1560 -> 60px)
+    var sealY = 1560; // 1580 + 320 = 1900，完美留白 20px (注：1920 - 1900 = 20px, 用户要求不要贴边，留 20px 有点少，改为 1560 -> 60px)
     
     // 修正：为了不贴边，sealY 改为 1540，底部留白 60px
     sealY = 1540; 
