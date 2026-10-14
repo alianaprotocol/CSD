@@ -5390,18 +5390,31 @@ footer .f-warn i{ color: #ff2d55; margin-right: 4px; text-shadow: 0 0 6px rgba(2
     padding: 14px 10px 0;
     gap: 10px;
   }
-  .faith-card{
-    min-height: 180px;
-    padding: 16px 12px;
-    grid-template-columns: 80px 1fr;
-    gap: 12px;
+  .faith-card {
+    min-height: 220px; /* 原来是 180px，增加 40px */
+    padding: 22px 16px; /* 增加上下内边距 */
+    grid-template-columns: 85px 1fr; /* 稍微加宽左侧香炉区域 */
+    gap: 16px;
   }
-  .incense{ height: 150px; }
-  .incense-emblem{ width: 36px; height: 36px; font-size: .9rem; }
+   .incense {
+    height: 190px; /* 原来是 150px */
+  }
+  .incense-emblem {
+    width: 38px;
+    height: 38px;
+    font-size: .95rem;
+    top: 4px; /* 稍微下移一点，留出上浮空间 */
+  }
   .incense-stick{ width: 3.5px; }
   .faith-card.lit .incense-stick{ height: calc(100% - 62px); }
-  .incense-tip{ top: 44px; width: 9px; height: 9px; }
-  .incense-smoke{ top: 46px; }
+  .incense-tip {
+    top: 54px;
+    width: 9px;
+    height: 9px;
+  }
+  .incense-smoke {
+    top: 56px;
+  }
   .incense-burner{ width: 46px; height: 18px; }
   .faith-title{ font-size: .92rem; letter-spacing: 1.4px; }
   .faith-desc{ font-size: .74rem; line-height: 1.7; }
@@ -6864,4 +6877,43 @@ html[data-theme="dark"] .gateway-card {
 html[data-perf="low"] .law-body {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+@media (max-width: 720px) {
+  /* 1. 移除 #censer 在滚动时引起重绘的 filter */
+  #censer {
+    filter: none !important;
+    /* 强制提升为独立合成层，消除滚动时的阴影闪烁 */
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  #censer:hover {
+    filter: none !important;
+    transform: translateZ(0) translateY(-3px) scale(1.05); /* 保留点击反馈，不依赖 filter */
+  }
+
+  /* 2. 大幅降级 .censer-deity 的阴影，减少 GPU 负担 */
+  .censer-deity {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) !important;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+}
+
+@media (max-width: 480px) {
+  /* 小屏下进一步简化 */
+  #censer {
+    filter: none !important;
+    transform: translateZ(0);
+  }
+  
+  .censer-deity {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) !important;
+    transform: translateZ(0);
+  }
+  
+  /* 关闭满进度时的阴影呼吸动画，改用不触发重绘的缩放 */
+  #censer.full {
+    animation: none !important;
+  }
 }
