@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060309">
+<title>$财神到 · Solana 链上量价齐升</title>
+<style>
+/* ============================================================
+   $财神到 CYBER-RED DESIGN SYSTEM · SOLANA EDITION
+   ============================================================ */
+:root{
+  --bg:#060309;
+  --red:#ff1f3d;
+  --red-dim:rgba(255,31,61,.55);
+  --red-soft:rgba(255,31,61,.1);
+  --red-line:rgba(255,31,61,.28);
+  --gold:#ffd23f;
+  --gold-deep:#e8a010;
+  --gold-dim:rgba(255,210,63,.5);
+  --gold-soft:rgba(255,210,63,.1);
+  --gold-line:rgba(255,210,63,.28);
+  --sol-purple:#9945FF;
+  --sol-green:#14F195;
+  --cyan:#00f0ff;
+  --cyan-soft:rgba(0,240,255,.1);
+  --pink:#ff2ea6;
+  --txt:#f7f1f7;
+  --dim:#8f8299;
+  --dim2:#5f5668;
+  --card:rgba(255,255,255,.038);
+  --brd:rgba(255,255,255,.075);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  color:var(--txt);background:var(--bg);overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- 背景装饰层 ---------- */
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.bg-fx .glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;}
+.bg-fx .g1{width:340px;height:340px;top:-130px;left:-90px;background:radial-gradient(circle,rgba(255,31,61,.5),transparent 70%);}
+.bg-fx .g2{width:300px;height:300px;top:120px;right:-120px;background:radial-gradient(circle,rgba(153,69,255,.28),transparent 70%);}
+.bg-fx .g3{width:400px;height:400px;bottom:-140px;left:-80px;background:radial-gradient(circle,rgba(20,241,149,.14),transparent 70%);}
+.bg-fx .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,31,61,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,31,61,.075) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 15%,transparent 72%);
+          mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 15%,transparent 72%);
+}
+.bg-fx .scan{
+  position:absolute;inset:0;opacity:.28;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0px,rgba(0,0,0,.55) 1px,transparent 1px,transparent 3px);
+  mix-blend-mode:multiply;
+}
+.bg-fx .topline{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--sol-purple),var(--red),transparent);
+  box-shadow:0 0 18px var(--red);opacity:.85;
+}
+
+/* ---------- 布局 ---------- */
+.app{position:relative;z-index:1;max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom));}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
+.mono{font-family:var(--mono);}
+
+/* ============================================================
+   顶部状态栏
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:calc(11px + env(safe-area-inset-top)) 16px 12px;
+  background:linear-gradient(180deg,rgba(6,3,9,.97) 45%,rgba(6,3,9,.6) 80%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.wallet{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 11px;border-radius:10px;
+  background:rgba(153,69,255,.08);
+  border:1px solid rgba(153,69,255,.3);
+  font-family:var(--mono);font-size:11px;color:#d4b9ff;
+  letter-spacing:.3px;position:relative;overflow:hidden;
+}
+.wallet::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(153,69,255,.22),transparent);
+  transform:translateX(-100%);animation:sweep 3.6s ease-in-out infinite;
+}
+@keyframes sweep{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.wallet .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--sol-green);
+  box-shadow:0 0 8px var(--sol-green);animation:blink 1.4s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.cd{
+  display:flex;align-items:center;gap:6px;
+  font-size:10.5px;color:var(--dim);letter-spacing:.3px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);
+  padding:7px 11px;border-radius:10px;
+}
+.cd b{color:var(--gold);font-family:var(--mono);font-size:11.5px;font-weight:700;}
+
+/* ============================================================
+   HERO — $财神到 主视觉
+   ============================================================ */
+.hero{
+  position:relative;margin:6px 16px 0;
+  padding:22px 18px 20px;border-radius:22px;overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%,rgba(255,31,61,.2),transparent 58%),
+    radial-gradient(90% 80% at 0% 100%,rgba(153,69,255,.1),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.015));
+  border:1px solid rgba(255,31,61,.22);
+  box-shadow:0 0 0 1px rgba(255,31,61,.06),0 26px 60px -26px rgba(255,31,61,.65),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.hero::before{
+  content:"財";position:absolute;right:-16px;top:-46px;
+  font-size:190px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(255,31,61,.055);pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;top:0;right:0;
+  width:0;height:0;border-style:solid;
+  border-width:0 46px 46px 0;
+  border-color:transparent rgba(255,31,61,.16) transparent transparent;
+}
+
+.hero-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+
+/* 财神 Logo 徽章 */
+.token{
+  position:relative;width:68px;height:68px;flex:0 0 68px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 34% 28%,#fff1a8,#ffd23f 36%,#e8a010 68%,#8a5c00 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,210,63,.28),
+    0 0 26px rgba(255,210,63,.6),
+    inset 0 -4px 10px rgba(0,0,0,.4);
+}
+.token img{
+  width:100%;height:100%;object-fit:cover;border-radius:50%;
+  /* 关键：让白色背景与深色主题融合 */
+  transform: scale(1.15);
+}
+.token::before{
+  content:"";position:absolute;inset:-13px;border-radius:50%;
+  border:1px solid rgba(153,69,255,.4);
+  border-top-color:rgba(153,69,255,.9);
+  animation:spin 5s linear infinite;pointer-events:none;
+}
+.token::after{
+  content:"";position:absolute;inset:-7px;border-radius:50%;
+  border:1.5px dashed rgba(255,31,61,.55);
+  animation:spin 14s linear infinite reverse;pointer-events:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hero-title{min-width:0;}
+.brand{
+  font-size:26px;font-weight:900;letter-spacing:-.5px;line-height:1.1;
+  background:linear-gradient(100deg,#fff 0%,#ffd9a0 30%,#ffd23f 55%,#ff8a5c 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(255,210,63,.35));
+  position:relative;display:inline-block;
+}
+.brand::before,.brand::after{
+  content:attr(data-text);position:absolute;left:0;top:0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  width:100%;overflow:hidden;
+}
+.brand::before{background:linear-gradient(#ff1f3d,#ff1f3d);animation:glitchA 3.4s steps(1) infinite;}
+.brand::after{background:linear-gradient(#14F195,#14F195);animation:glitchB 3.4s steps(1) infinite;}
+@keyframes glitchA{
+  0%,86%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}
+  88%{clip-path:inset(12% 0 62% 0);transform:translate(-2.5px,1px)}
+  91%{clip-path:inset(58% 0 18% 0);transform:translate(2px,-1px)}
+  94%{clip-path:inset(30% 0 46% 0);transform:translate(-1.5px,0)}
+}
+@keyframes glitchB{
+  0%,86%,100%{clip-path:inset(100% 0 0 0);transform:translate(0)}
+  89%{clip-path:inset(66% 0 12% 0);transform:translate(2.5px,-1px)}
+  92%{clip-path:inset(20% 0 58% 0);transform:translate(-2px,1px)}
+  95%{clip-path:inset(44% 0 34% 0);transform:translate(1.5px,0)}
+}
+.brand-en{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:2.6px;
+  color:var(--dim);margin-top:5px;text-transform:uppercase;
+}
+/* Solana 链标签 */
+.chain-tag{
+  display:inline-flex;align-items:center;gap:4px;margin-top:7px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;
+  color:var(--sol-green);background:rgba(20,241,149,.08);
+  border:1px solid rgba(20,241,149,.3);
+  padding:2.5px 7px;border-radius:5px;
+}
+.chain-tag i{width:4px;height:4px;border-radius:50%;background:var(--sol-green);box-shadow:0 0 6px var(--sol-green);}
+
+/* 财气值 */
+.fortune-label{
+  display:flex;align-items:center;gap:7px;
+  font-size:11.5px;color:var(--dim);letter-spacing:.4px;margin-bottom:6px;
+}
+.fortune-label em{
+  font-style:normal;font-family:var(--mono);font-size:9px;
+  color:var(--red);border:1px solid var(--red-line);
+  background:var(--red-soft);padding:1.5px 5px;border-radius:4px;letter-spacing:.8px;
+}
+.fortune-value{
+  font-size:52px;font-weight:900;line-height:1;letter-spacing:-2.5px;
+  font-family:var(--mono);
+  background:linear-gradient(178deg,#ffffff 8%,#ffd9a0 40%,#ffd23f 88%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 20px rgba(255,210,63,.42));
+}
+.fortune-unit{font-size:15px;font-weight:700;color:var(--gold-dim);margin-left:6px;letter-spacing:0;}
+
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.tag{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;
+  padding:5px 10px;border-radius:7px;letter-spacing:.3px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);color:var(--dim);
+}
+.tag.red{color:#ff9aa8;background:var(--red-soft);border-color:var(--red-line);}
+.tag.gold{color:var(--gold);background:var(--gold-soft);border-color:var(--gold-line);}
+
+/* 段位进度 */
+.tier{margin-top:18px;padding-top:15px;border-top:1px dashed rgba(255,31,61,.22);}
+.tier-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px;}
+.tier-name{font-size:13px;font-weight:800;letter-spacing:.4px;color:var(--gold);text-shadow:0 0 14px rgba(255,210,63,.5);}
+.tier-gap{font-size:10.5px;color:var(--dim);font-family:var(--mono);}
+.tier-gap b{color:var(--gold);}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;position:relative;}
+.bar i{
+  display:block;height:100%;border-radius:99px;position:relative;
+  background:linear-gradient(90deg,#e8a010,var(--gold),#fff3b0);
+  box-shadow:0 0 14px rgba(255,210,63,.75);
+  animation:grow 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+.bar i::after{
+  content:"";position:absolute;top:0;right:0;bottom:0;width:34px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));
+  animation:flow 1.9s ease-in-out infinite;
+}
+@keyframes flow{0%{transform:translateX(-30px);opacity:0}50%{opacity:1}100%{transform:translateX(0);opacity:0}}
+@keyframes grow{from{width:0 !important}}
+.tier-marks{display:flex;justify-content:space-between;margin-top:7px;font-family:var(--mono);font-size:9.5px;color:var(--dim2);}
+
+/* ============================================================
+   持仓乘数横幅
+   ============================================================ */
+.mult{
+  position:relative;display:flex;align-items:center;gap:13px;
+  margin:12px 16px 0;padding:14px 16px 14px 18px;border-radius:16px;
+  background:linear-gradient(100deg,rgba(255,210,63,.14),rgba(255,31,61,.07) 55%,transparent);
+  border:1px solid rgba(255,210,63,.3);overflow:hidden;
+}
+.mult::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold),var(--red));
+  box-shadow:0 0 16px var(--gold);
+}
+.mult::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;
+  border-radius:50%;background:radial-gradient(circle,rgba(255,210,63,.2),transparent 68%);
+}
+.mult-val{font-family:var(--mono);font-size:28px;font-weight:900;letter-spacing:-1.5px;color:var(--gold);line-height:1;text-shadow:0 0 22px rgba(255,210,63,.65);}
+.mult-cap{font-family:var(--mono);font-size:8.5px;letter-spacing:1px;color:rgba(255,210,63,.6);margin-top:5px;}
+.mult-body{flex:1;min-width:0;position:relative;z-index:1;}
+.mult-l1{font-size:12.5px;font-weight:700;color:#ffeab5;letter-spacing:.2px;}
+.mult-l1 b{color:var(--gold);}
+.mult-l2{font-size:10.5px;color:var(--dim);margin-top:4px;line-height:1.4;}
+.mult-l2 em{font-style:normal;color:var(--red);font-weight:700;}
+
+/* ============================================================
+   快捷操作
+   ============================================================ */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 16px 0;}
+.q{
+  position:relative;display:flex;align-items:center;gap:11px;
+  padding:14px 12px;border-radius:16px;cursor:pointer;
+  background:var(--card);border:1px solid var(--brd);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),border-color .2s,background .2s;
+  overflow:hidden;
+}
+.q:active{transform:scale(.955);}
+.q::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,31,61,.5),transparent);opacity:0;transition:opacity .2s;}
+.q:active::before{opacity:1;}
+.q-ico{width:36px;height:36px;flex:0 0 36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;}
+.q-t{font-size:13px;font-weight:700;letter-spacing:.2px;}
+.q-d{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-top:3px;letter-spacing:.2px;}
+.q-badge{position:absolute;top:8px;right:9px;font-family:var(--mono);font-size:8.5px;font-weight:800;padding:2.5px 6px;border-radius:5px;letter-spacing:.4px;}
+.i-red{background:var(--red-soft);color:var(--red);border:1px solid var(--red-line);}
+.i-gold{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line);}
+.i-sol{background:rgba(153,69,255,.1);color:var(--sol-purple);border:1px solid rgba(153,69,255,.3);}
+.i-green{background:rgba(20,241,149,.08);color:var(--sol-green);border:1px solid rgba(20,241,149,.28);}
+.i-pink{background:rgba(255,46,166,.1);color:var(--pink);border:1px solid rgba(255,46,166,.3);}
+.q.glow{
+  background:linear-gradient(125deg,rgba(255,210,63,.13),rgba(255,31,61,.05));
+  border-color:rgba(255,210,63,.35);
+  box-shadow:0 0 22px -6px rgba(255,210,63,.4);
+}
+
+/* ============================================================
+   通用区块
+   ============================================================ */
+.sec{padding:22px 16px 0;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;padding:0 2px;}
+.sec-head h2{margin:0;font-size:14.5px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
+.sec-head h2::before{content:"";width:3px;height:14px;border-radius:2px;background:linear-gradient(180deg,var(--red),rgba(255,31,61,.2));box-shadow:0 0 10px var(--red);}
+.sec-more{font-family:var(--mono);font-size:10.5px;color:var(--dim);cursor:pointer;letter-spacing:.3px;}
+.card{background:var(--card);border:1px solid var(--brd);border-radius:16px;overflow:hidden;position:relative;}
+
+/* ============================================================
+   任务列表
+   ============================================================ */
+.task{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid rgba(255,255,255,.05);}
+.task:last-child{border-bottom:0;}
+.tk-check{
+  width:19px;height:19px;flex:0 0 19px;border-radius:6px;
+  border:1.5px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent;transition:all .2s;
+}
+.task.done .tk-check{background:linear-gradient(135deg,var(--red),#ff5570);border-color:transparent;color:#fff;font-weight:900;box-shadow:0 0 14px rgba(255,31,61,.6);}
+.tk-body{flex:1;min-width:0;}
+.tk-t{font-size:12.5px;font-weight:650;letter-spacing:.2px;}
+.task.done .tk-t{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(143,130,153,.45);}
+.tk-d{font-family:var(--mono);font-size:9.5px;color:var(--dim2);margin-top:3px;letter-spacing:.2px;}
+.tk-pts{font-family:var(--mono);font-size:12px;font-weight:800;color:var(--red);white-space:nowrap;letter-spacing:.3px;}
+.tk-pts.gold{color:var(--gold);}
+
+/* ============================================================
+   实时链上动态
+   ============================================================ */
+.ticker{
+  margin:14px 16px 0;padding:11px 0;border-radius:12px;
+  background:rgba(153,69,255,.045);
+  border:1px solid rgba(153,69,255,.16);
+  overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.ticker-track{display:flex;gap:28px;white-space:nowrap;width:max-content;animation:slide 46s linear infinite;}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk-item{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.tk-item b{color:#d9d0dd;font-weight:600;font-family:var(--mono);font-size:10.5px;}
+.tk-item .hl{color:var(--red);font-weight:700;font-family:var(--mono);}
+.tk-item .hl.g{color:var(--gold);}
+.tk-item .hl.c{color:var(--sol-green);}
+
+/* ============================================================
+   战队卡片
+   ============================================================ */
+.team{padding:16px 15px 15px;}
+.team-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.team-av{
+  width:44px;height:44px;flex:0 0 44px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:21px;font-weight:900;color:#2a0a00;
+  background:radial-gradient(circle at 32% 26%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  box-shadow:0 0 0 1px rgba(255,210,63,.35),0 8px 22px -8px rgba(255,210,63,.9);
+  position:relative;overflow:hidden;
+}
+.team-av img{
+  width:100%;height:100%;object-fit:cover;border-radius:13px;
+  transform: scale(1.15);
+}
+.team-av::after{
+  content:"";position:absolute;inset:-4px;border-radius:16px;
+  border:1px solid rgba(255,31,61,.4);
+  animation:spin 10s linear infinite;
+  border-bottom-color:transparent;border-right-color:transparent;
+  pointer-events:none;
+}
+.team-name{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:8px;letter-spacing:.2px;}
+.rank-badge{font-family:var(--mono);font-size:9.5px;font-weight:900;padding:2.5px 7px;border-radius:5px;letter-spacing:.5px;background:linear-gradient(135deg,#ffd76e,#ff8a3d);color:#2a0a00;box-shadow:0 0 14px rgba(255,210,63,.55);}
+.team-meta{font-family:var(--mono);font-size:9.5px;color:var(--dim2);margin-top:4px;letter-spacing:.2px;}
+
+.score-bar{display:flex;height:7px;border-radius:99px;overflow:hidden;gap:2px;background:rgba(255,255,255,.05);}
+.score-bar i{display:block;height:100%;position:relative;}
+.s1{background:linear-gradient(90deg,#ff1f3d,#ff6b80);box-shadow:0 0 10px rgba(255,31,61,.6);}
+.s2{background:linear-gradient(90deg,#e8a010,#ffd23f);box-shadow:0 0 10px rgba(255,210,63,.6);}
+.s3{background:linear-gradient(90deg,#9945FF,#14F195);box-shadow:0 0 10px rgba(153,69,255,.6);}
+.score-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+.score-legend span{font-family:var(--mono);font-size:9.5px;color:var(--dim);display:flex;align-items:center;gap:5px;letter-spacing:.2px;}
+.dot{width:6px;height:6px;border-radius:2px;display:inline-block;}
+.d1{background:var(--red);box-shadow:0 0 6px var(--red);}
+.d2{background:var(--gold);box-shadow:0 0 6px var(--gold);}
+.d3{background:var(--sol-purple);box-shadow:0 0 6px var(--sol-purple);}
+
+.btn-invite{
+  width:100%;margin-top:16px;padding:13px;border:0;border-radius:13px;cursor:pointer;
+  font-size:13px;font-weight:800;letter-spacing:.6px;color:#1a0500;
+  background:linear-gradient(120deg,#ffd23f,#ffb020 55%,#ff8a3d);
+  box-shadow:0 12px 28px -12px rgba(255,210,63,.95),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.btn-invite:active{transform:scale(.97);}
+.btn-invite::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  animation:shine 2.6s ease-in-out infinite;
+}
+@keyframes shine{0%{left:-60%}55%,100%{left:130%}}
+
+/* ============================================================
+   底部导航
+   ============================================================ */
+.tabbar{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:70;
+  width:100%;max-width:430px;
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding:9px 6px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(8,4,11,.9);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-top:1px solid rgba(153,69,255,.2);
+}
+.tabbar::before{
+  content:"";position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),var(--sol-purple),transparent);
+  opacity:.7;
+}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9.5px;color:var(--dim2);cursor:pointer;padding:3px 0;transition:color .18s;letter-spacing:.3px;}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:filter .2s;}
+.tab.active{color:var(--red);}
+.tab.active svg{filter:drop-shadow(0 0 9px rgba(255,31,61,.9));}
+.tab.active span{color:var(--red);font-weight:700;}
+
+/* ============================================================
+   Toast
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:124px;transform:translate(-50%,16px);
+  z-index:99;padding:12px 18px;border-radius:11px;
+  font-size:12.5px;font-weight:700;color:#fff;
+  background:linear-gradient(120deg,rgba(255,31,61,.96),rgba(200,10,40,.96));
+  border:1px solid rgba(255,120,140,.5);
+  box-shadow:0 16px 40px -10px rgba(255,31,61,.9),0 0 0 1px rgba(255,31,61,.2);
+  opacity:0;pointer-events:none;
+  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;max-width:88vw;overflow:hidden;text-overflow:ellipsis;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- 背景特效层 -->
+<div class="bg-fx">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+  <div class="grid"></div>
+  <div class="scan"></div>
+  <div class="topline"></div>
+</div>
+
+<div class="app">
+
+  <!-- ========== 顶部状态栏 ========== -->
+  <header class="topbar">
+    <div class="wallet" data-toast="已连接 Phantom · Solana 链">
+      <span class="dot"></span>
+      <span>Solana · 0x8f3c...2a1d</span>
+    </div>
+    <div class="cd">
+      <span>结算</span>
+      <b id="cdText">12D 08:24:31</b>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-head">
+      <!-- 替换为你的财神图片：src="替换成你的财神图片链接.png" -->
+      <div class="token"><img src="./images/caishen.png" alt="财神Logo"></div>
+      <div class="hero-title">
+        <div class="brand" data-text="$财神到">$财神到</div>
+        <div class="brand-en">CAI SHEN DAO · FORTUNE TOKEN</div>
+        <div class="chain-tag"><i></i>SOLANA · LIVE</div>
+      </div>
+    </div>
+
+    <div class="fortune-label">
+      我的财气值
+      <em>FORTUNE PTS</em>
+    </div>
+    <div>
+      <span class="fortune-value num" id="totalPoints">0</span>
+      <span class="fortune-unit">PTS</span>
+    </div>
+
+    <div class="hero-meta">
+      <span class="tag red">排名 #1,204</span>
+      <span class="tag gold">今日 +2,340</span>
+      <span class="tag">持仓乘数 1.5x</span>
+    </div>
+
+    <div class="tier">
+      <div class="tier-row">
+        <span class="tier-name">黄金交易者</span>
+        <span class="tier-gap">距王者还差 <b>71,550</b></span>
+      </div>
+      <div class="bar"><i style="width:28.5%"></i></div>
+      <div class="tier-marks">
+        <span>20,000</span>
+        <span>50,000</span>
+        <span>100,000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 持仓乘数横幅 ========== -->
+  <div class="mult" data-toast="连续持仓 15 天以上 = 1.5x 乘数 · 卖出即清零">
+    <div>
+      <div class="mult-val">1.5<span style="font-size:15px">x</span></div>
+      <div class="mult-cap">HOLD MULT</div>
+    </div>
+    <div class="mult-body">
+      <div class="mult-l1">已连续持仓 <b>16 天</b> · 巅峰档位</div>
+      <div class="mult-l2">现在卖出，乘数将 <em>降为 0.8x</em> 并清零重算</div>
+    </div>
+  </div>
+
+  <!-- ========== 快捷操作 ========== -->
+  <section class="quick">
+    <div class="q" data-toast="净买入 100U = 120 财气值（权重 1.2）">
+      <div class="q-ico i-red">↑</div>
+      <div>
+        <div class="q-t">净买入</div>
+        <div class="q-d">100U → 120 PTS</div>
+      </div>
+    </div>
+
+    <div class="q glow" data-toast="前 7 天质押享 1.5x 加速 · 1000 枚 = 100 PTS/日">
+      <span class="q-badge i-gold">1.5x</span>
+      <div class="q-ico i-gold">🔒</div>
+      <div>
+        <div class="q-t">质押锁仓</div>
+        <div class="q-d">1000 → 100 PTS/日</div>
+      </div>
+    </div>
+
+    <div class="q" data-toast="战队排名 #3 · 有效队员 68/100">
+      <div class="q-ico i-sol">⚔</div>
+      <div>
+        <div class="q-t">我的战队</div>
+        <div class="q-d">RANK #3</div>
+      </div>
+    </div>
+
+    <div class="q" data-toast="消耗 500 PTS 抽盲盒 · 1% 超级大奖">
+      <span class="q-badge i-pink">1% 大奖</span>
+      <div class="q-ico i-pink">🎁</div>
+      <div>
+        <div class="q-t">财神盲盒</div>
+        <div class="q-d">500 PTS / 次</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 今日任务 ========== -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>今日任务</h2>
+      <span class="sec-more" data-toast="共 8 个每日任务">全部 ›</span>
+    </div>
+    <div class="card">
+      <div class="task done">
+        <div class="tk-check">✓</div>
+        <div class="tk-body">
+          <div class="tk-t">完成 1 笔净买入</div>
+          <div class="tk-d">100 USDT = 120 PTS</div>
+        </div>
+        <div class="tk-pts num">+240</div>
+      </div>
+      <div class="task done">
+        <div class="tk-check">✓</div>
+        <div class="tk-body">
+          <div class="tk-t">持仓快照已记录</div>
+          <div class="tk-d">UTC 00:00 · 连续第 16 天</div>
+        </div>
+        <div class="tk-pts num">+200</div>
+      </div>
+      <div class="task">
+        <div class="tk-check">✓</div>
+        <div class="tk-body">
+          <div class="tk-t">邀请 1 位有效队员</div>
+          <div class="tk-d">需 PTS &gt; 500 且持仓/质押中</div>
+        </div>
+        <div class="tk-pts gold num">+500</div>
+      </div>
+      <div class="task">
+        <div class="tk-check">✓</div>
+        <div class="tk-body">
+          <div class="tk-t">参与今日「交易雨」</div>
+          <div class="tk-d">20:00 开启 · 平分 5000 枚</div>
+        </div>
+        <div class="tk-pts gold">待开启</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 链上实时动态 ========== -->
+  <div class="ticker">
+    <div class="ticker-track" id="ticker">
+      <span class="tk-item">⛓ <b>0x8f…2a1</b> 质押 <span class="hl g">50,000 枚</span> 触发绝对锁仓</span>
+      <span class="tk-item">⚔ <b>钻石手联盟</b> 战队反超至 <span class="hl">#3</span></span>
+      <span class="tk-item">💎 <b>0x3c…9d7</b> 持仓满 15 天 · 乘数升至 <span class="hl g">1.5x</span></span>
+      <span class="tk-item">🌧 今晚 20:00 <span class="hl c">交易雨</span> 准时降落</span>
+      <span class="tk-item">🎁 <b>0xa1…7f4</b> 开出 <span class="hl g">1000 USDT</span> 超级大奖</span>
+      <span class="tk-item">⛓ <b>0xd2…8e6</b> 净买入 <span class="hl">12,400 USDT</span></span>
+    </div>
+  </div>
+
+  <!-- ========== 我的战队 ========== -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>我的战队</h2>
+      <span class="sec-more" data-toast="查看战队排行榜">排行榜 ›</span>
+    </div>
+    <div class="card team">
+      <div class="team-head">
+        <!-- 替换为你的财神图片：src="替换成你的财神图片链接.png" -->
+        <div class="team-av"><img src="./images/antfun.png" alt="财神头像"></div>
+        <div>
+          <div class="team-name">钻石手联盟 <span class="rank-badge">#3</span></div>
+          <div class="team-meta">有效队员 68/100 · 队长 0x8f…2a1</div>
+        </div>
+      </div>
+
+      <div class="score-bar">
+        <i class="s1" style="width:40%"></i>
+        <i class="s2" style="width:40%"></i>
+        <i class="s3" style="width:20%"></i>
+      </div>
+      <div class="score-legend">
+        <span><i class="dot d1"></i>交易 40%</span>
+        <span><i class="dot d2"></i>质押 40%</span>
+        <span><i class="dot d3"></i>活跃 20%</span>
+      </div>
+
+      <button class="btn-invite" data-toast="邀请链接已复制，快分享给队友！">
+        邀 请 队 员 · 冲 榜 分 红
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== 底部导航 ========== -->
+  <nav class="tabbar">
+    <div class="tab active">
+      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H15v-6H9v6H3z"/></svg>
+      <span>首页</span>
+    </div>
+    <div class="tab" data-toast="战队页面">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2"/><path d="M16.5 5.4a3.2 3.2 0 0 1 0 6.2M18 13.9c2.2.6 3.5 2.5 3.5 5"/></svg>
+      <span>战队</span>
+    </div>
+    <div class="tab" data-toast="财神盲盒">
+      <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 3.5 8 4.2 8.5 9 12 9zM12 9s1.5-5.5 4-4.8S15.5 9 12 9z"/></svg>
+      <span>盲盒</span>
+    </div>
+    <div class="tab" data-toast="积分商城">
+      <svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12.2a1.6 1.6 0 0 1-1.6 1.4H6.8a1.6 1.6 0 0 1-1.6-1.4z"/><path d="M8.5 8V6.2a3.5 3.5 0 1 1 7 0V8"/></svg>
+      <span>商城</span>
+    </div>
+    <div class="tab" data-toast="个人中心">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 21c0-4 3.4-7 7.5-7s7.5 3 7.5 7"/></svg>
+      <span>我的</span>
+    </div>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ---------- 数字滚动 ---------- */
+function countUp(el,target,dur){
+  var t0=performance.now();
+  function ease(t){return 1-Math.pow(1-t,3);}
+  function frame(now){
+    var p=Math.min((now-t0)/dur,1);
+    el.textContent=Math.floor(ease(p)*target).toLocaleString('en-US');
+    if(p<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- 倒计时 ---------- */
+function pad(n){return n<10?'0'+n:''+n;}
+var remain=((12*24+8)*3600+24*60+31)*1000;
+var cdEl=document.getElementById('cdText');
+function renderCd(){
+  var s=Math.max(0,Math.floor(remain/1000));
+  var d=Math.floor(s/86400);
+  var h=Math.floor((s%86400)/3600);
+  var m=Math.floor((s%3600)/60);
+  var ss=s%60;
+  cdEl.textContent=d+'D '+pad(h)+':'+pad(m)+':'+pad(ss);
+}
+
+/* ---------- Toast ---------- */
+var toastEl=document.getElementById('toast');
+var toastTimer=null;
+function showToast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){toastEl.classList.remove('show');},1900);
+}
+
+/* ---------- 事件绑定 ---------- */
+document.querySelectorAll('[data-toast]').forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.preventDefault();e.stopPropagation();
+    showToast(el.getAttribute('data-toast'));
+  });
+});
+
+document.querySelectorAll('.tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    if(tab.classList.contains('active'))return;
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    tab.classList.add('active');
+  });
+});
+
+/* ---------- 无缝滚动 ---------- */
+(function(){
+  var track=document.getElementById('ticker');
+  track.innerHTML+=track.innerHTML;
+})();
+
+/* ---------- 初始化 ---------- */
+countUp(document.getElementById('totalPoints'),28450,1500);
+renderCd();
+setInterval(function(){remain-=1000;renderCd();},1000);
+</script>
+</body>
+</html>
