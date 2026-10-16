@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
+<title>$财神到 · DEX 交易激励方案 | 68,888 USDC</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  :root{
+    color-scheme: light dark;
+
+    --ink:#14181d;
+    --ink-2:#2f3841;
+    --ink-3:#5b6672;
+    --muted:#8a939d;
+    --line:#e2e6ea;
+    --line-2:#eef1f4;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --red:#a91f27;
+    --red-dark:#7e161c;
+    --red-soft:#fbf4f4;
+    --gold:#a8821c;
+    --gold-soft:#faf6ea;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+    --cyber:#ff2d55;
+    --cyber-d:#cc0e30;
+    --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255,45,85,.45);
+    --cyber-glow-soft:rgba(255,45,85,.18);
+    --cyber-glow-faint:rgba(255,45,85,.06);
+
+    --toc-bg:rgba(255,255,255,.92);
+    --abstract-from:#fcfcfd;
+    --abstract-to:#ffffff;
+    --thead-bg:#f4f6f8;
+    --zebra-bg:#fbfcfd;
+    --sum-line:#efd2d4;
+    --scroll-thumb:#d2d8dd;
+
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+    --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px;
+    --r:3px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-size:14.5px;
+    line-height:1.75;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--cyber);
+    outline-offset:3px;
+    border-radius:4px;
+    box-shadow:0 0 0 4px var(--cyber-glow-soft);
+  }
+
+  /* ================= 登录门禁 ================= */
+  #loginGate{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,45,85,.10), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(168,130,28,.10), transparent 55%),
+      var(--bg);
+    transition:opacity .4s ease, visibility .4s ease;
+  }
+  #loginGate::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,45,85,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,85,.05) 1px, transparent 1px);
+    background-size:38px 38px;
+    mask-image:radial-gradient(circle at 50% 50%, #000 20%, transparent 75%);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 20%, transparent 75%);
+    pointer-events:none;
+  }
+  #loginGate.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+
+  .gate-card{
+    position:relative;
+    width:100%;
+    max-width:400px;
+    padding:34px 30px 30px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    box-shadow:
+      0 24px 60px -20px rgba(20,24,29,.28),
+      0 0 0 1px var(--cyber-glow-faint),
+      0 0 40px -12px var(--cyber-glow-soft);
+    text-align:center;
+    overflow:hidden;
+    animation:gateIn .5s cubic-bezier(.34,1.2,.64,1);
+  }
+  @keyframes gateIn{
+    from{opacity:0; transform:translateY(14px) scale(.98);}
+    to{opacity:1; transform:none;}
+  }
+  .gate-card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg,
+      var(--cyber) 0%,
+      var(--cyber) 42%,
+      var(--gold) 42%,
+      var(--gold) 100%);
+    box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft);
+  }
+  .gate-card::after{
+    content:"";
+    position:absolute;
+    top:0;right:0;
+    width:0;height:0;
+    border-top:18px solid var(--cyber-glow-soft);
+    border-left:18px solid transparent;
+    pointer-events:none;
+  }
+
+  .gate-seal{
+    width:56px;height:56px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cyber);
+    font-size:22px;
+    position:relative;
+  }
+  .gate-seal::before{
+    content:"";
+    position:absolute;
+    inset:-7px;
+    border-radius:50%;
+    border:1px dashed var(--cyber-glow-soft);
+    animation:sealSpin 18s linear infinite;
+  }
+  @keyframes sealSpin{
+    to{transform:rotate(360deg);}
+  }
+
+  .gate-title{
+    margin:0 0 6px;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  .gate-sub{
+    margin:0 0 24px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .gate-input-wrap{
+    position:relative;
+    margin-bottom:14px;
+  }
+  .gate-input{
+    width:100%;
+    padding:13px 44px 13px 42px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    color:var(--ink);
+    font-size:14px;
+    font-family:var(--mono);
+    letter-spacing:.04em;
+    outline:none;
+    transition:border-color .2s ease, box-shadow .25s ease, background .2s ease;
+    -webkit-appearance:none;
+  }
+  .gate-input::placeholder{
+    color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+    letter-spacing:0;
+  }
+  .gate-input:focus{
+    border-color:var(--cyber);
+    box-shadow:0 0 0 3px var(--cyber-glow-soft);
+    background:var(--card);
+  }
+  .gate-input.error{
+    border-color:var(--red);
+    box-shadow:0 0 0 3px rgba(169,31,39,.14);
+    animation:gateShake .4s ease;
+  }
+  @keyframes gateShake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}
+    40%{transform:translateX(5px);}
+    60%{transform:translateX(-4px);}
+    80%{transform:translateX(3px);}
+  }
+  .gate-input-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--muted);
+    font-size:13px;
+    pointer-events:none;
+    transition:color .2s ease;
+  }
+  .gate-input:focus ~ .gate-input-icon{color:var(--cyber);}
+
+  .gate-eye{
+    position:absolute;
+    right:6px;
+    top:50%;
+    transform:translateY(-50%);
+    width:32px;height:32px;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    cursor:pointer;
+    border-radius:4px;
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:color .2s ease, background .15s ease;
+  }
+  .gate-eye:hover{color:var(--cyber);background:var(--cyber-glow-faint);}
+
+  .gate-btn{
+    width:100%;
+    padding:13px 18px;
+    border:0;
+    border-radius:var(--r);
+    background:linear-gradient(135deg, var(--cyber), var(--cyber-d));
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    font-family:inherit;
+    letter-spacing:.04em;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    transition:transform .18s ease, box-shadow .3s ease, filter .2s ease;
+    box-shadow:0 6px 20px -8px var(--cyber-glow);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .gate-btn:hover{
+    filter:brightness(1.06);
+    box-shadow:0 10px 28px -10px var(--cyber-glow), 0 0 0 1px var(--cyber-glow-soft);
+    transform:translateY(-1px);
+  }
+  .gate-btn:active{transform:translateY(0);}
+  .gate-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .gate-msg{
+    min-height:20px;
+    margin-top:12px;
+    font-size:12px;
+    line-height:1.6;
+    color:var(--red);
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .gate-msg.show{opacity:1;}
+  .gate-msg.ok{color:var(--cyber);}
+
+  .gate-foot{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--line-2);
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.8;
+  }
+  .gate-foot .dot{
+    display:inline-block;
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+    margin-right:6px;
+    vertical-align:middle;
+  }
+
+  /* ================= 文档 ================= */
+  .doc{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--card);
+    min-height:100vh;
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+    position:relative;
+    overflow-x:clip;
+    padding:0 26px;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .doc::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,
+      var(--cyber) 0%,
+      var(--cyber) 42%,
+      var(--gold) 42%,
+      var(--gold) 100%);
+    z-index:2;
+    box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft);
+  }
+  .wrap{padding:0;}
+
+  .num{
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum" 1;
+    letter-spacing:-.01em;
+  }
+
+  /* ================= 文件抬头 ================= */
+  .masthead{
+    padding:var(--sp-9) 0 26px;
+    border-bottom:1.5px solid var(--ink);
+    position:relative;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:-1.5px;
+    width:34%;
+    height:1.5px;
+    background:linear-gradient(90deg, var(--cyber), transparent);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .mast-row{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:var(--sp-5);
+  }
+  .mast-left{min-width:0;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 var(--sp-3);
+    line-height:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    display:block;
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber), 0 0 12px var(--cyber-glow);
+    flex:none;
+  }
+  .doc-title{
+    margin:0;
+    font-size:clamp(22px,5.6vw,27px);
+    font-weight:700;
+    letter-spacing:-.012em;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .doc-sub{
+    margin:var(--sp-2) 0 0;
+    font-size:13px;
+    color:var(--ink-3);
+    letter-spacing:.02em;
+    line-height:1.5;
+  }
+  .ticker{
+    flex:none;
+    text-align:right;
+    padding-top:var(--sp-1);
+  }
+  .ticker .sym{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    color:var(--cyber);
+    letter-spacing:.01em;
+    white-space:nowrap;
+    line-height:1.35;
+    text-shadow:0 0 10px var(--cyber-glow-soft);
+  }
+  .ticker .ch{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.14em;
+    margin-top:6px;
+    line-height:1;
+  }
+
+  .mast-meta{
+    display:flex;flex-wrap:wrap;
+    gap:var(--sp-3) 30px;
+    margin-top:24px;
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+  }
+  .mast-meta .cell{min-width:0;}
+  .mast-meta .k{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 5px;
+    line-height:1;
+  }
+  .mast-meta .v{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-.005em;
+    line-height:1.4;
+  }
+  .mast-meta .v.is-red{color:var(--cyber);}
+  .mast-meta .v a{
+    color:var(--cyber);
+    text-decoration:none;
+    border-bottom:1px solid var(--cyber-glow-soft);
+    transition:border-color .2s ease;
+  }
+  .mast-meta .v a:hover{border-bottom-color:var(--cyber);}
+
+  /* ================= 目录导航 ================= */
+  .toc{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    gap:6px;
+    margin:0 -26px;
+    padding:10px 26px;
+    background:var(--toc-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-link{
+    flex:none;
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-3);
+    text-decoration:none;
+    background:transparent;
+    border:1px solid transparent;
+    transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;
+    letter-spacing:.02em;
+    white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toc-link:hover{
+    background:var(--bg);
+    color:var(--ink);
+    border-color:var(--cyber-glow-soft);
+  }
+  .toc-link.active{
+    background:var(--cyber-d);
+    color:#fff;
+    border-color:var(--cyber);
+    box-shadow:
+      0 4px 14px -4px var(--cyber-glow),
+      0 0 0 1px var(--cyber-glow-soft);
+  }
+
+  /* ================= 摘要 ================= */
+  .abstract{
+    padding:var(--sp-7) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
+  }
+  .abstract p{
+    margin:0;
+    font-size:14px;
+    line-height:1.95;
+    color:var(--ink-2);
+  }
+  .abstract b{color:var(--ink);font-weight:700;}
+  .abstract .hl{
+    color:var(--cyber);
+    font-weight:700;
+    border-bottom:2px solid var(--cyber-glow-soft);
+    padding-bottom:1px;
+  }
+
+  /* ================= 区块 ================= */
+  .sec{
+    padding:var(--sp-9) 0 var(--sp-7);
+    border-bottom:1px solid var(--line);
+    scroll-margin-top:56px;
+  }
+  .sec:last-of-type{
+    border-bottom:0;
+    padding-bottom:var(--sp-10);
+  }
+  .sec-head{
+    display:flex;align-items:baseline;gap:var(--sp-3);
+    margin:0 0 var(--sp-5);
+  }
+  .sec-idx{
+    flex:none;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--cyber);
+    padding:3px 8px;
+    line-height:1;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:4px;
+    background:var(--cyber-glow-faint);
+    flex:none;
+  }
+  .sec-title{
+    margin:0;
+    font-size:16.5px;
+    font-weight:700;
+    letter-spacing:-.008em;
+    line-height:1.35;
+    color:var(--ink);
+  }
+  .sec-title span{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:400;
+    color:var(--muted);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    margin-top:5px;
+    line-height:1;
+  }
+
+  /* ================= 正文段落 ================= */
+  .prose p{
+    margin:0 0 12px;
+    font-size:14px;
+    line-height:1.9;
+    color:var(--ink-2);
+  }
+  .prose p:last-child{margin-bottom:0;}
+  .prose b{color:var(--ink);font-weight:700;}
+  .prose .hl{color:var(--cyber);font-weight:700;}
+
+  /* ================= 投资总览 ================= */
+  .raise-overview{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    overflow:hidden;
+    margin:20px 0;
+  }
+  .raise-cell{
+    background:var(--card);
+    padding:18px 12px;
+    text-align:center;
+  }
+  .raise-cell .amount{
+    font-family:var(--mono);
+    font-size:18px;
+    font-weight:700;
+    color:var(--cyber);
+    display:block;
+    line-height:1.2;
+    letter-spacing:-.02em;
+  }
+  .raise-cell .label{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:6px;
+    display:block;
+    letter-spacing:.04em;
+    line-height:1.4;
+  }
+
+  /* ================= 优势卡片 ================= */
+  .adv-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin:16px 0;
+  }
+  .adv-card{
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:var(--card);
+    transition:border-color .25s ease, box-shadow .3s ease;
+  }
+  .adv-card:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 4px 18px -12px var(--cyber-glow);
+  }
+  .adv-icon{
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cyber);
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .adv-t{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    margin-bottom:4px;
+  }
+  .adv-d{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  /* ================= 活动列表 ================= */
+  .activity-list{
+    border-top:1px solid var(--line);
+  }
+  .activity-row{
+    display:grid;
+    grid-template-columns:28px 1fr;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+  }
+  .activity-row:last-child{border-bottom:0;}
+  .activity-idx{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    color:var(--cyber);
+    opacity:.8;
+    line-height:1.7;
+  }
+  .activity-text{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.75;
+  }
+  .activity-text b{color:var(--ink);font-weight:600;}
+
+  /* ================= 板块 ================= */
+  .sector-block{
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    overflow:hidden;
+    margin-bottom:18px;
+    background:var(--card);
+    transition:border-color .25s ease, box-shadow .3s ease;
+  }
+  .sector-block:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 4px 20px -12px var(--cyber-glow);
+  }
+  .sector-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 18px;
+    background:linear-gradient(135deg, var(--cyber-glow-faint), transparent);
+    border-bottom:1px solid var(--line-2);
+  }
+  .sector-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    letter-spacing:-.005em;
+  }
+  .sector-title .s-icon{
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--cyber-glow-soft);
+    border:1px solid var(--cyber-glow);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cyber);
+    font-size:12px;
+    flex:none;
+  }
+  .sector-amount{
+    font-family:var(--mono);
+    font-size:15px;
+    font-weight:700;
+    color:var(--cyber);
+    white-space:nowrap;
+  }
+  .sector-body{
+    padding:16px 18px;
+  }
+  .sector-desc{
+    font-size:13px;
+    color:var(--ink-3);
+    line-height:1.8;
+    margin:0 0 14px;
+  }
+  .sector-desc b{color:var(--ink);font-weight:600;}
+
+  /* 数据格 */
+  .sector-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .s-stat{
+    padding:10px 12px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    min-width:0;
+  }
+  .s-stat .k{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:4px;
+    line-height:1;
+  }
+  .s-stat .v{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    letter-spacing:-.005em;
+  }
+  .s-stat .v.is-red{color:var(--cyber);}
+
+  /* 收益来源 */
+  .sources{
+    border-top:1px solid var(--line-2);
+    margin-top:14px;
+  }
+  .source-row{
+    display:grid;
+    grid-template-columns:20px 1fr;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+  }
+  .source-row:last-child{border-bottom:0;}
+  .source-idx{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    color:var(--cyber);
+    opacity:.7;
+    line-height:1.7;
+  }
+  .source-text{
+    font-size:12.5px;
+    color:var(--ink-2);
+    line-height:1.7;
+  }
+  .source-text b{color:var(--ink);font-weight:600;}
+
+  /* ================= 表格 ================= */
+  .tbl-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:var(--card);
+    scrollbar-width:thin;
+  }
+  .tbl-scroll::-webkit-scrollbar{height:4px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{
+    background:linear-gradient(90deg, var(--cyber), var(--gold));
+    border-radius:2px;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:13px;
+  }
+  th,td{
+    padding:11px 16px;
+    text-align:right;
+    white-space:nowrap;
+    border-bottom:1px solid var(--line-2);
+    line-height:1.5;
+    position:relative;
+  }
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    background:var(--thead-bg);
+    color:var(--ink-3);
+    font-weight:600;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  tbody tr:last-child td{border-bottom:0;}
+  tbody tr:nth-child(even){background:var(--zebra-bg);}
+  tbody tr{transition:background-color .18s ease;}
+  tbody tr:hover{background:var(--cyber-glow-faint);}
+  tbody tr:hover td:first-child::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  tbody td{color:var(--ink-2);}
+  tbody td:first-child{
+    color:var(--ink);
+    font-weight:600;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.04em;
+  }
+  .hl{color:var(--cyber)!important;font-weight:700!important;}
+
+  .t-return{min-width:600px;}
+  .t-return tr.sum td{
+    background:var(--red-soft);
+    color:var(--cyber-d);
+    font-weight:700;
+    border-top:1px solid var(--sum-line);
+    position:relative;
+  }
+  .t-return tr.sum td:first-child{color:var(--cyber-d);}
+  .t-return tr.sum td:first-child::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:3px;
+    background:var(--cyber);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+
+  /* ================= KPI ================= */
+  .kpi{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    margin-top:16px;
+    overflow:hidden;
+  }
+  .kpi-cell{
+    padding:16px 12px;
+    text-align:center;
+    border-right:1px solid var(--line-2);
+    transition:background-color .2s ease;
+  }
+  .kpi-cell:last-child{border-right:0;}
+  .kpi-cell:hover{background:var(--cyber-glow-faint);}
+  .kpi-cell b{
+    display:block;
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.01em;
+    line-height:1.3;
+  }
+  .kpi-cell b.is-red{
+    color:var(--cyber);
+    text-shadow:0 0 12px var(--cyber-glow-soft);
+  }
+  .kpi-cell span{
+    display:block;
+    margin-top:6px;
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.04em;
+    line-height:1.5;
+  }
+
+  /* ================= 说明 ================= */
+  .caption{
+    margin:var(--sp-4) 0 0;
+    padding:2px 0 2px var(--sp-3);
+    border-left:2px solid var(--line);
+    font-size:12px;
+    line-height:1.9;
+    color:var(--muted);
+  }
+  .caption b{color:var(--ink-2);font-weight:600;}
+  .caption.gold{border-left-color:var(--gold);}
+  .caption.red{border-left-color:var(--cyber);}
+
+  /* ================= 风控 ================= */
+  .risk-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .risk-card{
+    padding:16px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    min-width:0;
+    transition:background-color .2s ease;
+    position:relative;
+  }
+  .risk-card:hover{background:var(--cyber-glow-faint);}
+  .risk-card:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .risk-icon{
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cyber);
+    font-size:12px;
+    margin-bottom:10px;
+  }
+  .risk-t{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+    margin-bottom:4px;
+  }
+  .risk-d{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  /* ================= 时间轴 ================= */
+  .timeline{
+    border-top:1px solid var(--line);
+  }
+  .tl-row{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:16px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .tl-row:last-child{border-bottom:0;}
+  .tl-key{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    color:var(--cyber);
+    padding-top:2px;
+    line-height:1.6;
+  }
+  .tl-val{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.75;
+    min-width:0;
+  }
+  .tl-val b{color:var(--ink);font-weight:700;}
+
+  /* ================= 条款 ================= */
+  .term-list{
+    border-top:1px solid var(--line);
+  }
+  .term-row{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:16px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line-2);
+    align-items:baseline;
+    transition:background-color .2s ease, padding-left .25s ease;
+    position:relative;
+  }
+  .term-row:hover{
+    background:var(--cyber-glow-faint);
+    padding-left:8px;
+  }
+  .term-row:hover::before{
+    content:"";
+    position:absolute;
+    left:0;top:12px;bottom:12px;
+    width:2px;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .term-row:last-child{border-bottom:0;}
+  .term-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .term-v{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.8;
+    min-width:0;
+  }
+  .term-v b{color:var(--ink);font-weight:700;}
+  .term-v a{
+    color:var(--cyber);
+    text-decoration:none;
+    border-bottom:1px solid var(--cyber-glow-soft);
+    transition:border-color .2s ease;
+  }
+  .term-v a:hover{border-bottom-color:var(--cyber);}
+
+  /* ================= 高亮卡片 ================= */
+  .hl-box{
+    padding:16px 18px;
+    border-radius:var(--r);
+    background:linear-gradient(135deg, var(--cyber-glow-faint), transparent);
+    border:1px solid var(--cyber-glow-soft);
+    margin:16px 0;
+  }
+  .hl-box-title{
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    margin-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .hl-box-title::before{
+    content:"";
+    display:block;
+    width:14px;height:1px;
+    background:var(--cyber);
+  }
+  .hl-box-body{
+    font-size:13px;
+    color:var(--ink-2);
+    line-height:1.8;
+  }
+  .hl-box-body b{color:var(--ink);font-weight:700;}
+  .hl-box-body a{
+    color:var(--cyber);
+    text-decoration:none;
+    border-bottom:1px solid var(--cyber-glow-soft);
+    transition:border-color .2s ease;
+  }
+  .hl-box-body a:hover{border-bottom-color:var(--cyber);}
+
+  /* ================= 合约地址行 ================= */
+  .ca-line{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:4px;
+    margin-bottom:6px;
+  }
+  .ca-line .ca-label{
+    color:var(--ink);
+    font-weight:700;
+    flex:none;
+  }
+  .ca-short{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--ink-2);
+    letter-spacing:.01em;
+    user-select:all;
+  }
+  .ca-copy{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:22px;
+    height:22px;
+    padding:0;
+    border:0;
+    border-radius:4px;
+    background:transparent;
+    color:var(--ink-3);
+    cursor:pointer;
+    font-size:11px;
+    transition:color .2s ease, background .15s ease, box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;
+    flex:none;
+  }
+  .ca-copy:hover{
+    color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-soft);
+  }
+  .ca-copy:active{background:var(--cyber-glow-soft);}
+  .ca-copy.copied{color:var(--cyber);}
+  .ca-copy .ico-check{display:none;}
+  .ca-copy.copied .ico-copy{display:none;}
+  .ca-copy.copied .ico-check{display:inline;}
+
+  /* ================= 页脚 ================= */
+  .doc-foot{
+    padding:26px 0 var(--sp-10);
+    border-top:1px solid var(--line);
+    margin-top:32px;
+    position:relative;
+  }
+  .doc-foot::before{
+    content:"";
+    position:absolute;
+    top:-1px;left:0;
+    width:34%;
+    height:1px;
+    background:linear-gradient(90deg, var(--cyber), transparent);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .foot-row{
+    display:flex;justify-content:space-between;
+    gap:var(--sp-4);flex-wrap:wrap;
+    padding:var(--sp-2) 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .foot-row:last-of-type{border-bottom:0;}
+  .foot-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.8;
+    flex:none;
+  }
+  .foot-v{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-3);
+    line-height:1.8;
+    word-break:break-all;
+    text-align:right;
+  }
+  .foot-v a{
+    color:var(--ink-3);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .foot-v a:hover{color:var(--cyber);border-bottom-color:var(--cyber);}
+  .disc{
+    margin-top:var(--sp-5);
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.95;
+  }
+
+  /* ================= 深色模式 ================= */
+  @media (prefers-color-scheme: dark){
+    :root{
+      color-scheme: dark;
+
+      --ink:#e6eaf0;
+      --ink-2:#b0b8c2;
+      --ink-3:#8892a0;
+      --muted:#6a7480;
+      --line:#252c36;
+      --line-2:#1a2029;
+      --bg:#0a0e14;
+      --card:#10161e;
+      --red:#e63946;
+      --red-dark:#ff5a6a;
+      --red-soft:#241418;
+      --gold:#d4a82a;
+      --gold-soft:#1e1a10;
+
+      --cyber:#ff2d55;
+      --cyber-d:#cc0e30;
+      --cyber-l:#ff6b85;
+      --cyber-glow:rgba(255,45,85,.55);
+      --cyber-glow-soft:rgba(255,45,85,.22);
+      --cyber-glow-faint:rgba(255,45,85,.08);
+
+      --toc-bg:rgba(16,22,30,.92);
+      --abstract-from:#161c25;
+      --abstract-to:#10161e;
+      --thead-bg:#181e26;
+      --zebra-bg:#141a22;
+      --sum-line:#3a1e22;
+      --scroll-thumb:#3a424d;
+    }
+    .gate-input.error{
+      box-shadow:0 0 0 3px rgba(230,57,70,.18);
+    }
+  }
+
+  /* ================= 小屏 ================= */
+  @media (max-width:480px){
+    .doc{padding:0 22px;}
+    .toc{margin:0 -22px;padding:10px 22px;}
+    .raise-overview{grid-template-columns:1fr;}
+    .raise-cell{padding:14px 12px;}
+    .sector-stats{grid-template-columns:1fr;}
+    .risk-grid{grid-template-columns:1fr;}
+    .kpi{grid-template-columns:1fr;}
+    .kpi-cell{border-right:0;border-bottom:1px solid var(--line-2);}
+    .kpi-cell:last-child{border-bottom:0;}
+    .adv-grid{grid-template-columns:1fr;}
+    .gate-card{padding:28px 22px 24px;}
+  }
+
+  @media (max-width:400px){
+    .mast-meta{gap:var(--sp-3) 20px;}
+    .term-row{grid-template-columns:1fr;gap:var(--sp-1);}
+    .tl-row{grid-template-columns:82px 1fr;gap:12px;}
+    .foot-row{flex-direction:column;gap:2px;}
+    .foot-v{text-align:left;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      transition-duration:.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 登录门禁 ================= -->
+<div id="loginGate" role="dialog" aria-modal="true" aria-label="访问验证">
+  <div class="gate-card">
+    <div class="gate-seal" aria-hidden="true">
+      <i class="fas fa-lock"></i>
+    </div>
+    <h2 class="gate-title">$财神到 · 内部方案验证</h2>
+    <p class="gate-sub">Private Access Required</p>
+
+    <div class="gate-input-wrap">
+      <input class="gate-input" id="gateInput" type="password"
+             placeholder="请输入访问码"
+             autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+             aria-label="访问码">
+      <i class="fas fa-key gate-input-icon" aria-hidden="true"></i>
+      <button class="gate-eye" id="gateEye" type="button" aria-label="显示或隐藏访问码">
+        <i class="fas fa-eye" id="gateEyeIcon" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <button class="gate-btn" id="gateBtn" type="button">
+      <i class="fas fa-door-open" aria-hidden="true"></i> 进入
+    </button>
+
+    <div class="gate-msg" id="gateMsg" role="status" aria-live="polite"></div>
+
+    <div class="gate-foot">
+      <span class="dot"></span>CONFIDENTIAL · FOR TEAM ONLY
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+
+  <!-- ================= 文件抬头 ================= -->
+  <header class="wrap masthead">
+    <div class="mast-row">
+      <div class="mast-left">
+        <div class="eyebrow">Private & Confidential</div>
+        <h1 class="doc-title">$财神到 · DEX 交易激励方案</h1>
+        <p class="doc-sub">积分制双轨交易联赛 | 个人段位 · 战队裂变 · 早鸟冲刺</p>
+      </div>
+      <div class="ticker">
+        <span class="sym">$财神到</span>
+      </div>
+    </div>
+
+    <div class="mast-meta">
+      <div class="cell">
+        <span class="k">总奖池</span>
+        <span class="v num is-red">68,888 USDC</span>
+      </div>
+      <div class="cell">
+        <span class="k">活动周期</span>
+        <span class="v">4 周（28 天）</span>
+      </div>
+      <div class="cell">
+        <span class="k">防女巫押金</span>
+        <span class="v num">20 USDC 等值</span>
+      </div>
+      <div class="cell">
+        <span class="k">主战场</span>
+        <span class="v">Solana DEX</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 目录导航 ================= -->
+  <nav class="toc" aria-label="文档导航">
+    <a class="toc-link" href="#summary">摘要</a>
+    <a class="toc-link" href="#budget">预算总表</a>
+    <a class="toc-link" href="#points">积分规则</a>
+    <a class="toc-link" href="#personal">个人赛道</a>
+    <a class="toc-link" href="#team">战队赛道</a>
+    <a class="toc-link" href="#gacha">积分盲盒</a>
+    <a class="toc-link" href="#early">早鸟加成</a>
+    <a class="toc-link" href="#sybil">防女巫押金</a>
+    <a class="toc-link" href="#tech">技术架构</a>
+    <a class="toc-link" href="#timeline">执行时间轴</a>
+    <a class="toc-link" href="#risk">风控体系</a>
+    <a class="toc-link" href="#team-role">团队分工</a>
+  </nav>
+
+  <!-- ================= 摘要 ================= -->
+  <section class="wrap abstract" id="summary">
+    <p>
+      $财神到 于 Solana 主网发行，总量恒定 <b>686,868,686</b> 枚，无增发、无冻结权限。
+      本方案面向 DEX 生态，以 <span class="hl">68,888 USDC 等值 $财神到</span> 为总奖池，
+      在 4 周内通过 <b>积分制双轨交易联赛</b> 拉升交易量、锁定流通盘、沉淀真实持币社区。
+    </p>
+    <p style="margin-top:14px;">
+      核心机制：<span class="hl">净买入权重 1.2、卖出权重 0.3、持仓乘数 0.7–1.5、战队加成 1.1</span>。
+      用户以 <b>20 USDC 等值 $财神到</b> 作为防女巫押金，报名进入白名单，活动结束后按结束币价折算退还。
+      所有奖励以 <b>USDC 计价、$财神到 发放</b>，按活动结束时 24h TWAP 折算代币数量。
+      运营费用由专属运营池另行拨出，不占用 68,888 USDC 奖池。
+    </p>
+  </section>
+
+  <!-- ================= 01 预算总表 ================= -->
+  <section class="wrap sec" id="budget">
+    <div class="sec-head">
+      <span class="sec-idx">01</span>
+      <h2 class="sec-title">预算总表<span>Budget Allocation</span></h2>
+    </div>
+
+    <div class="raise-overview">
+      <div class="raise-cell">
+        <span class="amount">20,000</span>
+        <span class="label">个人段位奖<br>含青铜瓜分池 3,000</span>
+      </div>
+      <div class="raise-cell">
+        <span class="amount">13,000</span>
+        <span class="label">个人王者榜<br>Top 10 瓜分</span>
+      </div>
+      <div class="raise-cell">
+        <span class="amount">20,666</span>
+        <span class="label">战队赛道<br>Top 战队 + 最佳新人</span>
+      </div>
+    </div>
+
+    <div class="raise-overview" style="grid-template-columns:repeat(2,1fr);">
+      <div class="raise-cell">
+        <span class="amount">8,333</span>
+        <span class="label">积分盲盒<br>抽完即止</span>
+      </div>
+      <div class="raise-cell">
+        <span class="amount">6,889</span>
+        <span class="label">早鸟 / 活跃加成<br>前 7 天冲刺</span>
+      </div>
+    </div>
+
+    <div class="tbl-scroll" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>模块</th>
+            <th>占比</th>
+            <th>USDC 等值</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>个人王者榜</td><td class="num">18.87%</td><td class="num">13,000</td><td>Top 10 瓜分，第 1 名 5,500</td></tr>
+          <tr><td>个人段位奖</td><td class="num">29.03%</td><td class="num">20,000</td><td>含青铜瓜分池 3,000</td></tr>
+          <tr><td>战队赛道</td><td class="num">30.00%</td><td class="num">20,666</td><td>Top 战队 + 最佳新人</td></tr>
+          <tr><td>积分盲盒</td><td class="num">12.10%</td><td class="num">8,333</td><td>积分消耗抽奖，抽完即止</td></tr>
+          <tr><td>早鸟/活跃加成</td><td class="num">10.00%</td><td class="num">6,889</td><td>前 7 天交易冲刺额外奖池</td></tr>
+          <tr class="sum"><td>合计</td><td class="num">100%</td><td class="num">68,888</td><td>防女巫押金独立运作</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hl-box" style="margin-top:20px;">
+      <div class="hl-box-title">奖励折算规则</div>
+      <div class="hl-box-body">
+        用户实得代币数量 = <b>USDC 等值奖励 ÷ 活动结束时 $财神到/USDC 的 24h TWAP</b>。<br>
+        若折算后代币总量超过总流通量 <b>3%</b>，按比例缩减每位获奖者代币数量。USDC 等值奖励仅作展示参考。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 积分规则 ================= -->
+  <section class="wrap sec" id="points">
+    <div class="sec-head">
+      <span class="sec-idx">02</span>
+      <h2 class="sec-title">积分规则<span>Point System</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        总积分公式：<b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>。
+        展示积分 = 原始积分 × 1000，排行榜与段位门槛均使用展示积分。
+      </p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-calculator"></i></span>
+          单笔交易积分
+        </div>
+        <span class="sector-amount">权重 1.2 / 0.3</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc">
+          <b>S<sub>trade</sub> = (V<sub>net buy</sub> × 1.2 + V<sub>sell</sub> × 0.3) / 100</b>。
+          净买入权重 1.2，卖出权重 0.3，单笔最低门槛 20 USDC。
+        </p>
+        <div class="sector-stats">
+          <div class="s-stat">
+            <div class="k">净买入权重</div>
+            <div class="v is-red">1.2</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">卖出权重</div>
+            <div class="v is-red">0.3</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">单笔最低门槛</div>
+            <div class="v">20 USDC</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">展示积分倍数</div>
+            <div class="v">×1000</div>
+          </div>
+        </div>
+        <p class="caption">
+          <b>示例：</b>买入 500 USDC、卖出 200 USDC，净买入 300 USDC。
+          S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = 4,200 展示积分。
+        </p>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-clock"></i></span>
+          早鸟乘数 E<sub>i</sub>
+        </div>
+        <span class="sector-amount">最高 2.0×</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>活动阶段</th><th>乘数</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>第 1 天</td><td class="hl">2.0</td><td>制造首日交易脉冲</td></tr>
+              <tr><td>第 2–3 天</td><td class="hl">1.5</td><td>维持热度</td></tr>
+              <tr><td>第 4–7 天</td><td class="hl">1.2</td><td>过渡期</td></tr>
+              <tr><td>第 8 天起</td><td>1.0</td><td>标准积分</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">早鸟乘数按<b>交易发生日</b>逐笔应用，不影响持仓乘数和战队加成。</p>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-hand-holding-heart"></i></span>
+          持仓时间乘数 M<sub>hold</sub>
+        </div>
+        <span class="sector-amount">0.7 – 1.5×</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc">
+          每日 UTC 00:00 对白名单地址进行余额快照，按 USDC 等值计算日均持仓。
+        </p>
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>日均持仓（USDC 等值）</th><th>乘数</th><th>意图</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>&lt; 50</td><td class="hl">0.7</td><td>惩罚“挖提卖”</td></tr>
+              <tr><td>50 – 200</td><td>1.0</td><td>标准</td></tr>
+              <tr><td>200 – 500</td><td class="hl">1.2</td><td>鼓励持有</td></tr>
+              <tr><td>&gt; 500</td><td class="hl">1.5</td><td>重奖钻石手</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          <b>示例：</b>参与 14 天，前 7 天每天持仓 300 USDC，后 7 天为 0。
+          日均持仓 = (300×7 + 0×7) / 14 = 150 USDC → 乘数 1.0。
+        </p>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">有效交易过滤规则</div>
+      <div class="hl-box-body">
+        <b>微交易</b>：单笔 &lt; 20 USDC 不计分。<br>
+        <b>短持仓</b>：买卖间隔 &lt; 3 分钟不计分。<br>
+        <b>对敲对</b>：10 分钟内买卖金额偏差 &lt; 5%，积分清零并标记。<br>
+        <b>高往返</b>：1 小时内买卖对 &gt; 5 组，标记并人工审核。<br>
+        <b>活动前余额</b>：活动开始前已持有的代币卖出，不计入卖出积分。<br>
+        <b>失败交易</b>：链上 err 不为 null，不计分。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 个人赛道 ================= -->
+  <section class="wrap sec" id="personal">
+    <div class="sec-head">
+      <span class="sec-idx">03</span>
+      <h2 class="sec-title">个人赛道<span>Personal Track</span></h2>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-layer-group"></i></span>
+          段位阶梯奖
+        </div>
+        <span class="sector-amount">20,000 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>段位</th>
+                <th>展示积分门槛</th>
+                <th>奖励</th>
+                <th>名额</th>
+                <th>小计</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>青铜</td><td class="num">1,000 – 4,999</td><td class="hl">瓜分 3,000</td><td>不限</td><td class="num">3,000</td></tr>
+              <tr><td>白银</td><td class="num">5,000 – 19,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
+              <tr><td>黄金</td><td class="num">20,000 – 79,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
+              <tr><td>钻石</td><td class="num">80,000 – 199,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
+              <tr><td>铂金</td><td class="num">200,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
+              <tr class="sum"><td>合计</td><td>—</td><td>—</td><td>—</td><td class="num">20,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sources" style="margin-top:16px;">
+          <div class="source-row">
+            <span class="source-idx">01</span>
+            <span class="source-text"><b>青铜瓜分池</b>：按最终积分占青铜总积分的比例瓜分 3,000 USDC，单人上限 30 USDC，剩余滚入白银池。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">02</span>
+            <span class="source-text"><b>青铜参与条件</b>：有效交易 ≥ 3 笔，净买入 ≥ 50 USDC，押金合格，无违规记录。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">03</span>
+            <span class="source-text"><b>白银及以上</b>：达标即得，奖池发完即止；若达标人数超过名额，按最终积分从高到低录取。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">04</span>
+            <span class="source-text"><b>青铜徽章</b>：所有青铜用户获得 NFT 徽章，绑定未来空投权重或手续费折扣。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-crown"></i></span>
+          个人王者榜
+        </div>
+        <span class="sector-amount">13,000 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>名次</th><th>奖励（USDC 等值）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>第 1 名</td><td class="hl">5,500</td></tr>
+              <tr><td>第 2 名</td><td>3,000</td></tr>
+              <tr><td>第 3 名</td><td>2,000</td></tr>
+              <tr><td>第 4–10 名</td><td>瓜分 2,500</td></tr>
+              <tr class="sum"><td>合计</td><td class="num">13,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption red">
+          <b>传播核心：</b>第 1 名 5,500 USDC 等值，制造“有人赚了 5,500 美金”的社区话题。
+          并列处理：若第 1 名并列，平分第 1 名奖励；若第 10 名并列，平分第 4–10 名剩余奖池。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 战队赛道 ================= -->
+  <section class="wrap sec" id="team">
+    <div class="sec-head">
+      <span class="sec-idx">04</span>
+      <h2 class="sec-title">战队赛道<span>Squad Track</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        战队赛道是 KOL 与社区裂变的核心引擎。将营销成本转化为战队奖励，
+        让社区领袖自发为项目拉人、督促交易。
+      </p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-users"></i></span>
+          战队规则
+        </div>
+        <span class="sector-amount">20,666 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat">
+            <div class="k">队长押金</div>
+            <div class="v">50 USDC 等值</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">每队人数上限</div>
+            <div class="v">50 人</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">有效队员门槛</div>
+            <div class="v is-red">≥ 1,000 展示分</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">战队注册费</div>
+            <div class="v">无</div>
+          </div>
+        </div>
+
+        <div class="hl-box">
+          <div class="hl-box-title">战队排名公式</div>
+          <div class="hl-box-body">
+            <b>战队得分 = 总积分 × 40% + 有效队员人均积分 × 40% + 新增持币地址数 × 20%</b><br>
+            总积分反映交易量，人均积分防止大户开小号，新增持币地址反映拉新能力。
+          </div>
+        </div>
+
+        <div class="tbl-scroll" style="margin-top:16px;">
+          <table>
+            <thead>
+              <tr>
+                <th>名次</th>
+                <th>奖池</th>
+                <th>队长分成</th>
+                <th>队员分成</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Top 1</td><td class="hl">7,000</td><td>20% = 1,400</td><td>80% = 5,600</td></tr>
+              <tr><td>Top 2–3</td><td>各 3,000</td><td>18% = 540</td><td>82% = 2,460</td></tr>
+              <tr><td>Top 4–8</td><td>各 1,000</td><td>15% = 150</td><td>85% = 850</td></tr>
+              <tr><td>最佳新人</td><td>2,666</td><td>20% = 533</td><td>80% = 2,133</td></tr>
+              <tr class="sum"><td>合计</td><td class="num">20,666</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="caption">
+          <b>最佳新人战队：</b>成立时间 &lt; 14 天，且进入前 20 名。
+          队员按个人积分比例瓜分队员池。
+        </p>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">战队反作弊</div>
+      <div class="hl-box-body">
+        同一 IP 或同一资金来源加入同一战队 &gt; 3 人 → 标记审核。<br>
+        战队内女巫占比 &gt; 30% → 取消整队资格，没收队长押金。<br>
+        队长未督促队员交易不影响排名，但队长分成仅来自有效队员。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 积分盲盒 ================= -->
+  <section class="wrap sec" id="gacha">
+    <div class="sec-head">
+      <span class="sec-idx">05</span>
+      <h2 class="sec-title">积分盲盒<span>Point Gacha</span></h2>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-gift"></i></span>
+          盲盒机制
+        </div>
+        <span class="sector-amount">8,333 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat">
+            <div class="k">消耗</div>
+            <div class="v">500 展示积分 / 次</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">预计可抽次数</div>
+            <div class="v">≈ 809 次</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">期望奖励</div>
+            <div class="v is-red">≈ 10.3 USDC / 次</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">风控</div>
+            <div class="v">抽完即止</div>
+          </div>
+        </div>
+
+        <div class="tbl-scroll" style="margin-top:14px;">
+          <table>
+            <thead>
+              <tr><th>概率</th><th>奖励区间</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>85%</td><td>1 – 3 USDC</td><td>小额，维持参与感</td></tr>
+              <tr><td>13%</td><td>10 – 30 USDC</td><td>中额，制造惊喜</td></tr>
+              <tr><td class="hl">2%</td><td class="hl">100 – 500 USDC</td><td>大奖，传播素材</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="caption">
+          <b>保底机制：</b>连续 10 次未中奖可获 1 USDC 安慰奖。
+          <b>随机性：</b>使用链下可验证随机数，每日公示种子哈希。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 早鸟加成 ================= -->
+  <section class="wrap sec" id="early">
+    <div class="sec-head">
+      <span class="sec-idx">06</span>
+      <h2 class="sec-title">早鸟 / 活跃加成<span>Early Bird Bonus</span></h2>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-bolt"></i></span>
+          前 7 天冲刺奖池
+        </div>
+        <span class="sector-amount">6,889 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>阶段</th><th>额外奖池</th><th>规则</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>第 1 天</td><td class="hl">3,000 USDC</td><td>前 100 名净买入用户按净买入量瓜分</td></tr>
+              <tr><td>第 2–3 天</td><td class="hl">2,500 USDC</td><td>前 200 名净买入用户按净买入量瓜分</td></tr>
+              <tr><td>第 4–7 天</td><td class="hl">1,389 USDC</td><td>前 300 名净买入用户按净买入量瓜分</td></tr>
+              <tr><td>第 8 天起</td><td>无额外池</td><td>仅保留基础积分和早鸟乘数</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          每日 UTC 00:00 快照前一日净买入量。排名并列时，按交易笔数多者优先。
+          奖励在活动结束后统一发放，早鸟奖池独立列支，不与王者榜冲突。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 防女巫押金 ================= -->
+  <section class="wrap sec" id="sybil">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
+      <h2 class="sec-title">防女巫押金<span>Anti-Sybil Deposit</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        用户以 <b>20 USDC 等值 $财神到</b> 作为押金报名，进入白名单后才开始积分计算。
+        押金机制同时具备三重作用：<b>拦截批量女巫、锁定流通盘、抑制活动期间砸盘</b>。
+      </p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-shield-halved"></i></span>
+          报名检查
+        </div>
+        <span class="sector-amount">4 项门槛</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>检查项</th><th>阈值</th><th>不通过处理</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>历史交易数</td><td>≥ 10 笔</td><td>拒绝报名</td></tr>
+              <tr><td>SOL 余额</td><td>≥ 0.01</td><td>拒绝报名</td></tr>
+              <tr><td>钱包年龄</td><td>≥ 7 天</td><td>拒绝报名</td></tr>
+              <tr><td>黑名单</td><td>不在黑名单</td><td>拒绝报名</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-coins"></i></span>
+          押金规则
+        </div>
+        <span class="sector-amount">20 USDC 等值</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat">
+            <div class="k">普通用户押金</div>
+            <div class="v is-red">20 USDC 等值</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">队长额外押金</div>
+            <div class="v is-red">50 USDC 等值</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">退还时间</div>
+            <div class="v">结束后 7 天内</div>
+          </div>
+          <div class="s-stat">
+            <div class="k">退还基准</div>
+            <div class="v">按结束币价折算</div>
+          </div>
+        </div>
+
+        <div class="sources">
+          <div class="source-row">
+            <span class="source-idx">01</span>
+            <span class="source-text"><b>报名锁定</b>：20 USDC 等值 $财神到，按报名时币价锁定代币数量。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">02</span>
+            <span class="source-text"><b>正常退还</b>：活动结束后 7 天内，按结束币价折算退还等值 20 USDC 的代币。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">03</span>
+            <span class="source-text"><b>违规没收</b>：女巫/对敲违规，押金转入销毁地址或奖池，并在活动页面公示脱敏记录。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">04</span>
+            <span class="source-text"><b>天然抑空</b>：押金“等值逻辑”让用户在活动期间砸盘无利可图，反而可能触发对敲检测。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">押金对奖池的保护作用</div>
+      <div class="hl-box-body">
+        假设 <b>500 人</b>报名，每人锁定 20 USDC 等值 $财神到，总锁定 <b>10,000 USDC 等值</b>。
+        若 10% 被判定违规没收，<b>1,000 USDC 等值 $财神到</b> 打入销毁地址。
+        净锁定量 <b>9,000 USDC 等值</b>，直接减少活动期间的市场卖压。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 08 技术架构 ================= -->
+  <section class="wrap sec" id="tech">
+    <div class="sec-head">
+      <span class="sec-idx">08</span>
+      <h2 class="sec-title">技术架构<span>Tech Architecture</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        采用 <b>Web2.5 架构</b>：链上数据监听 + 链下 PostgreSQL 积分计算 + 前端只调用自有后端。
+        避免“纯链上”计算积分导致的 API 账单爆炸和前端卡顿。
+      </p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-diagram-project"></i></span>
+          数据流
+        </div>
+        <span class="sector-amount">4 层</span>
+      </div>
+      <div class="sector-body">
+        <div class="sources" style="border-top:0;margin-top:0;">
+          <div class="source-row">
+            <span class="source-idx">01</span>
+            <span class="source-text"><b>报名层</b>：连接钱包 → 防女巫检查 → 质押押金 → 白名单写入 PostgreSQL。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">02</span>
+            <span class="source-text"><b>捕获层</b>：Helius Webhook 监听白名单地址交易，Parse API 解析 Jupiter/Raydium/Orca 交易。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">03</span>
+            <span class="source-text"><b>计算层</b>：后端积分引擎，每日 UTC 00:00 快照持仓，更新持仓乘数。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">04</span>
+            <span class="source-text"><b>展示层</b>：前端调用后端 API 获取排行榜/积分/奖励，零链上 RPC 调用。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-server"></i></span>
+          核心组件
+        </div>
+        <span class="sector-amount">5 项</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>组件</th><th>用途</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Helius Parse API</td><td>解析 Jupiter/Raydium/Orca 交易</td></tr>
+              <tr><td>Helius Webhooks</td><td>实时监听白名单地址交易</td></tr>
+              <tr><td>Bitquery</td><td>每日历史余额快照备用</td></tr>
+              <tr><td>PostgreSQL</td><td>用户、积分、战队、持仓数据</td></tr>
+              <tr><td>Anchor 质押合约</td><td>$财神到 押金锁定与退还</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="caption">
+          <b>成本控制：</b>白名单准入 + 动态分层快照（活跃每日，潜水每 3 天，沉睡暂停）+ Webhook 本地拦截。
+          数千人规模，Helius + Bitquery 月成本约 <b>$100–200</b>。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 09 执行时间轴 ================= -->
+  <section class="wrap sec" id="timeline">
+    <div class="sec-head">
+      <span class="sec-idx">09</span>
+      <h2 class="sec-title">执行时间轴<span>Execution Timeline</span></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-key">预热期</div>
+        <div class="tl-val">
+          <b>上线前 7 天</b> —— 公布规则、押金计算器、战队招募、KOL 预热、积分计算器 H5 上线。
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">第 1 周</div>
+        <div class="tl-val">
+          <b>爆发期</b> —— 活动开启、早鸟 2x、每日排行榜、2 小时积分翻倍狂欢（周三/周五各一次）。
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">第 2–3 周</div>
+        <div class="tl-val">
+          <b>沉淀期</b> —— 积分盲盒开放、持仓乘数实时提示、战队龙虎榜、回购销毁利好。
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">第 4 周</div>
+        <div class="tl-val">
+          <b>冲刺期</b> —— 最后 48 小时竞争、结算、反作弊剔除报告。
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-key">结算期</div>
+        <div class="tl-val">
+          <b>结束后 7 天</b> —— 押金退还、奖励发放、数据复盘、下一轮空投衔接。
+        </div>
+      </div>
+    </div>
+
+    <div class="hl-box" style="margin-top:20px;">
+      <div class="hl-box-title">每日运营动作</div>
+      <div class="hl-box-body">
+        <b>09:00</b> 发布昨日排行榜<br>
+        <b>12:00</b> 社区互动，解答问题<br>
+        <b>15:00</b> 发布持仓乘数提醒<br>
+        <b>20:00</b> 公布战队龙虎榜<br>
+        <b>22:00</b> 发布当日交易量战报
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10 风控体系 ================= -->
+  <section class="wrap sec" id="risk">
+    <div class="sec-head">
+      <span class="sec-idx">10</span>
+      <h2 class="sec-title">风控体系<span>Risk Control</span></h2>
+    </div>
+
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-user-secret"></i></div>
+        <div class="risk-t">女巫攻击</div>
+        <div class="risk-d">押金 20 USDC + 历史交易 ≥ 10 笔 + SOL ≥ 0.01 + 钱包年龄 ≥ 7 天。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-repeat"></i></div>
+        <div class="risk-t">对敲刷量</div>
+        <div class="risk-d">10 分钟内买卖金额偏差 &lt; 5% 视为对敲，积分清零并标记。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-users-slash"></i></div>
+        <div class="risk-t">战队作弊</div>
+        <div class="risk-d">同 IP/资金来源限制，超 30% 女巫取消整队资格，没收队长押金。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-water"></i></div>
+        <div class="risk-t">流动性不足</div>
+        <div class="risk-d">上线前准备 DEX 初始深度，防止少量买入造成价格虚高被套利砸盘。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-gavel"></i></div>
+        <div class="risk-t">合规风险</div>
+        <div class="risk-d">不用“保证收益”，规则、奖池、发放时间全部透明。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon"><i class="fas fa-chart-line-down"></i></div>
+        <div class="risk-t">币价剧烈波动</div>
+        <div class="risk-d">结束日 24h TWAP 折算，设置总流通量 3% 代币发放上限。</div>
+      </div>
+    </div>
+
+    <p class="caption red">
+      <b>风险提示：</b>加密资产风险极高，代币价格波动剧烈。本方案所有 USDC 等值奖励仅作展示参考，
+      最终以链上实际发放数量为准。请遵守当地法律法规，仅以可承受损失的资金参与。
+    </p>
+  </section>
+
+  <!-- ================= 11 团队分工 ================= -->
+  <section class="wrap sec" id="team-role">
+    <div class="sec-head">
+      <span class="sec-idx">11</span>
+      <h2 class="sec-title">团队分工<span>Team Assignment</span></h2>
+    </div>
+
+    <div class="term-list">
+      <div class="term-row">
+        <span class="term-k">产品负责人</span>
+        <span class="term-v">规则设计、需求文档、进度管理</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">合约开发</span>
+        <span class="term-v">押金质押合约、奖励发放合约、Borsh 反序列化</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">后端开发</span>
+        <span class="term-v">Helius 集成、PostgreSQL、积分计算引擎</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">前端开发</span>
+        <span class="term-v">活动页面、排行榜、积分盲盒、领取页面</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">数据工程师</span>
+        <span class="term-v">快照任务、数据清洗、反作弊分析</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">社区运营</span>
+        <span class="term-v">战队招募、每日战报、用户答疑、KOL 协调</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">客服</span>
+        <span class="term-v">申诉处理、押金退还咨询</span>
+      </div>
+      <div class="term-row">
+        <span class="term-k">法务</span>
+        <span class="term-v">活动条款、合规审查、风险披露</span>
+      </div>
+    </div>
+
+    <div class="hl-box" style="margin-top:20px;">
+      <div class="hl-box-title">团队必须拍板的 6 个问题</div>
+      <div class="hl-box-body">
+        <b>1.</b> 代币发放总量上限是否设为总流通量 3%？<br>
+        <b>2.</b> 结束币价基准是否使用结束日 24h TWAP？<br>
+        <b>3.</b> 卖出权重是否维持 0.3？<br>
+        <b>4.</b> 青铜单人上限是否设为 30 USDC 等值？<br>
+        <b>5.</b> 押金退还时间是否为结束后 7 天内？<br>
+        <b>6.</b> 技术负责人是否确认承接 Helius + PostgreSQL + 质押合约？
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="wrap doc-foot">
+    <div class="foot-row">
+      <span class="foot-k">Document</span>
+      <span class="foot-v">$财神到 · DEX 交易激励方案 V5.0</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Total Pool</span>
+      <span class="foot-v">68,888 USDC 等值 $财神到</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Contract</span>
+      <span class="foot-v">68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Network</span>
+      <span class="foot-v">Solana SPL</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Status</span>
+      <span class="foot-v">Confidential · For Team Only</span>
+    </div>
+    <div class="disc">
+      本文档仅用于项目内部执行与团队讨论，不构成任何投资建议或收益承诺。<br>
+      数字资产价格波动剧烈，请理性判断、注意风险。所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    /* ---------- 登录门禁 ---------- */
+    var GATE_CODE = 'caishen68';
+    var GATE_KEY = 'caishen_dex_access';
+
+    var gate = document.getElementById('loginGate');
+    var input = document.getElementById('gateInput');
+    var btn = document.getElementById('gateBtn');
+    var msg = document.getElementById('gateMsg');
+    var eye = document.getElementById('gateEye');
+    var eyeIcon = document.getElementById('gateEyeIcon');
+
+    function openGate() {
+      gate.classList.add('hidden');
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        gate.setAttribute('hidden', 'hidden');
+      }, 400);
+    }
+
+    function showMsg(text, ok) {
+      msg.textContent = text;
+      msg.classList.add('show');
+      msg.classList.toggle('ok', !!ok);
+    }
+
+    function unlock() {
+      var val = (input.value || '').trim();
+      if (val === GATE_CODE) {
+        showMsg('验证通过 · 正在进入…', true);
+        btn.disabled = true;
+        input.classList.remove('error');
+        try { localStorage.setItem(GATE_KEY, '1'); } catch (e) {}
+        setTimeout(openGate, 500);
+      } else {
+        input.classList.remove('error');
+        void input.offsetWidth;
+        input.classList.add('error');
+        showMsg('访问码错误，请重新输入', false);
+        input.select();
+      }
+    }
+
+    if (eye) {
+      eye.addEventListener('click', function () {
+        var isPwd = input.type === 'password';
+        input.type = isPwd ? 'text' : 'password';
+        eyeIcon.className = isPwd ? 'fas fa-eye-slash' : 'fas fa-eye';
+        input.focus();
+      });
+    }
+
+    btn.addEventListener('click', unlock);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); unlock(); }
+    });
+    input.addEventListener('input', function () {
+      input.classList.remove('error');
+      msg.classList.remove('show');
+    });
+
+    var passed = false;
+    try { passed = localStorage.getItem(GATE_KEY) === '1'; } catch (e) {}
+    if (passed) {
+      gate.classList.add('hidden');
+      gate.setAttribute('hidden', 'hidden');
+    } else {
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () { input.focus(); }, 350);
+    }
+
+    /* ---------- 合约地址复制 ---------- */
+    var caBtn = document.getElementById('caCopyBtn');
+    if (caBtn) {
+      caBtn.addEventListener('click', function () {
+        var addr = caBtn.getAttribute('data-addr') || '';
+
+        function done() {
+          caBtn.classList.add('copied');
+          setTimeout(function () {
+            caBtn.classList.remove('copied');
+          }, 1400);
+        }
+
+        function fallback(text, cb) {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-1000px';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(addr).then(done).catch(function () {
+            fallback(addr, done);
+          });
+        } else {
+          fallback(addr, done);
+        }
+      });
+    }
+
+    /* ---------- 目录导航高亮 ---------- */
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+    if (links.length) {
+      var sections = links.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+
+      if (sections.length && ('IntersectionObserver' in window)) {
+        var linkMap = {};
+        links.forEach(function (a) {
+          linkMap[a.getAttribute('href')] = a;
+        });
+
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              links.forEach(function (a) { a.classList.remove('active'); });
+              var a = linkMap['#' + entry.target.id];
+              if (a) {
+                a.classList.add('active');
+                var toc = a.parentElement;
+                if (toc && toc.scrollWidth > toc.clientWidth) {
+                  var target = a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2;
+                  toc.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+                }
+              }
+            }
+          });
+        }, {
+          rootMargin: '-56px 0px -70% 0px',
+          threshold: 0
+        });
+
+        sections.forEach(function (s) { obs.observe(s); });
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>
