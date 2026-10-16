@@ -1337,9 +1337,6 @@
         <h1 class="doc-title">$财神到 · DEX 交易激励方案</h1>
         <p class="doc-sub">积分制双轨交易联赛 | 个人段位 · 战队裂变 · 早鸟冲刺</p>
       </div>
-      <div class="ticker">
-        <span class="sym">$财神到</span>
-      </div>
     </div>
 
     <div class="mast-meta">
@@ -1456,7 +1453,7 @@
     </div>
   </section>
 
-  <!-- ================= 02 积分规则 ================= -->
+    <!-- ================= 02 积分规则 ================= -->
   <section class="wrap sec" id="points">
     <div class="sec-head">
       <span class="sec-idx">02</span>
@@ -1466,7 +1463,11 @@
     <div class="prose" style="margin-bottom:16px;">
       <p>
         总积分公式：<b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>。
-        展示积分 = 原始积分 × 1000，排行榜与段位门槛均使用展示积分。
+        展示积分 = 原始积分 × <b>100</b>，排行榜与段位门槛均使用展示积分。
+      </p>
+      <p>
+        <b>积分计算粒度：</b>按日结算。每日 UTC 00:00 计算前一日（UTC 00:00–23:59）的净买入与卖出，
+        应用当日早鸟乘数，得到当日交易积分，累加后得到总交易积分。
       </p>
     </div>
 
@@ -1498,12 +1499,13 @@
           </div>
           <div class="s-stat">
             <div class="k">展示积分倍数</div>
-            <div class="v">×1000</div>
+            <div class="v">×100</div>
           </div>
         </div>
         <p class="caption">
-          <b>示例：</b>买入 500 USDC、卖出 200 USDC，净买入 300 USDC。
-          S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = 4,200 展示积分。
+          <b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值部分计分。若为负值，则净买入按 0 计。<br>
+          <b>示例：</b>某日买入 500 USDC、卖出 200 USDC，净买入 300 USDC。
+          S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = <b>420 展示积分</b>。
         </p>
       </div>
     </div>
@@ -1530,7 +1532,10 @@
             </tbody>
           </table>
         </div>
-        <p class="caption">早鸟乘数按<b>交易发生日</b>逐笔应用，不影响持仓乘数和战队加成。</p>
+        <p class="caption">
+          <b>应用方式：</b>早鸟乘数按<b>交易发生日</b>逐日应用，每日结算时使用当日乘数。
+          不影响持仓乘数和战队加成。仅影响交易积分部分。
+        </p>
       </div>
     </div>
 
@@ -1566,6 +1571,31 @@
       </div>
     </div>
 
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span class="s-icon"><i class="fas fa-ranking-star"></i></span>
+          排行榜更新频率
+        </div>
+        <span class="sector-amount">实时 / 定时</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>榜单</th><th>更新频率</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>个人积分榜</td><td class="hl">每小时</td><td>整点更新，数据延迟约 1–3 分钟</td></tr>
+              <tr><td>战队积分榜</td><td class="hl">每 6 小时</td><td>因需计算人均积分与新增持币地址，更新较慢</td></tr>
+              <tr><td>早鸟净买入榜</td><td class="hl">每日 UTC 00:30</td><td>前一日净买入排名，用于瓜分早鸟奖池</td></tr>
+              <tr><td>最终积分</td><td class="hl">活动结束后 48 小时</td><td>锁定后公示 3 天，申诉期 3 天</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div class="hl-box">
       <div class="hl-box-title">有效交易过滤规则</div>
       <div class="hl-box-body">
@@ -1595,7 +1625,7 @@
         <span class="sector-amount">20,000 USDC</span>
       </div>
       <div class="sector-body">
-        <div class="tbl-scroll">
+                <div class="tbl-scroll">
           <table>
             <thead>
               <tr>
@@ -1607,11 +1637,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>青铜</td><td class="num">1,000 – 4,999</td><td class="hl">瓜分 3,000</td><td>不限</td><td class="num">3,000</td></tr>
-              <tr><td>白银</td><td class="num">5,000 – 19,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
-              <tr><td>黄金</td><td class="num">20,000 – 79,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
-              <tr><td>钻石</td><td class="num">80,000 – 199,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
-              <tr><td>铂金</td><td class="num">200,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
+              <tr><td>青铜</td><td class="num">100 – 499</td><td class="hl">瓜分 3,000</td><td>不限</td><td class="num">3,000</td></tr>
+              <tr><td>白银</td><td class="num">500 – 1,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
+              <tr><td>黄金</td><td class="num">2,000 – 7,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
+              <tr><td>钻石</td><td class="num">8,000 – 19,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
+              <tr><td>铂金</td><td class="num">20,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
               <tr class="sum"><td>合计</td><td>—</td><td>—</td><td>—</td><td class="num">20,000</td></tr>
             </tbody>
           </table>
@@ -1703,7 +1733,7 @@
           </div>
           <div class="s-stat">
             <div class="k">有效队员门槛</div>
-            <div class="v is-red">≥ 1,000 展示分</div>
+            <div class="v is-red">≥ 100 展示分</div>
           </div>
           <div class="s-stat">
             <div class="k">战队注册费</div>
@@ -1812,11 +1842,18 @@
     </div>
   </section>
 
-  <!-- ================= 06 早鸟加成 ================= -->
+   <!-- ================= 06 早鸟加成 ================= -->
   <section class="wrap sec" id="early">
     <div class="sec-head">
       <span class="sec-idx">06</span>
       <h2 class="sec-title">早鸟 / 活跃加成<span>Early Bird Bonus</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        早鸟奖池独立于基础积分，用于奖励活动前 7 天积极净买入的用户。
+        每日 UTC 00:00 快照前一日净买入量，按排名瓜分对应奖池。
+      </p>
     </div>
 
     <div class="sector-block">
@@ -1831,19 +1868,55 @@
         <div class="tbl-scroll">
           <table>
             <thead>
-              <tr><th>阶段</th><th>额外奖池</th><th>规则</th></tr>
+              <tr><th>阶段</th><th>额外奖池</th><th>瓜分规则</th></tr>
             </thead>
             <tbody>
-              <tr><td>第 1 天</td><td class="hl">3,000 USDC</td><td>前 100 名净买入用户按净买入量瓜分</td></tr>
-              <tr><td>第 2–3 天</td><td class="hl">2,500 USDC</td><td>前 200 名净买入用户按净买入量瓜分</td></tr>
-              <tr><td>第 4–7 天</td><td class="hl">1,389 USDC</td><td>前 300 名净买入用户按净买入量瓜分</td></tr>
-              <tr><td>第 8 天起</td><td>无额外池</td><td>仅保留基础积分和早鸟乘数</td></tr>
+              <tr>
+                <td>第 1 天</td>
+                <td class="hl">3,000 USDC</td>
+                <td>前 100 名净买入用户，按净买入量占比瓜分</td>
+              </tr>
+              <tr>
+                <td>第 2–3 天</td>
+                <td class="hl">2,500 USDC</td>
+                <td>前 200 名净买入用户，按净买入量占比瓜分</td>
+              </tr>
+              <tr>
+                <td>第 4–7 天</td>
+                <td class="hl">1,389 USDC</td>
+                <td>前 300 名净买入用户，按净买入量占比瓜分</td>
+              </tr>
+              <tr>
+                <td>第 8 天起</td>
+                <td>无额外池</td>
+                <td>仅保留基础积分和早鸟乘数</td>
+              </tr>
             </tbody>
           </table>
         </div>
+
+        <div class="sources" style="margin-top:16px;">
+          <div class="source-row">
+            <span class="source-idx">01</span>
+            <span class="source-text"><b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值计。若为负值，则净买入按 0 计，不参与排名。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">02</span>
+            <span class="source-text"><b>排名并列：</b>净买入量相同者，按当日交易笔数多者优先；若仍并列，按首次交易时间早者优先。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">03</span>
+            <span class="source-text"><b>奖励发放：</b>活动结束后统一折算 $财神到 发放，与基础积分奖励同步。</span>
+          </div>
+          <div class="source-row">
+            <span class="source-idx">04</span>
+            <span class="source-text"><b>防刷限制：</b>净买入量仅统计有效交易（单笔 ≥ 20 USDC，非对敲，非自成交）。</span>
+          </div>
+        </div>
+
         <p class="caption">
-          每日 UTC 00:00 快照前一日净买入量。排名并列时，按交易笔数多者优先。
-          奖励在活动结束后统一发放，早鸟奖池独立列支，不与王者榜冲突。
+          每日 UTC 00:30 更新前一日早鸟榜。早鸟奖池独立列支，不与王者榜冲突。
+          早鸟乘数（积分加成）与早鸟奖池（额外奖金）可同时享受。
         </p>
       </div>
     </div>
