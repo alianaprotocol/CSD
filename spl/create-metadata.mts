@@ -27,12 +27,12 @@ const RPC =
 const MINT =
   "68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868";
 
-const NAME = "财神到 God Of Fortune";
+const NAME = "财神DAO God Of Fortune";
 
 const SYMBOL = "财神DAO";
 
 const URI =
-  "https://gateway.irys.xyz/DuhM4LpDFRod2rytHiNswpVp7zWxAogtKimjA8ZDnWEW";
+  "https://gateway.irys.xyz/EBYCM4KGCMBmA9vcrS3vzEpove6B8vRpAoNDerj9a1aD";
 
 
 // ========================================
@@ -81,7 +81,7 @@ const mint =
 
 console.log("");
 console.log("================================");
-console.log("财神到 $财神到");
+console.log("财神DAO God Of Fortune $财神DAO");
 console.log("================================");
 
 console.log(
