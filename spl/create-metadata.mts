@@ -25,11 +25,11 @@ const RPC =
   "https://api.mainnet-beta.solana.com";
 
 const MINT =
-  "68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868";
+  "68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868";
 
 const NAME = "财神到 God Of Fortune";
 
-const SYMBOL = "财神到";
+const SYMBOL = "财神DAO";
 
 const URI =
   "https://gateway.irys.xyz/DuhM4LpDFRod2rytHiNswpVp7zWxAogtKimjA8ZDnWEW";
