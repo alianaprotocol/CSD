@@ -78,10 +78,10 @@
 <a href="#main" class="sr-only">跳到主要内容</a>
 
 <div class="hud hud-tl" aria-hidden="true">
-  <i class="fas fa-circle-nodes"></i> CDS.ONLINE
+  <i class="fas fa-circle-nodes"></i> CSD.ONLINE
 </div>
 <div class="hud hud-tr" aria-hidden="true">
-  <i class="fas fa-cube"></i> BLOCK <span id="blockNum" class="mono">#19,254,871</span>
+  <i class="fas fa-cube"></i> BLOCK <span id="blockNum" class="mono">#加载中...</span>
 </div>
 <div class="hud hud-bl" aria-hidden="true">
   <i class="fas fa-shield-halved"></i> 数字香火 · 不可砸财神
@@ -1111,6 +1111,78 @@
 </div>
 
 <script src="script.js" defer></script>
+      <script>
+        // 1. 使用 Solana 官方公共节点（如果你有 Helius，可以替换这里，但不要公开暴露）
+        const RPC_URL = "https://api.mainnet-beta.solana.com";
+
+        // 2. 状态锁，防止网络慢时请求叠加
+        let isFetching = false;
+        let timer = null;
+
+        // 3. 核心请求函数
+        async function updateBlockHeight() {
+            if (isFetching) return;
+            isFetching = true;
+
+            try {
+                const response = await fetch(RPC_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        jsonrpc: "2.0",
+                        id: 1,
+                        // 如果你想要更大的数字（槽位），改成 "getSlot"
+                        method: "getBlockHeight", 
+                        params: []
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.result !== undefined) {
+                    // 格式化数字：19254871 -> 19,254,871
+                    const formattedNumber = data.result.toLocaleString('en-US');
+                    const el = document.getElementById("blockNum");
+                    
+                    // 微微闪一下的动画效果
+                    el.style.opacity = 0.5;
+                    el.innerText = "#" + formattedNumber;
+                    setTimeout(() => el.style.opacity = 1, 200);
+                }
+            } catch (error) {
+                // 如果请求失败（比如被公共节点限流），控制台报错，但页面保留上一次的数字
+                console.warn("节点拥堵或网络错误，保留上一次数据");
+            } finally {
+                isFetching = false;
+            }
+        }
+
+        // 4. 定时器控制
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            updateBlockHeight(); // 立刻执行一次
+            timer = setInterval(updateBlockHeight, 30000); // 30秒刷新一次
+        }
+
+        function stopTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        // 5. 页面可见性监听：用户切到别的标签页时暂停刷新，省资源防限流
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        });
+
+        // 6. 启动
+        startTimer();
+    </script>
 
 </body>
 </html>
