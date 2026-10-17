@@ -406,17 +406,73 @@ window.__showToast = (function () {
 })();
 
 /* ============================================================
-   HUD 区块号
+   HUD 区块号 (真实数据版)
    ============================================================ */
 (function () {
   var el = document.getElementById('blockNum');
   if (!el) return;
-  var n = 19254871;
-  setInterval(function () {
-    if (document.hidden) return;
-    n += 1;
-    el.textContent = '#' + n.toLocaleString('en-US');
-  }, 3200);
+
+  // 使用 Solana 官方公共节点（如果未来流量极大，建议通过 Cloudflare Workers 代理隐藏节点）
+  var RPC_URL = "https://api.mainnet-beta.solana.com";
+  var isFetching = false;
+  var timer = null;
+
+  async function updateBlockHeight() {
+    if (isFetching) return;
+    isFetching = true;
+
+    try {
+      var response = await fetch(RPC_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "getBlockHeight", // 如需显示更大的数字(槽位)，可改为 "getSlot"
+          params: []
+        })
+      });
+
+      var data = await response.json();
+
+      if (data.result !== undefined) {
+        var formattedNumber = data.result.toLocaleString('en-US');
+        el.style.opacity = 0.5;
+        el.textContent = "#" + formattedNumber;
+        setTimeout(function() { el.style.opacity = 1; }, 200);
+      }
+    } catch (error) {
+      // 静默处理，防止公共节点偶尔拥堵导致页面报错
+      console.warn("[财神符] RPC 节点响应超时，保留上一次区块高度");
+    } finally {
+      isFetching = false;
+    }
+  }
+
+  function startTimer() {
+    if (timer) clearInterval(timer);
+    updateBlockHeight(); // 页面加载立即获取一次
+    timer = setInterval(updateBlockHeight, 30000); // 每 30 秒刷新一次，避开限流
+  }
+
+  function stopTimer() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  // 用户切到后台时暂停请求，切回来时恢复，节省资源
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "visible") {
+      startTimer();
+    } else {
+      stopTimer();
+    }
+  });
+
+  // 启动
+  startTimer();
 })();
 
 /* ============================================================
