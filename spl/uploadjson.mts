@@ -3,7 +3,7 @@ import { keypairIdentity } from '@metaplex-foundation/umi';
 import { irysUploader } from '@metaplex-foundation/umi-uploader-irys/node';
 import fs from 'fs';
 
-// 1. 初始化 Umi，连接 Devnet
+// 1. 初始化 Umi，连接 Mainnet
 const umi = createUmi('https://api.mainnet-beta.solana.com');
 
 // 2. 加载本地钱包密钥对
