@@ -85,7 +85,7 @@ console.log("");
 // ========================================
 
 const expected =
-  "68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868";
+  "68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868";
 
 if (
   mint.publicKey.toBase58() !== expected
