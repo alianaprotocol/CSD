@@ -27,10 +27,10 @@ const imageUri = 'https://gateway.irys.xyz/4U8aoCZoFPSLHqCGurZJGXgFFppJXsDvYdkdU
 // 5. 组装完整元数据 JSON 并上传
 const metadataUri = await umi.uploader.uploadJson({
   name: '财神到 God Of Fortune',
-  symbol: '财神到',
+  symbol: '财神DAO',
   description: '一枚属于社区的财神主题 Meme',
   image: imageUri,
-  external_url: 'https://caishendao.xyz',   // 指向项目官网或代币页面
+  external_url: 'https://caishendao.world',   // 指向项目官网或代币页面
   attributes: [
     { trait_type: '主题', value: '财神' },
     { trait_type: '寓意', value: '招财进宝' },
