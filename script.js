@@ -406,14 +406,14 @@ window.__showToast = (function () {
 })();
 
 /* ============================================================
-   HUD 区块号 (真实数据版)
+   HUD 区块号 (纯前端终极版 - 突破 CORS 封锁)
    ============================================================ */
 (function () {
   var el = document.getElementById('blockNum');
   if (!el) return;
 
-  // 使用 Solana 官方公共节点（如果未来流量极大，建议通过 Cloudflare Workers 代理隐藏节点）
-  var RPC_URL = "https://api.mainnet-beta.solana.com";
+  // 使用支持浏览器跨域请求的公共节点
+  var RPC_URL = "https://solana-rpc.publicnode.com";
   var isFetching = false;
   var timer = null;
 
@@ -428,22 +428,27 @@ window.__showToast = (function () {
         body: JSON.stringify({
           jsonrpc: "2.0",
           id: 1,
-          method: "getBlockHeight", // 如需显示更大的数字(槽位)，可改为 "getSlot"
+          method: "getBlockHeight",
           params: []
         })
       });
 
+      // 检查 HTTP 状态码，如果是 403 或 429 就抛出错误
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
       var data = await response.json();
 
       if (data.result !== undefined) {
-        var formattedNumber = data.result.toLocaleString('en-US');
-        el.style.opacity = 0.5;
-        el.textContent = "#" + formattedNumber;
-        setTimeout(function() { el.style.opacity = 1; }, 200);
+        el.textContent = "#" + data.result.toLocaleString('en-US');
       }
     } catch (error) {
-      // 静默处理，防止公共节点偶尔拥堵导致页面报错
-      console.warn("[财神符] RPC 节点响应超时，保留上一次区块高度");
+      console.warn("[财神符] 公共节点响应失败:", error.message);
+      // 如果还在显示加载中，就变成横杠
+      if (el.textContent === "#加载中..." || el.textContent === "") {
+        el.textContent = "#--";
+      }
     } finally {
       isFetching = false;
     }
@@ -451,8 +456,8 @@ window.__showToast = (function () {
 
   function startTimer() {
     if (timer) clearInterval(timer);
-    updateBlockHeight(); // 页面加载立即获取一次
-    timer = setInterval(updateBlockHeight, 30000); // 每 30 秒刷新一次，避开限流
+    updateBlockHeight(); 
+    timer = setInterval(updateBlockHeight, 30000); 
   }
 
   function stopTimer() {
@@ -462,7 +467,6 @@ window.__showToast = (function () {
     }
   }
 
-  // 用户切到后台时暂停请求，切回来时恢复，节省资源
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
       startTimer();
@@ -471,7 +475,6 @@ window.__showToast = (function () {
     }
   });
 
-  // 启动
   startTimer();
 })();
 
