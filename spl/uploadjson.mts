@@ -45,7 +45,7 @@ const metadataUri = await umi.uploader.uploadJson({
     ],
     category: 'image',
   },
-// 👇 新增：社区约定的社交扩展
+// 社区约定的社交扩展
   extensions: {
     website: 'https://caishendao.world',
     twitter: 'https://x.com/your_handle',
