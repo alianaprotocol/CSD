@@ -1653,7 +1653,7 @@ window.__metalScrape = (function () {
           fetch(currentDataUrl).then(function (r) { return r.blob(); }).then(function (blob) {
             var file = new File([blob], '财神符.png', { type: 'image/png' });
             var shareData = {
-              title: '$财神到 · 我的财神符',
+              title: '$财神DAO · 我的财神符',
               text: '财神到，财运到。只迎财神，不砸财神。',
               files: [file]
             };
@@ -1668,7 +1668,7 @@ window.__metalScrape = (function () {
   }
   
   function copyFallback() {
-    var text = '$财神到 · 全球华人第一文化 Meme IP\n财神到，财运到。只迎财神，不砸财神。\n' + location.href;
+    var text = '$财神DAO · 全球华人第一文化 Meme IP\n财神到，财运到。只迎财神，不砸财神。\n' + location.href;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
         if (window.__showToast) window.__showToast('文案已复制，去分享吧');
