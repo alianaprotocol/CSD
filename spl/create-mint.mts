@@ -46,7 +46,7 @@ const wallet = Keypair.fromSecretKey(
 
 const mintSecret = Uint8Array.from(
   JSON.parse(
-    fs.readFileSync("./68xxx6868.json", "utf8")
+    fs.readFileSync("./mintkey.json", "utf8")
   )
 );
 
