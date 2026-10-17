@@ -48,9 +48,8 @@ const metadataUri = await umi.uploader.uploadJson({
 // 社区约定的社交扩展
   extensions: {
     website: 'https://caishendao.world',
-    twitter: 'https://x.com/your_handle',
-    telegram: 'https://t.me/your_channel',
-    discord: 'https://discord.gg/your_invite',
+    twitter: 'https://x.com/caishendaoworld',
+    telegram: 'https://t.me/caishendaoworld',
   },
 });
 
