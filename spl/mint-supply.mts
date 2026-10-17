@@ -27,7 +27,7 @@ const MINT =
   "68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868";
 
 const TOTAL_SUPPLY =
-  1_000_000_000n;
+  686_868_686n;
 
 
 // ========================================
