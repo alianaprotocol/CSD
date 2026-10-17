@@ -61,7 +61,7 @@ const mint = Keypair.fromSecretKey(
 
 console.log("");
 console.log("================================");
-console.log("财神到 God Of Fortune $财神到");
+console.log("财神DAO God Of Fortune $财神DAO");
 console.log("================================");
 
 console.log(
