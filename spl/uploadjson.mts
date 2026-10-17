@@ -45,6 +45,13 @@ const metadataUri = await umi.uploader.uploadJson({
     ],
     category: 'image',
   },
+// 👇 新增：社区约定的社交扩展
+  extensions: {
+    website: 'https://caishendao.world',
+    twitter: 'https://x.com/your_handle',
+    telegram: 'https://t.me/your_channel',
+    discord: 'https://discord.gg/your_invite',
+  },
 });
 
 console.log('元数据 URI:', metadataUri);
