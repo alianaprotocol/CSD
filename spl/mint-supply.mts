@@ -24,7 +24,7 @@ const RPC =
   "https://api.mainnet-beta.solana.com";
 
 const MINT =
-  "68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868";
+  "68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868";
 
 const TOTAL_SUPPLY =
   1_000_000_000n;
