@@ -22,20 +22,20 @@ umi
   );
 
 // 4. 直接使用已上传的图片 URI（避免重复上传）
-const imageUri = 'https://gateway.irys.xyz/4U8aoCZoFPSLHqCGurZJGXgFFppJXsDvYdkdU5zsNNmg';
+const imageUri = 'https://gateway.irys.xyz/5kAjy2FAFnx38y4jvLHdHkUVGC9sTqMj6HGZJ7fJeafm';
 
 // 5. 组装完整元数据 JSON 并上传
 const metadataUri = await umi.uploader.uploadJson({
   name: '财神到 God Of Fortune',
   symbol: '财神DAO',
-  description: '一枚属于社区的财神主题 Meme',
+  description: '一个属于全球华人社区的财神主题 Meme，寓意招财进宝、财源广进。',
   image: imageUri,
-  external_url: 'https://caishendao.world',   // 指向项目官网或代币页面
+  external_url: 'https://caishendao.world',   
   attributes: [
-    { trait_type: '主题', value: '财神' },
-    { trait_type: '寓意', value: '招财进宝' },
-    { trait_type: '类型', value: 'Meme Token' },
-  ],
+  { trait_type: 'Theme', value: 'God of Fortune' },
+  { trait_type: 'Symbolism', value: 'Wealth & Prosperity' },
+  { trait_type: 'Category', value: 'Meme Token' },
+],
   properties: {
     files: [
       {
@@ -45,7 +45,6 @@ const metadataUri = await umi.uploader.uploadJson({
     ],
     category: 'image',
   },
-// 社区约定的社交扩展
   extensions: {
     website: 'https://caishendao.world',
     twitter: 'https://x.com/caishendaoworld',
