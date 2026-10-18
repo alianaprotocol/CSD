@@ -10,7 +10,7 @@
 <style>
   :root{
     color-scheme: light dark;
-    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#8a939d;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
     --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
     --red:#a91f27; --red-dark:#7e161c; --red-soft:#fbf4f4; --gold:#a8821c;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
@@ -172,9 +172,19 @@
     box-shadow:0 8px 22px -12px rgba(20,24,29,.22), 0 0 0 1px var(--cyber-glow-soft), 0 0 20px -4px var(--cyber-glow-soft);
   }
   .hl-card:hover::after{opacity:1; border-top-color:var(--cyber);}
+  .hl-ico{
+    position:absolute; top:12px; right:12px;
+    width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center;
+    border-radius:6px; background:var(--cyber-glow-faint);
+    color:var(--cyber); opacity:.75;
+    transition:opacity .25s ease, background .25s ease;
+  }
+  .hl-ico svg{width:15px; height:15px; display:block;}
+  .hl-card:hover .hl-ico{opacity:1; background:var(--cyber-glow-soft);}
+  .hl-card.hl-red .hl-ico{background:var(--cyber-glow-soft); opacity:.9;}
   .hl-num{
     font-family:var(--mono); font-size:22px; font-weight:700; letter-spacing:-.03em;
-    color:var(--ink); line-height:1.1; margin-bottom:6px;
+    color:var(--ink); line-height:1.1; margin-bottom:6px; padding-right:32px;
   }
   .hl-card.hl-red .hl-num{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
   .hl-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.4; letter-spacing:-.005em;}
@@ -270,7 +280,9 @@
     font-size:12px; line-height:1.4; min-width:0;
     padding:2px 4px; margin:0 -4px; border-radius:3px;
     cursor:pointer; transition:background-color .2s ease;
+    outline:none;
   }
+  .lg-item:focus-visible{box-shadow:0 0 0 2px var(--cyber-glow-soft);}
   .lg-item:hover{background:var(--hover-bg);}
   .lg-dot{width:8px; height:8px; border-radius:2px; display:block; flex:none; transition:box-shadow .25s ease;}
   .lg-item:hover .lg-dot{box-shadow:0 0 0 2px var(--cyber-glow-soft), 0 0 8px var(--cyber-glow);}
@@ -371,6 +383,79 @@
   .caption-ol li{margin:2px 0; padding-left:2px; line-height:1.9;}
   .caption-ol li::marker{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
 
+  /* ================= 释放时间轴 ================= */
+  .tl-wrap{margin:var(--sp-4) 0 var(--sp-5);}
+  .tl-scroll{
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    padding:8px 0 6px; scrollbar-width:thin;
+    scrollbar-color:var(--scroll-thumb) transparent;
+  }
+  .tl-scroll::-webkit-scrollbar{height:4px;}
+  .tl-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb); border-radius:2px;}
+  .tl{position:relative; min-width:640px; padding:0 72px;}
+  .tl-inner{position:relative; height:196px;}
+  .tl-axis{
+    position:absolute; left:0; right:0; top:50%;
+    height:2px; background:var(--line); border-radius:1px;
+  }
+  .tl-fill{
+    position:absolute; left:0; top:0; bottom:0; width:100%;
+    background:linear-gradient(90deg, var(--cyber) 0%, var(--cyber) 5%, var(--gold) 95%, var(--gold) 100%);
+    opacity:.45; border-radius:1px;
+  }
+  .tl-node{
+    position:absolute; left:var(--x); top:50%;
+    width:0; height:0; z-index:1;
+    transform:translateX(-50%);
+  }
+  .tl-dot{
+    position:absolute; left:0; top:0;
+    transform:translate(-50%, -50%);
+    width:10px; height:10px; border-radius:50%;
+    background:var(--card); border:2px solid var(--cyber);
+    box-shadow:0 0 0 3px var(--card), 0 0 10px var(--cyber-glow);
+    z-index:2;
+  }
+  .tl-stem{
+    position:absolute; left:0; width:1px; background:var(--line);
+    transform:translateX(-50%);
+  }
+  .tl-top .tl-stem{bottom:0; height:34px;}
+  .tl-bottom .tl-stem{top:0; height:34px;}
+  .tl-card{
+    position:absolute; left:0;
+    transform:translateX(-50%);
+    width:136px;
+    padding:8px 10px 9px;
+    border:1px solid var(--line); border-radius:6px;
+    background:var(--card);
+    text-align:center; line-height:1.4;
+    box-shadow:0 2px 8px -4px rgba(20,24,29,.08);
+    transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease;
+  }
+  .tl-top .tl-card{bottom:34px;}
+  .tl-bottom .tl-card{top:34px;}
+  .tl-card:hover{
+    border-color:var(--cyber-glow);
+    box-shadow:0 0 14px -2px var(--cyber-glow-soft);
+    transform:translateX(-50%) translateY(-1px);
+  }
+  .tl-when{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.08em;
+    color:var(--cyber); text-transform:uppercase; line-height:1.4;
+  }
+  .tl-what{
+    font-size:12px; font-weight:700; color:var(--ink);
+    margin-top:2px; line-height:1.4;
+  }
+  .tl-why{
+    font-size:10.5px; color:var(--muted); margin-top:3px; line-height:1.5;
+  }
+  .tl-caption{
+    margin:6px 0 0; font-size:11px; color:var(--muted);
+    line-height:1.7; text-align:center;
+  }
+
   .rel-list{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .rel{
     padding:var(--sp-4) 0 var(--sp-4); border-bottom:1px solid var(--line-2);
@@ -404,6 +489,16 @@
   .rel.subtotal .rel-cond{color:var(--cyber-d); font-weight:600; font-size:13px;}
   .rel.subtotal .rel-amt{color:var(--cyber); font-weight:700; font-size:13px;}
   .rel.subtotal .rel-scope{color:var(--ink-3);}
+
+  /* 滚动渐隐提示 */
+  .scroll-hint{position:relative;}
+  .scroll-hint::after{
+    content:""; position:absolute; top:0; right:0; bottom:0; width:26px;
+    background:linear-gradient(90deg, transparent, var(--card) 92%);
+    pointer-events:none; border-radius:0 var(--r) var(--r) 0;
+    transition:opacity .3s ease;
+  }
+  .scroll-hint.at-end::after{opacity:0;}
 
   .tbl-scroll{
     overflow-x:auto; -webkit-overflow-scrolling:touch;
@@ -448,6 +543,37 @@
     content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
     background:var(--cyber); box-shadow:0 0 8px var(--cyber-glow);
   }
+
+  /* ================= 通缩曲线 ================= */
+  .chart-wrap{
+    margin:var(--sp-4) 0 0;
+    border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); padding:var(--sp-4) var(--sp-4) var(--sp-3);
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .chart-title{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted);
+    line-height:1; margin:0 0 var(--sp-3);
+    display:flex; align-items:center; gap:7px;
+  }
+  .chart-title::before{
+    content:""; display:block; width:4px; height:4px; border-radius:50%;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow); flex:none;
+  }
+  .chart{display:block; width:100%; height:auto;}
+  .chart .axis{stroke:var(--line); stroke-width:1;}
+  .chart .grid{stroke:var(--line-2); stroke-width:1; stroke-dasharray:2 3;}
+  .chart .area{fill:url(#burnGrad);}
+  .chart .line{fill:none; stroke:var(--cyber); stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+  .chart .pt{fill:var(--card); stroke:var(--cyber); stroke-width:1.5; transition:r .2s ease;}
+  .chart .pt:hover{r:4.5;}
+  .chart .lbl{
+    font-family:var(--mono); font-size:9px; fill:var(--muted);
+    letter-spacing:.04em;
+  }
+  .chart .lbl-y{text-anchor:end;}
+  .chart .lbl-x{text-anchor:middle;}
 
   .kpi{
     display:grid; grid-template-columns:repeat(3,1fr);
@@ -497,6 +623,27 @@
     margin-top:5px; transition:background-color .25s ease, border-color .25s ease;
   }
 
+  /* FAQ 工具栏 */
+  .faq-tools{
+    display:flex; justify-content:flex-end;
+    margin:-4px 0 var(--sp-3);
+  }
+  .faq-toggle-all{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:5px 11px; border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-size:11.5px; font-weight:600; line-height:1.5;
+    font-family:inherit; cursor:pointer;
+    letter-spacing:.01em;
+    transition:border-color .15s ease, color .15s ease, background .15s ease, box-shadow .25s ease;
+  }
+  .faq-toggle-all:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 10px -2px var(--cyber-glow-soft);
+  }
+  .faq-toggle-all svg{width:12px; height:12px; display:block; opacity:.8;}
+
   .faq-list{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .faq-item{border-bottom:1px solid var(--line-2);}
   .faq-item:last-child{border-bottom:0;}
@@ -535,7 +682,7 @@
     background:var(--bg); border:1px solid var(--line); border-radius:var(--r); padding:1px 6px;
   }
 
-  /* ================= 风险声明 ================= */
+  /* ================= 风险声明（字母序号） ================= */
   .risk-intro{
     margin:0 0 var(--sp-4); padding:var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-3);
     border-left:3px solid var(--cyber);
@@ -553,9 +700,9 @@
     transition:border-color .2s ease, background-color .2s ease;
   }
   .risk-item::before{
-    content:counter(risk, decimal-leading-zero);
+    content:counter(risk, lower-alpha) ".";
     position:absolute; left:12px; top:12px;
-    font-family:var(--mono); font-size:11px; font-weight:700;
+    font-family:var(--mono); font-size:12px; font-weight:700;
     color:var(--cyber); letter-spacing:.04em; line-height:1.8;
   }
   .risk-item:hover{border-color:var(--cyber-glow-soft); background:var(--cyber-glow-faint);}
@@ -595,9 +742,7 @@
     content:""; display:block; width:4px; height:4px; border-radius:50%;
     background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow); flex:none;
   }
-  .channels-grid{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:8px;
-  }
+  .channels-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
   .channel-card{
     display:flex; align-items:center; gap:10px;
     padding:10px 12px; border:1px solid var(--line); border-radius:var(--r);
@@ -605,21 +750,31 @@
     line-height:1.4; min-width:0;
     transition:border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease, box-shadow .25s ease;
   }
-  .channel-card:hover{
+  a.channel-card:hover{
     border-color:var(--cyber-glow); color:var(--cyber);
     background:var(--cyber-glow-faint); transform:translateY(-1px);
     box-shadow:0 0 12px -2px var(--cyber-glow-soft);
   }
   .channel-card svg{width:16px; height:16px; flex:none; opacity:.85;}
-  .channel-card:hover svg{opacity:1;}
-  .ch-text{min-width:0; display:flex; flex-direction:column; gap:1px;}
+  a.channel-card:hover svg{opacity:1;}
+  .ch-text{min-width:0; display:flex; flex-direction:column; gap:1px; flex:1;}
   .ch-name{font-size:12px; font-weight:600; color:var(--ink); line-height:1.4; transition:color .18s ease;}
-  .channel-card:hover .ch-name{color:var(--cyber);}
+  a.channel-card:hover .ch-name{color:var(--cyber);}
   .ch-url{
     font-family:var(--mono); font-size:10px; color:var(--muted);
     line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .channel-card.is-wide{grid-column:1/-1;}
+  .ch-copy{
+    flex:none; display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; padding:0;
+    border:1px solid var(--line); border-radius:5px;
+    background:var(--bg); color:var(--ink-3); cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color .15s ease, color .2s ease, background .15s ease;
+  }
+  .ch-copy:hover{border-color:var(--cyber-glow-soft); color:var(--cyber); background:var(--cyber-glow-faint);}
+  .ch-copy.copied{color:var(--cyber); border-color:var(--cyber-glow-soft); background:var(--cyber-glow-faint);}
+  .ch-copy svg{width:12px; height:12px; display:block;}
 
   .doc-foot{
     padding:26px 0 var(--sp-10); border-top:1px solid var(--line);
@@ -670,10 +825,29 @@
   }
   #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
+  /* 返回顶部 */
+  .back-top{
+    position:fixed; right:20px; bottom:24px; z-index:30;
+    width:40px; height:40px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); border-radius:50%;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
+    opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .back-top.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .back-top:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25), 0 0 14px -2px var(--cyber-glow-soft);
+  }
+  .back-top svg{width:18px; height:18px; display:block;}
+
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#6a7480;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
       --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
       --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a;
       --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
@@ -692,11 +866,14 @@
       background:#e6eaf0; color:#10161e;
       box-shadow:0 12px 30px -10px rgba(0,0,0,.6), 0 4px 12px -4px rgba(0,0,0,.3), 0 0 0 1px var(--cyber-glow-soft), 0 0 24px -4px var(--cyber-glow);
     }
+    :root:not([data-theme="light"]) .back-top{
+      box-shadow:0 4px 16px -6px rgba(0,0,0,.5);
+    }
   }
 
   :root[data-theme="dark"]{
     color-scheme: dark;
-    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#6a7480;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
     --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
     --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a;
     --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
@@ -715,6 +892,7 @@
     background:#e6eaf0; color:#10161e;
     box-shadow:0 12px 30px -10px rgba(0,0,0,.6), 0 4px 12px -4px rgba(0,0,0,.3), 0 0 0 1px var(--cyber-glow-soft), 0 0 24px -4px var(--cyber-glow);
   }
+  :root[data-theme="dark"] .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
   :root[data-theme="light"]{color-scheme: light;}
 
   @media (max-width:480px){
@@ -724,6 +902,9 @@
     .ca-short{display:inline;}
     .donut-wrap{grid-template-columns:1fr; gap:18px; justify-items:center; padding-bottom:20px;}
     .donut-legend{width:100%;}
+    .tl{padding:0 64px;}
+    .back-top{right:14px; bottom:20px; width:38px; height:38px;}
+    #toast{bottom:70px;}
   }
 
   @media (max-width:400px){
@@ -760,7 +941,7 @@
     .faq-a{padding-right:8px;}
     .channels-grid{grid-template-columns:1fr;}
     .risk-item{padding:10px 12px 10px 38px; font-size:12px;}
-    .risk-item::before{left:10px; top:10px;}
+    .risk-item::before{left:10px; top:10px; font-size:11px;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -769,6 +950,59 @@
       transition-duration:.001ms !important;
       scroll-behavior:auto !important;
     }
+  }
+
+  /* ================= 打印 ================= */
+  @media print{
+    :root{
+      color-scheme: light;
+      --ink:#000; --ink-2:#222; --ink-3:#444; --muted:#555;
+      --line:#ccc; --line-2:#e5e5e5; --bg:#fff; --card:#fff;
+      --cyber:#a91f27; --cyber-d:#7e161c; --cyber-l:#a91f27;
+      --cyber-glow:transparent; --cyber-glow-soft:transparent; --cyber-glow-faint:transparent;
+      --gold:#7a5f10; --red-soft:#faf5f5;
+      --toc-bg:#fff; --abstract-from:#fff; --abstract-to:#fff;
+      --lead-fade:#fff; --hover-bg:#fff; --active-bg:#fff;
+      --thead-bg:#f5f5f5; --zebra-bg:#fafafa; --sum-line:#ddd; --scroll-thumb:#ccc;
+    }
+    @page{margin:16mm 14mm;}
+    html{font-size:10.5pt;}
+    body{background:#fff; color:#000; font-size:10.5pt; line-height:1.6;}
+    .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
+    .doc::before,
+    .masthead::after,
+    .doc-foot::before{display:none !important;}
+    .theme-toggle,
+    .toc,
+    .back-top,
+    .alloc-links,
+    .faq-tools,
+    .scroll-hint::after,
+    #toast{display:none !important;}
+    .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
+    .sec-head{margin-bottom:10px;}
+    .sec-title{font-size:13pt;}
+    .sec-idx,.hl-ico,.tl-fill{background:none !important; color:#a91f27;}
+    .hl-card,.fact,.risk-item,.legal-row,.kpi,.spec,.chart-wrap,.channel-card,.ca-box,.rel,.alloc-row{
+      box-shadow:none !important;
+    }
+    .hl-card,.risk-item,.channel-card{border-color:#ccc !important; background:#fff !important;}
+    .hl-card:hover,.risk-item:hover,.channel-card:hover{transform:none !important;}
+    .hl-card::after,.hl-card::before,.alloc-row.lead::before,
+    .risk-item::before,.rel:hover::before,.spec-row:hover::before,
+    .fact:hover::before,.faq-item[open] summary::before{box-shadow:none !important;}
+    .alloc-bar i,.tl-fill,.chart .area,.chart .line{
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .tl{min-width:0; padding:0;}
+    .tl-scroll{overflow:visible;}
+    .faq-item[open] summary{color:#000;}
+    .faq-a{padding-right:0; color:#333;}
+    a[href^="http"]::after{
+      content:" (" attr(href) ")";
+      font-family:var(--mono); font-size:8.5pt; color:#666; word-break:break-all;
+    }
+    .ch-url a::after,.foot-v a::after,.alloc-link::after{content:"" !important;}
   }
 </style>
 
@@ -827,7 +1061,6 @@
     </div>
   </header>
 
-  <!-- TOC：新增「风险声明」 -->
   <nav class="toc" aria-label="文档导航">
     <a class="toc-link" href="#highlights">核心优势</a>
     <a class="toc-link" href="#overview">基础信息</a>
@@ -856,26 +1089,41 @@
 
     <div class="hl-grid">
       <div class="hl-card hl-red">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        </span>
         <div class="hl-num">50%</div>
         <div class="hl-t">供应量用于销毁</div>
         <div class="hl-d">12 档 FDV 里程碑，累计销毁上限 343,434,343 枚，永不回流团队</div>
       </div>
       <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </span>
         <div class="hl-num">100%</div>
         <div class="hl-t">锁仓链上可查</div>
         <div class="hl-d">基金会、社区、生态份额均有独立 Jupiter Lock 托管地址，第三方可随时验证</div>
       </div>
       <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </span>
         <div class="hl-num">4/6</div>
         <div class="hl-t">多签 + 多源预言机</div>
         <div class="hl-d">Squads 4/6 多签执行，CoinGecko、CMC、链上预言机多源取中位数，杜绝单点操纵</div>
       </div>
       <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </span>
         <div class="hl-num">39<span style="font-size:13px;font-weight:600;color:var(--muted);">个月</span></div>
         <div class="hl-t">解锁曲线平缓</div>
         <div class="hl-d">无一次性大额解锁，最长份额拉至 39 个月释放，不形成集中抛压</div>
       </div>
       <div class="hl-card hl-red" style="grid-column:1/-1;">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </span>
         <div class="hl-num">686,868,686</div>
         <div class="hl-t">总量恒定，永不增发</div>
         <div class="hl-d">一经铸出即封顶，无任何增发权限，通缩路径写死在链上</div>
@@ -937,7 +1185,6 @@
     </div>
   </section>
 
-  <!-- 02 代币分配：锁仓 / 链上按钮已接真实链接 -->
   <section class="wrap sec" id="distribution">
     <div class="sec-head">
       <span class="sec-idx">02</span>
@@ -966,16 +1213,16 @@
       </div>
 
       <div class="donut-legend">
-        <div class="lg-item" data-seg="0"><span class="lg-dot" style="background:#ff2d55"></span><span class="lg-name">FDV 里程碑销毁池</span><span class="lg-pct">50.0000%</span></div>
-        <div class="lg-item" data-seg="1"><span class="lg-dot" style="background:#a8821c"></span><span class="lg-name">财神基金会</span><span class="lg-pct">10.0000%</span></div>
-        <div class="lg-item" data-seg="2"><span class="lg-dot" style="background:#bf9a3a"></span><span class="lg-name">BG 基金会</span><span class="lg-pct">10.0000%</span></div>
-        <div class="lg-item" data-seg="3"><span class="lg-dot" style="background:#c9a84a"></span><span class="lg-name">燃香赐福池</span><span class="lg-pct">7.3119%</span></div>
-        <div class="lg-item" data-seg="4"><span class="lg-dot" style="background:#2f3841"></span><span class="lg-name">做市 / CEX / DEX</span><span class="lg-pct">6.0000%</span></div>
-        <div class="lg-item" data-seg="5"><span class="lg-dot" style="background:#5b6672"></span><span class="lg-name">LUCKY99 社区</span><span class="lg-pct">5.0000%</span></div>
-        <div class="lg-item" data-seg="6"><span class="lg-dot" style="background:#7a8590"></span><span class="lg-name">FIST 社区</span><span class="lg-pct">5.0000%</span></div>
-        <div class="lg-item" data-seg="7"><span class="lg-dot" style="background:#a8b0b8"></span><span class="lg-name">财神生态建设</span><span class="lg-pct">2.9118%</span></div>
-        <div class="lg-item" data-seg="8"><span class="lg-dot" style="background:#c4c9cf"></span><span class="lg-name">初始流动性</span><span class="lg-pct">2.4750%</span></div>
-        <div class="lg-item" data-seg="9"><span class="lg-dot" style="background:#d8dce0"></span><span class="lg-name">空投奖励 / 营销</span><span class="lg-pct">1.3012%</span></div>
+        <div class="lg-item" data-seg="0" tabindex="0"><span class="lg-dot" style="background:#ff2d55"></span><span class="lg-name">FDV 里程碑销毁池</span><span class="lg-pct">50.0000%</span></div>
+        <div class="lg-item" data-seg="1" tabindex="0"><span class="lg-dot" style="background:#a8821c"></span><span class="lg-name">财神基金会</span><span class="lg-pct">10.0000%</span></div>
+        <div class="lg-item" data-seg="2" tabindex="0"><span class="lg-dot" style="background:#bf9a3a"></span><span class="lg-name">BG 基金会</span><span class="lg-pct">10.0000%</span></div>
+        <div class="lg-item" data-seg="3" tabindex="0"><span class="lg-dot" style="background:#c9a84a"></span><span class="lg-name">燃香赐福池</span><span class="lg-pct">7.3119%</span></div>
+        <div class="lg-item" data-seg="4" tabindex="0"><span class="lg-dot" style="background:#2f3841"></span><span class="lg-name">做市 / CEX / DEX</span><span class="lg-pct">6.0000%</span></div>
+        <div class="lg-item" data-seg="5" tabindex="0"><span class="lg-dot" style="background:#5b6672"></span><span class="lg-name">LUCKY99 社区</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="6" tabindex="0"><span class="lg-dot" style="background:#7a8590"></span><span class="lg-name">FIST 社区</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="7" tabindex="0"><span class="lg-dot" style="background:#a8b0b8"></span><span class="lg-name">财神生态建设</span><span class="lg-pct">2.9118%</span></div>
+        <div class="lg-item" data-seg="8" tabindex="0"><span class="lg-dot" style="background:#c4c9cf"></span><span class="lg-name">初始流动性</span><span class="lg-pct">2.4750%</span></div>
+        <div class="lg-item" data-seg="9" tabindex="0"><span class="lg-dot" style="background:#d8dce0"></span><span class="lg-name">空投奖励 / 营销</span><span class="lg-pct">1.3012%</span></div>
       </div>
     </div>
 
@@ -1232,6 +1479,58 @@
       <h2 class="sec-title">解锁节奏<span>Vesting Schedule</span></h2>
     </div>
 
+    <!-- 释放时间轴 -->
+    <div class="tl-wrap">
+      <div class="tl-scroll">
+        <div class="tl">
+          <div class="tl-inner">
+            <div class="tl-axis"><span class="tl-fill"></span></div>
+
+            <div class="tl-node tl-top" style="--x:5%">
+              <span class="tl-stem"></span>
+              <span class="tl-dot"></span>
+              <div class="tl-card">
+                <div class="tl-when">TGE · 0 月</div>
+                <div class="tl-what">≈ 24.5M 枚</div>
+                <div class="tl-why">初始流通 3.57%</div>
+              </div>
+            </div>
+
+            <div class="tl-node tl-bottom" style="--x:11.9%">
+              <span class="tl-stem"></span>
+              <span class="tl-dot"></span>
+              <div class="tl-card">
+                <div class="tl-when">第 3 个月</div>
+                <div class="tl-what">+226.1M 枚</div>
+                <div class="tl-why">基金会 / 社区 / 生态开始线性</div>
+              </div>
+            </div>
+
+            <div class="tl-node tl-top" style="--x:32.7%">
+              <span class="tl-stem"></span>
+              <span class="tl-dot"></span>
+              <div class="tl-card">
+                <div class="tl-when">第 12 个月</div>
+                <div class="tl-what">做市 / 空投 / 燃香完成</div>
+                <div class="tl-why">剩余 90–95% 释放完毕</div>
+              </div>
+            </div>
+
+            <div class="tl-node tl-bottom" style="--x:95%">
+              <span class="tl-stem"></span>
+              <span class="tl-dot"></span>
+              <div class="tl-card">
+                <div class="tl-when">第 39 个月</div>
+                <div class="tl-what">全部线性份额释放完毕</div>
+                <div class="tl-why">销毁池仍锁定，按里程碑销毁</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tl-caption">时间轴仅示意释放节奏，不含销毁池 —— 销毁池按里程碑销毁，不随时间线性释放。</p>
+    </div>
+
     <div class="rel-list">
       <div class="rel">
         <div class="rel-cond">TGE 全部释放，开盘注入</div>
@@ -1298,7 +1597,7 @@
       且永不回流团队。销毁池独立列示，与基金会、社区份额完全隔离。
     </p>
 
-    <div class="tbl-scroll">
+    <div class="tbl-scroll scroll-hint">
       <table class="t-milestone">
         <thead>
           <tr>
@@ -1326,6 +1625,63 @@
       </table>
     </div>
 
+    <!-- 通缩曲线 -->
+    <div class="chart-wrap">
+      <p class="chart-title">Burn Curve · 累计销毁随 FDV 上升</p>
+      <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="累计销毁曲线：FDV 从 $10M 到 $1B，累计销毁从 220 万到 3.43 亿">
+        <defs>
+          <linearGradient id="burnGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff2d55" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="#ff2d55" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 网格 -->
+        <line class="grid" x1="56" y1="30" x2="500" y2="30"/>
+        <line class="grid" x1="56" y1="70" x2="500" y2="70"/>
+        <line class="grid" x1="56" y1="110" x2="500" y2="110"/>
+        <line class="grid" x1="56" y1="150" x2="500" y2="150"/>
+
+        <!-- 轴 -->
+        <line class="axis" x1="56" y1="30" x2="56" y2="180"/>
+        <line class="axis" x1="56" y1="180" x2="500" y2="180"/>
+
+        <!-- Y 轴刻度 -->
+        <text class="lbl lbl-y" x="48" y="33">343M</text>
+        <text class="lbl lbl-y" x="48" y="73">257M</text>
+        <text class="lbl lbl-y" x="48" y="113">171M</text>
+        <text class="lbl lbl-y" x="48" y="153">86M</text>
+        <text class="lbl lbl-y" x="48" y="183">0</text>
+
+        <!-- 面积 + 曲线：12 档，x 均分，y = 累计销毁 / 343M -->
+        <!-- 数据点（x,y）：(56,178.6) (96.4,176.4) (136.7,172.4) (177.1,168.4) (217.4,162.7)
+             (257.8,156.4) (298.2,146.8) (338.5,133.7) (378.9,112.0) (419.3,87.0) (459.6,49.0) (500,30) -->
+        <path class="area" d="M56,178.6 L96.4,176.4 L136.7,172.4 L177.1,168.4 L217.4,162.7 L257.8,156.4 L298.2,146.8 L338.5,133.7 L378.9,112.0 L419.3,87.0 L459.6,49.0 L500,30 L500,180 L56,180 Z"/>
+        <path class="line" d="M56,178.6 L96.4,176.4 L136.7,172.4 L177.1,168.4 L217.4,162.7 L257.8,156.4 L298.2,146.8 L338.5,133.7 L378.9,112.0 L419.3,87.0 L459.6,49.0 L500,30"/>
+
+        <!-- 数据点 -->
+        <circle class="pt" cx="56" cy="178.6" r="3"/>
+        <circle class="pt" cx="96.4" cy="176.4" r="3"/>
+        <circle class="pt" cx="136.7" cy="172.4" r="3"/>
+        <circle class="pt" cx="177.1" cy="168.4" r="3"/>
+        <circle class="pt" cx="217.4" cy="162.7" r="3"/>
+        <circle class="pt" cx="257.8" cy="156.4" r="3"/>
+        <circle class="pt" cx="298.2" cy="146.8" r="3"/>
+        <circle class="pt" cx="338.5" cy="133.7" r="3"/>
+        <circle class="pt" cx="378.9" cy="112.0" r="3"/>
+        <circle class="pt" cx="419.3" cy="87.0" r="3"/>
+        <circle class="pt" cx="459.6" cy="49.0" r="3"/>
+        <circle class="pt" cx="500" cy="30" r="3"/>
+
+        <!-- X 轴刻度 -->
+        <text class="lbl lbl-x" x="56" y="196">$10M</text>
+        <text class="lbl lbl-x" x="177.1" y="196">$40M</text>
+        <text class="lbl lbl-x" x="298.2" y="196">$130M</text>
+        <text class="lbl lbl-x" x="419.3" y="196">$350M</text>
+        <text class="lbl lbl-x" x="500" y="196">$1B</text>
+      </svg>
+    </div>
+
     <div class="kpi">
       <div class="kpi-cell">
         <b class="num is-red">343,434,343</b>
@@ -1348,7 +1704,6 @@
     </p>
   </section>
 
-  <!-- 05 执行规则：新增 Multisig + Governance -->
   <section class="wrap sec" id="execution">
     <div class="sec-head">
       <span class="sec-idx">05</span>
@@ -1364,7 +1719,7 @@
         <div class="spec-k">Data Source</div>
         <div class="spec-v">CoinGecko、CMC、链上预言机多源取中位数，单一数据源无法影响触发结果，从源头杜绝操纵</div>
       </div>
-       <div class="spec-row">
+      <div class="spec-row">
         <div class="spec-k">Multisig</div>
         <div class="spec-v">
           4/6 多签执行，6 个签名方分别代表<b>财神基金会</b>（2 席）、<b>社区</b>（3 席）与<b>独立第三方</b>（1 席）。
@@ -1405,7 +1760,6 @@
     </div>
   </section>
 
-  <!-- 06 风险与声明 -->
   <section class="wrap sec" id="risks">
     <div class="sec-head">
       <span class="sec-idx">06</span>
@@ -1465,11 +1819,19 @@
     </p>
   </section>
 
-  <!-- 07 FAQ -->
   <section class="wrap sec" id="faq">
     <div class="sec-head">
       <span class="sec-idx">07</span>
       <h2 class="sec-title">常见问题<span>FAQ</span></h2>
+    </div>
+
+    <div class="faq-tools">
+      <button class="faq-toggle-all" id="faqToggleAll" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+        <span>展开全部</span>
+      </button>
     </div>
 
     <div class="faq-list">
@@ -1522,7 +1884,7 @@
         </div>
       </details>
 
-        <details class="faq-item">
+      <details class="faq-item">
         <summary>多签的 6 个签名方是谁？他们能不能作恶？</summary>
         <div class="faq-a">
           6 个签名方分别代表财神基金会（2 席）、社区（3 席）与独立第三方（1 席）。
@@ -1537,23 +1899,21 @@
         <summary>持币人能参与哪些治理决策？</summary>
         <div class="faq-a">
           治理范围涵盖生态建设基金用途、销毁机制参数微调、多签签名方更换、重大生态合作与资金支出四类事项。
-          提案由持币人发起，经社区投票通过后由多签执行。投票机制与治理门户将于 TGE 前上线，
-          具体权重与门槛会另行公告。
+          治理机制将随生态成熟逐步引入，在此之前相关事项由 4/6 多签执行并向社区公开披露；
+          治理上线后，提案与投票的具体流程、权重与门槛将另行公告。
         </div>
       </details>
 
-            <details class="faq-item">
-        <summary>持币人能参与哪些治理决策？</summary>
+      <details class="faq-item">
+        <summary>项目接受哪些地区的用户？</summary>
         <div class="faq-a">
-          治理范围涵盖生态建设基金用途、销毁机制参数微调、多签签名方更换、重大生态合作与资金支出四类事项。
-          治理机制将随生态成熟逐步引入，在此之前相关事项由 4/6 多签执行并向社区公开披露；
-          治理上线后，提案与投票的具体流程、权重与门槛将另行公告。
+          本代币及本页内容不面向美国、中国大陆、受制裁国家或地区，以及任何法律禁止数字资产交易的辖区的居民。
+          请在使用前确认您所在地的法律法规。代币本身是无需许可的链上资产，但用户有责任确保自身参与行为符合属地法律。
         </div>
       </details>
     </div>
   </section>
 
-  <!-- 页脚：官方渠道 + 文档信息 -->
   <footer class="wrap doc-foot">
     <div class="foot-row">
       <span class="foot-k">Document</span>
@@ -1561,7 +1921,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v1.1 · 2026-10-18</span>
+      <span class="foot-v">v1.2 · 2026-10-18</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Total Supply</span>
@@ -1578,7 +1938,6 @@
       <span class="foot-v">Solana SPL</span>
     </div>
 
-    <!-- 官方渠道 -->
     <div class="channels">
       <div class="channels-label">Official Channels · 官方渠道</div>
       <div class="channels-grid">
@@ -1602,13 +1961,22 @@
           </svg>
           <div class="ch-text"><span class="ch-name">Telegram</span><span class="ch-url">t.me/caishendaoworld</span></div>
         </a>
-        <a class="channel-card" href="https://ant.fun/app-invite/?code=RmrnJBvZ" target="_blank" rel="noopener">
+        <div class="channel-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <div class="ch-text"><span class="ch-name">Antfun</span><span class="ch-url">ant.fun · 邀请码 RmrnJBvZ</span></div>
-        </a>
+          <div class="ch-text">
+            <a href="https://ant.fun/app-invite/?code=RmrnJBvZ" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><span class="ch-name">Antfun</span></a>
+            <span class="ch-url">邀请码 RmrnJBvZ</span>
+          </div>
+          <button class="ch-copy" type="button" data-copy="RmrnJBvZ" aria-label="复制邀请码">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
         <a class="channel-card" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -1628,59 +1996,84 @@
 
     <div class="disc">
       本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
-      完整风险披露请见「06 风险与声明」。文档版本 v1.1 · 最后更新 2026-10-18。
+      完整风险披露请见「06 风险与声明」。文档版本 v1.2 · 最后更新 2026-10-18。
     </div>
   </footer>
 
 </div>
 
-<div id="toast" role="status" aria-live="polite">合约地址已复制</div>
+<!-- 返回顶部 -->
+<button id="backTop" class="back-top" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+  </svg>
+</button>
+
+<div id="toast" role="status" aria-live="polite">已复制</div>
 
 <script>
   (function () {
-    var btn = document.getElementById('copyBtn');
+    /* ---------- 复制：合约地址 + 邀请码 ---------- */
     var toast = document.getElementById('toast');
     var toastTimer = null;
 
-    function showToast() {
+    function showToast(msg) {
       if (!toast) return;
+      if (msg) toast.textContent = msg;
       toast.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
     }
 
-    if (btn) {
-      var icoCopy  = btn.querySelector('.ico-copy');
-      var icoCheck = btn.querySelector('.ico-check');
+    function fallbackCopy(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
 
-      function fallback(text, cb) {
-        var ta = document.createElement('textarea');
-        ta.value = text; ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
-        try { document.execCommand('copy'); cb && cb(); } catch (e) {}
-        document.body.removeChild(ta);
-      }
+    function copyText(text, cb) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(cb).catch(function () { fallbackCopy(text, cb); });
+      } else { fallbackCopy(text, cb); }
+    }
 
-      btn.addEventListener('click', function () {
-        var text = btn.getAttribute('data-addr');
-        var done = function () {
+    var copyBtn = document.getElementById('copyBtn');
+    if (copyBtn) {
+      var icoCopy  = copyBtn.querySelector('.ico-copy');
+      var icoCheck = copyBtn.querySelector('.ico-check');
+      copyBtn.addEventListener('click', function () {
+        copyText(copyBtn.getAttribute('data-addr'), function () {
           icoCopy.style.display = 'none';
           icoCheck.style.display = 'block';
-          btn.classList.add('copied');
-          showToast();
+          copyBtn.classList.add('copied');
+          showToast('合约地址已复制');
           setTimeout(function () {
             icoCopy.style.display = 'block';
             icoCheck.style.display = 'none';
-            btn.classList.remove('copied');
+            copyBtn.classList.remove('copied');
           }, 1500);
-        };
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(text).then(done).catch(function () { fallback(text, done); });
-        } else { fallback(text, done); }
+        });
       });
     }
 
+    var chCopies = document.querySelectorAll('.ch-copy');
+    chCopies.forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var val = b.getAttribute('data-copy');
+        copyText(val, function () {
+          b.classList.add('copied');
+          showToast('邀请码已复制');
+          setTimeout(function () { b.classList.remove('copied'); }, 1500);
+        });
+      });
+    });
+
+    /* ---------- 环形图交互（含键盘） ---------- */
     var donutSegs = document.querySelectorAll('.donut-seg');
     var legendItems = document.querySelectorAll('.lg-item[data-seg]');
 
@@ -1695,11 +2088,13 @@
       donutSegs.forEach(function (seg) { seg.classList.remove('dim'); seg.classList.remove('highlight'); });
     }
 
-    if (donutSegs.length && legendItems.length) {
+    if (donutSegs.length) {
       legendItems.forEach(function (item) {
         var idx = item.getAttribute('data-seg');
         item.addEventListener('mouseenter', function () { highlightSeg(idx); });
         item.addEventListener('mouseleave', clearSegHighlight);
+        item.addEventListener('focus', function () { highlightSeg(idx); });
+        item.addEventListener('blur', clearSegHighlight);
       });
       donutSegs.forEach(function (seg) {
         var idx = seg.getAttribute('data-seg');
@@ -1710,6 +2105,7 @@
       });
     }
 
+    /* ---------- TOC 高亮 ---------- */
     var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
     if (links.length) {
       var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
@@ -1736,6 +2132,7 @@
       }
     }
 
+    /* ---------- 主题切换 ---------- */
     var root = document.documentElement;
     var themeBtn = document.getElementById('themeToggle');
     var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
@@ -1746,7 +2143,6 @@
       if (attr === 'dark' || attr === 'light') return attr;
       return darkMQ.matches ? 'dark' : 'light';
     }
-
     function applyDonutTheme(isDark) {
       donutSegs.forEach(function (seg) {
         var darkStroke = seg.getAttribute('data-dark-stroke');
@@ -1754,7 +2150,6 @@
         seg.setAttribute('stroke', (isDark && darkStroke) ? darkStroke : baseStroke);
       });
     }
-
     function applyUI() {
       var t = currentTheme();
       if (themeBtn) {
@@ -1765,7 +2160,6 @@
       }
       applyDonutTheme(t === 'dark');
     }
-
     if (themeBtn) {
       themeBtn.addEventListener('click', function () {
         var next = currentTheme() === 'dark' ? 'light' : 'dark';
@@ -1774,12 +2168,54 @@
         applyUI();
       });
     }
-
     function onSystemChange() { if (!root.hasAttribute('data-theme')) applyUI(); }
     if (darkMQ.addEventListener) darkMQ.addEventListener('change', onSystemChange);
     else if (darkMQ.addListener) darkMQ.addListener(onSystemChange);
-
     applyUI();
+
+    /* ---------- FAQ 批量展开 ---------- */
+    var faqBtn = document.getElementById('faqToggleAll');
+    var faqItems = document.querySelectorAll('.faq-item');
+    var faqAllOpen = false;
+    if (faqBtn) {
+      faqBtn.addEventListener('click', function () {
+        faqAllOpen = !faqAllOpen;
+        faqItems.forEach(function (d) { d.open = faqAllOpen; });
+        var span = faqBtn.querySelector('span');
+        if (span) span.textContent = faqAllOpen ? '收起全部' : '展开全部';
+        var svg = faqBtn.querySelector('svg');
+        if (svg) svg.style.transform = faqAllOpen ? 'rotate(180deg)' : '';
+        svg && (svg.style.transition = 'transform .25s ease');
+      });
+    }
+
+    /* ---------- 返回顶部 ---------- */
+    var backTop = document.getElementById('backTop');
+    if (backTop) {
+      var onScroll = function () {
+        if (window.scrollY > 600) backTop.classList.add('show');
+        else backTop.classList.remove('show');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      backTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    /* ---------- 滚动渐隐提示（表格） ---------- */
+    document.querySelectorAll('.scroll-hint').forEach(function (el) {
+      var check = function () {
+        if (el.scrollWidth > el.clientWidth && el.scrollLeft + el.clientWidth < el.scrollWidth - 1) {
+          el.classList.remove('at-end');
+        } else {
+          el.classList.add('at-end');
+        }
+      };
+      el.addEventListener('scroll', check, { passive: true });
+      window.addEventListener('resize', check);
+      check();
+    });
   })();
 </script>
 
