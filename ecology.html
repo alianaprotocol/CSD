@@ -3,1134 +3,779 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
 <meta name="format-detection" content="telephone=no">
-<title>财神生态圈 · 产品文档</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E7%A6%8F%3C/text%3E%3C/svg%3E">
+<title>财神DAO生态圈 · 生态文档</title>
 <style>
-  /* ==========================================================
-     设计令牌 · Light Theme
-     基准：移动端优先 · 8px 垂直节奏 · 红金双色驱动
-     ========================================================== */
   :root{
-    color-scheme: light;
+    color-scheme: light dark;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --red:#a91f27; --red-dark:#7e161c; --red-soft:#fbf4f4; --gold:#a8821c; --gold-d:#8a6a12;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 
-    /* 背景 */
-    --bg: #ffffff;
-    --bg-page: #f7f8fa;
-    --bg-code: #f6f8fa;
-    --bg-subtle: #fafbfc;
+    /* 主色：红 */
+    --cyber:#e02844; --cyber-d:#b91a34; --cyber-l:#ff6b85;
+    --cyber-glow:rgba(224,40,68,.30); --cyber-glow-soft:rgba(224,40,68,.12); --cyber-glow-faint:rgba(224,40,68,.045);
 
-    /* 文字层级 */
-    --ink: #14181d;
-    --ink-2: #3d4650;
-    --ink-3: #6b7280;
-    --muted: #9ca3af;
-    --faint: #c8ced6;
+    /* 状态标签：青 */
+    --teal:#0a7a91; --teal-d:#08606f; --teal-l:#22b8d4;
+    --teal-soft:rgba(10,122,145,.10); --teal-line:rgba(10,122,145,.28);
 
-    /* 分隔线 */
-    --line: #e5e8ec;
-    --line-2: #f1f3f6;
+    /* 警示：琥珀 */
+    --warn:#b45309; --warn-d:#92400e; --warn-soft:#fdf6ec; --warn-line:#f0ddc0;
 
-    /* 品牌色 */
-    --red: #a91f27;
-    --red-dark: #7e161c;
-    --red-soft: #fdf4f5;
-    --gold: #a8821c;
+    --toc-bg:rgba(255,255,255,.92);
+    --abstract-from:#fcfcfd; --abstract-to:#ffffff;
+    --hover-bg:rgba(20,24,29,.05); --active-bg:rgba(224,40,68,.08);
+    --thead-bg:#f4f6f8; --zebra-bg:#fbfcfd; --sum-line:#efd2d4; --scroll-thumb:#d2d8dd;
 
-    /* 赛博红点缀 */
-    --cyber: #ff2d55;
-    --cyber-d: #d91e3d;
-    --cyber-glow: rgba(255, 45, 85, .35);
-    --cyber-glow-soft: rgba(255, 45, 85, .14);
-    --cyber-glow-faint: rgba(255, 45, 85, .05);
-
-    /* 表格 */
-    --thead-bg: #f8f9fb;
-    --zebra-bg: #fcfdfe;
-
-    /* 字体 */
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-
-    /* 间距节奏 */
-    --sp-1: 4px;
-    --sp-2: 8px;
-    --sp-3: 12px;
-    --sp-4: 16px;
-    --sp-5: 20px;
-    --sp-6: 24px;
-    --sp-7: 28px;
-    --sp-8: 32px;
-    --sp-9: 36px;
-    --sp-10: 40px;
-    --sp-12: 48px;
-
-    --r: 3px;
-    --r-sm: 2px;
-
-    /* 移动端排版基准 */
-    --doc-pad: 18px;
-    --fs-base: 14.5px;
-    --lh-base: 1.75;
-    --fs-doc-title: 24px;
-    --fs-sec-title: 17px;
-    --fs-sub-title: 15px;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px;
+    --r:3px;
+    --sans:-apple-system,BlinkMacSystemFont,system-ui,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
   }
-
-  /* 桌面端增强 */
-  @media (min-width: 600px){
-    :root{
-      --doc-pad: 32px;
-      --fs-base: 15px;
-      --lh-base: 1.8;
-      --fs-doc-title: 28px;
-      --fs-sec-title: 18px;
-      --fs-sub-title: 16px;
-    }
-  }
-
-  @media (min-width: 900px){
-    :root{
-      --doc-pad: 40px;
-    }
-  }
-
   *,*::before,*::after{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
   body{
-    margin:0;
-    background:var(--bg-page);
-    color:var(--ink);
-    font-size:var(--fs-base);
-    line-height:var(--lh-base);
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    margin:0; background:var(--bg); color:var(--ink);
+    font-size:15px; line-height:1.8;
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
     overflow-x:hidden;
   }
-  :focus-visible{
-    outline:2px solid var(--cyber);
-    outline-offset:3px;
-    border-radius:4px;
-    box-shadow:0 0 0 4px var(--cyber-glow-soft);
-  }
+  :focus-visible{outline:2px solid var(--cyber); outline-offset:3px; border-radius:4px; box-shadow:0 0 0 4px var(--cyber-glow-soft);}
 
-  /* ==========================================================
-     文档容器 · 移动端全宽 / 桌面端居中
-     ========================================================== */
   .doc{
-    max-width:720px;
-    margin:0 auto;
-    background:var(--bg);
-    min-height:100vh;
-    position:relative;
-    padding:0 var(--doc-pad);
-    overflow-x:hidden;
+    max-width:720px; margin:0 auto; background:var(--card); min-height:100vh;
+    border-left:1px solid var(--line); border-right:1px solid var(--line);
+    position:relative; overflow-x:clip; padding:0 26px;
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .doc::before{
-    content:"";
-    position:absolute;
-    top:0;left:0;right:0;
-    height:3px;
-    background:linear-gradient(90deg,
-      var(--cyber) 0%, var(--cyber) 42%,
-      var(--gold) 42%, var(--gold) 100%);
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--cyber) 0%, var(--cyber) 42%, var(--gold) 42%, var(--gold) 100%);
     z-index:2;
+    box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft);
   }
+  .wrap{padding:0;}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:-.01em;}
 
-  @media (min-width: 760px){
-    .doc{
-      border-left:1px solid var(--line);
-      border-right:1px solid var(--line);
-    }
-  }
-
-  .num{
-    font-variant-numeric:tabular-nums;
-    font-feature-settings:"tnum" 1;
-    letter-spacing:-.01em;
-  }
-
-  /* ==========================================================
-     文件抬头
-     ========================================================== */
-  .masthead{
-    padding:var(--sp-9) 0 var(--sp-6);
-    border-bottom:1.5px solid var(--ink);
-    position:relative;
-  }
-  @media (min-width: 600px){
-    .masthead{padding:var(--sp-12) 0 var(--sp-7);}
-  }
+  /* ================= 抬头 ================= */
+  .masthead{padding:var(--sp-9) 0 26px; border-bottom:1.5px solid var(--ink); position:relative;}
   .masthead::after{
-    content:"";
-    position:absolute;
-    left:0;bottom:-1.5px;
-    width:34%;
-    height:1.5px;
-    background:linear-gradient(90deg, var(--cyber), transparent);
+    content:""; position:absolute; left:0; bottom:-1.5px; width:34%; height:1.5px;
+    background:linear-gradient(90deg, var(--cyber), transparent); box-shadow:0 0 8px var(--cyber-glow);
   }
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 var(--sp-3);
-    line-height:1;
-    display:flex;
-    align-items:center;
-    gap:var(--sp-2);
-  }
+  .mast-row{display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-5);}
+  .mast-left{min-width:0; flex:1;}
+  .eyebrow{margin:0 0 var(--sp-3); line-height:1; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .eyebrow::before{
-    content:"";
-    display:block;
-    width:5px;height:5px;
-    border-radius:50%;
-    background:var(--cyber);
-    flex:none;
+    content:""; display:block; width:5px; height:5px; border-radius:50%;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber); flex:none;
   }
-  .doc-title{
-    margin:0;
-    font-size:var(--fs-doc-title);
-    font-weight:700;
-    letter-spacing:-.018em;
-    line-height:1.25;
-    color:var(--ink);
-    text-wrap:balance;
+  .eb-cn{font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--ink-3); line-height:1;}
+  .eb-en{font-family:var(--mono); font-size:10px; font-weight:400; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); line-height:1;}
+  .doc-title{margin:0; font-size:clamp(23px,5.8vw,28px); font-weight:700; letter-spacing:-.014em; line-height:1.24; color:var(--ink); text-wrap:balance;}
+  .doc-sub{margin:var(--sp-2) 0 0; font-size:13px; color:var(--ink-3); letter-spacing:.02em; line-height:1.55;}
+
+  .theme-toggle{
+    flex:none; display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; padding:0;
+    border:1px solid var(--line); border-radius:8px;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+    margin-top:2px;
   }
-  .doc-sub{
-    margin:var(--sp-2) 0 0;
-    font-size:13px;
-    color:var(--ink-3);
-    letter-spacing:.02em;
-    line-height:1.55;
+  .theme-toggle:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    background:var(--cyber-glow-faint);
   }
+  .theme-toggle:active{background:var(--cyber-glow-soft);}
+  .theme-toggle svg{width:18px; height:18px; display:block;}
+  .theme-toggle .ico-sun{display:none;}
+  .theme-toggle .ico-moon{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
 
   .mast-meta{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:var(--sp-3);
-    margin-top:var(--sp-5);
-    padding-top:var(--sp-4);
-    border-top:1px solid var(--line-2);
-  }
-  @media (min-width: 480px){
-    .mast-meta{
-      grid-template-columns:repeat(3,1fr);
-      gap:var(--sp-3) var(--sp-5);
-      margin-top:var(--sp-7);
-      padding-top:var(--sp-5);
-    }
+    display:flex; flex-wrap:wrap; gap:var(--sp-3) 30px;
+    margin-top:24px; padding-top:var(--sp-4); border-top:1px solid var(--line-2);
   }
   .mast-meta .cell{min-width:0;}
   .mast-meta .k{
-    display:block;
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 5px;
-    line-height:1;
+    display:block; font-size:11px; letter-spacing:.05em;
+    font-weight:600; color:var(--muted); margin:0 0 6px; line-height:1;
   }
-  .mast-meta .v{
-    display:block;
-    font-size:13.5px;
-    font-weight:600;
-    color:var(--ink);
-    letter-spacing:-.005em;
-    line-height:1.45;
-  }
+  .mast-meta .v{display:block; font-size:14px; font-weight:600; color:var(--ink); letter-spacing:.02em; line-height:1.45;}
 
-  /* ==========================================================
-     目录导航 · 移动端横向滚动
-     ========================================================== */
+  /* ================= 目录 ================= */
   .toc{
-    position:sticky;
-    top:0;
-    z-index:20;
-    display:flex;
-    gap:var(--sp-1);
-    margin:0 calc(-1 * var(--doc-pad));
-    padding:var(--sp-3) var(--doc-pad);
-    background:rgba(255,255,255,.94);
+    position:sticky; top:0; z-index:20;
+    display:flex; gap:6px;
+    margin:0 -26px; padding:10px 26px;
+    background:var(--toc-bg);
     backdrop-filter:saturate(180%) blur(14px);
     -webkit-backdrop-filter:saturate(180%) blur(14px);
     border-bottom:1px solid var(--line-2);
-    overflow-x:auto;
-    scrollbar-width:none;
+    overflow-x:auto; scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .toc::-webkit-scrollbar{display:none;}
   .toc-link{
-    flex:none;
-    display:inline-block;
-    padding:6px 12px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:600;
-    color:var(--ink-3);
-    text-decoration:none;
-    background:transparent;
-    border:1px solid transparent;
+    flex:none; display:inline-block;
+    padding:5px 12px; border-radius:999px;
+    font-size:12px; font-weight:600;
+    color:var(--ink-3); text-decoration:none;
+    background:transparent; border:1px solid transparent;
     transition:background .18s ease,color .18s ease,border-color .18s ease;
-    letter-spacing:.02em;
-    white-space:nowrap;
+    letter-spacing:.02em; white-space:nowrap;
     -webkit-tap-highlight-color:transparent;
   }
-  .toc-link:hover{
-    background:var(--bg-subtle);
-    color:var(--ink);
-  }
+  .toc-link:hover{background:var(--bg); color:var(--ink); border-color:var(--line);}
   .toc-link.active{
-    background:var(--cyber-d);
-    color:#fff;
-    border-color:var(--cyber-d);
+    background:var(--cyber-d); color:#fff; border-color:var(--cyber-d);
   }
 
-  /* ==========================================================
-     摘要
-     ========================================================== */
+  /* ================= 摘要 ================= */
   .abstract{
-    padding:var(--sp-6) 0;
-    border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg,#fcfcfd 0%,#ffffff 100%);
+    padding:var(--sp-7) 0; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
+    transition:background .25s ease;
   }
-  @media (min-width: 600px){
-    .abstract{padding:var(--sp-7) 0;}
-  }
-  .abstract p{
-    margin:0;
-    font-size:14px;
-    line-height:1.95;
-    color:var(--ink-2);
-    text-wrap:pretty;
-  }
-  .abstract b{color:var(--ink);font-weight:700;}
-  .abstract .hl{
-    color:var(--cyber-d);
-    font-weight:700;
-    border-bottom:2px solid var(--cyber-glow-soft);
-    padding-bottom:1px;
-  }
+  .abstract p{margin:0; font-size:15px; line-height:2; color:var(--ink-2); text-wrap:pretty;}
+  .abstract b{color:var(--ink); font-weight:700;}
+  .abstract .hl{color:var(--cyber-d); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
 
-  /* ==========================================================
-     章节基础
-     ========================================================== */
-  .sec{
-    padding:var(--sp-8) 0 var(--sp-7);
-    border-bottom:1px solid var(--line);
-    scroll-margin-top:56px;
+  /* ================= 高亮卡 ================= */
+  .hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .hl-card{
+    padding:16px 16px 17px; border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); min-width:0; position:relative; overflow:hidden;
+    transition:border-color .25s ease, background-color .25s ease;
   }
-  @media (min-width: 600px){
-    .sec{padding:var(--sp-12) 0 var(--sp-8);}
+  .hl-card::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--gold); border-radius:0 3px 3px 0;
   }
-  .sec:last-of-type{
-    border-bottom:0;
-    padding-bottom:var(--sp-10);
+  .hl-card.hl-accent::before{background:var(--cyber);}
+  .hl-card:hover{border-color:var(--line); background:var(--bg);}
+  .hl-ico{
+    position:absolute; top:12px; right:12px;
+    width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center;
+    border-radius:6px; background:var(--cyber-glow-faint);
+    color:var(--cyber); opacity:.75;
+    transition:opacity .25s ease, background .25s ease;
   }
+  .hl-ico svg{width:15px; height:15px; display:block;}
+  .hl-card:hover .hl-ico{opacity:1; background:var(--cyber-glow-soft);}
+  .hl-card.hl-accent .hl-ico{background:var(--cyber-glow-soft); opacity:.9;}
+  .hl-num{
+    font-family:var(--mono); font-size:22px; font-weight:700; letter-spacing:-.03em;
+    color:var(--ink); line-height:1.15; margin-bottom:6px; padding-right:32px;
+  }
+  .hl-card.hl-accent .hl-num{color:var(--cyber);}
+  .hl-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.45; letter-spacing:-.005em;}
+  .hl-d{margin-top:6px; font-size:12px; color:var(--muted); line-height:1.7;}
 
-  .sec-head{
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:var(--sp-2) var(--sp-3);
-    align-items:baseline;
-    margin:0 0 var(--sp-5);
-    padding-bottom:var(--sp-4);
-    border-bottom:1px solid var(--line-2);
-  }
-  @media (min-width: 600px){
-    .sec-head{gap:var(--sp-3) var(--sp-4);margin-bottom:var(--sp-6);}
-  }
+  /* ================= 章节 ================= */
+  .sec{padding:40px 0 var(--sp-7); border-bottom:1px solid var(--line); scroll-margin-top:56px;}
+  .sec:last-of-type{border-bottom:0; padding-bottom:var(--sp-10);}
+
+  .sec-head{display:flex; align-items:baseline; gap:var(--sp-3); margin:0 0 var(--sp-5);}
   .sec-idx{
-    font-family:var(--mono);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.08em;
-    color:var(--cyber-d);
-    padding:3px 8px;
-    line-height:1;
-    border:1px solid var(--cyber-glow-soft);
-    border-radius:4px;
+    flex:none; font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.08em;
+    color:var(--cyber); padding:3px 8px; line-height:1;
+    border:1px solid var(--cyber-glow-soft); border-radius:4px;
     background:var(--cyber-glow-faint);
-    align-self:start;
-    margin-top:2px;
   }
   .sec-title{
-    margin:0;
-    font-size:var(--fs-sec-title);
-    font-weight:700;
-    letter-spacing:-.012em;
-    line-height:1.4;
-    color:var(--ink);
+    margin:0; font-size:18px; font-weight:700; letter-spacing:-.01em;
+    line-height:1.35; color:var(--ink);
   }
+
+  /* 章节副标题：状态标签 + 描述 */
   .sec-title span{
+    display:flex; align-items:center; flex-wrap:wrap; gap:7px;
+    margin-top:7px; line-height:1.2;
+  }
+  .sec-title span.sd-en{
     display:block;
-    font-family:var(--mono);
-    font-size:10px;
-    font-weight:400;
+    font-family:var(--mono); font-size:10.5px; font-weight:400;
+    color:var(--muted); letter-spacing:.1em; text-transform:uppercase;
+    margin-top:6px; line-height:1; gap:0;
+  }
+  .sec-title span .st{
+    font-style:normal; font-family:var(--sans);
+    font-size:9.5px; font-weight:700; letter-spacing:.06em;
+    padding:1px 7px; border-radius:3px; line-height:1.65;
+    display:inline-flex; align-items:center; white-space:nowrap;
+  }
+  .st-live{
+    color:var(--teal-d);
+    background:var(--teal-soft);
+    border:1px solid var(--teal-line);
+  }
+  .st-plan{
     color:var(--muted);
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    margin-top:5px;
-    line-height:1;
+    background:transparent;
+    border:1px dashed var(--line);
   }
-  .sec-lead{
-    margin:0 0 var(--sp-5);
-    font-size:13.5px;
-    color:var(--ink-3);
-    line-height:1.85;
-    text-wrap:pretty;
+  .st-coop{
+    color:var(--gold-d);
+    background:rgba(168,130,28,.09);
+    border:1px solid rgba(168,130,28,.30);
   }
+  .sec-title span .sd{
+    font-style:normal; font-family:var(--sans);
+    font-size:10.5px; font-weight:400;
+    color:var(--muted); letter-spacing:.04em; line-height:1.5;
+  }
+
+  .sec-lead{margin:0 0 var(--sp-5); font-size:14px; color:var(--ink-3); line-height:1.9; text-wrap:pretty;}
 
   /* 子章节 */
-  .sub-head{
-    margin:var(--sp-8) 0 var(--sp-4);
-    padding-top:var(--sp-5);
-    border-top:1px solid var(--line-2);
-  }
-  .sub-head:first-child{margin-top:0;padding-top:0;border-top:0;}
-  .sub-head-line{
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:var(--sp-3);
-    align-items:baseline;
-  }
-  .sub-idx{
-    font-family:var(--mono);
-    font-size:10.5px;
-    font-weight:700;
-    letter-spacing:.08em;
-    color:var(--cyber-d);
-    line-height:1.7;
-  }
-  .sub-title{
-    margin:0;
-    font-size:var(--fs-sub-title);
-    font-weight:700;
-    letter-spacing:-.01em;
-    line-height:1.4;
-    color:var(--ink);
-  }
+  .sub-head{margin:var(--sp-7) 0 var(--sp-4); padding-top:var(--sp-5); border-top:1px solid var(--line-2);}
+  .sub-head:first-of-type{margin-top:0; padding-top:0; border-top:0;}
+  .sub-head-line{display:grid; grid-template-columns:auto 1fr; gap:var(--sp-3); align-items:baseline;}
+  .sub-idx{font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.08em; color:var(--cyber); line-height:1.7;}
+  .sub-title{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.01em; line-height:1.4; color:var(--ink);}
   .sub-title span{
-    display:block;
-    font-family:var(--mono);
-    font-size:10px;
-    font-weight:400;
-    color:var(--muted);
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    margin-top:4px;
-    line-height:1;
+    display:block; font-family:var(--mono); font-size:10px; font-weight:400;
+    color:var(--muted); letter-spacing:.1em; text-transform:uppercase;
+    margin-top:4px; line-height:1;
   }
 
-  /* ==========================================================
-     定义列表 · 移动端紧凑
-     ========================================================== */
-  .def{
-    border-top:1px solid var(--line);
-    margin:0;
-  }
+  /* ================= 定义列表 ================= */
+  .def{border-top:1px solid var(--line); margin:0;}
   .def-row{
-    display:grid;
-    grid-template-columns:90px 1fr;
-    gap:var(--sp-3);
-    padding:var(--sp-3) 0;
-    border-bottom:1px solid var(--line-2);
-    align-items:baseline;
-  }
-  @media (min-width: 600px){
-    .def-row{
-      grid-template-columns:118px 1fr;
-      gap:var(--sp-5);
-    }
+    display:grid; grid-template-columns:96px 1fr; gap:var(--sp-3);
+    padding:13px 0; border-bottom:1px solid var(--line-2);
+    align-items:baseline; transition:background-color .2s ease;
+    position:relative;
   }
   .def-row:last-child{border-bottom:0;}
+  .def-row:hover{background:var(--cyber-glow-faint);}
   .def-k{
-    font-family:var(--mono);
-    font-size:10.5px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--muted);
-    line-height:1.75;
-    padding-top:2px;
-    word-break:keep-all;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); line-height:1.8; padding-top:2px; word-break:keep-all;
+    transition:color .2s ease;
   }
-  .def-v{
-    font-size:13.5px;
-    color:var(--ink-2);
-    line-height:1.8;
-    min-width:0;
-    text-wrap:pretty;
-  }
-  .def-v b{color:var(--ink);font-weight:700;}
+  .def-row:hover .def-k{color:var(--cyber);}
+  .def-v{font-size:14px; color:var(--ink-2); line-height:1.85; min-width:0; text-wrap:pretty;}
+  .def-v b{color:var(--ink); font-weight:700;}
   .def-v code{
-    display:inline-block;
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink);
-    background:var(--bg-code);
-    border:1px solid var(--line);
-    border-radius:var(--r-sm);
-    padding:1px 6px;
-    line-height:1.6;
-    word-break:break-all;
+    display:inline-block; font-family:var(--mono); font-size:11.5px;
+    color:var(--ink); background:var(--bg);
+    border:1px solid var(--line); border-radius:var(--r);
+    padding:2px 7px; line-height:1.6; word-break:break-all;
   }
 
-  /* ==========================================================
-     本位对照卡
-     ========================================================== */
-  .basis{
-    border:1px solid var(--cyber-glow-soft);
-    border-left:3px solid var(--cyber);
-    border-radius:var(--r);
-    background:linear-gradient(135deg,var(--cyber-glow-faint),transparent 60%);
-    padding:var(--sp-4);
-    margin:0 0 var(--sp-5);
-  }
-  @media (min-width: 600px){
-    .basis{padding:var(--sp-4) var(--sp-5);margin-bottom:var(--sp-6);}
-  }
-  .basis-title{
-    font-family:var(--mono);
-    font-size:10.5px;
-    font-weight:700;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--cyber-d);
-    margin:0 0 var(--sp-3);
-    line-height:1;
-  }
-  .basis-row{
-    display:grid;
-    grid-template-columns:52px 1fr;
-    gap:var(--sp-3);
-    padding:var(--sp-2) 0;
-    align-items:baseline;
-    border-bottom:1px solid var(--line-2);
-  }
-  @media (min-width: 600px){
-    .basis-row{grid-template-columns:56px 1fr;gap:var(--sp-4);}
-  }
-  .basis-row:last-child{border-bottom:0;padding-bottom:0;}
-  .basis-row:first-of-type{padding-top:0;}
-  .basis-k{
-    font-family:var(--mono);
-    font-size:11px;
-    font-weight:700;
-    color:var(--ink-2);
-    letter-spacing:.06em;
-  }
-  .basis-v{
-    font-size:13.5px;
-    color:var(--ink);
-    line-height:1.75;
-  }
-  .basis-v b{
-    color:var(--cyber-d);
-    font-weight:700;
-  }
-
-  /* ==========================================================
-     分段控件
-     ========================================================== */
-  .segmented{
-    display:flex;
-    gap:2px;
-    padding:3px;
-    background:var(--bg-subtle);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    margin:0 0 var(--sp-4);
-  }
-  .segmented button{
-    flex:1;
-    padding:9px 6px;
-    border:none;
-    border-radius:var(--r-sm);
-    background:transparent;
-    color:var(--ink-3);
-    font-size:12.5px;
-    font-weight:600;
-    font-family:inherit;
-    letter-spacing:.02em;
-    cursor:pointer;
-    transition:background-color .18s ease,color .18s ease;
-    -webkit-tap-highlight-color:transparent;
-    min-height:38px;
-  }
-  .segmented button.active{
-    background:var(--cyber-d);
-    color:#fff;
-  }
-  .panel{display:none;}
-  .panel.active{display:block;animation:fadeIn .22s ease;}
-  @keyframes fadeIn{
-    from{opacity:0;transform:translateY(4px);}
-    to{opacity:1;transform:none;}
-  }
-
-  /* ==========================================================
-     表格 · 移动端横向滚动
-     ========================================================== */
-  .tbl-scroll{
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    background:var(--bg);
-    scrollbar-width:thin;
-    margin:0;
-  }
-  .tbl-scroll::-webkit-scrollbar{height:3px;}
-  .tbl-scroll::-webkit-scrollbar-thumb{
-    background:var(--faint);
-    border-radius:2px;
-  }
-  table{
-    border-collapse:collapse;
-    width:100%;
-    font-size:13px;
-    min-width:100%;
-  }
-  th,td{
-    padding:10px 12px;
-    text-align:right;
-    white-space:nowrap;
-    border-bottom:1px solid var(--line-2);
-    line-height:1.55;
-  }
-  @media (min-width: 600px){
-    th,td{padding:var(--sp-3) var(--sp-4);}
-  }
-  th:first-child,td:first-child{text-align:left;}
-  thead th{
-    background:var(--thead-bg);
-    color:var(--ink-3);
-    font-weight:600;
-    font-family:var(--mono);
-    font-size:10.5px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    border-bottom:1px solid var(--line);
-  }
-  tbody tr:last-child td{border-bottom:0;}
-  tbody tr:nth-child(even){background:var(--zebra-bg);}
-  tbody td{color:var(--ink-2);}
-  tbody td:first-child{
-    color:var(--ink);
-    font-weight:600;
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.02em;
-  }
-  .hl{
-    color:var(--cyber-d)!important;
-    font-weight:700!important;
-  }
-  .tbl-caption{
-    margin:var(--sp-3) 0 0;
-    font-size:11.5px;
-    color:var(--muted);
-    line-height:1.75;
-  }
-
-  /* ==========================================================
-     计算块 · 移动端允许横向滚动
-     ========================================================== */
-  .calc{
-    background:var(--bg-code);
-    border:1px solid var(--line);
-    border-left:3px solid var(--cyber-glow-soft);
-    border-radius:var(--r);
-    padding:var(--sp-4);
-    margin:0 0 var(--sp-4);
-    font-family:var(--mono);
-    font-size:12.5px;
-    line-height:2.1;
-    color:var(--ink-2);
-    overflow-x:auto;
-    white-space:nowrap;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
-  }
-  @media (min-width: 600px){
-    .calc{padding:var(--sp-4) var(--sp-5);}
-  }
-  .calc:last-child{margin-bottom:0;}
-  .calc-label{
-    color:var(--muted);
-    font-size:10.5px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    display:block;
-    margin-bottom:var(--sp-2);
-    font-weight:600;
-    padding-bottom:var(--sp-2);
-    border-bottom:1px dashed var(--line);
-  }
-  .calc-line{color:var(--ink);display:block;}
-  .calc-line .op{color:var(--muted);margin:0 4px;}
-  .calc-line .n{color:var(--ink-2);}
-  .calc-line .r{color:var(--cyber-d);font-weight:700;}
-  .calc-line .u{color:var(--muted);font-size:11.5px;margin-left:2px;}
-
-  /* ==========================================================
-     说明条
-     ========================================================== */
-  .caption{
-    margin:var(--sp-4) 0 0;
-    padding:2px 0 2px var(--sp-3);
-    border-left:2px solid var(--line);
-    font-size:12px;
-    line-height:1.9;
-    color:var(--muted);
-    text-wrap:pretty;
-  }
-  .caption b{color:var(--ink-2);font-weight:600;}
-  .caption.gold{border-left-color:var(--gold);}
-  .caption.red{border-left-color:var(--cyber-d);}
-  .caption.red b{color:var(--cyber-d);}
-
-  /* ==========================================================
-     提示卡
-     ========================================================== */
-  .note{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:var(--sp-2);
-    padding:var(--sp-3) var(--sp-4);
-    border-radius:var(--r);
-    font-size:12.5px;
-    line-height:1.8;
-    margin:0 0 var(--sp-4);
-    border-left:3px solid transparent;
-    text-wrap:pretty;
-  }
-  @media (min-width: 600px){
-    .note{
-      grid-template-columns:auto 1fr;
-      gap:var(--sp-3);
-    }
-  }
-  .note:last-child{margin-bottom:0;}
-  .note-tag{
-    font-family:var(--mono);
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    line-height:1.7;
-  }
-  .note-body{min-width:0;}
-
-  .note.info{
-    background:var(--cyber-glow-faint);
-    border-color:var(--cyber-glow-soft);
-    border-left-color:var(--cyber);
-  }
-  .note.info .note-tag{color:var(--cyber-d);}
-  .note.info .note-body{color:var(--ink-2);}
-  .note.info .note-body b{color:var(--ink);}
-
-  .note.warn{
-    background:var(--red-soft);
-    border-color:#f0d4d7;
-    border-left-color:var(--red-dark);
-  }
-  .note.warn .note-tag{color:var(--red-dark);}
-  .note.warn .note-body{color:var(--ink-2);}
-  .note.warn .note-body b{color:var(--red-dark);}
-
-  .note.gold{
-    background:rgba(168,130,28,.05);
-    border-color:rgba(168,130,28,.18);
-    border-left-color:var(--gold);
-  }
-  .note.gold .note-tag{color:var(--gold);}
-  .note.gold .note-body{color:var(--ink-2);}
-  .note.gold .note-body b{color:var(--ink);}
-
-  /* ==========================================================
-     产品矩阵
-     ========================================================== */
-  .matrix{
-    border-top:1px solid var(--line);
-  }
+  /* ================= 产品矩阵 ================= */
+  .matrix{border-top:1px solid var(--line);}
   .matrix-row{
-    display:grid;
-    grid-template-columns:1fr auto;
-    gap:var(--sp-1) var(--sp-3);
-    padding:var(--sp-4) 0;
-    border-bottom:1px solid var(--line-2);
-    align-items:baseline;
+    display:grid; grid-template-columns:1fr auto; gap:4px 12px;
+    padding:15px 0 14px; border-bottom:1px solid var(--line-2);
+    align-items:center; position:relative;
+    transition:background-color .2s ease;
   }
   .matrix-row:last-child{border-bottom:0;}
-  .matrix-name{
-    font-size:14px;
-    font-weight:600;
-    color:var(--ink);
-    line-height:1.5;
-    letter-spacing:-.005em;
-    min-width:0;
-  }
+  .matrix-row:hover{background:var(--cyber-glow-faint);}
+  .matrix-name{font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.55; letter-spacing:-.005em; min-width:0;}
   .matrix-status{
-    font-family:var(--mono);
-    font-size:9.5px;
-    font-weight:700;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    padding:2px 7px;
-    border-radius:3px;
-    white-space:nowrap;
-    align-self:start;
-    margin-top:2px;
+    font-family:var(--sans); font-size:10px; font-weight:700; letter-spacing:.04em;
+    padding:2px 8px; border-radius:3px;
+    white-space:nowrap; align-self:center; line-height:1.7;
+    display:inline-block;
   }
   .matrix-status.live{
-    color:var(--cyber-d);
-    background:var(--cyber-glow-faint);
-    border:1px solid var(--cyber-glow-soft);
+    color:var(--teal-d);
+    background:var(--teal-soft);
+    border:1px solid var(--teal-line);
   }
   .matrix-status.plan{
     color:var(--muted);
-    background:var(--bg-subtle);
-    border:1px solid var(--line);
+    background:transparent;
+    border:1px dashed var(--line);
   }
-  .matrix-desc{
-    grid-column:1 / -1;
-    font-size:12.5px;
-    color:var(--ink-3);
-    line-height:1.7;
-    margin-top:2px;
+  .matrix-status.op{
+    color:var(--gold-d);
+    background:rgba(168,130,28,.09);
+    border:1px solid rgba(168,130,28,.30);
   }
+  .matrix-desc{grid-column:1 / -1; font-size:13px; color:var(--ink-3); line-height:1.75; margin-top:2px;}
 
-  /* ==========================================================
-     权益网格
-     ========================================================== */
-  .benefits{
-    display:grid;
-    grid-template-columns:1fr;
-    border-top:1px solid var(--line);
-    border-left:1px solid var(--line);
+  /* ================= 规格行 ================= */
+  .spec{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .spec-row{
+    display:grid; grid-template-columns:120px 1fr; gap:var(--sp-5);
+    padding:var(--sp-4) 0; border-bottom:1px solid var(--line-2);
+    transition:background-color .2s ease; position:relative;
   }
-  @media (min-width: 480px){
-    .benefits{grid-template-columns:repeat(2,1fr);}
-  }
-  .benefit{
-    padding:var(--sp-4);
-    border-right:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    min-width:0;
-  }
-  .benefit-idx{
-    font-family:var(--mono);
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:.1em;
-    color:var(--muted);
-    margin-bottom:var(--sp-2);
-    line-height:1;
-    display:block;
-  }
-  .benefit-t{
-    font-size:13px;
-    font-weight:700;
-    color:var(--ink);
-    line-height:1.4;
-    letter-spacing:-.005em;
-  }
-  .benefit-d{
-    margin-top:var(--sp-1);
-    font-size:12px;
-    color:var(--ink-3);
-    line-height:1.7;
-  }
+  .spec-row:hover{background:var(--cyber-glow-faint);}
+  .spec-row:last-child{border-bottom:0;}
+  .spec-k{padding-top:2px; line-height:1.5;}
+  .spec-k-cn{display:block; font-size:11px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); line-height:1.55; margin-bottom:2px;}
+  .spec-k-en{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); line-height:1.4;}
+  .spec-v{font-size:14px; color:var(--ink-2); line-height:1.85; min-width:0; text-wrap:pretty;}
+  .spec-v b{color:var(--ink); font-weight:600;}
 
-  /* ==========================================================
-     生态闭环
-     ========================================================== */
-  .loop{
-    border-top:1px solid var(--line);
+  /* ================= 说明条 ================= */
+  .caption{
+    margin:var(--sp-4) 0 0; padding:2px 0 2px var(--sp-3);
+    border-left:2px solid var(--line);
+    font-size:12.5px; line-height:1.9; color:var(--muted); text-wrap:pretty;
   }
-  .loop-row{
-    display:grid;
-    grid-template-columns:82px 1fr;
-    gap:var(--sp-3);
-    padding:var(--sp-3) 0;
-    border-bottom:1px solid var(--line-2);
-    align-items:baseline;
-  }
-  @media (min-width: 600px){
-    .loop-row{grid-template-columns:96px 1fr;gap:var(--sp-4);}
-  }
-  .loop-row:last-child{border-bottom:0;}
-  .loop-k{
-    font-family:var(--mono);
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--cyber-d);
-    line-height:1.8;
-    padding-top:2px;
-    word-break:keep-all;
-  }
-  .loop-v{
-    font-size:13.5px;
-    font-weight:500;
-    color:var(--ink);
-    line-height:1.8;
-  }
+  .caption b{color:var(--ink-2); font-weight:600;}
+  .caption.gold{border-left-color:var(--gold);}
+  .caption.red{border-left-color:var(--cyber);}
+  .caption.red b{color:var(--cyber-d);}
 
-  /* ==========================================================
-     风险列表
-     ========================================================== */
-  .risks{
-    border-top:1px solid var(--line);
-    counter-reset:risk;
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
-  .risks li{
-    counter-increment:risk;
-    position:relative;
-    padding:var(--sp-3) 0 var(--sp-3) 36px;
-    font-size:12.5px;
-    color:var(--ink-3);
-    line-height:1.85;
-    border-bottom:1px solid var(--line-2);
+  /* ================= 提示卡 ================= */
+  .note{
+    display:grid; grid-template-columns:1fr; gap:var(--sp-2);
+    padding:13px var(--sp-4); border-radius:var(--r);
+    font-size:13px; line-height:1.85; margin:0 0 var(--sp-4);
+    border-left:3px solid transparent;
     text-wrap:pretty;
   }
-  .risks li:last-child{border-bottom:0;}
-  .risks li::before{
-    content:counter(risk,decimal-leading-zero);
-    position:absolute;
-    left:0;top:calc(var(--sp-3) + 3px);
-    font-family:var(--mono);
-    font-size:10.5px;
-    font-weight:700;
-    color:var(--cyber-d);
-    opacity:.75;
-    letter-spacing:.02em;
-  }
+  .note:last-child{margin-bottom:0;}
+  .note-tag{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.1em; line-height:1.7;}
+  .note-body{min-width:0;}
+  .note.info{background:var(--cyber-glow-faint); border-color:var(--cyber-glow-soft); border-left-color:var(--cyber);}
+  .note.info .note-tag{color:var(--cyber-d);}
+  .note.info .note-body{color:var(--ink-2);}
+  .note.info .note-body b{color:var(--ink);}
+  .note.warn{background:var(--warn-soft); border-color:var(--warn-line); border-left-color:var(--warn);}
+  .note.warn .note-tag{color:var(--warn-d);}
+  .note.warn .note-body{color:var(--ink-2);}
+  .note.warn .note-body b{color:var(--warn-d);}
+  .note.gold{background:rgba(168,130,28,.06); border-color:rgba(168,130,28,.2); border-left-color:var(--gold);}
+  .note.gold .note-tag{color:var(--gold-d);}
+  .note.gold .note-body{color:var(--ink-2);}
+  .note.gold .note-body b{color:var(--ink);}
 
-  /* ==========================================================
-     对比表
-     ========================================================== */
+  /* ================= 合作代币 ================= */
+  .partners{display:grid; grid-template-columns:1fr; gap:10px; margin:0 0 var(--sp-4);}
+  .partner-card{
+    padding:15px 16px; border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); position:relative; overflow:hidden;
+    transition:border-color .2s ease, background-color .2s ease;
+  }
+  .partner-card::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--gold); border-radius:0 3px 3px 0;
+  }
+  .partner-card:hover{border-color:rgba(168,130,28,.32); background:rgba(168,130,28,.03);}
+  .partner-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:8px;}
+  .partner-sym{font-family:var(--mono); font-size:15.5px; font-weight:700; color:var(--ink); letter-spacing:-.01em; line-height:1.3;}
+  .partner-role{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); padding:2px 8px; border:1px solid var(--line); border-radius:3px;
+    background:var(--bg); line-height:1.5; flex:none;
+  }
+  .partner-desc{font-size:12.5px; color:var(--ink-3); line-height:1.75; margin:0; text-wrap:pretty;}
+
+  /* ================= 分段控件 ================= */
+  .segmented{
+    display:flex; gap:2px; padding:3px;
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--r);
+    margin:0 0 var(--sp-4);
+  }
+  .segmented button{
+    flex:1; padding:9px 6px; border:none; border-radius:2px;
+    background:transparent; color:var(--ink-3);
+    font-size:13px; font-weight:600; font-family:inherit; letter-spacing:.02em;
+    cursor:pointer; transition:background-color .18s ease, color .18s ease;
+    -webkit-tap-highlight-color:transparent; min-height:38px;
+  }
+  .segmented button:hover{color:var(--cyber); background:var(--cyber-glow-faint);}
+  .segmented button.active{background:var(--cyber-d); color:#fff;}
+  .segmented button:focus-visible{outline:2px solid var(--cyber); outline-offset:-2px;}
+  .panel{display:none;}
+  .panel.active{display:block; animation:fadeIn .22s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  /* ================= 表格 ================= */
+  .tbl-scroll{
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    border:1px solid var(--line); border-radius:var(--r); background:var(--card);
+    scrollbar-width:thin;
+  }
+  .tbl-scroll::-webkit-scrollbar{height:4px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold)); border-radius:2px;}
+
+  table{border-collapse:collapse; width:100%; font-size:13.5px; background:var(--card);}
+  th,td{
+    padding:12px 16px; text-align:right; white-space:nowrap;
+    border-bottom:1px solid var(--line-2); line-height:1.6;
+  }
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    background:var(--thead-bg); color:var(--ink-3); font-weight:600;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; border-bottom:1px solid var(--line);
+  }
+  tbody tr:last-child td{border-bottom:0;}
+  tbody tr:nth-child(even){background:var(--zebra-bg);}
+  tbody tr{transition:background-color .18s ease;}
+  tbody tr:hover{background:var(--cyber-glow-faint);}
+  tbody td{color:var(--ink-2);}
+  tbody td:first-child{
+    color:var(--ink); font-weight:600;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.04em;
+  }
+  .tbl-caption{margin:var(--sp-3) 0 0; font-size:12px; color:var(--muted); line-height:1.75;}
+
+  /* ================= 计算块 ================= */
+  .calc{
+    background:var(--bg); border:1px solid var(--line);
+    border-left:3px solid var(--cyber-glow-soft); border-radius:var(--r);
+    padding:var(--sp-4); margin:0 0 var(--sp-4);
+    font-family:var(--mono); font-size:12.5px; line-height:2.1;
+    color:var(--ink-2); overflow-x:auto; white-space:nowrap;
+    -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+  }
+  .calc:last-child{margin-bottom:0;}
+  .calc:hover{border-left-color:var(--cyber);}
+  .calc-label{
+    color:var(--muted); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    display:block; margin-bottom:var(--sp-2); font-weight:600;
+    padding-bottom:var(--sp-2); border-bottom:1px dashed var(--line);
+  }
+  .calc-line{color:var(--ink); display:block;}
+  .calc-line .op{color:var(--muted); margin:0 4px;}
+  .calc-line .n{color:var(--ink-2);}
+  .calc-line .r{color:var(--cyber); font-weight:700;}
+  .calc-line .u{color:var(--muted); font-size:11.5px; margin-left:2px;}
+
+  /* ================= 权益网格 ================= */
+  .benefits{
+    display:grid; grid-template-columns:1fr;
+    border-top:1px solid var(--line); border-left:1px solid var(--line);
+  }
+  .benefit{
+    padding:var(--sp-4); border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    min-width:0; transition:background-color .2s ease; position:relative;
+  }
+  .benefit:hover{background:var(--cyber-glow-faint);}
+  .benefit-idx{
+    font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.1em;
+    color:var(--muted); margin-bottom:var(--sp-2); line-height:1; display:block;
+  }
+  .benefit-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.45; letter-spacing:-.005em;}
+  .benefit-d{margin-top:var(--sp-1); font-size:12.5px; color:var(--ink-3); line-height:1.7;}
+
+  /* ================= 对比 ================= */
   .compare{
-    display:grid;
-    grid-template-columns:1fr;
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    overflow:hidden;
-    background:var(--bg);
-    margin:0;
+    display:grid; grid-template-columns:1fr;
+    border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--card);
   }
-  @media (min-width: 480px){
-    .compare{grid-template-columns:1fr 1fr;}
-  }
-  .compare-col{
-    padding:var(--sp-4);
-    border-bottom:1px solid var(--line-2);
-    min-width:0;
-  }
-  @media (min-width: 480px){
-    .compare-col{
-      padding:var(--sp-4) var(--sp-5);
-      border-bottom:0;
-      border-right:1px solid var(--line-2);
-    }
-    .compare-col:last-child{border-right:0;}
-  }
+  .compare-col{padding:var(--sp-4); border-bottom:1px solid var(--line-2); min-width:0;}
   .compare-col:last-child{border-bottom:0;}
   .compare-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:var(--sp-2);
-    padding-bottom:var(--sp-3);
-    margin-bottom:var(--sp-2);
-    border-bottom:1px solid var(--line);
+    display:flex; align-items:baseline; justify-content:space-between; gap:var(--sp-2);
+    padding-bottom:var(--sp-3); margin-bottom:var(--sp-2); border-bottom:1px solid var(--line);
   }
-  .compare-name{
-    font-size:13px;
-    font-weight:700;
-    color:var(--ink);
-    letter-spacing:-.005em;
-  }
-  .compare-tag{
-    font-family:var(--mono);
-    font-size:9.5px;
-    letter-spacing:.1em;
-    color:var(--muted);
-    text-transform:uppercase;
-  }
+  .compare-name{font-size:13.5px; font-weight:700; color:var(--ink); letter-spacing:-.005em;}
+  .compare-tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase;}
   .compare-line{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:var(--sp-3);
-    padding:6px 0;
-    font-size:12.5px;
-    border-bottom:1px dashed var(--line-2);
+    display:flex; justify-content:space-between; align-items:baseline; gap:var(--sp-3);
+    padding:6px 0; font-size:13px; border-bottom:1px dashed var(--line-2);
   }
   .compare-line:last-child{border-bottom:0;}
   .compare-line .k{color:var(--muted);}
   .compare-line .v{
-    color:var(--ink);
-    font-family:var(--mono);
-    font-size:12px;
-    font-weight:600;
-    text-align:right;
-    white-space:nowrap;
+    color:var(--ink); font-family:var(--mono); font-size:12px; font-weight:600;
+    text-align:right; white-space:nowrap;
   }
-  .compare-line .v.red{color:var(--cyber-d);}
+  .compare-line .v.red{color:var(--cyber);}
 
-  /* ==========================================================
-     FAQ
-     ========================================================== */
-  .faq{
-    border-top:1px solid var(--line);
+  /* ================= 闭环 ================= */
+  .loop{border-top:1px solid var(--line);}
+  .loop-row{
+    display:grid; grid-template-columns:86px 1fr; gap:var(--sp-3);
+    padding:13px 0; border-bottom:1px solid var(--line-2);
+    align-items:baseline; transition:background-color .2s ease;
   }
-  .faq-item{
-    border-bottom:1px solid var(--line-2);
+  .loop-row:last-child{border-bottom:0;}
+  .loop-row:hover{background:var(--cyber-glow-faint);}
+  .loop-k{
+    font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--cyber); line-height:1.85; padding-top:2px; word-break:keep-all;
   }
+  .loop-v{font-size:14px; font-weight:500; color:var(--ink); line-height:1.8;}
+
+  /* ================= 风险 ================= */
+  .risk-intro{
+    margin:0 0 var(--sp-4); padding:var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-3);
+    border-left:3px solid var(--cyber); background:var(--cyber-glow-faint);
+    font-size:13px; line-height:1.85; color:var(--ink-2); text-wrap:pretty;
+  }
+  .risk-intro b{color:var(--cyber-d); font-weight:700;}
+  .risk-list{display:grid; gap:10px; margin:0; padding:0; list-style:none; counter-reset:risk;}
+  .risk-item{
+    counter-increment:risk; position:relative;
+    padding:12px 14px 12px 42px;
+    border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); font-size:13px; line-height:1.85; color:var(--ink-3);
+    transition:border-color .2s ease, background-color .2s ease;
+    text-wrap:pretty;
+  }
+  .risk-item::before{
+    content:counter(risk, decimal-leading-zero);
+    position:absolute; left:12px; top:12px;
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    color:var(--cyber); letter-spacing:.04em; line-height:1.9;
+  }
+  .risk-item:hover{border-color:var(--line); background:var(--cyber-glow-faint);}
+  .risk-item b{color:var(--ink); font-weight:600;}
+
+  /* ================= FAQ ================= */
+  .faq-tools{display:flex; justify-content:flex-end; margin:-4px 0 var(--sp-3);}
+  .faq-toggle-all{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:5px 11px; border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-size:11.5px; font-weight:600; line-height:1.5;
+    font-family:inherit; cursor:pointer; letter-spacing:.01em;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .faq-toggle-all:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+  }
+  .faq-toggle-all svg{width:12px; height:12px; display:block; opacity:.8; transition:transform .25s ease;}
+
+  .faq-list{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .faq-item{border-bottom:1px solid var(--line-2);}
   .faq-item:last-child{border-bottom:0;}
   .faq-item summary{
-    padding:var(--sp-4) 0;
-    font-size:14px;
-    font-weight:600;
-    color:var(--ink);
-    cursor:pointer;
-    list-style:none;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:var(--sp-4);
-    line-height:1.5;
-    letter-spacing:-.005em;
+    padding:16px 0; font-size:14.5px; font-weight:600; color:var(--ink);
+    cursor:pointer; list-style:none;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    line-height:1.55; letter-spacing:-.005em;
     -webkit-tap-highlight-color:transparent;
-    min-height:48px;
-    position:relative;
+    transition:color .15s ease; position:relative;
   }
   .faq-item summary::-webkit-details-marker{display:none;}
   .faq-item summary::after{
-    content:"+";
-    font-family:var(--mono);
-    font-size:17px;
-    font-weight:400;
-    color:var(--muted);
-    flex:none;
-    line-height:1;
+    content:"+"; font-family:var(--mono); font-size:17px; font-weight:400;
+    color:var(--muted); flex:none; line-height:1;
     transition:color .18s ease, transform .3s ease;
   }
-  .faq-item[open] summary::after{
-    content:"−";
-    color:var(--cyber-d);
-    transform:rotate(180deg);
-  }
+  .faq-item[open] summary::after{content:"−"; color:var(--cyber); transform:rotate(180deg);}
+  .faq-item summary:hover{color:var(--cyber);}
   .faq-item[open] summary{color:var(--cyber-d);}
   .faq-a{
-    padding:0 var(--sp-5) var(--sp-4) 0;
-    font-size:13px;
-    line-height:1.85;
-    color:var(--ink-3);
-    animation: faqIn .3s ease;
-    text-wrap:pretty;
+    padding:0 24px 16px 0; font-size:13.5px; line-height:1.9; color:var(--ink-3);
+    animation:faqIn .3s ease; text-wrap:pretty;
   }
-  @keyframes faqIn{
-    from{opacity:0; transform:translateY(-4px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .faq-a b{color:var(--ink-2);font-weight:600;}
+  @keyframes faqIn{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+  .faq-a b{color:var(--ink-2); font-weight:600;}
   .faq-a code{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink-2);
-    background:var(--bg-code);
-    border:1px solid var(--line);
-    border-radius:var(--r-sm);
-    padding:1px 6px;
+    font-family:var(--mono); font-size:12px; color:var(--ink-2);
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--r); padding:1px 6px;
+    word-break:break-all;
   }
 
-  /* ==========================================================
-     页脚
-     ========================================================== */
-  .doc-foot{
-    padding:var(--sp-6) 0 var(--sp-10);
-    border-top:1px solid var(--line);
-    margin-top:var(--sp-8);
-    position:relative;
-  }
-  @media (min-width: 600px){
-    .doc-foot{
-      padding:var(--sp-7) 0 var(--sp-12);
-      margin-top:var(--sp-9);
-    }
-  }
+  /* ================= 页脚 ================= */
+  .doc-foot{padding:26px 0 var(--sp-10); border-top:1px solid var(--line); margin-top:32px; position:relative;}
   .doc-foot::before{
-    content:"";
-    position:absolute;
-    top:-1px;left:0;
-    width:34%;
-    height:1px;
-    background:linear-gradient(90deg, var(--cyber), transparent);
+    content:""; position:absolute; top:-1px; left:0; width:34%; height:1px;
+    background:linear-gradient(90deg, var(--cyber), transparent); box-shadow:0 0 8px var(--cyber-glow);
   }
   .foot-row{
-    display:flex;
-    justify-content:space-between;
-    gap:var(--sp-3);
-    flex-wrap:wrap;
-    padding:var(--sp-2) 0;
-    border-bottom:1px solid var(--line-2);
+    display:flex; justify-content:space-between; gap:var(--sp-4); flex-wrap:wrap;
+    padding:var(--sp-2) 0; border-bottom:1px solid var(--line-2);
   }
   .foot-row:last-of-type{border-bottom:0;}
   .foot-k{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--muted);
-    line-height:1.9;
-    flex:none;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); line-height:1.8; flex:none;
   }
   .foot-v{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--ink-3);
-    line-height:1.9;
-    word-break:break-all;
-    text-align:right;
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    line-height:1.8; word-break:break-all; text-align:right;
   }
+  .foot-v a{color:var(--ink-2); text-decoration:none; border-bottom:1px dashed var(--line); transition:color .18s ease, border-color .18s ease;}
+  .foot-v a:hover{color:var(--cyber); border-bottom-color:var(--cyber-glow-soft);}
   .disc{
-    margin-top:var(--sp-5);
-    padding-top:var(--sp-4);
+    margin-top:var(--sp-5); padding-top:var(--sp-4);
     border-top:1px solid var(--line-2);
-    font-size:11px;
-    color:var(--muted);
-    line-height:2;
+    font-size:11px; color:var(--muted); line-height:1.95;
   }
 
-  /* ==========================================================
-     小屏微调
-     ========================================================== */
-  @media (max-width: 400px){
-    :root{
-      --doc-pad: 16px;
-      --fs-base: 14px;
-      --fs-doc-title: 22px;
-      --fs-sec-title: 16px;
-      --fs-sub-title: 14.5px;
+  /* ================= 返回顶部 / Toast ================= */
+  .back-top{
+    position:fixed; right:20px;
+    bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index:30; width:40px; height:40px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); border-radius:50%;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
+    opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .back-top.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .back-top:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+  }
+  .back-top svg{width:18px; height:18px; display:block;}
+
+  #toast{
+    position:fixed; left:50%;
+    bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+    transform:translateX(-50%) translateY(20px);
+    padding:10px 20px 10px 16px; border-radius:999px;
+    background:var(--ink); color:#fff;
+    font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 4px 12px -4px rgba(20,24,29,.2);
+    opacity:0; pointer-events:none;
+    transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
+    z-index:9999; display:inline-flex; align-items:center; gap:8px; white-space:nowrap;
+  }
+  #toast::before{
+    content:"✓"; display:inline-flex; align-items:center; justify-content:center;
+    width:16px; height:16px; border-radius:50%;
+    background:var(--cyber); color:#fff; font-size:10px; font-weight:700; line-height:1;
+  }
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ================= 暗色 ================= */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+      --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a; --gold-d:#e0b85a;
+      --cyber:#e64357; --cyber-d:#ff5a6a; --cyber-l:#ff8a98;
+      --cyber-glow:rgba(230,67,87,.40); --cyber-glow-soft:rgba(230,67,87,.16); --cyber-glow-faint:rgba(230,67,87,.06);
+
+      --teal:#2dd4e8; --teal-d:#0a7a91; --teal-l:#7ce8f5;
+      --teal-soft:rgba(45,212,232,.10); --teal-line:rgba(45,212,232,.30);
+
+      --warn:#f59e0b; --warn-d:#fbbf24; --warn-soft:#221a0d; --warn-line:#3d2e12;
+
+      --toc-bg:rgba(16,22,30,.92);
+      --abstract-from:#161c25; --abstract-to:#10161e;
+      --hover-bg:rgba(230,236,240,.06); --active-bg:rgba(230,67,87,.14);
+      --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
     }
-    .def-row{grid-template-columns:76px 1fr;gap:var(--sp-2);}
-    .loop-row{grid-template-columns:70px 1fr;gap:var(--sp-2);}
-    .foot-row{flex-direction:column;gap:2px;}
+    :root:not([data-theme="light"]) .st-live,
+    :root:not([data-theme="light"]) .matrix-status.live{color:var(--teal);}
+    :root:not([data-theme="light"]) .st-coop,
+    :root:not([data-theme="light"]) .matrix-status.op{color:var(--gold);background:rgba(212,168,42,.10);border-color:rgba(212,168,42,.32);}
+    :root:not([data-theme="light"]) #toast{
+      background:#e6eaf0; color:#10161e;
+    }
+  }
+
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+    --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a; --gold-d:#e0b85a;
+    --cyber:#e64357; --cyber-d:#ff5a6a; --cyber-l:#ff8a98;
+    --cyber-glow:rgba(230,67,87,.40); --cyber-glow-soft:rgba(230,67,87,.16); --cyber-glow-faint:rgba(230,67,87,.06);
+
+    --teal:#2dd4e8; --teal-d:#0a7a91; --teal-l:#7ce8f5;
+    --teal-soft:rgba(45,212,232,.10); --teal-line:rgba(45,212,232,.30);
+
+    --warn:#f59e0b; --warn-d:#fbbf24; --warn-soft:#221a0d; --warn-line:#3d2e12;
+
+    --toc-bg:rgba(16,22,30,.92);
+    --abstract-from:#161c25; --abstract-to:#10161e;
+    --hover-bg:rgba(230,236,240,.06); --active-bg:rgba(230,67,87,.14);
+    --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
+  }
+  :root[data-theme="dark"] .st-live,
+  :root[data-theme="dark"] .matrix-status.live{color:var(--teal);}
+  :root[data-theme="dark"] .st-coop,
+  :root[data-theme="dark"] .matrix-status.op{color:var(--gold);background:rgba(212,168,42,.10);border-color:rgba(212,168,42,.32);}
+  :root[data-theme="dark"] #toast{
+    background:#e6eaf0; color:#10161e;
+  }
+  :root[data-theme="light"]{color-scheme: light;}
+
+  /* ================= 响应式 ================= */
+  @media (max-width: 720px){
+    .toc-link{padding:8px 14px; min-height:40px; display:inline-flex; align-items:center;}
+    .theme-toggle{width:40px; height:40px;}
+    .theme-toggle svg{width:19px; height:19px;}
+    .faq-toggle-all{padding:8px 14px; min-height:36px;}
+    .partners{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (max-width: 600px){
+    .doc{padding:0 20px;}
+    .toc{margin:0 -20px; padding:8px 20px;}
+    .benefits{grid-template-columns:1fr;}
+    .note{grid-template-columns:1fr; gap:var(--sp-2);}
+    .partners{grid-template-columns:1fr;}
+  }
+
+  @media (min-width: 480px){
+    .benefits{grid-template-columns:repeat(2,1fr);}
+    .compare{grid-template-columns:1fr 1fr;}
+    .compare-col{border-bottom:0; border-right:1px solid var(--line-2); padding:var(--sp-4) var(--sp-5);}
+    .compare-col:last-child{border-right:0;}
+  }
+
+  @media (max-width: 480px){
+    body{font-size:15.5px; line-height:1.85;}
+    .abstract p{font-size:15px; line-height:2;}
+    .def-row{grid-template-columns:80px 1fr; gap:var(--sp-2);}
+    .def-v{font-size:14px; line-height:1.85;}
+    .loop-row{grid-template-columns:72px 1fr; gap:var(--sp-2);}
+    .calc{font-size:12px;}
+    .tbl-caption{font-size:12px;}
+    .faq-a{font-size:14px; line-height:1.9;}
+    .risk-item{font-size:13.5px; line-height:1.85;}
+    .sec-lead{font-size:14.5px;}
+    .spec-row{grid-template-columns:1fr; gap:4px; padding:14px 0;}
+    .spec-k{padding-top:0;}
+    .spec-k-cn{font-size:11.5px;}
+    .spec-k-en{font-size:9.5px;}
+    .faq-tools{justify-content:stretch; margin:-6px 0 12px;}
+    .faq-toggle-all{width:100%; justify-content:center; padding:10px 14px; font-size:12.5px;}
+    .matrix-row{padding:14px 0 13px;}
+    .matrix-name{font-size:14.5px;}
+    .partner-card{padding:14px;}
+    .partner-sym{font-size:15px;}
+  }
+
+  @media (max-width: 400px){
+    .doc{padding:0 18px;}
+    .toc{margin:0 -18px; padding:8px 18px;}
+    .doc-title{font-size:21px;}
+    .doc-sub{font-size:12.5px;}
+    .theme-toggle{width:32px; height:32px; margin-top:1px;}
+    .theme-toggle svg{width:16px; height:16px;}
+    .mast-meta{gap:var(--sp-3) 20px;}
+    .hl-grid{grid-template-columns:1fr; gap:8px;}
+    .hl-card{padding:14px 14px 15px;}
+    .hl-num{font-size:20px;}
+    .hl-ico{width:24px; height:24px; top:10px; right:10px;}
+    .hl-ico svg{width:14px; height:14px;}
+    .def-row{grid-template-columns:72px 1fr; gap:6px;}
+    .loop-row{grid-template-columns:64px 1fr; gap:6px;}
+    .foot-row{flex-direction:column; gap:2px;}
     .foot-v{text-align:left;}
-    .matrix-row{gap:var(--sp-1);}
+    .risk-item{padding:10px 12px 10px 38px; font-size:13px;}
+    .risk-item::before{left:10px; top:10px; font-size:10px;}
+    .faq-item summary{padding:14px 0; font-size:14px;}
+    .faq-a{padding-right:8px;}
+    .back-top{right:14px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); width:38px; height:38px;}
+    #toast{bottom:calc(64px + env(safe-area-inset-bottom, 0px));}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1140,34 +785,106 @@
       scroll-behavior:auto !important;
     }
   }
+
+  @media print{
+    :root{
+      color-scheme: light;
+      --ink:#000; --ink-2:#222; --ink-3:#444; --muted:#555;
+      --line:#ccc; --line-2:#e5e5e5; --bg:#fff; --card:#fff;
+      --cyber:#a91f27; --cyber-d:#7e161c; --cyber-l:#a91f27;
+      --cyber-glow:transparent; --cyber-glow-soft:transparent; --cyber-glow-faint:transparent;
+      --teal:#0a7a91; --teal-d:#08525f; --teal-l:#0a7a91;
+      --teal-soft:transparent; --teal-line:#cfe0e4;
+      --gold:#7a5f10; --gold-d:#7a5f10;
+      --warn:#8a5a10; --warn-d:#6d470c; --warn-soft:#fdf8f0; --warn-line:#e0d3b8;
+      --toc-bg:#fff; --abstract-from:#fff; --abstract-to:#fff;
+      --hover-bg:#fff; --thead-bg:#f5f5f5; --zebra-bg:#fafafa; --scroll-thumb:#ccc;
+    }
+    @page{margin:16mm 14mm;}
+    html{font-size:10.5pt;}
+    body{background:#fff; color:#000; font-size:10.5pt; line-height:1.6;}
+    .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
+    .doc::before, .masthead::after, .doc-foot::before{display:none !important;}
+    .theme-toggle, .toc, .back-top, .faq-tools, #toast, .segmented{display:none !important;}
+    .panel{display:block !important;}
+    .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
+    .sec-head{margin-bottom:10px;}
+    .sec-title{font-size:13pt;}
+    .hl-card,.note,.risk-item,.benefit,.compare,.calc,.tbl-scroll,.matrix-row,.loop-row,.def-row,.spec-row,.partner-card{box-shadow:none !important;}
+    .tbl-scroll{overflow:visible !important;}
+    table{min-width:0 !important;}
+    .hl-card:hover,.risk-item:hover,.matrix-row:hover,.def-row:hover,.loop-row:hover,.benefit:hover,.partner-card:hover{transform:none !important;}
+    details{display:block !important;}
+    details > summary{display:none !important;}
+    details:not([open]) > *:not(summary){display:block !important;}
+    a[href^="http"]::after{content:" (" attr(href) ")"; font-family:var(--mono); font-size:8.5pt; color:#666; word-break:break-all;}
+  }
 </style>
+
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 <div class="doc">
 
-  <!-- ============ 文件抬头 ============ -->
-  <header class="masthead">
-    <div class="eyebrow">Product Documentation</div>
-    <h1 class="doc-title">财神生态圈</h1>
-    <p class="doc-sub">产品体系文档 · 内部参阅</p>
+  <!-- ================= 抬头 ================= -->
+  <header class="wrap masthead">
+    <div class="mast-row">
+      <div class="mast-left">
+        <div class="eyebrow">
+          <span class="eb-cn">生态文档</span>
+          <span class="eb-en">ECOLOGY Documentation</span>
+        </div>
+        <h1 class="doc-title">财神DAO生态圈</h1>
+        <p class="doc-sub">从信仰到资产 · 从文化到娱乐的完整链上财神宇宙</p>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
 
     <div class="mast-meta">
       <div class="cell">
-        <span class="k">Version</span>
-        <span class="v num">V2.7</span>
+        <span class="k">版本</span>
+        <span class="v num">V2.9</span>
       </div>
       <div class="cell">
-        <span class="k">Existing</span>
+        <span class="k">已上线</span>
         <span class="v">燃香赐福 · 聚宝盆</span>
       </div>
       <div class="cell">
-        <span class="k">Planned</span>
-        <span class="v num">6 Products</span>
+        <span class="k">已集成</span>
+        <span class="v">4 合作代币</span>
+      </div>
+      <div class="cell">
+        <span class="k">规划中</span>
+        <span class="v num">6 板块 + 活动层</span>
       </div>
     </div>
   </header>
 
-  <!-- ============ 目录 ============ -->
+  <!-- ================= 目录 ================= -->
   <nav class="toc" aria-label="文档导航">
     <a class="toc-link" href="#overview">总览</a>
     <a class="toc-link" href="#incense">燃香赐福</a>
@@ -1176,43 +893,85 @@
     <a class="toc-link" href="#culture">文化院</a>
     <a class="toc-link" href="#mall">商城</a>
     <a class="toc-link" href="#game">小游戏</a>
+    <a class="toc-link" href="#partners">合作生态</a>
+    <a class="toc-link" href="#season">活动层</a>
     <a class="toc-link" href="#loop">生态闭环</a>
     <a class="toc-link" href="#risk">风险提示</a>
+    <a class="toc-link" href="#faq">FAQ</a>
   </nav>
 
-  <!-- ============ 摘要 ============ -->
-  <section class="abstract">
+  <!-- ================= 摘要 ================= -->
+  <section class="wrap abstract">
     <p>
-      财神生态圈以 <b>$财神到</b> 为核心，连接信仰、资产、文化、教育、娱乐、消费与治理。
-      现有双引擎为 <span class="hl">燃香赐福</span> 与 <span class="hl">聚宝盆</span>，
-      未来将拓展财神 NFT、财神文化院、财神商城、财神小游戏、财神 DAO 与财神福报，
-      形成完整的链上财神宇宙。本文档用于团队内部理解产品机制与规划方向。
+      财神生态圈以 <b>$财神DAO</b> 为唯一核心资产，连接信仰、资产、文化、教育、娱乐、消费与治理。
+      现有双引擎为 <span class="hl">燃香赐福</span> 与 <span class="hl">聚宝盆</span>：
+      前者以「燃香即销毁」构建通缩入口，后者以「单宝 / 双宝」两种本位模型承接质押需求。
+      在此基础上，财神 NFT、财神文化院、财神商城、财神小游戏、财神 DAO 与财神福报将依次展开，
+      并接入 <span class="hl">Antfun / BG / LUCKY99 / FIST</span> 等合作代币与横向的 <span class="hl">运营活动层</span>，
+      形成从信仰到资产、从文化到娱乐的完整闭环。本文档用于团队内部理解产品架构、机制口径与规划边界；
+      单次活动的执行细则以独立活动文档为准。
     </p>
   </section>
 
-  <!-- ============ 01 总览 ============ -->
-  <section class="sec" id="overview">
+  <!-- ================= 01 总览 ================= -->
+  <section class="wrap sec" id="overview">
     <div class="sec-head">
       <span class="sec-idx">01</span>
-      <h2 class="sec-title">总览<span>Product Overview</span></h2>
+      <h2 class="sec-title">总览<span class="sd-en">Product Overview</span></h2>
     </div>
 
     <p class="sec-lead">
-      财神生态圈由现有双引擎与未来六大板块构成，形成从信仰到资产、从文化到娱乐的完整闭环。
+      财神DAO生态圈由「现有双引擎 + 未来六大板块 + 合作代币 + 横向运营活动层」构成。每个产品承担一个明确的入口职能，
+      彼此以 $财神DAO 为价值纽带，形成可循环、可验证、可持续的生态结构。
     </p>
 
-    <div class="def">
-      <div class="def-row">
-        <span class="def-k">主标语</span>
-        <span class="def-v">燃香赐福，聚宝盆聚财，财神宇宙由此展开</span>
+    <div class="hl-grid">
+      <div class="hl-card hl-accent">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        </span>
+        <div class="hl-num">2</div>
+        <div class="hl-t">现有双引擎</div>
+        <div class="hl-d">燃香赐福负责通缩与信仰入口，聚宝盆负责质押与资产留存</div>
       </div>
-      <div class="def-row">
-        <span class="def-k">副标语</span>
-        <span class="def-v">拜财神，聚财气，建生态，共福报</span>
+      <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </span>
+        <div class="hl-num">20M</div>
+        <div class="hl-t">燃香燃烧总额度</div>
+        <div class="hl-d">全周期上限 20,000,000 枚，对应返还池 50,224,000 枚</div>
       </div>
-      <div class="def-row">
-        <span class="def-k">核心资产</span>
-        <span class="def-v"><b>$财神到</b></span>
+      <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+        </span>
+        <div class="hl-num">108</div>
+        <div class="hl-t">创世 NFT 总量</div>
+        <div class="hl-d">金身 2 · 招财尊 16 · 财神令 90，极少数创世身份凭证</div>
+      </div>
+      <div class="hl-card">
+        <span class="hl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </span>
+        <div class="hl-num">8</div>
+        <div class="hl-t">生态入口</div>
+        <div class="hl-d">信仰 · 资产 · 身份 · 文化 · 消费 · 娱乐 · 治理 · 公益</div>
+      </div>
+    </div>
+
+    <div class="note info" style="margin-top:var(--sp-4);">
+      <span class="note-tag">合作</span>
+      <div class="note-body">
+        目前合作代币包括 <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，通过聚宝盆双宝组合接入生态，
+        不改变燃香赐福与单宝质押的币本位机制，也不影响 $财神DAO 的核心地位。
+      </div>
+    </div>
+    <div class="note info">
+      <span class="note-tag">活动</span>
+      <div class="note-body">
+        <b>运营活动层</b>是横向运营模块，不是独立产品：以赛季制竞赛、任务与排行榜为各产品导流，
+        奖励来自生态预算中的空投营销与运营份额，<b>不新增铸币，不动燃香返还池与质押本金池</b>。
       </div>
     </div>
 
@@ -1226,46 +985,103 @@
     <div class="matrix">
       <div class="matrix-row">
         <div class="matrix-name">燃香赐福</div>
-        <span class="matrix-status live">Existing</span>
-        <div class="matrix-desc">财神直播间限定。燃香打入黑洞，赐福按币本位每日释放，连续 365 天。</div>
+        <span class="matrix-status live">已上线</span>
+        <div class="matrix-desc">财神直播间限定。燃香打入黑洞、永不回流，赐福按币本位每日释放，连续 365 天，累计返还 251.12%。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">聚宝盆</div>
-        <span class="matrix-status live">Existing</span>
-        <div class="matrix-desc">质押 $财神到，单宝或双宝组合，多周期生息，收益按日线性释放。</div>
+        <span class="matrix-status live">已上线</span>
+        <div class="matrix-desc">质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">合作代币</div>
+        <span class="matrix-status op">已集成</span>
+        <div class="matrix-desc">Antfun · BG · LUCKY99 · FIST。通过聚宝盆双宝组合接入，金本位计算、币本位发放，不改变单宝与燃香的币本位机制。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">财神 NFT</div>
-        <span class="matrix-status plan">Planned</span>
-        <div class="matrix-desc">极少数创世竞拍。独有权益与生态分红，作为财神生态圈的创世身份凭证。</div>
+        <span class="matrix-status plan">规划中</span>
+        <div class="matrix-desc">极少数创世竞拍，共 108 枚、唯一编号。持有者享有专属权益与生态分红权重，作为财神宇宙的创世身份凭证。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">财神文化院</div>
-        <span class="matrix-status plan">Planned</span>
-        <div class="matrix-desc">风水命理教育板块。文化传承、知识学习与命理师、风水师入驻服务网络。</div>
+        <span class="matrix-status plan">规划中</span>
+        <div class="matrix-desc">风水命理教育板块。课程体系、命理师与风水师入驻网络、认证与咨询服务平台。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">财神商城</div>
-        <span class="matrix-status plan">Planned</span>
-        <div class="matrix-desc">财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神到 支付。</div>
+        <span class="matrix-status plan">规划中</span>
+        <div class="matrix-desc">财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神DAO 支付，NFT 持有者享折扣。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">财神小游戏</div>
-        <span class="matrix-status plan">Planned</span>
-        <div class="matrix-desc">玩游戏赚 $财神到，购买道具皮肤，NFT 道具可交易。</div>
+        <span class="matrix-status plan">规划中</span>
+        <div class="matrix-desc">娱乐板块。玩游戏赚 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-name">财神赛季 · 运营活动</div>
+        <span class="matrix-status op">运营层</span>
+        <div class="matrix-desc">横向运营模块，按赛季开展交易竞赛、小游戏赛季、文化知识赛与 DAO 提案赛；奖励来自生态预算，不新增铸币，具体规则以单次活动公告为准。</div>
       </div>
     </div>
+
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">01·B</span>
+        <h3 class="sub-title">推进节奏<span>Rollout Phases</span></h3>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">阶段一</span>
+          <span class="spec-k-en">Phase 01</span>
+        </div>
+        <div class="spec-v"><b>已上线</b> —— 燃香赐福、聚宝盆。完成「通缩入口 + 资产留存」的最小闭环，验证数值模型与用户路径。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">阶段二</span>
+          <span class="spec-k-en">Phase 02</span>
+        </div>
+        <div class="spec-v"><b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">阶段三</span>
+          <span class="spec-k-en">Phase 03</span>
+        </div>
+        <div class="spec-v"><b>消费与内容</b> —— 财神商城、财神文化院。让 $财神DAO 获得真实支付场景与内容供给。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">阶段四</span>
+          <span class="spec-k-en">Phase 04</span>
+        </div>
+        <div class="spec-v"><b>娱乐与治理</b> —— 财神小游戏、财神 DAO、财神福报。以高频互动与社区共治完成生态自循环。</div>
+      </div>
+    </div>
+
+    <p class="caption">
+      <b>说明：</b>阶段划分为规划顺序，实际推进以官方公告为准。每个产品上线前均会单独发布机制文档，
+      明确数值口径、发放来源与风控边界。
+    </p>
+    <p class="caption gold">
+      <b>横向层：</b>合作代币与运营活动层不占用阶段编号，按需穿插在各阶段之间，为对应产品导流。
+    </p>
   </section>
 
-  <!-- ============ 02 燃香赐福 ============ -->
-  <section class="sec" id="incense">
+  <!-- ================= 02 燃香赐福 ================= -->
+  <section class="wrap sec" id="incense">
     <div class="sec-head">
       <span class="sec-idx">02</span>
-      <h2 class="sec-title">燃香赐福<span>Existing Product</span></h2>
+      <h2 class="sec-title">燃香赐福<span><em class="st st-live">已上线</em><em class="sd">通缩入口</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      每日财神直播间限定活动。燃香打入黑洞，链上公开可查，不可撤回。赐福按币本位每日释放，连续 365 天。
+      每日财神直播间限定活动。用户燃香即把 $财神DAO 打入黑洞地址，链上公开可查、不可撤回；
+      赐福按币本位每日释放，连续 365 天，累计返还燃烧量的 251.12%。
     </p>
 
     <div class="def">
@@ -1275,11 +1091,11 @@
       </div>
       <div class="def-row">
         <span class="def-k">总额度</span>
-        <span class="def-v"><b>20M 固定</b>，额满即止</span>
+        <span class="def-v"><b>20,000,000 枚固定</b>，额满即止</span>
       </div>
       <div class="def-row">
         <span class="def-k">燃香方式</span>
-        <span class="def-v">打入黑洞，不可撤回</span>
+        <span class="def-v">打入黑洞地址，<b>不可撤回</b></span>
       </div>
       <div class="def-row">
         <span class="def-k">赐福方式</span>
@@ -1287,60 +1103,160 @@
       </div>
       <div class="def-row">
         <span class="def-k">每日释放</span>
-        <span class="def-v"><code>0.688%</code></span>
+        <span class="def-v"><code>0.688%</code> / 天</span>
       </div>
       <div class="def-row">
         <span class="def-k">总返还率</span>
-        <span class="def-v"><code>251.12%</code></span>
+        <span class="def-v"><code>251.12%</code>（0.688% × 365）</span>
       </div>
       <div class="def-row">
         <span class="def-k">领取入口</span>
-        <span class="def-v"><code>lock.jup.ag</code></span>
+        <span class="def-v"><code>lock.jup.ag</code> 链上托管领取</span>
       </div>
       <div class="def-row">
         <span class="def-k">领取时间</span>
-        <span class="def-v">T+1 起可领取</span>
+        <span class="def-v">T+1 起可领取，建议 24 个月内领取有效</span>
       </div>
     </div>
 
-    <p class="caption">
-      <b>示例：</b>以 10,000 为例，每日领取 68.8，连续 365 天，总计领取 25,112。示例仅用于说明，实际以官方页面为准。
-    </p>
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">02·A</span>
+        <h3 class="sub-title">返还池与代币分配的关系<span>Pool Consistency</span></h3>
+      </div>
+    </div>
+
+    <div class="note info">
+      <span class="note-tag">关联</span>
+      <div class="note-body">
+        燃香赐福的返还来源为代币经济文档中的 <b>燃香赐福池 50,224,000 枚</b>，
+        与燃烧总额度严格对应：<b>20,000,000 × 251.12% = 50,224,000</b>。
+        也就是说，全周期可燃烧上限与可返还上限在总量层面完全闭合，不存在超额承诺。
+      </div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">返还池闭合验算</span>
+      <div class="calc-line">燃烧总额度 <span class="op">=</span> <span class="n">20,000,000</span><span class="u">枚</span></div>
+      <div class="calc-line">单枚返还倍数 <span class="op">=</span> <span class="n">0.688%</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">251.12%</span></div>
+      <div class="calc-line">返还池上限 <span class="op">=</span> <span class="n">20,000,000</span> <span class="op">×</span> <span class="n">251.12%</span> <span class="op">=</span> <span class="r">50,224,000</span><span class="u">枚</span></div>
+      <div class="calc-line">与代币分配「燃香赐福池」 <span class="op">=</span> <span class="r">完全一致</span></div>
+    </div>
+
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">02·B</span>
+        <h3 class="sub-title">领取示例<span>Example · 以 10,000 枚为例</span></h3>
+      </div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">计算公式</span>
+      <div class="calc-line">每日赐福 <span class="op">=</span> 燃烧数量 <span class="op">×</span> <span class="n">0.688%</span></div>
+      <div class="calc-line">累计返还 <span class="op">=</span> 每日赐福 <span class="op">×</span> <span class="n">365</span></div>
+    </div>
+
+    <div class="calc">
+      <span class="calc-label">示例 · 燃烧 10,000 枚 $财神DAO</span>
+      <div class="calc-line">每日赐福 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.688%</span> <span class="op">=</span> <span class="r">68.8</span><span class="u">枚/天</span></div>
+      <div class="calc-line">累计返还 <span class="op">=</span> <span class="n">68.8</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">25,112</span><span class="u">枚</span></div>
+      <div class="calc-line">净增数量 <span class="op">=</span> <span class="n">25,112</span> <span class="op">−</span> <span class="n">10,000</span> <span class="op">=</span> <span class="r">15,112</span><span class="u">枚</span></div>
+    </div>
+
+    <div class="tbl-scroll" style="margin-top:var(--sp-4);">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">燃烧数量</th>
+            <th scope="col">每日赐福</th>
+            <th scope="col">365 天累计</th>
+            <th scope="col">净增数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1,000</td><td>6.88</td><td>2,511.20</td><td>1,511.20</td></tr>
+          <tr><td>10,000</td><td>68.80</td><td>25,112.00</td><td>15,112.00</td></tr>
+          <tr><td>50,000</td><td>344.00</td><td>125,560.00</td><td>75,560.00</td></tr>
+          <tr><td>100,000</td><td>688.00</td><td>251,120.00</td><td>151,120.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-caption">单位：枚 $财神DAO。示例仅用于说明机制，实际以官方页面为准。</p>
+
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">02·C</span>
+        <h3 class="sub-title">机制要点<span>Mechanics</span></h3>
+      </div>
+    </div>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">燃香即销毁</span>
+        <span class="def-v">燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通</b>，构成项目通缩的一环。</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">币本位返还</span>
+        <span class="def-v">返还的是 $财神DAO 的数量，不随法币价格变化。价格涨跌只影响返还份额的法币价值，不影响枚数。</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">额度刚性</span>
+        <span class="def-v">总额度 20,000,000 枚固定，额满即止，不会追加、不会临时扩容。</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">防刷机制</span>
+        <span class="def-v">单地址限额、频次校验与链上行为分析并行，异常地址将被限制参与。</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">可验证性</span>
+        <span class="def-v">每一笔燃烧可在 <code>solscan.io</code> 验证，每日释放可通过 <code>lock.jup.ag</code> 逐笔核对，任何人都无法篡改记录。</span>
+      </div>
+    </div>
 
     <div class="note warn" style="margin-top:var(--sp-5);">
-      <span class="note-tag">Notice</span>
+      <span class="note-tag">注意</span>
       <div class="note-body">
-        燃香不可撤回；活动限额限量，额满即止；开放时间不设固定场次，以直播间公告为准；
+        燃香不可撤回，燃烧即永久放弃该部分代币；活动限额限量、额满即止；开放时间不设固定场次，以直播间公告为准；
         单地址限额，防刷机制已启用；建议 24 个月内领取有效，逾期视为放弃。
       </div>
     </div>
   </section>
 
-  <!-- ============ 03 聚宝盆 ============ -->
-  <section class="sec" id="treasure">
+  <!-- ================= 03 聚宝盆 ================= -->
+  <section class="wrap sec" id="treasure">
     <div class="sec-head">
       <span class="sec-idx">03</span>
-      <h2 class="sec-title">聚宝盆<span>Existing Product</span></h2>
+      <h2 class="sec-title">聚宝盆<span><em class="st st-live">已上线</em><em class="sd">资产留存</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      质押 $财神到，支持单宝与双宝组合，多周期生息。收益按日线性释放，本金到期返还。
+      质押 $财神DAO，支持单宝与双宝两种组合、四档周期。收益按日线性释放，本金到期返还。
+      两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。
     </p>
 
-    <!-- 本位对照 -->
-    <div class="basis">
-      <div class="basis-title">计算本位对照</div>
-      <div class="basis-row">
-        <span class="basis-k">单宝</span>
-        <span class="basis-v"><b>币本位计算，币本位发放。</b></span>
+    <div class="compare" style="margin-bottom:var(--sp-5);">
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="compare-name">单宝质押</span>
+          <span class="compare-tag">Single</span>
+        </div>
+        <div class="compare-line"><span class="k">质押组合</span><span class="v">100% $财神DAO</span></div>
+        <div class="compare-line"><span class="k">计算本位</span><span class="v red">币本位</span></div>
+        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神DAO</span></div>
+        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神DAO</span></div>
       </div>
-      <div class="basis-row">
-        <span class="basis-k">双宝</span>
-        <span class="basis-v"><b>金本位计算，币本位发放，本金原路返还。</b></span>
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="compare-name">双宝聚财</span>
+          <span class="compare-tag">Double</span>
+        </div>
+        <div class="compare-line"><span class="k">质押组合</span><span class="v">60% + 40% 合作币</span></div>
+        <div class="compare-line"><span class="k">计算本位</span><span class="v red">金本位</span></div>
+        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神DAO</span></div>
+        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神DAO + 合作币</span></div>
       </div>
     </div>
 
-    <!-- 质押方案 -->
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·A</span>
@@ -1348,91 +1264,93 @@
       </div>
     </div>
 
-    <div class="segmented" id="segTreasure">
-      <button class="active" data-panel="single">单宝质押</button>
-      <button data-panel="double">双宝聚财</button>
-      <button data-panel="all">APY 总表</button>
+    <div class="segmented" id="segTreasure" role="group" aria-label="质押方案切换">
+      <button class="active" data-panel="single" type="button" aria-pressed="true">单宝质押</button>
+      <button data-panel="double" type="button" aria-pressed="false">双宝聚财</button>
+      <button data-panel="all" type="button" aria-pressed="false">APY 总表</button>
     </div>
 
-    <div class="panel active" id="panel-single">
+    <div class="panel active" id="panel-single" role="region" aria-label="单宝质押方案">
       <div class="note info" style="margin-bottom:var(--sp-4);">
-        <span class="note-tag">Plan</span>
-        <div class="note-body"><b>质押组合：</b>100% $财神到</div>
+        <span class="note-tag">方案</span>
+        <div class="note-body"><b>质押组合：</b>100% $财神DAO · 币本位计算、币本位发放</div>
       </div>
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th>周期</th>
-              <th>APY</th>
-              <th>到期总收益率</th>
-              <th>总返还倍数</th>
+              <th scope="col">周期</th>
+              <th scope="col">APY</th>
+              <th scope="col">到期总收益率</th>
+              <th scope="col">总返还倍数</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>30 天</td><td class="hl">40%</td><td>3.29%</td><td>1.0329</td></tr>
-            <tr><td>90 天</td><td class="hl">80%</td><td>19.73%</td><td>1.1973</td></tr>
-            <tr><td>120 天</td><td class="hl">110%</td><td>36.16%</td><td>1.3616</td></tr>
-            <tr><td>180 天</td><td class="hl">170%</td><td>83.84%</td><td>1.8384</td></tr>
+            <tr><td>30 天</td><td style="color:var(--cyber);font-weight:700;">40%</td><td>3.29%</td><td>1.0329</td></tr>
+            <tr><td>90 天</td><td style="color:var(--cyber);font-weight:700;">80%</td><td>19.73%</td><td>1.1973</td></tr>
+            <tr><td>120 天</td><td style="color:var(--cyber);font-weight:700;">110%</td><td>36.16%</td><td>1.3616</td></tr>
+            <tr><td>180 天</td><td style="color:var(--cyber);font-weight:700;">170%</td><td>83.84%</td><td>1.8384</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="tbl-caption">到期总收益率 = APY ÷ 365 × 周期天数。APY 为简单年化，非复利。</p>
     </div>
 
-    <div class="panel" id="panel-double">
+    <div class="panel" id="panel-double" role="region" aria-label="双宝聚财方案">
       <div class="note info" style="margin-bottom:var(--sp-4);">
-        <span class="note-tag">Plan</span>
-        <div class="note-body"><b>质押组合：</b>60% $财神到 + 40% BG / FIST / LUCKY99</div>
+        <span class="note-tag">方案</span>
+        <div class="note-body"><b>质押组合：</b>60% $财神DAO + 40% 合作币（Antfun · BG · LUCKY99 · FIST） · 金本位计算、币本位发放</div>
       </div>
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th>周期</th>
-              <th>APY</th>
-              <th>到期总收益率</th>
-              <th>总返还倍数</th>
+              <th scope="col">周期</th>
+              <th scope="col">APY</th>
+              <th scope="col">到期总收益率</th>
+              <th scope="col">总返还倍数</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>30 天</td><td class="hl">55%</td><td>4.52%</td><td>1.0452</td></tr>
-            <tr><td>90 天</td><td class="hl">105%</td><td>25.89%</td><td>1.2589</td></tr>
-            <tr><td>120 天</td><td class="hl">140%</td><td>46.03%</td><td>1.4603</td></tr>
-            <tr><td>180 天</td><td class="hl">200%</td><td>98.63%</td><td>1.9863</td></tr>
+            <tr><td>30 天</td><td style="color:var(--cyber);font-weight:700;">55%</td><td>4.52%</td><td>1.0452</td></tr>
+            <tr><td>90 天</td><td style="color:var(--cyber);font-weight:700;">105%</td><td>25.89%</td><td>1.2589</td></tr>
+            <tr><td>120 天</td><td style="color:var(--cyber);font-weight:700;">140%</td><td>46.03%</td><td>1.4603</td></tr>
+            <tr><td>180 天</td><td style="color:var(--cyber);font-weight:700;">200%</td><td>98.63%</td><td>1.9863</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="tbl-caption">到期总收益率 = APY ÷ 365 × 周期天数。合作币按入场时价格快照，收益以 $财神DAO 结算。</p>
     </div>
 
-    <div class="panel" id="panel-all">
+    <div class="panel" id="panel-all" role="region" aria-label="APY 总表">
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th>模式</th>
-              <th>质押组合</th>
-              <th>30 天</th>
-              <th>90 天</th>
-              <th>120 天</th>
-              <th>180 天</th>
+              <th scope="col">模式</th>
+              <th scope="col">质押组合</th>
+              <th scope="col">30 天</th>
+              <th scope="col">90 天</th>
+              <th scope="col">120 天</th>
+              <th scope="col">180 天</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>单宝质押</td>
-              <td>100% $财神到</td>
-              <td class="hl">40%</td>
-              <td class="hl">80%</td>
-              <td class="hl">110%</td>
-              <td class="hl">170%</td>
+              <td>100% $财神DAO</td>
+              <td style="color:var(--cyber);font-weight:700;">40%</td>
+              <td style="color:var(--cyber);font-weight:700;">80%</td>
+              <td style="color:var(--cyber);font-weight:700;">110%</td>
+              <td style="color:var(--cyber);font-weight:700;">170%</td>
             </tr>
             <tr>
               <td>双宝聚财</td>
               <td>60% + 40% 合作币</td>
-              <td class="hl">55%</td>
-              <td class="hl">105%</td>
-              <td class="hl">140%</td>
-              <td class="hl">200%</td>
+              <td style="color:var(--cyber);font-weight:700;">55%</td>
+              <td style="color:var(--cyber);font-weight:700;">105%</td>
+              <td style="color:var(--cyber);font-weight:700;">140%</td>
+              <td style="color:var(--cyber);font-weight:700;">200%</td>
             </tr>
           </tbody>
         </table>
@@ -1440,7 +1358,6 @@
       <p class="tbl-caption">以上为建议参数，实际 APY 以官方质押页面实时显示为准。</p>
     </div>
 
-    <!-- 收益释放规则 -->
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·B</span>
@@ -1459,7 +1376,7 @@
       </div>
       <div class="def-row">
         <span class="def-k">双宝计算</span>
-        <span class="def-v">按总质押 USDT 等值计算，收益以 $财神到 结算，合作币按入场时价格快照</span>
+        <span class="def-v">按总质押 USDT 等值计算，收益以 $财神DAO 结算，合作币按入场时价格快照</span>
       </div>
       <div class="def-row">
         <span class="def-k">领取方式</span>
@@ -1479,15 +1396,14 @@
       </div>
       <div class="def-row">
         <span class="def-k">APY 调整</span>
-        <span class="def-v">可动态调整，每周公示，已质押部分建议锁定入场 APY</span>
+        <span class="def-v">可动态调整，每周公示；已质押部分建议锁定入场 APY</span>
       </div>
       <div class="def-row">
         <span class="def-k">合作币风控</span>
-        <span class="def-v">需审计、流动性充足；若脱锚，官方有权暂停该组合</span>
+        <span class="def-v">需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合</span>
       </div>
     </div>
 
-    <!-- 单宝计算示例 -->
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·C</span>
@@ -1496,9 +1412,9 @@
     </div>
 
     <div class="note info" style="margin-bottom:var(--sp-4);">
-      <span class="note-tag">Basis</span>
+      <span class="note-tag">本位</span>
       <div class="note-body">
-        单宝 100% $财神到，<b>币本位计算，币本位发放</b>。收益数量只与质押的 $财神到 数量有关，不涉及 USDT 折算。
+        单宝 100% $财神DAO，<b>币本位计算、币本位发放</b>。收益数量只与质押的 $财神DAO 数量有关，不涉及 USDT 折算。
       </div>
     </div>
 
@@ -1510,7 +1426,7 @@
     </div>
 
     <div class="calc">
-      <span class="calc-label">示例 · 质押 10,000 枚 $财神到 · 180 天 · APY 170%</span>
+      <span class="calc-label">示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%</span>
       <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">170%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">46.5753</span><span class="u">枚/天</span></div>
       <div class="calc-line">总收益 <span class="op">=</span> <span class="n">46.5753</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">8,383.56</span><span class="u">枚</span></div>
       <div class="calc-line">到期总返还 <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">8,383.56</span> <span class="op">=</span> <span class="r">18,383.56</span><span class="u">枚</span></div>
@@ -1520,24 +1436,23 @@
       <table>
         <thead>
           <tr>
-            <th>周期</th>
-            <th>APY</th>
-            <th>每日释放</th>
-            <th>总收益</th>
-            <th>到期总返还</th>
+            <th scope="col">周期</th>
+            <th scope="col">APY</th>
+            <th scope="col">每日释放</th>
+            <th scope="col">总收益</th>
+            <th scope="col">到期总返还</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>30 天</td><td class="hl">40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
-          <tr><td>90 天</td><td class="hl">80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
-          <tr><td>120 天</td><td class="hl">110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
-          <tr><td>180 天</td><td class="hl">170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
+          <tr><td>30 天</td><td>40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
+          <tr><td>90 天</td><td>80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
+          <tr><td>120 天</td><td>110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
+          <tr><td>180 天</td><td>170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">单位：枚 $财神到。示例仅用于说明，实际以官方页面为准。</p>
+    <p class="tbl-caption">单位：枚 $财神DAO。示例仅用于说明，实际以官方页面为准。</p>
 
-    <!-- 双宝计算示例 -->
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·D</span>
@@ -1546,25 +1461,26 @@
     </div>
 
     <div class="note info" style="margin-bottom:var(--sp-4);">
-      <span class="note-tag">Basis</span>
+      <span class="note-tag">本位</span>
       <div class="note-body">
-        双宝 60% $财神到 + 40% 合作币，<b>金本位计算，币本位发放，本金原路返还</b>。收益按总投入 USDT 等值计算，发放 $财神到。
+        双宝 60% $财神DAO + 40% 合作币，<b>金本位计算、币本位发放、本金原路返还</b>。
+        收益按总投入 USDT 等值计算，以 $财神DAO 发放。
       </div>
     </div>
 
     <div class="note gold">
-      <span class="note-tag">Assume</span>
+      <span class="note-tag">假设</span>
       <div class="note-body">
-        <b>假设价格：</b>$财神到 = 0.015 USDT，BG = 0.0003 USDT<br>
-        <b>双宝比例：</b>60% $财神到 + 40% BG<br>
+        <b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br>
+        <b>双宝比例：</b>60% $财神DAO + 40% BG<br>
         <b>周期 / APY：</b>180 天 / 200%
       </div>
     </div>
 
     <div class="calc">
       <span class="calc-label">第一步 · 按价值配比（总投入 1,000 USDT）</span>
-      <div class="calc-line">$财神到部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">600</span><span class="u">USDT</span></div>
-      <div class="calc-line">$财神到数量 <span class="op">=</span> <span class="n">600</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">40,000</span><span class="u">枚</span></div>
+      <div class="calc-line">$财神DAO部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">600</span><span class="u">USDT</span></div>
+      <div class="calc-line">$财神DAO数量 <span class="op">=</span> <span class="n">600</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">40,000</span><span class="u">枚</span></div>
       <div class="calc-line">BG 部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">400</span><span class="u">USDT</span></div>
       <div class="calc-line">BG 数量 <span class="op">=</span> <span class="n">400</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">1,333,333.33</span><span class="u">枚</span></div>
     </div>
@@ -1572,34 +1488,34 @@
     <div class="calc">
       <span class="calc-label">第二步 · 按总 USDT 等值算每日释放</span>
       <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">5.4795</span><span class="u">USDT/天</span></div>
-      <div class="calc-line">折 $财神到 <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u">枚/天</span></div>
+      <div class="calc-line">折 $财神DAO <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u">枚/天</span></div>
     </div>
 
     <div class="calc">
       <span class="calc-label">第三步 · 180 天总释放与到期返还</span>
-      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神到</span></div>
-      <div class="calc-line">到期返还本金 <span class="op">=</span> <span class="r">40,000 枚 $财神到 + 1,333,333.33 枚 BG</span></div>
+      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神DAO</span></div>
+      <div class="calc-line">到期返还本金 <span class="op">=</span> <span class="r">40,000 枚 $财神DAO + 1,333,333.33 枚 BG</span></div>
       <div class="calc-line">总返还价值 <span class="op">≈</span> <span class="r">1,986.30 USDT 等值</span></div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">Risk</span>
+      <span class="note-tag">风险</span>
       <div class="note-body">
-        BG 价格波动会影响本金法币价值，但返还的是原数量的 BG。收益以 $财神到 发放，不按 BG 结算。合作币存在脱锚、流动性不足等风险。
+        BG 价格波动会影响本金的法币价值，但返还的是原数量的 BG。收益以 $财神DAO 发放，不按 BG 结算。
+        合作币存在脱锚、流动性不足等风险。
       </div>
     </div>
 
-    <!-- 反向计算示例 -->
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·E</span>
-        <h3 class="sub-title">反向计算示例<span>Reverse · 手上有 10,000 枚 $财神到</span></h3>
+        <h3 class="sub-title">反向计算示例<span>Reverse · 手上有 10,000 枚 $财神DAO</span></h3>
       </div>
     </div>
 
     <div class="calc">
       <span class="calc-label">第一步 · 按 60% 反推总投入</span>
-      <div class="calc-line">$财神到价值 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">150</span><span class="u">USDT</span></div>
+      <div class="calc-line">$财神DAO价值 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">150</span><span class="u">USDT</span></div>
       <div class="calc-line">总投入价值 <span class="op">=</span> <span class="n">150</span> <span class="op">÷</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">250</span><span class="u">USDT</span></div>
     </div>
 
@@ -1612,61 +1528,27 @@
     <div class="calc">
       <span class="calc-label">第三步 · 180 天 / APY 200% 收益</span>
       <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.3699</span><span class="u">USDT/天</span></div>
-      <div class="calc-line">折 $财神到 <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u">枚/天</span></div>
-      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神到</span></div>
-      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="r">10,000 枚 $财神到 + 333,333.33 枚 BG</span></div>
+      <div class="calc-line">折 $财神DAO <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u">枚/天</span></div>
+      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神DAO</span></div>
+      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="r">10,000 枚 $财神DAO + 333,333.33 枚 BG</span></div>
     </div>
 
-    <!-- 对比总结 -->
-    <div class="sub-head">
-      <div class="sub-head-line">
-        <span class="sub-idx">03·F</span>
-        <h3 class="sub-title">单宝 vs 双宝<span>Comparison</span></h3>
-      </div>
-    </div>
-
-    <div class="compare">
-      <div class="compare-col">
-        <div class="compare-head">
-          <span class="compare-name">单宝质押</span>
-          <span class="compare-tag">Single</span>
-        </div>
-        <div class="compare-line"><span class="k">质押组合</span><span class="v">100% $财神到</span></div>
-        <div class="compare-line"><span class="k">计算本位</span><span class="v red">币本位</span></div>
-        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神到</span></div>
-        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神到</span></div>
-        <div class="compare-line"><span class="k">价格风险</span><span class="v">仅 $财神到</span></div>
-        <div class="compare-line"><span class="k">计算复杂度</span><span class="v">低</span></div>
-      </div>
-      <div class="compare-col">
-        <div class="compare-head">
-          <span class="compare-name">双宝聚财</span>
-          <span class="compare-tag">Double</span>
-        </div>
-        <div class="compare-line"><span class="k">质押组合</span><span class="v">60% + 40% 合作币</span></div>
-        <div class="compare-line"><span class="k">计算本位</span><span class="v red">金本位</span></div>
-        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神到</span></div>
-        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神到 + 合作币</span></div>
-        <div class="compare-line"><span class="k">价格风险</span><span class="v">$财神到 + 合作币</span></div>
-        <div class="compare-line"><span class="k">计算复杂度</span><span class="v">中</span></div>
-      </div>
-    </div>
-
-    <p class="caption">
+    <p class="caption gold">
       <b>总结：</b>单宝币本位计算、币本位发放；双宝金本位计算、币本位发放、本金原路返还。
-      双宝最终发的还是 $财神到，不是 USDT，所以不是纯金本位。
+      双宝最终发的仍是 $财神DAO，而不是 USDT，因此并非纯金本位，而是「金本位计价、币本位结算」。
     </p>
   </section>
 
-  <!-- ============ 04 财神 NFT ============ -->
-  <section class="sec" id="nft">
+  <!-- ================= 04 财神 NFT ================= -->
+  <section class="wrap sec" id="nft">
     <div class="sec-head">
       <span class="sec-idx">04</span>
-      <h2 class="sec-title">财神 NFT<span>Planned Product</span></h2>
+      <h2 class="sec-title">财神 NFT<span><em class="st st-plan">规划中</em><em class="sd">身份中枢</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      极少数创世竞拍。作为财神生态圈的创世身份凭证，每一枚唯一编号，持有者享有专属权益与生态分红。
+      极少数创世竞拍，共 108 枚、唯一编号。作为财神生态圈的创世身份凭证，
+      持有者享有专属权益与生态分红权重，是连接全部产品线的权益中枢。
     </p>
 
     <div class="sub-head">
@@ -1680,21 +1562,21 @@
       <table>
         <thead>
           <tr>
-            <th>等级</th>
-            <th>数量</th>
-            <th>定位</th>
-            <th>分红权重</th>
+            <th scope="col">等级</th>
+            <th scope="col">数量</th>
+            <th scope="col">定位</th>
+            <th scope="col">分红权重</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>财神金身</td><td class="hl">2 枚</td><td>创世至尊</td><td>最高</td></tr>
-          <tr><td>招财尊</td><td class="hl">16 枚</td><td>创世核心</td><td>高</td></tr>
-          <tr><td>财神令</td><td class="hl">90 枚</td><td>创世成员</td><td>基础</td></tr>
-          <tr><td>合计</td><td class="hl">108 枚</td><td>极少数创世</td><td>—</td></tr>
+          <tr><td>财神金身</td><td style="color:var(--cyber);font-weight:700;">8 枚</td><td>创世至尊</td><td>最高</td></tr>
+          <tr><td>招财尊</td><td style="color:var(--cyber);font-weight:700;">20 枚</td><td>创世核心</td><td>高</td></tr>
+          <tr><td>财神令</td><td style="color:var(--cyber);font-weight:700;">80 枚</td><td>创世成员</td><td>基础</td></tr>
+          <tr><td>合计</td><td style="color:var(--cyber);font-weight:700;">108 枚</td><td>极少数创世</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">以官方最终公告为准。</p>
+    <p class="tbl-caption">发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。</p>
 
     <div class="sub-head">
       <div class="sub-head-line">
@@ -1766,23 +1648,55 @@
       </div>
     </div>
 
-    <div class="note warn" style="margin-top:var(--sp-5);">
-      <span class="note-tag">Risk</span>
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">04·C</span>
+        <h3 class="sub-title">分红与版税口径<span>Dividend &amp; Royalty</span></h3>
+      </div>
+    </div>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">分红来源</span>
+        <span class="def-v">商城销售、文化院课程与服务、小游戏道具与版税等<b>生态实际收入</b>，按治理决定注入分红池</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">分配权重</span>
+        <span class="def-v">金身 &gt; 招财尊 &gt; 财神令，具体权重由治理提案确定并公示</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">发放周期</span>
+        <span class="def-v">建议按季度结算，具体节奏以官方公告为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">版税比例</span>
+        <span class="def-v">二级市场交易版税进入生态池与福报池，比例以链上合约为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">权益不随价格</span>
+        <span class="def-v">权益与分红权重绑定 NFT 本身，与二级市场价格无关；NFT 转让即权益转让</span>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">风险</span>
       <div class="note-body">
         生态分红不是固定收益，不承诺分红金额，取决于生态实际收入与治理决定。
+        NFT 竞拍存在市场风险，价格可能大幅波动。
       </div>
     </div>
   </section>
 
-  <!-- ============ 05 文化院 ============ -->
-  <section class="sec" id="culture">
+  <!-- ================= 05 文化院 ================= -->
+  <section class="wrap sec" id="culture">
     <div class="sec-head">
       <span class="sec-idx">05</span>
-      <h2 class="sec-title">财神文化院<span>Planned Product</span></h2>
+      <h2 class="sec-title">财神文化院<span><em class="st st-plan">规划中</em><em class="sd">内容供给</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      风水命理教育板块，涵盖易学基础、财神文化、民俗信仰与风水实战。以文化传承、知识学习、兴趣交流为核心。
+      风水命理教育板块，涵盖易学基础、财神文化、民俗信仰与风水实战。
+      以文化传承、知识学习、兴趣交流为核心，为生态提供可持续的内容供给。
     </p>
 
     <div class="sub-head">
@@ -1809,6 +1723,10 @@
         <span class="def-k">形式</span>
         <span class="def-v">直播课、录播课、训练营、线下课、游学、认证考试</span>
       </div>
+      <div class="def-row">
+        <span class="def-k">支付</span>
+        <span class="def-v">课程券与咨询券支持 <b>$财神DAO</b> 购买，NFT 持有者享折扣</span>
+      </div>
     </div>
 
     <div class="sub-head">
@@ -1818,42 +1736,55 @@
       </div>
     </div>
 
-    <p class="sec-lead" style="margin-bottom:var(--sp-4);">
-      开放命理师、风水师、易学讲师、民俗文化研究者入驻，打造财神生态圈的专业服务网络。
-    </p>
-
-    <div class="def">
-      <div class="def-row">
-        <span class="def-k">入驻流程</span>
-        <span class="def-v">申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算</span>
+    <div class="spec">
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">入驻流程</span>
+          <span class="spec-k-en">Onboarding</span>
+        </div>
+        <div class="spec-v">申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算</div>
       </div>
-      <div class="def-row">
-        <span class="def-k">服务形式</span>
-        <span class="def-v">付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制</span>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">服务形式</span>
+          <span class="spec-k-en">Services</span>
+        </div>
+        <div class="spec-v">付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制</div>
       </div>
-      <div class="def-row">
-        <span class="def-k">平台机制</span>
-        <span class="def-v">实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成</span>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">平台机制</span>
+          <span class="spec-k-en">Platform</span>
+        </div>
+        <div class="spec-v">实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">收入结算</span>
+          <span class="spec-k-en">Settlement</span>
+        </div>
+        <div class="spec-v">按服务完成度与用户评价分期结算，平台抽成比例公示，争议订单进入人工仲裁</div>
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">Notice</span>
+      <span class="note-tag">注意</span>
       <div class="note-body">
         风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。
       </div>
     </div>
   </section>
 
-  <!-- ============ 06 商城 ============ -->
-  <section class="sec" id="mall">
+  <!-- ================= 06 商城 ================= -->
+  <section class="wrap sec" id="mall">
     <div class="sec-head">
       <span class="sec-idx">06</span>
-      <h2 class="sec-title">财神商城<span>Planned Product</span></h2>
+      <h2 class="sec-title">财神商城<span><em class="st st-plan">规划中</em><em class="sd">消费场景</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      财神生态圈的消费板块，售卖财神周边、文创商品、数字藏品、课程与咨询券。支持 $财神到 支付。
+      财神生态圈的消费板块，售卖财神周边、文创商品、数字藏品、课程与咨询券。
+      支持 $财神DAO 支付，是代币从「金融资产」走向「可用货币」的关键场景。
     </p>
 
     <div class="def">
@@ -1871,32 +1802,42 @@
       </div>
       <div class="def-row">
         <span class="def-k">支付方式</span>
-        <span class="def-v">支持 <b>$财神到</b> 支付</span>
+        <span class="def-v">支持 <b>$财神DAO</b> 支付</span>
       </div>
       <div class="def-row">
         <span class="def-k">NFT 折扣</span>
-        <span class="def-v">财神 NFT 持有者享折扣</span>
+        <span class="def-v">财神 NFT 持有者享阶梯折扣，等级越高折扣越大</span>
       </div>
       <div class="def-row">
         <span class="def-k">积分抵扣</span>
-        <span class="def-v">积分与福气值可抵扣</span>
+        <span class="def-v">积分与福气值可抵扣部分订单金额</span>
       </div>
       <div class="def-row">
         <span class="def-k">供应链原则</span>
         <span class="def-v">正品保障、溯源可查、联名优选、品质把控</span>
       </div>
+      <div class="def-row">
+        <span class="def-k">收入去向</span>
+        <span class="def-v">部分收入进入生态池，按治理规则用于回购、销毁或分红</span>
+      </div>
     </div>
+
+    <p class="caption">
+      <b>定位：</b>商城不是「卖货」，而是把 $财神DAO 变成可消费的货币。
+      支付场景越真实，代币的需求侧就越稳固。
+    </p>
   </section>
 
-  <!-- ============ 07 小游戏 ============ -->
-  <section class="sec" id="game">
+  <!-- ================= 07 小游戏 ================= -->
+  <section class="wrap sec" id="game">
     <div class="sec-head">
       <span class="sec-idx">07</span>
-      <h2 class="sec-title">财神小游戏<span>Planned Product</span></h2>
+      <h2 class="sec-title">财神小游戏<span><em class="st st-plan">规划中</em><em class="sd">娱乐入口</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      财神生态圈的娱乐板块。玩游戏可获取 $财神到，购买道具皮肤，NFT 道具可交易。
+      财神生态圈的娱乐板块。玩游戏可获取 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。
+      高频互动为整个生态带来日活与传播。
     </p>
 
     <div class="def">
@@ -1906,7 +1847,7 @@
       </div>
       <div class="def-row">
         <span class="def-k">奖励体系</span>
-        <span class="def-v">$财神到、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值</span>
+        <span class="def-v">$财神DAO、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值</span>
       </div>
       <div class="def-row">
         <span class="def-k">道具与皮肤</span>
@@ -1921,144 +1862,560 @@
         <span class="def-v">部分进入生态分红池与福报池</span>
       </div>
       <div class="def-row">
+        <span class="def-k">奖励来源</span>
+        <span class="def-v">来自生态预算（空投营销与运营份额），<b>不新增铸币</b>，代币总量始终恒定</span>
+      </div>
+      <div class="def-row">
         <span class="def-k">防刷机制</span>
         <span class="def-v">体力限制、冷却时间、随机奖励、反脚本、实名认证、排行榜监控、黑名单</span>
       </div>
     </div>
 
-    <div class="note gold">
-      <span class="note-tag">Loop</span>
+    <div class="note gold" style="margin-top:var(--sp-5);">
+      <span class="note-tag">循环</span>
       <div class="note-body">
-        <b>经济循环：</b>玩游戏 → 赚 $财神到 → 买道具 / 皮肤 / 商城商品 → 质押 / 燃香 → NFT 道具交易 → 消耗 $财神到
+        <b>经济循环：</b>玩游戏 → 赚 $财神DAO → 买道具 / 皮肤 / 商城商品 → 质押 / 燃香 → NFT 道具交易 → 消耗 $财神DAO → 回流生态池
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">Risk</span>
+      <span class="note-tag">风险</span>
       <div class="note-body">
         游戏奖励为币本位，不承诺法币价值，数字资产价格波动风险较高。
+        奖励额度受生态预算约束，可能随运营情况调整。
       </div>
     </div>
   </section>
 
-  <!-- ============ 08 生态闭环 ============ -->
-  <section class="sec" id="loop">
+  <!-- ================= 08 合作生态 ================= -->
+  <section class="wrap sec" id="partners">
     <div class="sec-head">
       <span class="sec-idx">08</span>
-      <h2 class="sec-title">生态闭环<span>Ecosystem Loop</span></h2>
+      <h2 class="sec-title">合作生态<span><em class="st st-coop">已集成</em><em class="sd">合作代币</em></span></h2>
     </div>
 
     <p class="sec-lead">
-      从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，形成完整的财神宇宙。
+      财神生态圈在 Solana 上通过合作代币接入外部社区与流动性。目前合作代币包括
+      <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，主要通过聚宝盆双宝组合进入生态，
+      承担社区互导与合作流动性的职能。合作代币不改变 $财神DAO 的核心地位，
+      也不影响燃香赐福与单宝质押的币本位机制。
+    </p>
+
+    <div class="partners">
+      <div class="partner-card">
+        <div class="partner-head">
+          <span class="partner-sym">Antfun</span>
+          <span class="partner-role">合作代币</span>
+        </div>
+        <p class="partner-desc">Solana 链上合作代币，接入双宝组合，作为合作侧资产与 $财神DAO 配对质押。</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-head">
+          <span class="partner-sym">BG</span>
+          <span class="partner-role">合作代币</span>
+        </div>
+        <p class="partner-desc">已接入双宝组合的合作代币，用于双宝金本位计算，与 $财神DAO 共同构成 60 / 40 质押结构。</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-head">
+          <span class="partner-sym">LUCKY99</span>
+          <span class="partner-role">合作代币</span>
+        </div>
+        <p class="partner-desc">娱乐方向的合作代币，接入双宝组合，为社区带来跨项目的互动与流动性。</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-head">
+          <span class="partner-sym">FIST</span>
+          <span class="partner-role">合作代币</span>
+        </div>
+        <p class="partner-desc">生态方向的合作代币，接入双宝组合，用于丰富双宝的可选资产组合。</p>
+      </div>
+    </div>
+
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">08·A</span>
+        <h3 class="sub-title">整合方式<span>Integration</span></h3>
+      </div>
+    </div>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">接入通道</span>
+        <span class="def-v">聚宝盆 · 双宝组合（60% $财神DAO + 40% 合作币）</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">计算方式</span>
+        <span class="def-v">金本位计算、币本位发放、本金原路返还；合作币按入场时价格快照，收益以 $财神DAO 结算</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">不影响主线</span>
+        <span class="def-v">不改变燃香赐福的返还率与额度，不改变单宝质押的币本位口径，不改变 $财神DAO 的核心资产地位</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">合作门槛</span>
+        <span class="def-v">需通过审计、流动性充足、社区透明；合作代币清单与组合比例由官方公示</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">退出与暂停</span>
+        <span class="def-v">若合作币发生脱锚、流动性不足等异常，官方有权暂停对应组合；已质押用户按原条款到期返还</span>
+      </div>
+    </div>
+
+    <div class="note info">
+      <span class="note-tag">说明</span>
+      <div class="note-body">
+        合作代币清单可能随生态合作情况调整，新增或下线均会通过官方渠道提前公示。
+        合作代币的接入不改变燃香赐福与单宝质押的既有机制与口径。
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">风险</span>
+      <div class="note-body">
+        合作代币存在脱锚、流动性不足、合约漏洞与价格波动等风险。合作代币不构成对 $财神DAO 的兑换承诺，
+        也不影响单宝质押。请在参与双宝组合前充分评估合作币的稳定性与流动性。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 09 运营活动层 ================= -->
+  <section class="wrap sec" id="season">
+    <div class="sec-head">
+      <span class="sec-idx">09</span>
+      <h2 class="sec-title">运营活动层<span><em class="st st-plan">横向模块</em><em class="sd">赛季与竞赛</em></span></h2>
+    </div>
+
+    <p class="sec-lead">
+      运营活动层不是独立产品，而是横跨各产品线的赛季化运营模块：以竞赛、任务与排行榜为小游戏、文化院、商城、NFT 与 DAO 导流，
+      同时承接新用户教育与社区活跃。它不改变任何产品本身的收益与返还口径，只负责「把人带到产品面前」。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">定位</span>
+        <span class="def-v">横向运营层，按赛季 / 批次开展，<b>不替代任何产品机制</b>，不占用推进阶段编号</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">活动类型</span>
+        <span class="def-v">交易竞赛、小游戏赛季、文化知识赛、DAO 提案赛、NFT 专属任务、商城 UGC 赛</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">奖励来源</span>
+        <span class="def-v">生态预算中的空投营销与运营份额，<b>不新增铸币</b>，不动燃香返还池与质押本金池</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">预算原则</span>
+        <span class="def-v">每赛季固定预算、公示总奖池、用完即止；运营费用单独列支，不占用活动奖池</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">与产品关系</span>
+        <span class="def-v">活动是各产品的「导流器」与「权益使用场景」，<b>不提高质押 APY、不改变燃香返还率、不承诺分红</b></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">规则公示</span>
+        <span class="def-v">单次活动的规则、奖池、周期、防刷与申诉机制以<b>独立活动文档</b>为准</span>
+      </div>
+    </div>
+
+    <div class="note info" style="margin-top:var(--sp-5);">
+      <span class="note-tag">首期</span>
+      <div class="note-body">
+        活动层首期将以 <b>DEX 交易激励赛季</b> 落地。具体奖池、积分权重、押金、快照与风控规则，
+        以该活动独立发布的执行文档为准，不在本文档展开。
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-tag">边界</span>
+      <div class="note-body">
+        活动奖励为激励性质，<b>不构成固定收益或投资回报承诺</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。
+        涉及押金、KYC、排名与没收规则的，以该活动独立条款为准。参与前请自行评估规则与风险。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10 生态闭环 ================= -->
+  <section class="wrap sec" id="loop">
+    <div class="sec-head">
+      <span class="sec-idx">10</span>
+      <h2 class="sec-title">生态闭环<span class="sd-en">Ecosystem Loop</span></h2>
+    </div>
+
+    <p class="sec-lead">
+      从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，
+      八条入口与横向的合作生态、运营活动层共同指向同一个核心资产：$财神DAO。
     </p>
 
     <div class="loop">
       <div class="loop-row">
         <span class="loop-k">信仰入口</span>
-        <span class="loop-v">燃香赐福</span>
+        <span class="loop-v">燃香赐福 —— 燃烧即通缩，赐福按币本位释放</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">资产入口</span>
-        <span class="loop-v">聚宝盆</span>
+        <span class="loop-v">聚宝盆 —— 单宝 / 双宝质押，日线释放收益</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">身份入口</span>
-        <span class="loop-v">财神 NFT</span>
+        <span class="loop-v">财神 NFT —— 108 枚创世身份，权益与分红中枢</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">文化入口</span>
-        <span class="loop-v">财神文化院</span>
+        <span class="loop-v">财神文化院 —— 课程、咨询与讲师认证体系</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">消费入口</span>
-        <span class="loop-v">财神商城</span>
+        <span class="loop-v">财神商城 —— 周边、文创与数字藏品，支持 $财神DAO 支付</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">娱乐入口</span>
-        <span class="loop-v">财神小游戏</span>
+        <span class="loop-v">财神小游戏 —— 高频互动，道具 NFT 化交易</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">治理入口</span>
-        <span class="loop-v">财神 DAO</span>
+        <span class="loop-v">财神 DAO —— 提案、投票与金库监督</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">公益入口</span>
-        <span class="loop-v">财神福报</span>
+        <span class="loop-v">财神福报 —— 版税与生态收入的一部分回馈社会</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">分红入口</span>
-        <span class="loop-v">财神 NFT 生态分红</span>
+        <span class="loop-k">合作入口</span>
+        <span class="loop-v">合作代币 —— Antfun / BG / LUCKY99 / FIST，通过双宝接入生态</span>
+      </div>
+      <div class="loop-row">
+        <span class="loop-k">活动层</span>
+        <span class="loop-v">赛季与竞赛 —— 横向运营模块，为各产品导流与拉新，奖励来自生态预算</span>
+      </div>
+    </div>
+
+    <div class="spec" style="margin-top:var(--sp-5);">
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">飞轮一</span>
+          <span class="spec-k-en">Flywheel 01</span>
+        </div>
+        <div class="spec-v"><b>通缩飞轮</b> —— 燃香燃烧减少流通量 → 筹码稀缺性上升 → 持有意愿增强 → 质押与消费需求提升</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">飞轮二</span>
+          <span class="spec-k-en">Flywheel 02</span>
+        </div>
+        <div class="spec-v"><b>收入飞轮</b> —— 商城与文化院产生真实收入 → 部分注入生态池 → 回购 / 分红 → 持币人受益</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">飞轮三</span>
+          <span class="spec-k-en">Flywheel 03</span>
+        </div>
+        <div class="spec-v"><b>身份飞轮</b> —— NFT 权益横跨全部产品 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-k">
+          <span class="spec-k-cn">飞轮四</span>
+          <span class="spec-k-en">Flywheel 04</span>
+        </div>
+        <div class="spec-v"><b>活动飞轮</b> —— 赛季活动为各产品导流 → 提升日活与交易深度 → 沉淀真实持币社区 → 反哺生态预算与治理</div>
       </div>
     </div>
 
     <p class="caption">
-      <b>总结：</b>从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，财神生态圈正在形成一个完整的财神宇宙。
+      <b>总结：</b>从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，
+      财神生态圈正在形成一个自我强化、彼此导流的完整财神宇宙。
+      合作代币与活动层不新增独立入口，而是作为横向模块，让各入口之间「转起来」。
     </p>
   </section>
 
-  <!-- ============ 09 风险提示 ============ -->
-  <section class="sec" id="risk">
+  <!-- ================= 11 风险提示 ================= -->
+  <section class="wrap sec" id="risk">
     <div class="sec-head">
-      <span class="sec-idx">09</span>
-      <h2 class="sec-title">风险提示<span>Disclosure</span></h2>
+      <span class="sec-idx">11</span>
+      <h2 class="sec-title">风险提示<span class="sd-en">Disclosure</span></h2>
     </div>
 
-    <p class="sec-lead">请团队成员与用户务必阅读。</p>
+    <p class="risk-intro">
+      <b>重要提示：</b>数字资产投资存在重大风险，包括本金全部损失的可能。
+      本页所有产品机制、APY、额度、比例、合作代币与活动奖励仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。
+    </p>
 
-    <ol class="risks">
-      <li>燃香即打入黑洞，资产不可撤回。</li>
-      <li>锁仓不可提前解锁，流动性受限。</li>
-      <li>币本位收益不保本法币价值，代币价格波动会影响实际收益。</li>
-      <li>活动为财神直播间限定，总额度 20M 固定，限额限量，额满即止。</li>
-      <li>开放时间与额度以直播间公告为准。</li>
-      <li>合作币存在脱锚、流动性不足等风险。</li>
-      <li>APY 可动态调整，以官方页面为准。</li>
-      <li>聚宝盆收益按日线性释放，APY 为简单年化，非复利。</li>
-      <li>财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
-      <li>生态分红取决于生态实际收入，不承诺分红金额，不保本。</li>
-      <li>风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
-      <li>财神小游戏奖励为币本位，不承诺法币价值。</li>
-      <li>本文档不构成投资建议，请理性参与。</li>
+    <ol class="risk-list">
+      <li class="risk-item"><b>燃香不可撤回</b> —— 燃香即打入黑洞，资产永久退出流通，无法找回、无法退还。</li>
+      <li class="risk-item"><b>锁仓流动性受限</b> —— 聚宝盆质押不可提前解锁，资金在周期内无法动用。</li>
+      <li class="risk-item"><b>币本位收益不保本</b> —— 币本位收益不保本法币价值，代币价格波动会直接影响实际收益。</li>
+      <li class="risk-item"><b>额度刚性</b> —— 燃香总额度 20M 固定，限额限量、额满即止，可能无法参与。</li>
+      <li class="risk-item"><b>开放时间不确定</b> —— 开放时间与额度以直播间公告为准，不设固定场次。</li>
+      <li class="risk-item"><b>合作币风险</b> —— 双宝合作币（Antfun / BG / LUCKY99 / FIST）存在脱锚、流动性不足、合约漏洞等风险，极端情况下本金价值可能大幅缩水。</li>
+      <li class="risk-item"><b>合作币非兑换承诺</b> —— 合作代币不构成对 $财神DAO 的兑换承诺，也不影响单宝质押；合作币清单与组合比例可能调整，以官方公示为准。</li>
+      <li class="risk-item"><b>APY 可调整</b> —— 聚宝盆 APY 为动态参数，可随生态情况调整，以官方页面实时显示为准。</li>
+      <li class="risk-item"><b>非复利口径</b> —— 聚宝盆收益按日线性释放，APY 为简单年化、非复利，实际累计收益需按周期自行核算。</li>
+      <li class="risk-item"><b>NFT 市场风险</b> —— 财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
+      <li class="risk-item"><b>分红不保本</b> —— 生态分红取决于生态实际收入，不承诺分红金额，可能为零。</li>
+      <li class="risk-item"><b>文化院合规边界</b> —— 风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
+      <li class="risk-item"><b>游戏奖励波动</b> —— 财神小游戏奖励为币本位，不承诺法币价值，奖励额度受生态预算约束。</li>
+      <li class="risk-item"><b>活动奖励非收益承诺</b> —— 运营活动层的奖励为激励性质，不承诺法币价值，不构成固定收益或投资回报承诺。</li>
+      <li class="risk-item"><b>活动规则可变</b> —— 活动规则、奖池、预算与周期可能按赛季调整，以单次活动公告与独立条款为准。</li>
+      <li class="risk-item"><b>活动押金风险</b> —— 涉及押金的活动，押金在违规、作弊或触发没收条款时可能被扣除；具体以该活动独立条款为准。</li>
+      <li class="risk-item"><b>活动与产品解耦</b> —— 活动不提高质押 APY、不改变燃香返还率、不承诺分红；活动奖励来自既有生态预算，不新增铸币。</li>
+      <li class="risk-item"><b>机制调整</b> —— 各产品参数可能在治理程序下调整，调整将通过官方渠道公示。</li>
+      <li class="risk-item"><b>非投资建议</b> —— 本文档不构成投资建议，请自行充分调研并咨询专业人士后理性参与。</li>
     </ol>
   </section>
 
-  <!-- ============ 页脚 ============ -->
-  <footer class="doc-foot">
+  <!-- ================= 12 FAQ ================= -->
+  <section class="wrap sec" id="faq">
+    <div class="sec-head">
+      <span class="sec-idx">12</span>
+      <h2 class="sec-title">常见问题<span class="sd-en">FAQ</span></h2>
+    </div>
+
+    <div class="faq-tools">
+      <button class="faq-toggle-all" id="faqToggleAll" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+        <span>展开全部</span>
+      </button>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>燃香燃烧的 $财神DAO 去哪了？为什么返还比燃烧还多？</summary>
+        <div class="faq-a">
+          燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通、无法找回</b>。
+          返还比燃烧多，是因为赐福池在燃烧发生之前就已按 20,000,000 枚 × 251.12% = 50,224,000 枚预留完毕，
+          返还的是这个池子里的代币，而不是凭空增发。代币总量始终恒定。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>20,000,000 枚额度与代币经济文档的 50,224,000 枚是什么关系？</summary>
+        <div class="faq-a">
+          前者是<b>燃烧上限</b>，后者是<b>返还上限</b>，两者的换算关系为：
+          <code>20,000,000 × 251.12% = 50,224,000</code>。
+          这正好对应代币分配表里的「燃香赐福池」份额，说明全周期可燃烧量与可返还量在总量层面完全闭合，
+          不存在超额承诺。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>聚宝盆的 APY 从哪来？会不会无法兑付？</summary>
+        <div class="faq-a">
+          APY 来自生态激励预算与生态实际收入的组合，属于<b>激励参数而非承诺收益</b>。
+          代币层面，聚宝盆的收益发放来源已在代币分配中预留对应份额；
+          若生态预算不足以支撑当前 APY，治理层面可以下调参数。用户需自行评估收益可持续性。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>单宝和双宝的「本位」差异到底影响什么？</summary>
+        <div class="faq-a">
+          影响<b>收益的计算方式</b>，不影响<b>发放的币种</b>。<br>
+          单宝是币本位：质押 10,000 枚，收益就按 10,000 枚计算，与价格无关。<br>
+          双宝是金本位：按总投入的 USDT 等值计算收益，再折算成 $财神DAO 发放。<br>
+          两种模式最终发的都是 $财神DAO，区别在于计价基准不同。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>合作代币在生态里扮演什么角色？</summary>
+        <div class="faq-a">
+          合作代币（Antfun / BG / LUCKY99 / FIST）通过<b>聚宝盆双宝组合</b>接入生态，承担社区互导与合作流动性的职能。
+          合作代币不改变 $财神DAO 的核心资产地位，也不影响燃香赐福与单宝质押的币本位机制。
+          合作币清单与组合比例由官方公示，可能随生态合作情况调整。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>双宝里的合作币脱锚了怎么办？</summary>
+        <div class="faq-a">
+          双宝返还的是<b>原数量的合作币</b>，因此合作币脱锚会直接影响本金的法币价值。
+          官方风控措施包括：合作币需通过审计、需保证流动性充足、发生脱锚时有权暂停该组合。
+          用户在选择双宝时应充分评估合作币的稳定性。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>财神 NFT 的分红是固定收益吗？</summary>
+        <div class="faq-a">
+          不是。分红来自生态的<b>实际收入</b>（商城、文化院、小游戏版税等），
+          由治理决定注入比例与分配权重。生态收入好，分红可能较高；收入差，分红可能很低甚至为零。
+          它绑定的是生态成长性，而不是固定利率。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>小游戏发的奖励会不会导致代币无限增发？</summary>
+        <div class="faq-a">
+          不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。
+          小游戏奖励来自生态预算中已预留的空投营销与运营份额，
+          属于<b>既有份额的再分配</b>，不新增铸币。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>运营活动层的奖励会不会导致代币增发？</summary>
+        <div class="faq-a">
+          不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。
+          活动奖励来自生态预算中已预留的空投营销与运营份额，属于<b>既有份额的再分配</b>，
+          不新增铸币，也不占用燃香返还池与质押本金池。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>赛季竞赛是不是变相收益承诺？</summary>
+        <div class="faq-a">
+          不是。活动奖励是激励性质，<b>不是固定收益或投资回报</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。
+          涉及押金、排名、KYC、没收等规则，以该活动独立发布的条款为准。
+          参与前请自行评估规则与风险。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>这些规划中的产品什么时候上线？</summary>
+        <div class="faq-a">
+          阶段二至阶段四的具体时间表以官方公告为准。本文档描述的是产品结构与机制方向，
+          不代表时间承诺。每个产品上线前会单独发布机制文档，明确数值口径、发放来源与风控边界。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>为什么聚宝盆不支持提前解锁？</summary>
+        <div class="faq-a">
+          质押周期是收益定价的基础。如果允许随时退出，APY 就无法维持在公示水平，
+          对按期质押的用户也不公平。因此周期内不支持提前解锁。
+          如后续开放，会配套明确的罚金规则并提前公示。
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="wrap doc-foot">
     <div class="foot-row">
       <span class="foot-k">Document</span>
-      <span class="foot-v">财神生态圈 · V2.7</span>
+      <span class="foot-v">财神DAO生态圈 · Ecosystem Documentation</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Version</span>
+      <span class="foot-v">V2.9 · 内部评审稿</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Existing</span>
       <span class="foot-v">燃香赐福 · 聚宝盆</span>
     </div>
     <div class="foot-row">
+      <span class="foot-k">Partners</span>
+      <span class="foot-v">Antfun · BG · LUCKY99 · FIST</span>
+    </div>
+    <div class="foot-row">
       <span class="foot-k">Planned</span>
       <span class="foot-v">财神 NFT · 文化院 · 商城 · 小游戏 · DAO · 福报</span>
     </div>
     <div class="foot-row">
-      <span class="foot-k">Status</span>
-      <span class="foot-v">Internal Review</span>
+      <span class="foot-k">Activity</span>
+      <span class="foot-v">运营活动层 · 赛季与竞赛（横向模块）</span>
     </div>
+    <div class="foot-row">
+      <span class="foot-k">Core Asset</span>
+      <span class="foot-v">
+        <a href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">$财神DAO - 68Fya...6868</a>
+      </span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Network</span>
+      <span class="foot-v">Solana SPL</span>
+    </div>
+
     <div class="disc">
-      本文档为财神生态圈内部策划稿，仅供团队内部了解与讨论使用。<br>
-      所有规则、APY、额度、周期、分红比例以官方最新公告和页面为准，不构成投资建议。<br>
-      数字资产风险较高，请理性参与。
+      本文档为财神生态圈，用于信息展示，不构成任何投资建议。<br>
+      所有规则、APY、额度、周期、分红比例、合作代币与活动奖励以官方最新公告和页面为准；单次活动细则以独立活动文档为准。<br>
+      数字资产价格波动剧烈，请理性判断、注意风险。
     </div>
   </footer>
 
 </div>
 
+<button id="backTop" class="back-top" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+  </svg>
+</button>
+
+<div id="toast" role="status" aria-live="polite">已复制</div>
+
 <script>
   (function () {
-    /* ---------- 聚宝盆分段切换 ---------- */
+    'use strict';
+
+    /* ========== 主题色 meta ========== */
+    var themeColorMeta = document.createElement('meta');
+    themeColorMeta.name = 'theme-color';
+    document.head.appendChild(themeColorMeta);
+
+    function setThemeColor(isDark) {
+      themeColorMeta.content = isDark ? '#0a0e14' : '#ffffff';
+    }
+
+    /* ========== Toast ========== */
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+    function showToast(msg) {
+      if (!toast) return;
+      if (msg) toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+    }
+    window.__gofToast = showToast;
+
+    /* ========== 主题切换 ========== */
+    var root = document.documentElement;
+    var themeBtn = document.getElementById('themeToggle');
+    var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    var STORAGE_KEY = 'gof-theme';
+
+    function currentTheme() {
+      var attr = root.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+    function applyUI() {
+      var t = currentTheme();
+      if (themeBtn) {
+        themeBtn.setAttribute('data-icon', t);
+        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.title = label;
+      }
+      setThemeColor(t === 'dark');
+    }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+        applyUI();
+      });
+    }
+    function onSystemChange() { if (!root.hasAttribute('data-theme')) applyUI(); }
+    if (darkMQ.addEventListener) darkMQ.addEventListener('change', onSystemChange);
+    else if (darkMQ.addListener) darkMQ.addListener(onSystemChange);
+    applyUI();
+
+    /* ========== 聚宝盆分段切换 ========== */
     var seg = document.getElementById('segTreasure');
     if (seg) {
       seg.addEventListener('click', function (e) {
         var btn = e.target.closest('button');
         if (!btn) return;
-        seg.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
+        seg.querySelectorAll('button').forEach(function (b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
         var key = btn.getAttribute('data-panel');
         document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
         var target = document.getElementById('panel-' + key);
@@ -2066,9 +2423,9 @@
       });
     }
 
-    /* ---------- 目录导航高亮 ---------- */
+    /* ========== 目录高亮 ========== */
     var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
-    if (links.length && 'IntersectionObserver' in window) {
+    if (links.length && ('IntersectionObserver' in window)) {
       var sections = links.map(function (a) {
         return document.querySelector(a.getAttribute('href'));
       }).filter(Boolean);
@@ -2091,12 +2448,38 @@
             }
           }
         });
-      }, {
-        rootMargin: '-56px 0px -70% 0px',
-        threshold: 0
-      });
+      }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
 
       sections.forEach(function (s) { obs.observe(s); });
+    }
+
+    /* ========== FAQ 全部展开 ========== */
+    var faqBtn = document.getElementById('faqToggleAll');
+    var faqItems = document.querySelectorAll('.faq-item');
+    var faqAllOpen = false;
+    if (faqBtn) {
+      faqBtn.addEventListener('click', function () {
+        faqAllOpen = !faqAllOpen;
+        faqItems.forEach(function (d) { d.open = faqAllOpen; });
+        var span = faqBtn.querySelector('span');
+        if (span) span.textContent = faqAllOpen ? '收起全部' : '展开全部';
+        var svg = faqBtn.querySelector('svg');
+        if (svg) svg.style.transform = faqAllOpen ? 'rotate(180deg)' : '';
+      });
+    }
+
+    /* ========== 返回顶部 ========== */
+    var backTop = document.getElementById('backTop');
+    if (backTop) {
+      var onScroll = function () {
+        if (window.scrollY > 600) backTop.classList.add('show');
+        else backTop.classList.remove('show');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      backTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
     }
   })();
 </script>
