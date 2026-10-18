@@ -831,8 +831,23 @@
   .caption.gold{
     border-left-color:var(--gold);
   }
-  .caption.caption-list{ padding-left:26px; text-indent:-18px; }
-  .caption.caption-list b:first-child{ text-indent:0; }
+
+  /* 名词解释有序列表：悬挂缩进，折行对齐 */
+  .caption-ol{
+    margin:6px 0;
+    padding-left:20px;
+    list-style:decimal;
+  }
+  .caption-ol li{
+    margin:2px 0;
+    padding-left:2px;
+    line-height:1.9;
+  }
+  .caption-ol li::marker{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-3);
+  }
 
   /* ================= 解锁 ================= */
   .rel-list{
@@ -886,6 +901,24 @@
   }
   .rel.hold .rel-amt{color:var(--ink-3);}
   .rel.hold .rel-cond{color:var(--ink-2);}
+
+  /* 合计行 */
+  .rel.total{
+    border-bottom:0;
+    border-top:1px solid var(--line);
+    margin-top:-1px;
+    padding-top:14px;
+    padding-bottom:14px;
+    background:var(--red-soft);
+  }
+  .rel.total .rel-cond{
+    color:var(--cyber-d);
+    font-weight:700;
+  }
+  .rel.total .rel-amt{
+    color:var(--cyber-d);
+    font-weight:700;
+  }
 
   /* ================= 表格 ================= */
   .tbl-scroll{
@@ -1724,7 +1757,7 @@
             <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
           </span>
         </div>
-        <div class="alloc-note">燃香赐福专属活动池，定向回馈真实参与的用户</div>
+        <div class="alloc-note">TGE 释放 5%（约 2,511,200 枚），其余 95% 于 12 个月内线性释放；定向回馈真实参与的用户</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1761,7 +1794,7 @@
             <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
           </span>
         </div>
-        <div class="alloc-note">先建立交易深度，再逐步释放</div>
+        <div class="alloc-note">TGE 释放 10%（约 4,121,212 枚），剩余 90% 于 12 个月内线性释放；先建立交易深度，再逐步释放</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1930,7 +1963,7 @@
             <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
           </span>
         </div>
-        <div class="alloc-note">空投直达真实用户，营销细水长流</div>
+        <div class="alloc-note">TGE 释放 10%（约 893,762 枚），剩余 90% 于 12 个月内线性释放；空投直达真实用户，营销细水长流</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1952,11 +1985,8 @@
     </div>
 
     <p class="caption">
-      <b>名词解释：</b><br>
-      1. <b>TGE</b>（Token Generation Event，代币生成事件）——代币首次铸造并上线的时点，也是所有锁仓与释放计时的起点；<br>
-      2. <b>Cliff</b>（锁仓期）——该期间内不产生任何解锁；<br>
-      3. <b>Vesting</b>（线性释放）——锁仓期结束后按时间逐期解锁。<br>
-      上述锁仓与释放安排均通过链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
+      <b>说明：</b>「线性释放」指按时间均匀解锁。例如 36 个月线性释放，即每月解锁该部分总量的 1/36 ——
+      解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。
     </p>
   </section>
 
@@ -1969,9 +1999,21 @@
 
     <div class="rel-list">
       <div class="rel">
-        <div class="rel-cond">TGE释放 10%，无锁仓期，12 个月线性</div>
+        <div class="rel-cond">TGE 释放 10%，无锁仓，12 个月线性</div>
         <div class="rel-amt num">50,149,737 枚</div>
-        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜开盘优先建立交易深度，剩余部分匀速释放</div>
+        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜其中 TGE 释放约 5,014,974 枚，开盘优先建立交易深度，剩余部分匀速释放</div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-cond">TGE 释放 5%，无锁仓，12 个月线性</div>
+        <div class="rel-amt num">50,224,000 枚</div>
+        <div class="rel-scope">燃香赐福池｜其中 TGE 释放约 2,511,200 枚，其余 95% 于 12 个月内线性释放，定向回馈真实参与的用户</div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-cond">TGE 释放 100%，开盘注入</div>
+        <div class="rel-amt num">17,000,000 枚</div>
+        <div class="rel-scope">初始流动性｜建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
       </div>
 
       <div class="rel">
@@ -1991,12 +2033,23 @@
         <div class="rel-amt num">343,434,343 枚</div>
         <div class="rel-scope">FDV 里程碑销毁池 —— 达到价格目标即转入黑洞永久销毁，永不回流团队，也不会转作他用</div>
       </div>
+
+      <div class="rel total">
+        <div class="rel-cond">合计</div>
+        <div class="rel-amt num">686,868,686 枚</div>
+        <div class="rel-scope">与总发行量一致 · 100%</div>
+      </div>
     </div>
 
-    <p class="caption">
-      <b>名词解释：</b>Cliff（锁仓期）指该期间内不产生任何解锁；Vesting（线性释放）指锁仓期结束后按时间逐期解锁。
+    <div class="caption">
+      <b>名词解释：</b>
+      <ol class="caption-ol">
+        <li><b>TGE</b>（Token Generation Event，代币生成事件）——代币首次铸造并上线的时点，也是所有锁仓与释放计时的起点；</li>
+        <li><b>Cliff</b>（锁仓期）——该期间内不产生任何解锁；</li>
+        <li><b>Vesting</b>（线性释放）——锁仓期结束后按时间逐期解锁。</li>
+      </ol>
       上述锁仓与释放安排均通过链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
-    </p>
+    </div>
   </section>
 
   <!-- ================= 04 通缩机制 ================= -->
@@ -2323,8 +2376,7 @@
         seg.setAttribute('stroke', (isDark && darkStroke) ? darkStroke : baseStroke);
       });
     }
-    applyDarkModeSafe();
-    function applyDarkModeSafe(){ applyDonutDarkMode(); }
+    applyDonutDarkMode();
     if (darkQuery.addEventListener) {
       darkQuery.addEventListener('change', applyDonutDarkMode);
     } else if (darkQuery.addListener) {
