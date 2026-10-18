@@ -471,6 +471,8 @@
   }
   .benefit-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.45; letter-spacing:-.005em;}
   .benefit-d{margin-top:var(--sp-1); font-size:12.5px; color:var(--ink-3); line-height:1.7;}
+  .benefit.benefit-coop{background:rgba(168,130,28,.04);}
+  .benefit.benefit-coop .benefit-idx{color:var(--gold-d);}
 
   /* ================= 对比 ================= */
   .compare{
@@ -674,6 +676,7 @@
     :root:not([data-theme="light"]) .matrix-status.live{color:var(--teal);}
     :root:not([data-theme="light"]) .st-coop,
     :root:not([data-theme="light"]) .matrix-status.op{color:var(--gold);background:rgba(212,168,42,.10);border-color:rgba(212,168,42,.32);}
+    :root:not([data-theme="light"]) .benefit-coop{background:rgba(212,168,42,.05);}
     :root:not([data-theme="light"]) #toast{
       background:#e6eaf0; color:#10161e;
     }
@@ -701,6 +704,7 @@
   :root[data-theme="dark"] .matrix-status.live{color:var(--teal);}
   :root[data-theme="dark"] .st-coop,
   :root[data-theme="dark"] .matrix-status.op{color:var(--gold);background:rgba(212,168,42,.10);border-color:rgba(212,168,42,.32);}
+  :root[data-theme="dark"] .benefit-coop{background:rgba(212,168,42,.05);}
   :root[data-theme="dark"] #toast{
     background:#e6eaf0; color:#10161e;
   }
@@ -867,7 +871,7 @@
     <div class="mast-meta">
       <div class="cell">
         <span class="k">版本</span>
-        <span class="v num">V2.9</span>
+        <span class="v num">V3.0</span>
       </div>
       <div class="cell">
         <span class="k">已上线</span>
@@ -879,7 +883,7 @@
       </div>
       <div class="cell">
         <span class="k">规划中</span>
-        <span class="v num">6 板块 + 活动层</span>
+        <span class="v num">6 板块 + 联名 NFT + 活动层</span>
       </div>
     </div>
   </header>
@@ -1001,7 +1005,7 @@
       <div class="matrix-row">
         <div class="matrix-name">财神 NFT</div>
         <span class="matrix-status plan">规划中</span>
-        <div class="matrix-desc">极少数创世竞拍，共 108 枚、唯一编号。持有者享有专属权益与生态分红权重，作为财神宇宙的创世身份凭证。</div>
+        <div class="matrix-desc">108 枚创世身份凭证，唯一编号；另设联名系列，与特定社区 / 基金会联名发行，持有者享财神生态与合作方双重权益。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name">财神文化院</div>
@@ -1045,7 +1049,7 @@
           <span class="spec-k-cn">阶段二</span>
           <span class="spec-k-en">Phase 02</span>
         </div>
-        <div class="spec-v"><b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢。</div>
+        <div class="spec-v"><b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢；同步推进联名系列发行。</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
@@ -1543,12 +1547,13 @@
   <section class="wrap sec" id="nft">
     <div class="sec-head">
       <span class="sec-idx">04</span>
-      <h2 class="sec-title">财神 NFT<span><em class="st st-plan">规划中</em><em class="sd">身份中枢</em></span></h2>
+      <h2 class="sec-title">财神 NFT<span><em class="st st-plan">规划中</em><em class="sd">身份中枢 · 联名双重权益</em></span></h2>
     </div>
 
     <p class="sec-lead">
       极少数创世竞拍，共 108 枚、唯一编号。作为财神生态圈的创世身份凭证，
       持有者享有专属权益与生态分红权重，是连接全部产品线的权益中枢。
+      除创世系列外，财神 NFT 另设<b>联名系列</b>，与特定社区 / 基金会联名发行，持有者同时享有财神生态权益与合作方权益。
     </p>
 
     <div class="sub-head">
@@ -1576,7 +1581,15 @@
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。</p>
+    <p class="tbl-caption">创世系列发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。</p>
+
+    <div class="note gold">
+      <span class="note-tag">联名</span>
+      <div class="note-body">
+        <b>联名系列：</b>财神 NFT 与特定社区 / 基金会联名发行，独立编号、独立总量，按合作方案单独公示。
+        联名系列不影响 108 枚创世系列的总量与等级结构，二者并列存在、各自稀缺。
+      </div>
+    </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
@@ -1646,6 +1659,11 @@
         <div class="benefit-t">交易版税</div>
         <div class="benefit-d">NFT 可自由交易，版税进入生态池与福报池</div>
       </div>
+      <div class="benefit benefit-coop">
+        <span class="benefit-idx">13</span>
+        <div class="benefit-t">联名双重权益</div>
+        <div class="benefit-d">联名系列同时享有财神生态权益与合作社区 / 基金会权益</div>
+      </div>
     </div>
 
     <div class="sub-head">
@@ -1678,11 +1696,67 @@
       </div>
     </div>
 
+    <div class="sub-head">
+      <div class="sub-head-line">
+        <span class="sub-idx">04·D</span>
+        <h3 class="sub-title">联名发行与双重权益<span>Co-branded Series</span></h3>
+      </div>
+    </div>
+
+    <p class="sec-lead" style="margin-bottom:var(--sp-4);">
+      财神 NFT 与特定社区 / 基金会联名发行，形成「联名系列」。联名系列的持有者同时连接两条权益线：
+      <b>财神侧权益</b>（生态产品、治理、空投、活动）与<b>合作方侧权益</b>（社区身份、基金会资源、合作方专属活动）。
+    </p>
+
+    <div class="def">
+      <div class="def-row">
+        <span class="def-k">联名对象</span>
+        <span class="def-v">特定社区、基金会或生态伙伴；具体联名名单由官方在发行前公示</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">发行方式</span>
+        <span class="def-v">独立编号、独立总量，按合作方案单独发行；不影响 108 枚创世系列的总量与等级结构</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">双重权益</span>
+        <span class="def-v">
+          <b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务；<br>
+          <b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证
+        </span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">权益归属</span>
+        <span class="def-v">财神侧权益由财神生态兑现；合作侧权益由合作方兑现。二者以 NFT 为载体绑定，<b>转让即权益转让</b></span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">分配权重</span>
+        <span class="def-v">联名系列的分红权重与创世系列分开计算，具体权重以该联名方案公示为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">版税与结算</span>
+        <span class="def-v">联名系列二级市场版税按合作方案拆分，比例与流向以链上合约与官方公示为准</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k">边界</span>
+        <span class="def-v">联名系列<b>不稀释</b> 108 枚创世身份的稀缺性，<b>不改变</b>创世系列的分红权重与等级结构</span>
+      </div>
+    </div>
+
+    <div class="note info">
+      <span class="note-tag">双重权益</span>
+      <div class="note-body">
+        <b>举例：</b>某联名系列共 N 枚，持有者既可在财神生态内参与治理、活动与空投优先，
+        又可在合作社区 / 基金会内享有对应身份与资源。两条权益线并行，由 NFT 本身承载。
+      </div>
+    </div>
+
     <div class="note warn">
       <span class="note-tag">风险</span>
       <div class="note-body">
         生态分红不是固定收益，不承诺分红金额，取决于生态实际收入与治理决定。
         NFT 竞拍存在市场风险，价格可能大幅波动。
+        联名系列的<b>合作侧权益由合作方兑现</b>，其兑现能力、规则与存续取决于合作方；合作方权益变化不影响财神侧权益，
+        但可能影响联名 NFT 的整体价值。联名方案、合作方名单与权益细则以官方与对应合作方公告为准。
       </div>
     </div>
   </section>
@@ -2058,7 +2132,7 @@
       </div>
       <div class="loop-row">
         <span class="loop-k">身份入口</span>
-        <span class="loop-v">财神 NFT —— 108 枚创世身份，权益与分红中枢</span>
+        <span class="loop-v">财神 NFT —— 108 枚创世 + 联名系列，双重权益身份中枢</span>
       </div>
       <div class="loop-row">
         <span class="loop-k">文化入口</span>
@@ -2110,7 +2184,7 @@
           <span class="spec-k-cn">飞轮三</span>
           <span class="spec-k-en">Flywheel 03</span>
         </div>
-        <div class="spec-v"><b>身份飞轮</b> —— NFT 权益横跨全部产品 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳</div>
+        <div class="spec-v"><b>身份飞轮</b> —— NFT 权益横跨全部产品，联名系列接入外部社区 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
@@ -2137,7 +2211,7 @@
 
     <p class="risk-intro">
       <b>重要提示：</b>数字资产投资存在重大风险，包括本金全部损失的可能。
-      本页所有产品机制、APY、额度、比例、合作代币与活动奖励仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。
+      本页所有产品机制、APY、额度、比例、合作代币、联名 NFT 与活动奖励仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。
     </p>
 
     <ol class="risk-list">
@@ -2151,6 +2225,7 @@
       <li class="risk-item"><b>APY 可调整</b> —— 聚宝盆 APY 为动态参数，可随生态情况调整，以官方页面实时显示为准。</li>
       <li class="risk-item"><b>非复利口径</b> —— 聚宝盆收益按日线性释放，APY 为简单年化、非复利，实际累计收益需按周期自行核算。</li>
       <li class="risk-item"><b>NFT 市场风险</b> —— 财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
+      <li class="risk-item"><b>联名 NFT 风险</b> —— 联名系列的合作侧权益由合作方兑现，其兑现能力、规则与存续取决于合作方；合作方权益变化可能影响联名 NFT 整体价值。联名方案以官方与对应合作方公告为准。</li>
       <li class="risk-item"><b>分红不保本</b> —— 生态分红取决于生态实际收入，不承诺分红金额，可能为零。</li>
       <li class="risk-item"><b>文化院合规边界</b> —— 风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
       <li class="risk-item"><b>游戏奖励波动</b> —— 财神小游戏奖励为币本位，不承诺法币价值，奖励额度受生态预算约束。</li>
@@ -2215,6 +2290,17 @@
           单宝是币本位：质押 10,000 枚，收益就按 10,000 枚计算，与价格无关。<br>
           双宝是金本位：按总投入的 USDT 等值计算收益，再折算成 $财神DAO 发放。<br>
           两种模式最终发的都是 $财神DAO，区别在于计价基准不同。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>联名 NFT 的「双重权益」到底是什么？</summary>
+        <div class="faq-a">
+          <b>双重权益 = 财神侧权益 + 合作侧权益。</b><br>
+          <b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务等，由财神生态兑现。<br>
+          <b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证，由合作方兑现。<br>
+          两者以 NFT 为载体绑定，NFT 转让即权益转让。联名系列独立编号、独立总量，<b>不稀释 108 枚创世身份的稀缺性</b>。
+          合作侧权益的具体内容、兑现能力与存续取决于合作方，以官方与对应合作方公告为准。
         </div>
       </details>
 
@@ -2299,7 +2385,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">V2.9 · 内部评审稿</span>
+      <span class="foot-v">V3.0 · 内部评审稿</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Existing</span>
@@ -2308,6 +2394,10 @@
     <div class="foot-row">
       <span class="foot-k">Partners</span>
       <span class="foot-v">Antfun · BG · LUCKY99 · FIST</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">NFT</span>
+      <span class="foot-v">108 枚创世 + 联名系列（双重权益）</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Planned</span>
@@ -2330,7 +2420,7 @@
 
     <div class="disc">
       本文档为财神生态圈，用于信息展示，不构成任何投资建议。<br>
-      所有规则、APY、额度、周期、分红比例、合作代币与活动奖励以官方最新公告和页面为准；单次活动细则以独立活动文档为准。<br>
+      所有规则、APY、额度、周期、分红比例、合作代币、联名 NFT 与活动奖励以官方最新公告和页面为准；单次活动与联名细则以独立文档为准。<br>
       数字资产价格波动剧烈，请理性判断、注意风险。
     </div>
   </footer>
