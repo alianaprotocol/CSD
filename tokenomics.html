@@ -719,11 +719,58 @@
     box-shadow:0 0 8px var(--cyber-glow);
   }
 
+  /* ================= 释放条件（TGE / 锁仓 / 释放） ================= */
+  .alloc-vest{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:11px;
+  }
+  .vest-item{
+    display:inline-flex;
+    align-items:baseline;
+    gap:6px;
+    padding:2px 9px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--bg);
+    line-height:1.7;
+    white-space:nowrap;
+    transition:border-color .2s ease, background-color .2s ease;
+  }
+  .vest-k{
+    font-family:var(--mono);
+    font-size:9px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .vest-v{
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--ink-2);
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum" 1;
+    letter-spacing:-.005em;
+    line-height:1.7;
+  }
+  .vest-item.is-tge{
+    border-color:var(--cyber-glow-soft);
+    background:var(--cyber-glow-faint);
+  }
+  .vest-item.is-tge .vest-v{color:var(--cyber);}
+  .vest-item.is-zero .vest-v{color:var(--muted);font-weight:500;}
+  .alloc-row.lead .vest-item.is-tge{
+    border-color:var(--cyber-glow-soft);
+    background:var(--cyber-glow-faint);
+  }
+
   .alloc-note{
     margin-top:8px;
     font-size:12px;
     color:var(--muted);
-    line-height:1.6;
+    line-height:1.65;
   }
 
   .alloc-links{
@@ -784,6 +831,8 @@
   .caption.gold{
     border-left-color:var(--gold);
   }
+  .caption.caption-list{ padding-left:26px; text-indent:-18px; }
+  .caption.caption-list b:first-child{ text-indent:0; }
 
   /* ================= 解锁 ================= */
   .rel-list{
@@ -1286,6 +1335,10 @@
     .alloc-pct{font-size:14.5px;}
     .alloc-amt{font-size:15.5px;margin-top:5px;}
     .alloc-bar{margin-top:9px;}
+    .alloc-vest{gap:5px;margin-top:9px;}
+    .vest-item{padding:2px 8px;gap:5px;}
+    .vest-k{font-size:8.5px;}
+    .vest-v{font-size:11px;}
     .alloc-note{margin-top:7px;font-size:11.5px;}
     .alloc-links{gap:6px;margin-top:9px;}
     .alloc-link{font-size:11px;padding:3px 9px 3px 7px;}
@@ -1565,7 +1618,18 @@
         </div>
         <div class="alloc-amt num">343,434,343 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:100%"></i></div>
-        <div class="alloc-note">多签4/6执行 价格每达一档目标即转入黑洞销毁，累计销毁 343,434,343 枚，永不回流团队</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item is-zero">
+            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">按里程碑销毁</span>
+          </span>
+        </div>
+        <div class="alloc-note">多签 4/6 执行，价格每达一档目标即转入黑洞永久销毁，累计 343,434,343 枚，永不回流团队</div>
       </div>
 
       <div class="alloc-row">
@@ -1575,7 +1639,18 @@
         </div>
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放，三年匀速解锁，与项目长期价值深度绑定</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1601,7 +1676,18 @@
         </div>
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放，三年匀速解锁，与项目长期价值深度绑定</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1627,7 +1713,18 @@
         </div>
         <div class="alloc-amt num">50,224,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:14.62%"></i></div>
-        <div class="alloc-note">TGE 5% 其余 12 个月线性  燃香赐福专属活动池，定向回馈真实参与的用户</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge">
+            <span class="vest-k">TGE</span><span class="vest-v">5%</span>
+          </span>
+          <span class="vest-item is-zero">
+            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">燃香赐福专属活动池，定向回馈真实参与的用户</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1653,7 +1750,18 @@
         </div>
         <div class="alloc-amt num">41,212,121 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:12%"></i></div>
-        <div class="alloc-note">TGE释放 10%，其余 12 个月线性 —— 先建立交易深度，再逐步释放</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge">
+            <span class="vest-k">TGE</span><span class="vest-v">10%</span>
+          </span>
+          <span class="vest-item is-zero">
+            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">先建立交易深度，再逐步释放</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1679,7 +1787,18 @@
         </div>
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放，社区份额长期匀速解锁，不形成集中抛压</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1705,7 +1824,18 @@
         </div>
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
-        <div class="alloc-note">锁 3 个月后 36 个月线性释放，社区份额长期匀速解锁，不形成集中抛压</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1731,7 +1861,18 @@
         </div>
         <div class="alloc-amt num">20,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:5.82%"></i></div>
-        <div class="alloc-note">锁 3 个月后 12 个月线性释放，按建设节奏分批投入，不做一次性释放</div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero">
+            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">按建设节奏分批投入，不做一次性释放</div>
         <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1757,6 +1898,17 @@
         </div>
         <div class="alloc-amt num">17,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:4.95%"></i></div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge">
+            <span class="vest-k">TGE</span><span class="vest-v">100%</span>
+          </span>
+          <span class="vest-item is-zero">
+            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">开盘注入</span>
+          </span>
+        </div>
         <div class="alloc-note">建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
       </div>
 
@@ -1767,8 +1919,19 @@
         </div>
         <div class="alloc-amt num">8,937,616 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:2.6%"></i></div>
-        <div class="alloc-note">TGE释放 10%，其余 12 个月线性 —— 空投直达真实用户，营销细水长流</div>
-       <div class="alloc-links">
+        <div class="alloc-vest">
+          <span class="vest-item is-tge">
+            <span class="vest-k">TGE</span><span class="vest-v">10%</span>
+          </span>
+          <span class="vest-item is-zero">
+            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
+          </span>
+          <span class="vest-item">
+            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
+          </span>
+        </div>
+        <div class="alloc-note">空投直达真实用户，营销细水长流</div>
+        <div class="alloc-links">
           <a class="alloc-link" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2"></rect>
@@ -1789,8 +1952,11 @@
     </div>
 
     <p class="caption">
-      <b>说明：</b>「线性释放」指按时间均匀解锁。例如 36 个月线性释放，即每月解锁该部分总量的 1/36 ——
-      解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。
+      <b>名词解释：</b><br>
+      1. <b>TGE</b>（Token Generation Event，代币生成事件）——代币首次铸造并上线的时点，也是所有锁仓与释放计时的起点；<br>
+      2. <b>Cliff</b>（锁仓期）——该期间内不产生任何解锁；<br>
+      3. <b>Vesting</b>（线性释放）——锁仓期结束后按时间逐期解锁。<br>
+      上述锁仓与释放安排均通过链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
     </p>
   </section>
 
@@ -2157,7 +2323,8 @@
         seg.setAttribute('stroke', (isDark && darkStroke) ? darkStroke : baseStroke);
       });
     }
-    applyDonutDarkMode();
+    applyDarkModeSafe();
+    function applyDarkModeSafe(){ applyDonutDarkMode(); }
     if (darkQuery.addEventListener) {
       darkQuery.addEventListener('change', applyDonutDarkMode);
     } else if (darkQuery.addListener) {
