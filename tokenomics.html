@@ -179,30 +179,43 @@
     letter-spacing:.02em;
     line-height:1.5;
   }
-  .ticker{
+
+  /* ================= 主题切换按钮 ================= */
+  .theme-toggle{
     flex:none;
-    text-align:right;
-    padding-top:var(--sp-1);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    padding:0;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--card);
+    color:var(--ink-3);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+    margin-top:2px;
   }
-  .ticker .sym{
-    display:block;
-    font-size:14px;
-    font-weight:700;
+  .theme-toggle:hover{
+    border-color:var(--cyber-glow-soft);
     color:var(--cyber);
-    letter-spacing:.01em;
-    white-space:nowrap;
-    line-height:1.35;
-    text-shadow:0 0 10px var(--cyber-glow-soft);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
   }
-  .ticker .ch{
+  .theme-toggle:active{
+    background:var(--cyber-glow-soft);
+  }
+  .theme-toggle svg{
+    width:18px;
+    height:18px;
     display:block;
-    font-family:var(--mono);
-    font-size:10.5px;
-    color:var(--muted);
-    letter-spacing:.14em;
-    margin-top:6px;
-    line-height:1;
   }
+  .theme-toggle .ico-sun{ display:none; }
+  .theme-toggle .ico-moon{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-sun{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-moon{ display:none; }
 
   .mast-meta{
     display:flex;flex-wrap:wrap;
@@ -327,7 +340,6 @@
     border-radius:0 3px 3px 0;
   }
   .hl-card.hl-red::before{background:var(--cyber);box-shadow:0 0 8px var(--cyber-glow);}
-  /* 赛博红角落标记 */
   .hl-card::after{
     content:"";
     position:absolute;
@@ -832,7 +844,6 @@
     border-left-color:var(--gold);
   }
 
-  /* 名词解释有序列表：悬挂缩进，折行对齐 */
   .caption-ol{
     margin:6px 0;
     padding-left:20px;
@@ -902,7 +913,6 @@
   .rel.hold .rel-amt{color:var(--ink-3);}
   .rel.hold .rel-cond{color:var(--ink-2);}
 
-  /* 合计行 */
   .rel.total{
     border-bottom:0;
     border-top:1px solid var(--line);
@@ -918,6 +928,27 @@
   .rel.total .rel-amt{
     color:var(--cyber-d);
     font-weight:700;
+  }
+
+  .rel.subtotal{
+    border-bottom:0;
+    border-top:1px solid var(--line-2);
+    padding-top:12px;
+    padding-bottom:12px;
+    background:var(--cyber-glow-faint);
+  }
+  .rel.subtotal .rel-cond{
+    color:var(--cyber-d);
+    font-weight:600;
+    font-size:13px;
+  }
+  .rel.subtotal .rel-amt{
+    color:var(--cyber);
+    font-weight:700;
+    font-size:13px;
+  }
+  .rel.subtotal .rel-scope{
+    color:var(--ink-3);
   }
 
   /* ================= 表格 ================= */
@@ -1273,9 +1304,9 @@
     transform:translateX(-50%) translateY(0);
   }
 
-  /* ================= 深色模式 ================= */
+  /* ================= 深色模式：系统深色（用户未强制浅色时） ================= */
   @media (prefers-color-scheme: dark){
-    :root{
+    :root:not([data-theme="light"]){
       color-scheme: dark;
 
       --ink:#e6eaf0;
@@ -1312,11 +1343,11 @@
       --donut-track:#1f242b;
     }
 
-    .hl-card::before{opacity:.95;}
-    .alloc-row.lead::before{opacity:.95;}
-    .ca-copy:active{background:rgba(255,45,85,.18);}
+    :root:not([data-theme="light"]) .hl-card::before{opacity:.95;}
+    :root:not([data-theme="light"]) .alloc-row.lead::before{opacity:.95;}
+    :root:not([data-theme="light"]) .ca-copy:active{background:rgba(255,45,85,.18);}
 
-    #toast{
+    :root:not([data-theme="light"]) #toast{
       background:#e6eaf0;
       color:#10161e;
       box-shadow:
@@ -1325,6 +1356,63 @@
         0 0 0 1px var(--cyber-glow-soft),
         0 0 24px -4px var(--cyber-glow);
     }
+  }
+
+  /* ================= 深色模式：用户强制深色 ================= */
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+
+    --ink:#e6eaf0;
+    --ink-2:#b0b8c2;
+    --ink-3:#8892a0;
+    --muted:#6a7480;
+    --line:#252c36;
+    --line-2:#1a2029;
+    --bg:#0a0e14;
+    --card:#10161e;
+    --red:#e63946;
+    --red-dark:#ff5a6a;
+    --red-soft:#241418;
+    --gold:#d4a82a;
+
+    --cyber:#ff2d55;
+    --cyber-d:#cc0e30;
+    --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255, 45, 85, .55);
+    --cyber-glow-soft:rgba(255, 45, 85, .22);
+    --cyber-glow-faint:rgba(255, 45, 85, .08);
+
+    --toc-bg:rgba(16,22,30,.92);
+    --abstract-from:#161c25;
+    --abstract-to:#10161e;
+    --lead-fade:rgba(42,20,24,0);
+    --hover-bg:rgba(230,236,240,.06);
+    --active-bg:rgba(230,57,70,.14);
+    --thead-bg:#181e26;
+    --zebra-bg:#141a22;
+    --sum-line:#3a1e22;
+    --scroll-thumb:#3a424d;
+
+    --donut-track:#1f242b;
+  }
+
+  :root[data-theme="dark"] .hl-card::before{opacity:.95;}
+  :root[data-theme="dark"] .alloc-row.lead::before{opacity:.95;}
+  :root[data-theme="dark"] .ca-copy:active{background:rgba(255,45,85,.18);}
+
+  :root[data-theme="dark"] #toast{
+    background:#e6eaf0;
+    color:#10161e;
+    box-shadow:
+      0 12px 30px -10px rgba(0,0,0,.6),
+      0 4px 12px -4px rgba(0,0,0,.3),
+      0 0 0 1px var(--cyber-glow-soft),
+      0 0 24px -4px var(--cyber-glow);
+  }
+
+  /* ================= 浅色模式：用户强制浅色 ================= */
+  :root[data-theme="light"]{
+    color-scheme: light;
   }
 
   /* ================= 小屏 ================= */
@@ -1387,6 +1475,18 @@
     }
   }
 </style>
+
+<!-- 主题初始化：在 CSS 加载前就应用存储的选择，避免闪动 -->
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 <div class="doc">
@@ -1399,6 +1499,22 @@
         <h1 class="doc-title">财神DAO God Of Fortune</h1>
         <p class="doc-sub">代币经济方案 · 完整版</p>
       </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
     </div>
 
     <div class="mast-meta">
@@ -1999,45 +2115,51 @@
 
     <div class="rel-list">
       <div class="rel">
-        <div class="rel-cond">TGE 释放 10%，无锁仓，12 个月线性</div>
-        <div class="rel-amt num">50,149,737 枚</div>
-        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜其中 TGE 释放约 5,014,974 枚，开盘优先建立交易深度，剩余部分匀速释放</div>
-      </div>
-
-      <div class="rel">
-        <div class="rel-cond">TGE 释放 5%，无锁仓，12 个月线性</div>
-        <div class="rel-amt num">50,224,000 枚</div>
-        <div class="rel-scope">燃香赐福池｜其中 TGE 释放约 2,511,200 枚，其余 95% 于 12 个月内线性释放，定向回馈真实参与的用户</div>
-      </div>
-
-      <div class="rel">
-        <div class="rel-cond">TGE 释放 100%，开盘注入</div>
+        <div class="rel-cond">TGE 全部释放，开盘注入</div>
         <div class="rel-amt num">17,000,000 枚</div>
         <div class="rel-scope">初始流动性｜建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
       </div>
 
       <div class="rel">
-        <div class="rel-cond">锁 3 个月，之后 12 个月线性释放</div>
-        <div class="rel-amt num">20,000,000 枚</div>
-        <div class="rel-scope">财神生态建设｜先有 3 个月冷静期，再按月投入，避免短期集中释放冲击盘面</div>
+        <div class="rel-cond">TGE 释放 10%，剩余 90% 于 12 个月内线性释放</div>
+        <div class="rel-amt num">50,149,737 枚</div>
+        <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜TGE 约 5,014,974 枚用于开盘建仓与空投，其余按月匀速释放</div>
       </div>
 
       <div class="rel">
-        <div class="rel-cond">锁 3 个月，之后 36 个月线性释放</div>
+        <div class="rel-cond">TGE 释放 5%，剩余 95% 于 12 个月内线性释放</div>
+        <div class="rel-amt num">50,224,000 枚</div>
+        <div class="rel-scope">燃香赐福池｜TGE 约 2,511,200 枚用于活动启动，其余按月匀速释放，定向回馈真实参与的用户</div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-cond">锁仓 3 个月，之后 12 个月线性释放</div>
+        <div class="rel-amt num">20,000,000 枚</div>
+        <div class="rel-scope">财神生态建设｜3 个月冷静期后按月投入，避免短期集中释放冲击盘面</div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-cond">锁仓 3 个月，之后 36 个月线性释放</div>
         <div class="rel-amt num">206,060,606 枚</div>
-        <div class="rel-scope">财神基金会 · BG 基金会 · Lucky99 社区 · Fist 社区｜占总量的 30%，被拉长至 39 个月周期释放，长期利益与持币人一致</div>
+        <div class="rel-scope">财神基金会 · BG 基金会 · Lucky99 社区 · Fist 社区｜占总量的 30%，拉长至 39 个月周期，长期利益与持币人一致</div>
       </div>
 
       <div class="rel hold">
         <div class="rel-cond">不释放，仅按里程碑销毁</div>
         <div class="rel-amt num">343,434,343 枚</div>
-        <div class="rel-scope">FDV 里程碑销毁池 —— 达到价格目标即转入黑洞永久销毁，永不回流团队，也不会转作他用</div>
+        <div class="rel-scope">FDV 里程碑销毁池｜达到价格目标即转入黑洞永久销毁，永不回流团队，也不会转作他用</div>
       </div>
 
       <div class="rel total">
         <div class="rel-cond">合计</div>
         <div class="rel-amt num">686,868,686 枚</div>
         <div class="rel-scope">与总发行量一致 · 100%</div>
+      </div>
+
+      <div class="rel subtotal">
+        <div class="rel-cond">其中：TGE 即时释放小计</div>
+        <div class="rel-amt num">≈ 24,526,174 枚</div>
+        <div class="rel-scope">初始流动性 17,000,000 + 做市 / 空投营销 5,014,974 + 燃香赐福池 2,511,200，约占总量的 3.57%</div>
       </div>
     </div>
 
@@ -2366,22 +2488,57 @@
       }
     }
 
-    /* ---------- 深色模式环形图配色自动切换 ---------- */
-    var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    function applyDonutDarkMode() {
-      var isDark = darkQuery.matches;
+    /* ---------- 主题切换 ---------- */
+    var root = document.documentElement;
+    var themeBtn = document.getElementById('themeToggle');
+    var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    var STORAGE_KEY = 'gof-theme';
+
+    function currentTheme() {
+      var attr = root.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+
+    function applyDonutTheme(isDark) {
       donutSegs.forEach(function (seg) {
         var darkStroke = seg.getAttribute('data-dark-stroke');
         var baseStroke = seg.getAttribute('data-base-stroke') || seg.getAttribute('stroke');
         seg.setAttribute('stroke', (isDark && darkStroke) ? darkStroke : baseStroke);
       });
     }
-    applyDonutDarkMode();
-    if (darkQuery.addEventListener) {
-      darkQuery.addEventListener('change', applyDonutDarkMode);
-    } else if (darkQuery.addListener) {
-      darkQuery.addListener(applyDonutDarkMode);
+
+    function applyUI() {
+      var t = currentTheme();
+      if (themeBtn) {
+        themeBtn.setAttribute('data-icon', t);
+        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.title = label;
+      }
+      applyDonutTheme(t === 'dark');
     }
+
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+        applyUI();
+      });
+    }
+
+    function onSystemChange() {
+      if (!root.hasAttribute('data-theme')) applyUI();
+    }
+    if (darkMQ.addEventListener) {
+      darkMQ.addEventListener('change', onSystemChange);
+    } else if (darkMQ.addListener) {
+      darkMQ.addListener(onSystemChange);
+    }
+
+    /* 首次应用（此时环形图可能尚未加载完成，但 donutSegs 已经查询完毕） */
+    applyUI();
   })();
 </script>
 
