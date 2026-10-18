@@ -540,16 +540,6 @@
   .rel.subtotal .rel-amt{color:var(--cyber); font-weight:700; font-size:13px;}
   .rel.subtotal .rel-scope{color:var(--ink-3);}
 
-  /* 滚动渐隐提示 */
-  .scroll-hint{position:relative;}
-  .scroll-hint::after{
-    content:""; position:absolute; top:0; right:0; bottom:0; width:26px;
-    background:linear-gradient(90deg, transparent, var(--card) 92%);
-    pointer-events:none; border-radius:0 var(--r) var(--r) 0;
-    transition:opacity .3s ease;
-  }
-  .scroll-hint.at-end::after{opacity:0;}
-
   /* ================= 通缩表格（可折叠 + 滑动提示） ================= */
   .tbl-details{
     margin: 0;
@@ -645,7 +635,10 @@
   .tbl-scroll::-webkit-scrollbar{height:4px;}
   .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold)); border-radius:2px;}
 
-  table{border-collapse:collapse; width:100%; font-size:13px;}
+  table{
+    border-collapse:collapse; width:100%; font-size:13px;
+    background: var(--card); /* 修复滑动时透底产生的白线 */
+  }
   th,td{
     padding:var(--sp-3) var(--sp-4); text-align:right; white-space:nowrap;
     border-bottom:1px solid var(--line-2); line-height:1.5; position:relative;
@@ -680,6 +673,9 @@
     content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
     background:var(--cyber); box-shadow:0 0 8px var(--cyber-glow);
   }
+
+  /* 移除多余的白色渐隐遮罩 */
+  .scroll-hint::after { display: none !important; }
 
   /* ================= 通缩曲线 ================= */
   .chart-wrap{
@@ -1156,7 +1152,6 @@
     .kpi-cell { border-right: 0; border-bottom: 1px solid var(--line-2); padding: 14px 12px; }
     .kpi-cell:last-child { border-bottom: 0; }
 
-    /* 通缩曲线精简 */
     .chart-wrap { padding: 14px 14px 10px; }
     .chart .lbl { font-size: 16px; }
     .chart .lbl-y.detail,
@@ -1165,7 +1160,6 @@
     .chart .grid { display: none; }
     .chart .line { stroke-width: 2.5; }
 
-    /* 通缩表格：缩小 min-width，显示滑动提示 */
     .t-milestone { min-width: 520px; }
     .t-milestone th,
     .t-milestone td { padding: 9px 11px; font-size: 12px; }
@@ -1291,7 +1285,6 @@
     .faq-a{padding-right:0; color:#333;}
     a[href^="http"]::after{content:" (" attr(href) ")"; font-family:var(--mono); font-size:8.5pt; color:#666; word-break:break-all;}
     .ch-url a::after,.foot-v a::after,.alloc-link::after{content:"" !important;}
-    /* 展开所有 details */
     details { display: block !important; }
     details > summary { display: none !important; }
     details:not([open]) > *:not(summary) { display: block !important; }
@@ -2294,7 +2287,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v1.4 · 2026-10-18</span>
+      <span class="foot-v">v1.5 · 2026-10-18</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Total Supply</span>
@@ -2369,7 +2362,7 @@
 
     <div class="disc">
       本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
-      完整风险披露请见「06 风险与声明」。文档版本 v1.4 · 最后更新 2026-10-18。
+      完整风险披露请见「06 风险与声明」。文档版本 v1.5 · 最后更新 2026-10-18。
     </div>
   </footer>
 
