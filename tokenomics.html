@@ -581,7 +581,10 @@
   .donut-seg{
     transition: opacity .25s ease, stroke-width .25s ease, filter .3s ease;
     cursor: pointer;
+    outline: none;
   }
+  .donut-seg:focus,
+  .donut-seg:focus-visible{ outline: none; }
   .donut-seg.dim{ opacity: .15; }
   .donut-seg.highlight{
     stroke-width: 26;
@@ -1544,13 +1547,13 @@
     <a class="toc-link" href="#faq">FAQ</a>
   </nav>
 
-  <!-- ================= 摘要 ================= -->
+  <!-- ================= 摘要（#1 #5） ================= -->
   <section class="wrap abstract">
     <p>
       全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">50%</span> 划入「FDV 里程碑销毁池」——
-      币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁 343,434,343 枚，且永不回流团队。
-      剩余 50% 按基金会、社区、生态与流动性分项配置，全部设有 3 至 36 个月不等的锁仓与线性释放安排，
-      每一笔锁仓均有独立链上地址可供查验。
+      币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁上限 343,434,343 枚，且永不回流团队。
+      剩余 50% 按基金会、社区、生态与流动性分项配置，多数份额设 3 至 36 个月不等的锁仓与线性释放；
+      流动性类份额采用 TGE 先释放、余量线性释放的方式，每一笔锁仓均有独立链上地址可供查验。
     </p>
   </section>
 
@@ -1565,7 +1568,7 @@
       <div class="hl-card hl-red">
         <div class="hl-num">50%</div>
         <div class="hl-t">供应量用于销毁</div>
-        <div class="hl-d">12 档 FDV 里程碑，累计销毁 343,434,343 枚，永不回流团队</div>
+        <div class="hl-d">12 档 FDV 里程碑，累计销毁上限 343,434,343 枚，永不回流团队</div>
       </div>
       <div class="hl-card">
         <div class="hl-num">100%</div>
@@ -1590,7 +1593,7 @@
     </div>
   </section>
 
-  <!-- ================= 01 基础信息 ================= -->
+  <!-- ================= 01 基础信息（#8） ================= -->
   <section class="wrap sec" id="overview">
     <div class="sec-head">
       <span class="sec-idx">01</span>
@@ -1613,6 +1616,10 @@
       <div class="fact">
         <div class="k">发行量 | Total Supply</div>
         <div class="v num">686,868,686</div>
+      </div>
+      <div class="fact wide">
+        <div class="k">TGE | Token Generation Event</div>
+        <div class="v">待定 · 以官方公告为准</div>
       </div>
       <div class="fact wide">
         <div class="k">合约地址 | CA</div>
@@ -1646,7 +1653,7 @@
     </div>
   </section>
 
-  <!-- ================= 02 代币分配 ================= -->
+  <!-- ================= 02 代币分配（#3 #7 #9） ================= -->
   <section class="wrap sec" id="distribution">
     <div class="sec-head">
       <span class="sec-idx">02</span>
@@ -1659,42 +1666,52 @@
           <circle cx="100" cy="100" r="72" fill="none" stroke="var(--donut-track)" stroke-width="22"/>
           <g transform="rotate(-90 100 100)">
             <circle class="donut-seg" data-seg="0" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="FDV 里程碑销毁池 50.0000%"
                     stroke="#ff2d55" stroke-width="22"
                     stroke-dasharray="226.19 226.20" stroke-dashoffset="0"
                     data-base-stroke="#ff2d55" data-dark-stroke="#ff2d55"/>
             <circle class="donut-seg" data-seg="1" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="财神基金会 10.0000%"
                     stroke="#a8821c" stroke-width="22"
                     stroke-dasharray="45.24 407.15" stroke-dashoffset="-226.19"
                     data-base-stroke="#a8821c" data-dark-stroke="#d4a82a"/>
             <circle class="donut-seg" data-seg="2" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="BG 基金会 10.0000%"
                     stroke="#bf9a3a" stroke-width="22"
                     stroke-dasharray="45.24 407.15" stroke-dashoffset="-271.43"
                     data-base-stroke="#bf9a3a" data-dark-stroke="#e0b85a"/>
             <circle class="donut-seg" data-seg="3" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="燃香赐福池 7.3119%"
                     stroke="#c9a84a" stroke-width="22"
                     stroke-dasharray="33.07 419.32" stroke-dashoffset="-316.67"
                     data-base-stroke="#c9a84a" data-dark-stroke="#c9a84a"/>
             <circle class="donut-seg" data-seg="4" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="做市 / CEX / DEX 6.0000%"
                     stroke="#2f3841" stroke-width="22"
                     stroke-dasharray="27.14 425.25" stroke-dashoffset="-349.74"
                     data-base-stroke="#2f3841" data-dark-stroke="#c8cfd6"/>
             <circle class="donut-seg" data-seg="5" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="LUCKY99 社区 5.0000%"
                     stroke="#5b6672" stroke-width="22"
                     stroke-dasharray="22.62 429.77" stroke-dashoffset="-376.88"
                     data-base-stroke="#5b6672" data-dark-stroke="#b8c0c8"/>
             <circle class="donut-seg" data-seg="6" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="FIST 社区 5.0000%"
                     stroke="#7a8590" stroke-width="22"
                     stroke-dasharray="22.62 429.77" stroke-dashoffset="-399.50"
                     data-base-stroke="#7a8590" data-dark-stroke="#a8b0b8"/>
             <circle class="donut-seg" data-seg="7" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="财神生态建设 2.9118%"
                     stroke="#a8b0b8" stroke-width="22"
                     stroke-dasharray="13.17 439.22" stroke-dashoffset="-422.12"
                     data-base-stroke="#a8b0b8" data-dark-stroke="#9aa2aa"/>
             <circle class="donut-seg" data-seg="8" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="初始流动性 2.4750%"
                     stroke="#c4c9cf" stroke-width="22"
                     stroke-dasharray="11.20 441.19" stroke-dashoffset="-435.29"
                     data-base-stroke="#c4c9cf" data-dark-stroke="#8a9298"/>
             <circle class="donut-seg" data-seg="9" cx="100" cy="100" r="72" fill="none"
+                    tabindex="0" role="img" aria-label="空投奖励 / 营销 1.3012%"
                     stroke="#d8dce0" stroke-width="22"
                     stroke-dasharray="5.89 446.50" stroke-dashoffset="-446.49"
                     data-base-stroke="#d8dce0" data-dark-stroke="#7a8290"/>
@@ -1708,52 +1725,52 @@
         <div class="lg-item" data-seg="0">
           <span class="lg-dot" style="background:#ff2d55"></span>
           <span class="lg-name">FDV 里程碑销毁池</span>
-          <span class="lg-pct">50.00%</span>
+          <span class="lg-pct">50.0000%</span>
         </div>
         <div class="lg-item" data-seg="1">
           <span class="lg-dot" style="background:#a8821c"></span>
           <span class="lg-name">财神基金会</span>
-          <span class="lg-pct">10.00%</span>
+          <span class="lg-pct">10.0000%</span>
         </div>
         <div class="lg-item" data-seg="2">
           <span class="lg-dot" style="background:#bf9a3a"></span>
           <span class="lg-name">BG 基金会</span>
-          <span class="lg-pct">10.00%</span>
+          <span class="lg-pct">10.0000%</span>
         </div>
         <div class="lg-item" data-seg="3">
           <span class="lg-dot" style="background:#c9a84a"></span>
           <span class="lg-name">燃香赐福池</span>
-          <span class="lg-pct">7.31%</span>
+          <span class="lg-pct">7.3119%</span>
         </div>
         <div class="lg-item" data-seg="4">
           <span class="lg-dot" style="background:#2f3841"></span>
           <span class="lg-name">做市 / CEX / DEX</span>
-          <span class="lg-pct">6.00%</span>
+          <span class="lg-pct">6.0000%</span>
         </div>
         <div class="lg-item" data-seg="5">
           <span class="lg-dot" style="background:#5b6672"></span>
           <span class="lg-name">LUCKY99 社区</span>
-          <span class="lg-pct">5.00%</span>
+          <span class="lg-pct">5.0000%</span>
         </div>
         <div class="lg-item" data-seg="6">
           <span class="lg-dot" style="background:#7a8590"></span>
           <span class="lg-name">FIST 社区</span>
-          <span class="lg-pct">5.00%</span>
+          <span class="lg-pct">5.0000%</span>
         </div>
         <div class="lg-item" data-seg="7">
           <span class="lg-dot" style="background:#a8b0b8"></span>
           <span class="lg-name">财神生态建设</span>
-          <span class="lg-pct">2.91%</span>
+          <span class="lg-pct">2.9118%</span>
         </div>
         <div class="lg-item" data-seg="8">
           <span class="lg-dot" style="background:#c4c9cf"></span>
           <span class="lg-name">初始流动性</span>
-          <span class="lg-pct">2.48%</span>
+          <span class="lg-pct">2.4750%</span>
         </div>
         <div class="lg-item" data-seg="9">
           <span class="lg-dot" style="background:#d8dce0"></span>
           <span class="lg-name">空投奖励 / 营销</span>
-          <span class="lg-pct">1.30%</span>
+          <span class="lg-pct">1.3012%</span>
         </div>
       </div>
     </div>
@@ -2101,8 +2118,9 @@
     </div>
 
     <p class="caption">
-      <b>说明：</b>「线性释放」指按时间均匀解锁。例如 36 个月线性释放，即每月解锁该部分总量的 1/36 ——
-      解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。
+      <b>说明：</b>各分配项中的 <b>TGE</b> 指代币生成事件当日的即时释放比例，剩余部分按该行「释放」栏的线性周期解锁；
+      「线性释放」指按时间均匀解锁，例如 36 个月线性释放即每月解锁该部分总量的 1/36 ——
+      解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。TGE 与锁仓的完整定义见「03 解锁节奏」末尾的名词解释。
     </p>
   </section>
 
@@ -2174,7 +2192,7 @@
     </div>
   </section>
 
-  <!-- ================= 04 通缩机制 ================= -->
+  <!-- ================= 04 通缩机制（#2 #6 #11） ================= -->
   <section class="wrap sec" id="burn">
     <div class="sec-head">
       <span class="sec-idx">04</span>
@@ -2195,7 +2213,7 @@
             <th>FDV 触发</th>
             <th>本档销毁</th>
             <th>累计销毁</th>
-            <th>销毁后流通量</th>
+            <th>销毁后总供应量</th>
           </tr>
         </thead>
         <tbody>
@@ -2226,12 +2244,13 @@
       </div>
       <div class="kpi-cell">
         <b class="num">343,434,343</b>
-        <span>全部触发后流通量</span>
+        <span>全部触发后剩余供应量</span>
       </div>
     </div>
 
     <p class="caption">
       <b>FDV（完全稀释估值）</b> = 币价 × 原始总供应量 686,868,686。触发口径固定，不因流通量变化而改变。
+      12 档目标逐级抬升，单档销毁量随之递增，全部触发后累计销毁量恰为总供应量的 50%。
       美元单位：M = 百万，B = 十亿。
     </p>
   </section>
@@ -2278,7 +2297,7 @@
     </div>
   </section>
 
-  <!-- ================= 06 FAQ ================= -->
+  <!-- ================= 06 FAQ（#4） ================= -->
   <section class="wrap sec" id="faq">
     <div class="sec-head">
       <span class="sec-idx">06</span>
@@ -2313,7 +2332,7 @@
       <details class="faq-item">
         <summary>锁仓到期后会不会砸盘？</summary>
         <div class="faq-a">
-          大部分份额是 <b>3 个月锁仓 + 36 个月线性</b>，每月只释放 1/36，单月释放量极小。最长的份额拉至 39 个月，
+          释放型份额中的大部分是 <b>3 个月锁仓 + 36 个月线性</b>，每月只释放 1/36，单月释放量极小。最长的份额拉至 39 个月，
           不形成集中抛压。所有锁仓均通过 Jupiter Lock 链上托管，第三方可随时自行查验。
         </div>
       </details>
@@ -2337,11 +2356,15 @@
     </div>
   </section>
 
-  <!-- ================= 页脚 ================= -->
+  <!-- ================= 页脚（#10） ================= -->
   <footer class="wrap doc-foot">
     <div class="foot-row">
       <span class="foot-k">Document</span>
       <span class="foot-v">God Of Fortune · Token Economics</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Version</span>
+      <span class="foot-v">v1.0 · 2026-10-18</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Total Supply</span>
@@ -2424,30 +2447,41 @@
       });
     }
 
-    /* ---------- 环形图交互 ---------- */
+    /* ---------- 环形图交互（#9 增加键盘支持） ---------- */
     var donutSegs = document.querySelectorAll('.donut-seg');
     var legendItems = document.querySelectorAll('.lg-item[data-seg]');
 
+    function highlightSeg(idx) {
+      donutSegs.forEach(function (seg) {
+        if (seg.getAttribute('data-seg') === idx) {
+          seg.classList.remove('dim');
+          seg.classList.add('highlight');
+        } else {
+          seg.classList.add('dim');
+          seg.classList.remove('highlight');
+        }
+      });
+    }
+    function clearSegHighlight() {
+      donutSegs.forEach(function (seg) {
+        seg.classList.remove('dim');
+        seg.classList.remove('highlight');
+      });
+    }
+
     if (donutSegs.length && legendItems.length) {
       legendItems.forEach(function (item) {
-        item.addEventListener('mouseenter', function () {
-          var idx = item.getAttribute('data-seg');
-          donutSegs.forEach(function (seg) {
-            if (seg.getAttribute('data-seg') === idx) {
-              seg.classList.remove('dim');
-              seg.classList.add('highlight');
-            } else {
-              seg.classList.add('dim');
-              seg.classList.remove('highlight');
-            }
-          });
-        });
-        item.addEventListener('mouseleave', function () {
-          donutSegs.forEach(function (seg) {
-            seg.classList.remove('dim');
-            seg.classList.remove('highlight');
-          });
-        });
+        var idx = item.getAttribute('data-seg');
+        item.addEventListener('mouseenter', function () { highlightSeg(idx); });
+        item.addEventListener('mouseleave', clearSegHighlight);
+      });
+
+      donutSegs.forEach(function (seg) {
+        var idx = seg.getAttribute('data-seg');
+        seg.addEventListener('mouseenter', function () { highlightSeg(idx); });
+        seg.addEventListener('mouseleave', clearSegHighlight);
+        seg.addEventListener('focus', function () { highlightSeg(idx); });
+        seg.addEventListener('blur', clearSegHighlight);
       });
     }
 
@@ -2537,7 +2571,6 @@
       darkMQ.addListener(onSystemChange);
     }
 
-    /* 首次应用（此时环形图可能尚未加载完成，但 donutSegs 已经查询完毕） */
     applyUI();
   })();
 </script>
