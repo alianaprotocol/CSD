@@ -10,100 +10,44 @@
 <style>
   :root{
     color-scheme: light dark;
-
-    --ink:#14181d;
-    --ink-2:#2f3841;
-    --ink-3:#5b6672;
-    --muted:#8a939d;
-    --line:#e2e6ea;
-    --line-2:#eef1f4;
-    --bg:#f5f6f8;
-    --card:#ffffff;
-    --red:#a91f27;
-    --red-dark:#7e161c;
-    --red-soft:#fbf4f4;
-    --gold:#a8821c;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#8a939d;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --red:#a91f27; --red-dark:#7e161c; --red-soft:#fbf4f4; --gold:#a8821c;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
-
-    /* ★ 赛博红 */
-    --cyber:#ff2d55;
-    --cyber-d:#cc0e30;
-    --cyber-l:#ff6b85;
-    --cyber-glow:rgba(255, 45, 85, .45);
-    --cyber-glow-soft:rgba(255, 45, 85, .18);
-    --cyber-glow-faint:rgba(255, 45, 85, .06);
-
+    --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255,45,85,.45); --cyber-glow-soft:rgba(255,45,85,.18); --cyber-glow-faint:rgba(255,45,85,.06);
     --toc-bg:rgba(255,255,255,.92);
-    --abstract-from:#fcfcfd;
-    --abstract-to:#ffffff;
+    --abstract-from:#fcfcfd; --abstract-to:#ffffff;
     --lead-fade:rgba(251,244,244,0);
-    --hover-bg:rgba(20,24,29,.05);
-    --active-bg:rgba(169,31,39,.08);
-    --thead-bg:#f4f6f8;
-    --zebra-bg:#fbfcfd;
-    --sum-line:#efd2d4;
-    --scroll-thumb:#d2d8dd;
-
+    --hover-bg:rgba(20,24,29,.05); --active-bg:rgba(169,31,39,.08);
+    --thead-bg:#f4f6f8; --zebra-bg:#fbfcfd; --sum-line:#efd2d4; --scroll-thumb:#d2d8dd;
     --donut-track:#eef1f4;
-
-    --sp-1:4px;
-    --sp-2:8px;
-    --sp-3:12px;
-    --sp-4:16px;
-    --sp-5:20px;
-    --sp-7:28px;
-    --sp-9:36px;
-    --sp-10:44px;
-
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px;
     --r:3px;
   }
-
   *,*::before,*::after{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
   body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-size:14.5px;
-    line-height:1.75;
+    margin:0; background:var(--bg); color:var(--ink);
+    font-size:14.5px; line-height:1.75;
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
     transition:background-color .25s ease, color .25s ease;
   }
-
-  :focus-visible{
-    outline:2px solid var(--cyber);
-    outline-offset:3px;
-    border-radius:4px;
-    box-shadow:0 0 0 4px var(--cyber-glow-soft);
-  }
+  :focus-visible{outline:2px solid var(--cyber); outline-offset:3px; border-radius:4px; box-shadow:0 0 0 4px var(--cyber-glow-soft);}
 
   .doc{
-    max-width:720px;
-    margin:0 auto;
-    background:var(--card);
-    min-height:100vh;
-    border-left:1px solid var(--line);
-    border-right:1px solid var(--line);
-    position:relative;
-    overflow-x:clip;
-    padding:0 26px;
+    max-width:720px; margin:0 auto; background:var(--card); min-height:100vh;
+    border-left:1px solid var(--line); border-right:1px solid var(--line);
+    position:relative; overflow-x:clip; padding:0 26px;
     transition:background-color .25s ease, border-color .25s ease;
   }
   .doc::before{
-    content:"";
-    position:absolute;top:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,
-      var(--cyber) 0%,
-      var(--cyber) 42%,
-      var(--gold) 42%,
-      var(--gold) 100%);
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--cyber) 0%, var(--cyber) 42%, var(--gold) 42%, var(--gold) 100%);
     z-index:2;
-    box-shadow:
-      0 0 12px var(--cyber-glow),
-      0 0 24px var(--cyber-glow-soft);
+    box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft);
     animation:cyberTopPulse 4s ease-in-out infinite;
   }
   @keyframes cyberTopPulse{
@@ -111,888 +55,374 @@
     50%      { box-shadow:0 0 20px var(--cyber-glow), 0 0 40px var(--cyber-glow-soft); }
   }
   .wrap{padding:0;}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:-.01em;}
 
-  .num{
-    font-variant-numeric:tabular-nums;
-    font-feature-settings:"tnum" 1;
-    letter-spacing:-.01em;
-  }
-
-  /* ================= 文件抬头 ================= */
-  .masthead{
-    padding:var(--sp-9) 0 26px;
-    border-bottom:1.5px solid var(--ink);
-    position:relative;
-  }
+  .masthead{padding:var(--sp-9) 0 26px; border-bottom:1.5px solid var(--ink); position:relative;}
   .masthead::after{
-    content:"";
-    position:absolute;
-    left:0;bottom:-1.5px;
-    width:34%;
-    height:1.5px;
-    background:linear-gradient(90deg, var(--cyber), transparent);
-    box-shadow:0 0 8px var(--cyber-glow);
+    content:""; position:absolute; left:0; bottom:-1.5px; width:34%; height:1.5px;
+    background:linear-gradient(90deg, var(--cyber), transparent); box-shadow:0 0 8px var(--cyber-glow);
   }
-  .mast-row{
-    display:flex;align-items:flex-start;justify-content:space-between;
-    gap:var(--sp-5);
-  }
+  .mast-row{display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-5);}
   .mast-left{min-width:0;}
   .eyebrow{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 var(--sp-3);
-    line-height:1;
-    display:flex;
-    align-items:center;
-    gap:8px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 var(--sp-3); line-height:1;
+    display:flex; align-items:center; gap:8px;
   }
   .eyebrow::before{
-    content:"";
-    display:block;
-    width:5px;height:5px;
-    border-radius:50%;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber), 0 0 12px var(--cyber-glow);
-    animation:cyberDot 2s ease-in-out infinite;
-    flex:none;
+    content:""; display:block; width:5px; height:5px; border-radius:50%;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber), 0 0 12px var(--cyber-glow);
+    animation:cyberDot 2s ease-in-out infinite; flex:none;
   }
   @keyframes cyberDot{
     0%, 100%{ opacity:.5; transform:scale(1); }
     50%      { opacity:1;   transform:scale(1.3); }
   }
-  .doc-title{
-    margin:0;
-    font-size:clamp(22px,5.6vw,27px);
-    font-weight:700;
-    letter-spacing:-.012em;
-    line-height:1.25;
-    color:var(--ink);
-  }
-  .doc-sub{
-    margin:var(--sp-2) 0 0;
-    font-size:13px;
-    color:var(--ink-3);
-    letter-spacing:.02em;
-    line-height:1.5;
-  }
+  .doc-title{margin:0; font-size:clamp(22px,5.6vw,27px); font-weight:700; letter-spacing:-.012em; line-height:1.25; color:var(--ink);}
+  .doc-sub{margin:var(--sp-2) 0 0; font-size:13px; color:var(--ink-3); letter-spacing:.02em; line-height:1.5;}
 
-  /* ================= 主题切换按钮 ================= */
   .theme-toggle{
-    flex:none;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:36px;
-    height:36px;
-    padding:0;
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:var(--card);
-    color:var(--ink-3);
-    cursor:pointer;
+    flex:none; display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; padding:0;
+    border:1px solid var(--line); border-radius:8px;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
     -webkit-tap-highlight-color:transparent;
     transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
     margin-top:2px;
   }
   .theme-toggle:hover{
-    border-color:var(--cyber-glow-soft);
-    color:var(--cyber);
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
     background:var(--cyber-glow-faint);
     box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
   }
-  .theme-toggle:active{
-    background:var(--cyber-glow-soft);
-  }
-  .theme-toggle svg{
-    width:18px;
-    height:18px;
-    display:block;
-  }
-  .theme-toggle .ico-sun{ display:none; }
-  .theme-toggle .ico-moon{ display:block; }
-  .theme-toggle[data-icon="dark"] .ico-sun{ display:block; }
-  .theme-toggle[data-icon="dark"] .ico-moon{ display:none; }
+  .theme-toggle:active{background:var(--cyber-glow-soft);}
+  .theme-toggle svg{width:18px; height:18px; display:block;}
+  .theme-toggle .ico-sun{display:none;}
+  .theme-toggle .ico-moon{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
 
   .mast-meta{
-    display:flex;flex-wrap:wrap;
-    gap:var(--sp-3) 30px;
-    margin-top:24px;
-    padding-top:var(--sp-4);
-    border-top:1px solid var(--line-2);
+    display:flex; flex-wrap:wrap; gap:var(--sp-3) 30px;
+    margin-top:24px; padding-top:var(--sp-4); border-top:1px solid var(--line-2);
   }
   .mast-meta .cell{min-width:0;}
   .mast-meta .k{
-    display:block;
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 5px;
-    line-height:1;
+    display:block; font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 5px; line-height:1;
   }
-  .mast-meta .v{
-    display:block;
-    font-size:14px;
-    font-weight:600;
-    color:var(--ink);
-    letter-spacing:-.005em;
-    line-height:1.4;
-  }
+  .mast-meta .v{display:block; font-size:14px; font-weight:600; color:var(--ink); letter-spacing:-.005em; line-height:1.4;}
 
-  /* ================= 目录导航 ================= */
   .toc{
-    position:sticky;
-    top:0;
-    z-index:20;
-    display:flex;
-    gap:6px;
-    margin:0 -26px;
-    padding:10px 26px;
+    position:sticky; top:0; z-index:20;
+    display:flex; gap:6px;
+    margin:0 -26px; padding:10px 26px;
     background:var(--toc-bg);
     backdrop-filter:saturate(180%) blur(14px);
     -webkit-backdrop-filter:saturate(180%) blur(14px);
     border-bottom:1px solid var(--line-2);
-    overflow-x:auto;
-    scrollbar-width:none;
+    overflow-x:auto; scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
     transition:background-color .25s ease, border-color .25s ease;
   }
   .toc::-webkit-scrollbar{display:none;}
   .toc-link{
-    flex:none;
-    display:inline-block;
-    padding:5px 12px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:600;
-    color:var(--ink-3);
-    text-decoration:none;
-    background:transparent;
-    border:1px solid transparent;
+    flex:none; display:inline-block;
+    padding:5px 12px; border-radius:999px;
+    font-size:12px; font-weight:600;
+    color:var(--ink-3); text-decoration:none;
+    background:transparent; border:1px solid transparent;
     transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;
-    letter-spacing:.02em;
-    white-space:nowrap;
-    -webkit-tap-highlight-color:transparent;
-    position:relative;
+    letter-spacing:.02em; white-space:nowrap;
+    -webkit-tap-highlight-color:transparent; position:relative;
   }
-  .toc-link:hover{
-    background:var(--bg);
-    color:var(--ink);
-    border-color:var(--cyber-glow-soft);
-  }
+  .toc-link:hover{background:var(--bg); color:var(--ink); border-color:var(--cyber-glow-soft);}
   .toc-link.active{
-    background:var(--cyber-d);
-    color:#fff;
-    border-color:var(--cyber);
-    box-shadow:
-      0 4px 14px -4px var(--cyber-glow),
-      0 0 0 1px var(--cyber-glow-soft);
+    background:var(--cyber-d); color:#fff; border-color:var(--cyber);
+    box-shadow:0 4px 14px -4px var(--cyber-glow), 0 0 0 1px var(--cyber-glow-soft);
   }
 
-  /* ================= 摘要 ================= */
   .abstract{
-    padding:var(--sp-7) 0 var(--sp-7);
-    border-bottom:1px solid var(--line);
+    padding:var(--sp-7) 0 var(--sp-7); border-bottom:1px solid var(--line);
     background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
     transition:background .25s ease;
   }
-  .abstract p{
-    margin:0;
-    font-size:14px;
-    line-height:1.95;
-    color:var(--ink-2);
-  }
-  .abstract b{color:var(--ink);font-weight:700;}
-  .abstract .hl{
-    color:var(--cyber);
-    font-weight:700;
-    border-bottom:2px solid var(--cyber-glow-soft);
-    padding-bottom:1px;
-  }
+  .abstract p{margin:0; font-size:14px; line-height:1.95; color:var(--ink-2);}
+  .abstract b{color:var(--ink); font-weight:700;}
+  .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
 
-  /* ================= 核心优势 ================= */
-  .hl-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
+  .hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
   .hl-card{
-    padding:16px 16px 17px;
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    background:var(--card);
-    min-width:0;
-    position:relative;
-    overflow:hidden;
+    padding:16px 16px 17px; border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); min-width:0; position:relative; overflow:hidden;
     transition:background-color .25s ease, border-color .3s ease, transform .3s cubic-bezier(.34,1.2,.64,1), box-shadow .3s ease;
   }
   .hl-card::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:3px;
-    background:var(--gold);
-    border-radius:0 3px 3px 0;
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--gold); border-radius:0 3px 3px 0;
   }
-  .hl-card.hl-red::before{background:var(--cyber);box-shadow:0 0 8px var(--cyber-glow);}
+  .hl-card.hl-red::before{background:var(--cyber); box-shadow:0 0 8px var(--cyber-glow);}
   .hl-card::after{
-    content:"";
-    position:absolute;
-    top:0;right:0;
-    width:0;height:0;
-    border-top:14px solid var(--cyber-glow-soft);
-    border-left:14px solid transparent;
-    opacity:.7;
-    transition:opacity .3s ease, border-top-color .3s ease;
+    content:""; position:absolute; top:0; right:0; width:0; height:0;
+    border-top:14px solid var(--cyber-glow-soft); border-left:14px solid transparent;
+    opacity:.7; transition:opacity .3s ease, border-top-color .3s ease;
   }
   .hl-card:hover{
-    transform:translateY(-2px);
-    border-color:var(--cyber-glow);
-    box-shadow:
-      0 8px 22px -12px rgba(20,24,29,.22),
-      0 0 0 1px var(--cyber-glow-soft),
-      0 0 20px -4px var(--cyber-glow-soft);
+    transform:translateY(-2px); border-color:var(--cyber-glow);
+    box-shadow:0 8px 22px -12px rgba(20,24,29,.22), 0 0 0 1px var(--cyber-glow-soft), 0 0 20px -4px var(--cyber-glow-soft);
   }
-  .hl-card:hover::after{
-    opacity:1;
-    border-top-color:var(--cyber);
-  }
+  .hl-card:hover::after{opacity:1; border-top-color:var(--cyber);}
   .hl-num{
-    font-family:var(--mono);
-    font-size:22px;
-    font-weight:700;
-    letter-spacing:-.03em;
-    color:var(--ink);
-    line-height:1.1;
-    margin-bottom:6px;
+    font-family:var(--mono); font-size:22px; font-weight:700; letter-spacing:-.03em;
+    color:var(--ink); line-height:1.1; margin-bottom:6px;
   }
-  .hl-card.hl-red .hl-num{color:var(--cyber);text-shadow:0 0 12px var(--cyber-glow-soft);}
-  .hl-t{
-    font-size:13.5px;
-    font-weight:700;
-    color:var(--ink);
-    line-height:1.4;
-    letter-spacing:-.005em;
-  }
-  .hl-d{
-    margin-top:6px;
-    font-size:11.5px;
-    color:var(--muted);
-    line-height:1.7;
-  }
+  .hl-card.hl-red .hl-num{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
+  .hl-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.4; letter-spacing:-.005em;}
+  .hl-d{margin-top:6px; font-size:11.5px; color:var(--muted); line-height:1.7;}
 
-  /* ================= 区块 ================= */
-  .sec{
-    padding:var(--sp-9) 0 var(--sp-7);
-    border-bottom:1px solid var(--line);
-    scroll-margin-top:56px;
-  }
-  .sec:last-of-type{
-    border-bottom:0;
-    padding-bottom:var(--sp-10);
-  }
+  .sec{padding:var(--sp-9) 0 var(--sp-7); border-bottom:1px solid var(--line); scroll-margin-top:56px;}
+  .sec:last-of-type{border-bottom:0; padding-bottom:var(--sp-10);}
 
-  .sec-head{
-    display:flex;align-items:baseline;gap:var(--sp-3);
-    margin:0 0 var(--sp-5);
-  }
+  .sec-head{display:flex; align-items:baseline; gap:var(--sp-3); margin:0 0 var(--sp-5);}
   .sec-idx{
-    flex:none;
-    font-family:var(--mono);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.08em;
-    color:var(--cyber);
-    padding:3px 8px;
-    line-height:1;
-    border:1px solid var(--cyber-glow-soft);
-    border-radius:4px;
-    background:var(--cyber-glow-faint);
-    text-shadow:0 0 8px var(--cyber-glow-soft);
+    flex:none; font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.08em;
+    color:var(--cyber); padding:3px 8px; line-height:1;
+    border:1px solid var(--cyber-glow-soft); border-radius:4px;
+    background:var(--cyber-glow-faint); text-shadow:0 0 8px var(--cyber-glow-soft);
     transition:border-color .25s ease, background .25s ease;
   }
-  .sec-head:hover .sec-idx{
-    border-color:var(--cyber-glow);
-    background:var(--cyber-glow-soft);
-  }
+  .sec-head:hover .sec-idx{border-color:var(--cyber-glow); background:var(--cyber-glow-soft);}
   .sec-title{
-    margin:0;
-    font-size:16.5px;
-    font-weight:700;
-    letter-spacing:-.008em;
-    line-height:1.35;
-    color:var(--ink);
-    transition:color .25s ease;
+    margin:0; font-size:16.5px; font-weight:700; letter-spacing:-.008em;
+    line-height:1.35; color:var(--ink); transition:color .25s ease;
   }
-  .sec-head:hover .sec-title{
-    color:var(--cyber-d);
-  }
+  .sec-head:hover .sec-title{color:var(--cyber-d);}
   .sec-title span{
-    display:block;
-    font-family:var(--mono);
-    font-size:10.5px;
-    font-weight:400;
-    color:var(--muted);
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    margin-top:5px;
-    line-height:1;
+    display:block; font-family:var(--mono); font-size:10.5px; font-weight:400;
+    color:var(--muted); letter-spacing:.1em; text-transform:uppercase;
+    margin-top:5px; line-height:1;
   }
 
-  /* ================= 基础信息 ================= */
-  .fact-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    border-top:1px solid var(--line);
-    border-left:1px solid var(--line);
-  }
+  .fact-grid{display:grid; grid-template-columns:repeat(2,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line);}
   .fact{
-    padding:var(--sp-4);
-    border-right:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    min-width:0;
-    transition:background-color .2s ease;
-    position:relative;
+    padding:var(--sp-4); border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    min-width:0; transition:background-color .2s ease; position:relative;
   }
   .fact:hover{background:var(--hover-bg);}
   .fact:hover::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:2px;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
-  .fact.wide{
-    grid-column:1 / -1;
-  }
+  .fact.wide{grid-column:1 / -1;}
   .fact .k{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 6px;
-    line-height:1;
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 6px; line-height:1;
   }
-  .fact .v{
-    font-size:14.5px;
-    font-weight:600;
-    line-height:1.5;
-    color:var(--ink);
-    word-break:break-all;
-    letter-spacing:-.005em;
-  }
+  .fact .v{font-size:14.5px; font-weight:600; line-height:1.5; color:var(--ink); word-break:break-all; letter-spacing:-.005em;}
 
-  /* ================= 合约地址 ================= */
   .ca-box{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin-top:8px;
-    padding:5px 6px 5px 12px;
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    min-width:0;
-    transition:background-color .25s ease, border-color .25s ease, box-shadow .3s ease;
+    display:flex; align-items:center; gap:8px;
+    margin-top:8px; padding:5px 6px 5px 12px;
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--r);
+    min-width:0; transition:background-color .25s ease, border-color .25s ease, box-shadow .3s ease;
   }
-  .ca-box:hover{
-    border-color:var(--cyber-glow-soft);
-    box-shadow:0 0 0 1px var(--cyber-glow-faint);
-  }
+  .ca-box:hover{border-color:var(--cyber-glow-soft); box-shadow:0 0 0 1px var(--cyber-glow-faint);}
   .ca-text{
-    flex:1 1 auto;
-    min-width:0;
-    font-family:var(--mono);
-    font-size:11.5px;
-    line-height:1.7;
-    color:var(--ink-2);
-    letter-spacing:.01em;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    flex:1 1 auto; min-width:0; font-family:var(--mono); font-size:11.5px; line-height:1.7;
+    color:var(--ink-2); letter-spacing:.01em;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   }
   .ca-full{display:inline;}
   .ca-short{display:none;}
-
   .ca-copy{
-    flex:none;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:30px;
-    height:30px;
-    padding:0;
-    border:0;
-    border-radius:var(--r);
-    background:transparent;
-    color:var(--ink-3);
-    cursor:pointer;
+    flex:none; display:inline-flex; align-items:center; justify-content:center;
+    width:30px; height:30px; padding:0;
+    border:0; border-radius:var(--r); background:transparent; color:var(--ink-3); cursor:pointer;
     transition:background .15s ease, color .2s ease, box-shadow .25s ease;
   }
   .ca-copy:hover{
-    background:var(--cyber-glow-faint);
-    color:var(--cyber);
+    background:var(--cyber-glow-faint); color:var(--cyber);
     box-shadow:0 0 0 1px var(--cyber-glow-soft), 0 0 10px var(--cyber-glow-soft);
   }
   .ca-copy:active{background:var(--cyber-glow-soft);}
   .ca-copy.copied{color:var(--cyber);}
-  .ca-copy svg{display:block;width:15px;height:15px;}
+  .ca-copy svg{display:block; width:15px; height:15px;}
 
-  /* ================= 环形图 ================= */
   .donut-wrap{
-    display:grid;
-    grid-template-columns:190px 1fr;
-    gap:24px;
-    align-items:center;
-    padding:0 0 24px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:4px;
+    display:grid; grid-template-columns:190px 1fr; gap:24px; align-items:center;
+    padding:0 0 24px; border-bottom:1px solid var(--line); margin-bottom:4px;
   }
-  .donut-chart{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .donut{
-    width:100%;
-    max-width:190px;
-    height:auto;
-    display:block;
-  }
-  .donut-num{
-    font-family:var(--mono);
-    font-size:19px;
-    font-weight:700;
-    fill:var(--ink);
-    letter-spacing:-.02em;
-  }
-  .donut-label{
-    font-size:9.5px;
-    fill:var(--muted);
-    letter-spacing:.14em;
-  }
+  .donut-chart{display:flex; align-items:center; justify-content:center;}
+  .donut{width:100%; max-width:190px; height:auto; display:block;}
+  .donut-num{font-family:var(--mono); font-size:19px; font-weight:700; fill:var(--ink); letter-spacing:-.02em;}
+  .donut-label{font-size:9.5px; fill:var(--muted); letter-spacing:.14em;}
   .donut-seg{
     transition: opacity .25s ease, stroke-width .25s ease, filter .3s ease;
-    cursor: pointer;
-    outline: none;
+    cursor:pointer; outline:none;
   }
-  .donut-seg:focus,
-  .donut-seg:focus-visible{ outline: none; }
-  .donut-seg.dim{ opacity: .15; }
-  .donut-seg.highlight{
-    stroke-width: 26;
-    filter: drop-shadow(0 0 6px var(--cyber-glow));
-  }
-  .donut-legend{
-    display:grid;
-    gap:7px;
-    min-width:0;
-  }
+  .donut-seg:focus, .donut-seg:focus-visible{outline:none;}
+  .donut-seg.dim{opacity:.15;}
+  .donut-seg.highlight{stroke-width:26; filter:drop-shadow(0 0 6px var(--cyber-glow));}
+
+  .donut-legend{display:grid; gap:7px; min-width:0;}
   .lg-item{
-    display:grid;
-    grid-template-columns:8px 1fr auto;
-    gap:9px;
-    align-items:center;
-    font-size:12px;
-    line-height:1.4;
-    min-width:0;
-    padding:2px 4px;
-    margin:0 -4px;
-    border-radius:3px;
-    cursor:pointer;
-    transition: background-color .2s ease;
+    display:grid; grid-template-columns:8px 1fr auto; gap:9px; align-items:center;
+    font-size:12px; line-height:1.4; min-width:0;
+    padding:2px 4px; margin:0 -4px; border-radius:3px;
+    cursor:pointer; transition:background-color .2s ease;
   }
   .lg-item:hover{background:var(--hover-bg);}
-  .lg-dot{
-    width:8px;
-    height:8px;
-    border-radius:2px;
-    display:block;
-    flex:none;
-    transition:box-shadow .25s ease;
-  }
-  .lg-item:hover .lg-dot{
-    box-shadow:0 0 0 2px var(--cyber-glow-soft), 0 0 8px var(--cyber-glow);
-  }
-  .lg-name{
-    color:var(--ink-3);
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    min-width:0;
-  }
+  .lg-dot{width:8px; height:8px; border-radius:2px; display:block; flex:none; transition:box-shadow .25s ease;}
+  .lg-item:hover .lg-dot{box-shadow:0 0 0 2px var(--cyber-glow-soft), 0 0 8px var(--cyber-glow);}
+  .lg-name{color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
   .lg-pct{
-    font-family:var(--mono);
-    font-weight:700;
-    font-size:11px;
-    color:var(--ink-2);
-    text-align:right;
-    white-space:nowrap;
-    letter-spacing:-.01em;
-    transition:color .2s ease;
+    font-family:var(--mono); font-weight:700; font-size:11px; color:var(--ink-2);
+    text-align:right; white-space:nowrap; letter-spacing:-.01em; transition:color .2s ease;
   }
   .lg-item:hover .lg-pct{color:var(--cyber);}
 
-  /* ================= 代币分配 ================= */
-  .alloc-list{
-    border-top:1px solid var(--line);
-  }
-  .alloc-row{
-    padding:16px 0 15px;
-    border-bottom:1px solid var(--line-2);
-  }
+  .alloc-list{border-top:1px solid var(--line);}
+  .alloc-row{padding:16px 0 15px; border-bottom:1px solid var(--line-2);}
   .alloc-row:last-child{border-bottom:0;}
 
   .alloc-row.lead{
-    position:relative;
-    padding-left:14px;
+    position:relative; padding-left:14px;
     background:linear-gradient(90deg,var(--red-soft) 0%,var(--lead-fade) 88%);
   }
   .alloc-row.lead::before{
-    content:"";
-    position:absolute;
-    left:0;top:15px;bottom:14px;
-    width:3px;
-    background:var(--cyber);
-    border-radius:0 3px 3px 0;
-    box-shadow:0 0 8px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:15px; bottom:14px; width:3px;
+    background:var(--cyber); border-radius:0 3px 3px 0; box-shadow:0 0 8px var(--cyber-glow);
   }
 
-  .alloc-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:16px;
-  }
+  .alloc-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px;}
   .alloc-name{
-    font-size:14.5px;
-    font-weight:600;
-    color:var(--ink);
-    line-height:1.4;
-    letter-spacing:-.005em;
-    min-width:0;
+    font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.4;
+    letter-spacing:-.005em; min-width:0;
   }
-  .alloc-row.lead .alloc-name{
-    color:var(--cyber-d);
-    font-weight:700;
-  }
-
+  .alloc-row.lead .alloc-name{color:var(--cyber-d); font-weight:700;}
   .alloc-pct{
-    flex:none;
-    font-family:var(--mono);
-    font-size:16px;
-    font-weight:700;
-    color:var(--ink-2);
-    letter-spacing:-.01em;
-    line-height:1.3;
-    white-space:nowrap;
+    flex:none; font-family:var(--mono); font-size:16px; font-weight:700;
+    color:var(--ink-2); letter-spacing:-.01em; line-height:1.3; white-space:nowrap;
   }
   .alloc-row.lead .alloc-pct{color:var(--cyber);}
-
   .alloc-amt{
-    margin-top:6px;
-    font-size:16px;
-    font-weight:700;
-    color:var(--ink);
-    font-variant-numeric:tabular-nums;
-    font-feature-settings:"tnum" 1;
-    letter-spacing:-.015em;
-    line-height:1.3;
+    margin-top:6px; font-size:16px; font-weight:700; color:var(--ink);
+    font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1;
+    letter-spacing:-.015em; line-height:1.3;
   }
-  .alloc-amt small{
-    font-size:11px;
-    font-weight:500;
-    color:var(--muted);
-    letter-spacing:0;
-    margin-left:2px;
-  }
+  .alloc-amt small{font-size:11px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:2px;}
   .alloc-row.lead .alloc-amt{color:var(--cyber);}
-
-  .alloc-bar{
-    margin-top:10px;
-    height:4px;
-    background:var(--line-2);
-    border-radius:2px;
-    overflow:hidden;
-  }
-  .alloc-bar i{
-    display:block;
-    height:100%;
-    background:var(--gold);
-    border-radius:2px;
-    min-width:8px;
-  }
+  .alloc-bar{margin-top:10px; height:4px; background:var(--line-2); border-radius:2px; overflow:hidden;}
+  .alloc-bar i{display:block; height:100%; background:var(--gold); border-radius:2px; min-width:8px;}
   .alloc-row.lead .alloc-bar i{
     background:linear-gradient(90deg, var(--cyber), var(--cyber-l));
     box-shadow:0 0 8px var(--cyber-glow);
   }
 
-  /* ================= 释放条件（TGE / 锁仓 / 释放） ================= */
-  .alloc-vest{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-top:11px;
-  }
+  .alloc-vest{display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;}
   .vest-item{
-    display:inline-flex;
-    align-items:baseline;
-    gap:6px;
-    padding:2px 9px;
-    border:1px solid var(--line);
-    border-radius:4px;
-    background:var(--bg);
-    line-height:1.7;
-    white-space:nowrap;
+    display:inline-flex; align-items:baseline; gap:6px;
+    padding:2px 9px; border:1px solid var(--line); border-radius:4px;
+    background:var(--bg); line-height:1.7; white-space:nowrap;
     transition:border-color .2s ease, background-color .2s ease;
   }
   .vest-k{
-    font-family:var(--mono);
-    font-size:9px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--muted);
-    line-height:1.7;
+    font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); line-height:1.7;
   }
   .vest-v{
-    font-size:11.5px;
-    font-weight:600;
-    color:var(--ink-2);
-    font-variant-numeric:tabular-nums;
-    font-feature-settings:"tnum" 1;
-    letter-spacing:-.005em;
-    line-height:1.7;
+    font-size:11.5px; font-weight:600; color:var(--ink-2);
+    font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1;
+    letter-spacing:-.005em; line-height:1.7;
   }
-  .vest-item.is-tge{
-    border-color:var(--cyber-glow-soft);
-    background:var(--cyber-glow-faint);
-  }
+  .vest-item.is-tge{border-color:var(--cyber-glow-soft); background:var(--cyber-glow-faint);}
   .vest-item.is-tge .vest-v{color:var(--cyber);}
-  .vest-item.is-zero .vest-v{color:var(--muted);font-weight:500;}
-  .alloc-row.lead .vest-item.is-tge{
-    border-color:var(--cyber-glow-soft);
-    background:var(--cyber-glow-faint);
-  }
+  .vest-item.is-zero .vest-v{color:var(--muted); font-weight:500;}
+  .alloc-row.lead .vest-item.is-tge{border-color:var(--cyber-glow-soft); background:var(--cyber-glow-faint);}
 
-  .alloc-note{
-    margin-top:8px;
-    font-size:12px;
-    color:var(--muted);
-    line-height:1.65;
-  }
+  .alloc-note{margin-top:8px; font-size:12px; color:var(--muted); line-height:1.65;}
 
-  .alloc-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-  }
+  .alloc-links{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
   .alloc-link{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:3px 10px 3px 8px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    background:var(--card);
-    color:var(--ink-3);
-    font-size:11.5px;
-    font-weight:500;
-    line-height:1.6;
-    text-decoration:none;
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 10px 3px 8px; border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-size:11.5px; font-weight:500; line-height:1.6; text-decoration:none;
     letter-spacing:.01em;
     transition:border-color .15s ease, color .15s ease, background .15s ease, transform .18s ease, box-shadow .25s ease;
     -webkit-tap-highlight-color:transparent;
   }
   .alloc-link:hover{
-    border-color:var(--cyber-glow);
-    color:var(--cyber);
-    background:var(--cyber-glow-faint);
-    transform:translateY(-1px);
-    box-shadow:0 0 12px -2px var(--cyber-glow-soft);
+    border-color:var(--cyber-glow); color:var(--cyber); background:var(--cyber-glow-faint);
+    transform:translateY(-1px); box-shadow:0 0 12px -2px var(--cyber-glow-soft);
   }
-  .alloc-link:active{
-    border-color:var(--cyber);
-    color:var(--cyber);
-    background:var(--cyber-glow-soft);
-  }
-  .alloc-link svg{
-    display:block;
-    width:12px;
-    height:12px;
-    flex:none;
-    opacity:.7;
-  }
-  .alloc-link:hover svg,
-  .alloc-link:active svg{opacity:1;}
+  .alloc-link:active{border-color:var(--cyber); color:var(--cyber); background:var(--cyber-glow-soft);}
+  .alloc-link svg{display:block; width:12px; height:12px; flex:none; opacity:.7;}
+  .alloc-link:hover svg, .alloc-link:active svg{opacity:1;}
 
-  /* ================= 说明 ================= */
   .caption{
-    margin:var(--sp-4) 0 0;
-    padding:2px 0 2px var(--sp-3);
+    margin:var(--sp-4) 0 0; padding:2px 0 2px var(--sp-3);
     border-left:2px solid var(--line);
-    font-size:12px;
-    line-height:1.9;
-    color:var(--muted);
+    font-size:12px; line-height:1.9; color:var(--muted);
   }
-  .caption b{color:var(--ink-2);font-weight:600;}
-  .caption.gold{
-    border-left-color:var(--gold);
-  }
+  .caption b{color:var(--ink-2); font-weight:600;}
+  .caption.gold{border-left-color:var(--gold);}
+  .caption-ol{margin:6px 0; padding-left:20px; list-style:decimal;}
+  .caption-ol li{margin:2px 0; padding-left:2px; line-height:1.9;}
+  .caption-ol li::marker{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
 
-  .caption-ol{
-    margin:6px 0;
-    padding-left:20px;
-    list-style:decimal;
-  }
-  .caption-ol li{
-    margin:2px 0;
-    padding-left:2px;
-    line-height:1.9;
-  }
-  .caption-ol li::marker{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--ink-3);
-  }
-
-  /* ================= 解锁 ================= */
-  .rel-list{
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-  }
+  .rel-list{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .rel{
-    padding:var(--sp-4) 0 var(--sp-4);
-    border-bottom:1px solid var(--line-2);
-    display:grid;
-    grid-template-columns:1fr auto;
-    gap:var(--sp-1) var(--sp-5);
-    transition:background-color .2s ease, padding-left .25s ease;
-    position:relative;
+    padding:var(--sp-4) 0 var(--sp-4); border-bottom:1px solid var(--line-2);
+    display:grid; grid-template-columns:1fr auto; gap:var(--sp-1) var(--sp-5);
+    transition:background-color .2s ease, padding-left .25s ease; position:relative;
   }
-  .rel:hover{
-    background:var(--cyber-glow-faint);
-    padding-left:8px;
-  }
+  .rel:hover{background:var(--cyber-glow-faint); padding-left:8px;}
   .rel:hover::before{
-    content:"";
-    position:absolute;
-    left:0;top:12px;bottom:12px;
-    width:2px;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
   .rel:last-child{border-bottom:0;}
-  .rel-cond{
-    font-size:14px;
-    font-weight:600;
-    color:var(--ink);
-    line-height:1.55;
-    letter-spacing:-.005em;
-  }
+  .rel-cond{font-size:14px; font-weight:600; color:var(--ink); line-height:1.55; letter-spacing:-.005em;}
   .rel-amt{
-    flex:none;
-    font-size:13.5px;
-    font-weight:700;
-    color:var(--cyber);
-    white-space:nowrap;
-    text-align:right;
-    line-height:1.55;
+    flex:none; font-size:13.5px; font-weight:700; color:var(--cyber);
+    white-space:nowrap; text-align:right; line-height:1.55;
   }
-  .rel-scope{
-    grid-column:1 / -1;
-    font-size:12px;
-    color:var(--muted);
-    line-height:1.75;
-    margin-top:2px;
-  }
+  .rel-scope{grid-column:1 / -1; font-size:12px; color:var(--muted); line-height:1.75; margin-top:2px;}
   .rel.hold .rel-amt{color:var(--ink-3);}
   .rel.hold .rel-cond{color:var(--ink-2);}
-
   .rel.total{
-    border-bottom:0;
-    border-top:1px solid var(--line);
-    margin-top:-1px;
-    padding-top:14px;
-    padding-bottom:14px;
-    background:var(--red-soft);
+    border-bottom:0; border-top:1px solid var(--line); margin-top:-1px;
+    padding-top:14px; padding-bottom:14px; background:var(--red-soft);
   }
-  .rel.total .rel-cond{
-    color:var(--cyber-d);
-    font-weight:700;
-  }
-  .rel.total .rel-amt{
-    color:var(--cyber-d);
-    font-weight:700;
-  }
-
+  .rel.total .rel-cond{color:var(--cyber-d); font-weight:700;}
+  .rel.total .rel-amt{color:var(--cyber-d); font-weight:700;}
   .rel.subtotal{
-    border-bottom:0;
-    border-top:1px solid var(--line-2);
-    padding-top:12px;
-    padding-bottom:12px;
-    background:var(--cyber-glow-faint);
+    border-bottom:0; border-top:1px solid var(--line-2);
+    padding-top:12px; padding-bottom:12px; background:var(--cyber-glow-faint);
   }
-  .rel.subtotal .rel-cond{
-    color:var(--cyber-d);
-    font-weight:600;
-    font-size:13px;
-  }
-  .rel.subtotal .rel-amt{
-    color:var(--cyber);
-    font-weight:700;
-    font-size:13px;
-  }
-  .rel.subtotal .rel-scope{
-    color:var(--ink-3);
-  }
+  .rel.subtotal .rel-cond{color:var(--cyber-d); font-weight:600; font-size:13px;}
+  .rel.subtotal .rel-amt{color:var(--cyber); font-weight:700; font-size:13px;}
+  .rel.subtotal .rel-scope{color:var(--ink-3);}
 
-  /* ================= 表格 ================= */
   .tbl-scroll{
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    background:var(--card);
-    scrollbar-width:thin;
-    transition:background-color .25s ease, border-color .25s ease;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line); border-radius:var(--r); background:var(--card);
+    scrollbar-width:thin; transition:background-color .25s ease, border-color .25s ease;
   }
   .tbl-scroll::-webkit-scrollbar{height:4px;}
-  .tbl-scroll::-webkit-scrollbar-thumb{
-    background:linear-gradient(90deg, var(--cyber), var(--gold));
-    border-radius:2px;
-  }
+  .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold)); border-radius:2px;}
 
-  table{
-    border-collapse:collapse;
-    width:100%;
-    font-size:13px;
-  }
+  table{border-collapse:collapse; width:100%; font-size:13px;}
   th,td{
-    padding:var(--sp-3) var(--sp-4);
-    text-align:right;
-    white-space:nowrap;
-    border-bottom:1px solid var(--line-2);
-    line-height:1.5;
-    position:relative;
+    padding:var(--sp-3) var(--sp-4); text-align:right; white-space:nowrap;
+    border-bottom:1px solid var(--line-2); line-height:1.5; position:relative;
   }
   th:first-child,td:first-child{text-align:left;}
   thead th{
-    background:var(--thead-bg);
-    color:var(--ink-3);
-    font-weight:600;
-    font-family:var(--mono);
-    font-size:10.5px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    border-bottom:1px solid var(--line);
+    background:var(--thead-bg); color:var(--ink-3); font-weight:600;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; border-bottom:1px solid var(--line);
     transition:background-color .25s ease;
   }
   tbody tr:last-child td{border-bottom:0;}
@@ -1000,438 +430,299 @@
   tbody tr{transition:background-color .18s ease;}
   tbody tr:hover{background:var(--cyber-glow-faint);}
   tbody tr:hover td:first-child::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:2px;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
   tbody td{color:var(--ink-2);}
   tbody td:first-child{
-    color:var(--ink);
-    font-weight:600;
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:.04em;
+    color:var(--ink); font-weight:600;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.04em;
   }
-
   .t-milestone{min-width:640px;}
   .t-milestone tr.sum td{
-    background:var(--red-soft);
-    color:var(--cyber-d);
-    font-weight:700;
-    border-top:1px solid var(--sum-line);
-    position:relative;
+    background:var(--red-soft); color:var(--cyber-d); font-weight:700;
+    border-top:1px solid var(--sum-line); position:relative;
   }
-  .t-milestone tr.sum td:first-child{
-    color:var(--cyber-d);
-  }
+  .t-milestone tr.sum td:first-child{color:var(--cyber-d);}
   .t-milestone tr.sum td:first-child::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:3px;
-    background:var(--cyber);
-    box-shadow:0 0 8px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--cyber); box-shadow:0 0 8px var(--cyber-glow);
   }
 
-  /* ================= KPI ================= */
   .kpi{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    margin-top:var(--sp-4);
-    overflow:hidden;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--line); border-radius:var(--r);
+    margin-top:var(--sp-4); overflow:hidden;
   }
   .kpi-cell{
-    padding:var(--sp-4) var(--sp-3);
-    text-align:center;
+    padding:var(--sp-4) var(--sp-3); text-align:center;
     border-right:1px solid var(--line-2);
-    transition:background-color .2s ease, box-shadow .3s ease;
-    position:relative;
+    transition:background-color .2s ease, box-shadow .3s ease; position:relative;
   }
-  .kpi-cell:hover{
-    background:var(--cyber-glow-faint);
-    box-shadow:inset 0 0 20px var(--cyber-glow-faint);
-  }
+  .kpi-cell:hover{background:var(--cyber-glow-faint); box-shadow:inset 0 0 20px var(--cyber-glow-faint);}
   .kpi-cell:last-child{border-right:0;}
   .kpi-cell b{
-    display:block;
-    font-size:15px;
-    font-weight:700;
-    color:var(--ink);
-    letter-spacing:-.01em;
-    line-height:1.3;
+    display:block; font-size:15px; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em; line-height:1.3;
   }
-  .kpi-cell b.is-red{
-    color:var(--cyber);
-    text-shadow:0 0 12px var(--cyber-glow-soft);
-  }
+  .kpi-cell b.is-red{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
   .kpi-cell span{
-    display:block;
-    margin-top:6px;
-    font-size:10.5px;
-    color:var(--muted);
-    letter-spacing:.04em;
-    line-height:1.5;
+    display:block; margin-top:6px; font-size:10.5px; color:var(--muted);
+    letter-spacing:.04em; line-height:1.5;
   }
 
-  /* ================= 规格 ================= */
-  .spec{
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-  }
+  .spec{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .spec-row{
-    display:grid;
-    grid-template-columns:110px 1fr;
-    gap:var(--sp-5);
-    padding:var(--sp-4) 0;
-    border-bottom:1px solid var(--line-2);
-    transition:background-color .2s ease, padding-left .25s ease;
-    position:relative;
+    display:grid; grid-template-columns:110px 1fr; gap:var(--sp-5);
+    padding:var(--sp-4) 0; border-bottom:1px solid var(--line-2);
+    transition:background-color .2s ease, padding-left .25s ease; position:relative;
   }
-  .spec-row:hover{
-    background:var(--cyber-glow-faint);
-    padding-left:8px;
-  }
+  .spec-row:hover{background:var(--cyber-glow-faint); padding-left:8px;}
   .spec-row:hover::before{
-    content:"";
-    position:absolute;
-    left:0;top:12px;bottom:12px;
-    width:2px;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber-glow);
+    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
   .spec-row:last-child{border-bottom:0;}
   .spec-k{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-    padding-top:3px;
-    line-height:1.6;
-    transition:color .25s ease;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); padding-top:3px; line-height:1.6; transition:color .25s ease;
   }
   .spec-row:hover .spec-k{color:var(--cyber);}
-  .spec-v{
-    font-size:13.5px;
-    color:var(--ink-2);
-    line-height:1.8;
-    min-width:0;
-  }
+  .spec-v{font-size:13.5px; color:var(--ink-2); line-height:1.8; min-width:0;}
   .spec-v code{
-    display:inline-block;
-    font-family:var(--mono);
-    font-size:11.5px;
-    color:var(--ink);
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    padding:3px var(--sp-2);
-    word-break:break-all;
-    line-height:1.65;
-    margin-top:5px;
-    transition:background-color .25s ease, border-color .25s ease;
+    display:inline-block; font-family:var(--mono); font-size:11.5px;
+    color:var(--ink); background:var(--bg);
+    border:1px solid var(--line); border-radius:var(--r);
+    padding:3px var(--sp-2); word-break:break-all; line-height:1.65;
+    margin-top:5px; transition:background-color .25s ease, border-color .25s ease;
   }
 
-  /* ================= FAQ ================= */
-  .faq-list{
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-  }
-  .faq-item{
-    border-bottom:1px solid var(--line-2);
-  }
+  .faq-list{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .faq-item{border-bottom:1px solid var(--line-2);}
   .faq-item:last-child{border-bottom:0;}
   .faq-item summary{
-    padding:16px 0;
-    font-size:14px;
-    font-weight:600;
-    color:var(--ink);
-    cursor:pointer;
-    list-style:none;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:16px;
-    line-height:1.5;
-    letter-spacing:-.005em;
+    padding:16px 0; font-size:14px; font-weight:600; color:var(--ink);
+    cursor:pointer; list-style:none;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    line-height:1.5; letter-spacing:-.005em;
     -webkit-tap-highlight-color:transparent;
-    transition:color .15s ease, padding-left .25s ease;
-    position:relative;
+    transition:color .15s ease, padding-left .25s ease; position:relative;
   }
   .faq-item summary::-webkit-details-marker{display:none;}
   .faq-item summary::after{
-    content:"+";
-    font-family:var(--mono);
-    font-size:17px;
-    font-weight:400;
-    color:var(--muted);
-    flex:none;
-    line-height:1;
+    content:"+"; font-family:var(--mono); font-size:17px; font-weight:400;
+    color:var(--muted); flex:none; line-height:1;
     transition:color .18s ease, transform .3s ease;
   }
-  .faq-item[open] summary::after{
-    content:"−";
-    color:var(--cyber);
-    transform:rotate(180deg);
-  }
+  .faq-item[open] summary::after{content:"−"; color:var(--cyber); transform:rotate(180deg);}
   .faq-item summary:hover{color:var(--cyber);}
   .faq-item[open] summary{color:var(--cyber-d);}
   .faq-item[open] summary::before{
-    content:"";
-    position:absolute;
-    left:-10px;top:12px;bottom:12px;
-    width:2px;
-    background:var(--cyber);
-    box-shadow:0 0 6px var(--cyber-glow);
+    content:""; position:absolute; left:-10px; top:12px; bottom:12px; width:2px;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
   .faq-a{
-    padding:0 24px 16px 0;
-    font-size:13px;
-    line-height:1.85;
-    color:var(--ink-3);
+    padding:0 24px 16px 0; font-size:13px; line-height:1.85; color:var(--ink-3);
     animation: faqIn .3s ease;
   }
   @keyframes faqIn{
     from{opacity:0; transform:translateY(-4px);}
     to  {opacity:1; transform:translateY(0);}
   }
-  .faq-a b{color:var(--ink-2);font-weight:600;}
+  .faq-a b{color:var(--ink-2); font-weight:600;}
   .faq-a code{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink-2);
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    padding:1px 6px;
+    font-family:var(--mono); font-size:12px; color:var(--ink-2);
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--r); padding:1px 6px;
   }
 
-  /* ================= 页脚 ================= */
-  .doc-foot{
-    padding:26px 0 var(--sp-10);
+  /* ================= 风险声明 ================= */
+  .risk-intro{
+    margin:0 0 var(--sp-4); padding:var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-3);
+    border-left:3px solid var(--cyber);
+    background:var(--cyber-glow-faint);
+    font-size:12.5px; line-height:1.85; color:var(--ink-2);
+  }
+  .risk-intro b{color:var(--cyber-d); font-weight:700;}
+
+  .risk-list{display:grid; gap:10px; margin:0; padding:0; list-style:none; counter-reset:risk;}
+  .risk-item{
+    counter-increment:risk;
+    position:relative; padding:12px 14px 12px 42px;
+    border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); font-size:12.5px; line-height:1.8; color:var(--ink-3);
+    transition:border-color .2s ease, background-color .2s ease;
+  }
+  .risk-item::before{
+    content:counter(risk, decimal-leading-zero);
+    position:absolute; left:12px; top:12px;
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    color:var(--cyber); letter-spacing:.04em; line-height:1.8;
+  }
+  .risk-item:hover{border-color:var(--cyber-glow-soft); background:var(--cyber-glow-faint);}
+  .risk-item b{color:var(--ink); font-weight:600;}
+
+  .legal-grid{
+    margin-top:var(--sp-4);
     border-top:1px solid var(--line);
-    margin-top:32px;
-    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .legal-row{
+    display:grid; grid-template-columns:110px 1fr; gap:var(--sp-5);
+    padding:var(--sp-4) 0; border-bottom:1px solid var(--line-2);
+    transition:background-color .2s ease; position:relative;
+  }
+  .legal-row:last-child{border-bottom:0;}
+  .legal-row:hover{background:var(--cyber-glow-faint);}
+  .legal-k{
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); padding-top:3px; line-height:1.6;
+  }
+  .legal-v{font-size:13px; color:var(--ink-2); line-height:1.85; min-width:0;}
+  .legal-v b{color:var(--ink); font-weight:600;}
+
+  /* ================= 官方渠道 ================= */
+  .channels{
+    margin-top:var(--sp-5);
+    padding-top:var(--sp-4);
+    border-top:1px solid var(--line-2);
+  }
+  .channels-label{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); line-height:1; margin:0 0 12px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .channels-label::before{
+    content:""; display:block; width:4px; height:4px; border-radius:50%;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow); flex:none;
+  }
+  .channels-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:8px;
+  }
+  .channel-card{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border:1px solid var(--line); border-radius:var(--r);
+    background:var(--card); color:var(--ink-3); text-decoration:none;
+    line-height:1.4; min-width:0;
+    transition:border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease, box-shadow .25s ease;
+  }
+  .channel-card:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    background:var(--cyber-glow-faint); transform:translateY(-1px);
+    box-shadow:0 0 12px -2px var(--cyber-glow-soft);
+  }
+  .channel-card svg{width:16px; height:16px; flex:none; opacity:.85;}
+  .channel-card:hover svg{opacity:1;}
+  .ch-text{min-width:0; display:flex; flex-direction:column; gap:1px;}
+  .ch-name{font-size:12px; font-weight:600; color:var(--ink); line-height:1.4; transition:color .18s ease;}
+  .channel-card:hover .ch-name{color:var(--cyber);}
+  .ch-url{
+    font-family:var(--mono); font-size:10px; color:var(--muted);
+    line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .channel-card.is-wide{grid-column:1/-1;}
+
+  .doc-foot{
+    padding:26px 0 var(--sp-10); border-top:1px solid var(--line);
+    margin-top:32px; position:relative;
   }
   .doc-foot::before{
-    content:"";
-    position:absolute;
-    top:-1px;left:0;
-    width:34%;
-    height:1px;
+    content:""; position:absolute; top:-1px; left:0; width:34%; height:1px;
     background:linear-gradient(90deg, var(--cyber), transparent);
     box-shadow:0 0 8px var(--cyber-glow);
   }
   .foot-row{
-    display:flex;justify-content:space-between;
-    gap:var(--sp-4);flex-wrap:wrap;
-    padding:var(--sp-2) 0;
-    border-bottom:1px solid var(--line-2);
+    display:flex; justify-content:space-between; gap:var(--sp-4); flex-wrap:wrap;
+    padding:var(--sp-2) 0; border-bottom:1px solid var(--line-2);
   }
   .foot-row:last-of-type{border-bottom:0;}
   .foot-k{
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-    line-height:1.8;
-    flex:none;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); line-height:1.8; flex:none;
   }
   .foot-v{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--ink-3);
-    line-height:1.8;
-    word-break:break-all;
-    text-align:right;
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    line-height:1.8; word-break:break-all; text-align:right;
   }
+  .foot-v a{color:var(--ink-2); text-decoration:none; border-bottom:1px dashed var(--line); transition:color .18s ease, border-color .18s ease;}
+  .foot-v a:hover{color:var(--cyber); border-bottom-color:var(--cyber-glow-soft);}
   .disc{
-    margin-top:var(--sp-5);
-    padding-top:var(--sp-4);
+    margin-top:var(--sp-5); padding-top:var(--sp-4);
     border-top:1px solid var(--line-2);
-    font-size:11px;
-    color:var(--muted);
-    line-height:1.95;
+    font-size:11px; color:var(--muted); line-height:1.95;
   }
 
-  /* ================= Toast ================= */
   #toast{
-    position:fixed;
-    left:50%;
-    bottom:34px;
+    position:fixed; left:50%; bottom:34px;
     transform:translateX(-50%) translateY(20px);
-    padding:10px 20px 10px 16px;
-    border-radius:999px;
-    background:var(--ink);
-    color:#fff;
-    font-size:12.5px;
-    font-weight:600;
-    letter-spacing:.02em;
-    box-shadow:
-      0 12px 30px -10px rgba(20,24,29,.45),
-      0 4px 12px -4px rgba(20,24,29,.2),
-      0 0 0 1px var(--cyber-glow-soft),
-      0 0 24px -4px var(--cyber-glow);
-    opacity:0;
-    pointer-events:none;
+    padding:10px 20px 10px 16px; border-radius:999px;
+    background:var(--ink); color:#fff;
+    font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 4px 12px -4px rgba(20,24,29,.2), 0 0 0 1px var(--cyber-glow-soft), 0 0 24px -4px var(--cyber-glow);
+    opacity:0; pointer-events:none;
     transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
-    z-index:9999;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    white-space:nowrap;
+    z-index:9999; display:inline-flex; align-items:center; gap:8px; white-space:nowrap;
   }
   #toast::before{
-    content:"✓";
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:var(--cyber);
-    color:#fff;
-    font-size:10px;
-    font-weight:700;
-    line-height:1;
+    content:"✓"; display:inline-flex; align-items:center; justify-content:center;
+    width:16px; height:16px; border-radius:50%;
+    background:var(--cyber); color:#fff; font-size:10px; font-weight:700; line-height:1;
     box-shadow:0 0 8px var(--cyber-glow);
   }
-  #toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-  }
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
-  /* ================= 深色模式：系统深色（用户未强制浅色时） ================= */
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-
-      --ink:#e6eaf0;
-      --ink-2:#b0b8c2;
-      --ink-3:#8892a0;
-      --muted:#6a7480;
-      --line:#252c36;
-      --line-2:#1a2029;
-      --bg:#0a0e14;
-      --card:#10161e;
-      --red:#e63946;
-      --red-dark:#ff5a6a;
-      --red-soft:#241418;
-      --gold:#d4a82a;
-
-      --cyber:#ff2d55;
-      --cyber-d:#cc0e30;
-      --cyber-l:#ff6b85;
-      --cyber-glow:rgba(255, 45, 85, .55);
-      --cyber-glow-soft:rgba(255, 45, 85, .22);
-      --cyber-glow-faint:rgba(255, 45, 85, .08);
-
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#6a7480;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+      --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a;
+      --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
+      --cyber-glow:rgba(255,45,85,.55); --cyber-glow-soft:rgba(255,45,85,.22); --cyber-glow-faint:rgba(255,45,85,.08);
       --toc-bg:rgba(16,22,30,.92);
-      --abstract-from:#161c25;
-      --abstract-to:#10161e;
+      --abstract-from:#161c25; --abstract-to:#10161e;
       --lead-fade:rgba(42,20,24,0);
-      --hover-bg:rgba(230,236,240,.06);
-      --active-bg:rgba(230,57,70,.14);
-      --thead-bg:#181e26;
-      --zebra-bg:#141a22;
-      --sum-line:#3a1e22;
-      --scroll-thumb:#3a424d;
-
+      --hover-bg:rgba(230,236,240,.06); --active-bg:rgba(230,57,70,.14);
+      --thead-bg:#181e26; --zebra-bg:#141a22; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
       --donut-track:#1f242b;
     }
-
     :root:not([data-theme="light"]) .hl-card::before{opacity:.95;}
     :root:not([data-theme="light"]) .alloc-row.lead::before{opacity:.95;}
     :root:not([data-theme="light"]) .ca-copy:active{background:rgba(255,45,85,.18);}
-
     :root:not([data-theme="light"]) #toast{
-      background:#e6eaf0;
-      color:#10161e;
-      box-shadow:
-        0 12px 30px -10px rgba(0,0,0,.6),
-        0 4px 12px -4px rgba(0,0,0,.3),
-        0 0 0 1px var(--cyber-glow-soft),
-        0 0 24px -4px var(--cyber-glow);
+      background:#e6eaf0; color:#10161e;
+      box-shadow:0 12px 30px -10px rgba(0,0,0,.6), 0 4px 12px -4px rgba(0,0,0,.3), 0 0 0 1px var(--cyber-glow-soft), 0 0 24px -4px var(--cyber-glow);
     }
   }
 
-  /* ================= 深色模式：用户强制深色 ================= */
   :root[data-theme="dark"]{
     color-scheme: dark;
-
-    --ink:#e6eaf0;
-    --ink-2:#b0b8c2;
-    --ink-3:#8892a0;
-    --muted:#6a7480;
-    --line:#252c36;
-    --line-2:#1a2029;
-    --bg:#0a0e14;
-    --card:#10161e;
-    --red:#e63946;
-    --red-dark:#ff5a6a;
-    --red-soft:#241418;
-    --gold:#d4a82a;
-
-    --cyber:#ff2d55;
-    --cyber-d:#cc0e30;
-    --cyber-l:#ff6b85;
-    --cyber-glow:rgba(255, 45, 85, .55);
-    --cyber-glow-soft:rgba(255, 45, 85, .22);
-    --cyber-glow-faint:rgba(255, 45, 85, .08);
-
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#6a7480;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+    --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418; --gold:#d4a82a;
+    --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255,45,85,.55); --cyber-glow-soft:rgba(255,45,85,.22); --cyber-glow-faint:rgba(255,45,85,.08);
     --toc-bg:rgba(16,22,30,.92);
-    --abstract-from:#161c25;
-    --abstract-to:#10161e;
+    --abstract-from:#161c25; --abstract-to:#10161e;
     --lead-fade:rgba(42,20,24,0);
-    --hover-bg:rgba(230,236,240,.06);
-    --active-bg:rgba(230,57,70,.14);
-    --thead-bg:#181e26;
-    --zebra-bg:#141a22;
-    --sum-line:#3a1e22;
-    --scroll-thumb:#3a424d;
-
+    --hover-bg:rgba(230,236,240,.06); --active-bg:rgba(230,57,70,.14);
+    --thead-bg:#181e26; --zebra-bg:#141a22; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
     --donut-track:#1f242b;
   }
-
   :root[data-theme="dark"] .hl-card::before{opacity:.95;}
   :root[data-theme="dark"] .alloc-row.lead::before{opacity:.95;}
   :root[data-theme="dark"] .ca-copy:active{background:rgba(255,45,85,.18);}
-
   :root[data-theme="dark"] #toast{
-    background:#e6eaf0;
-    color:#10161e;
-    box-shadow:
-      0 12px 30px -10px rgba(0,0,0,.6),
-      0 4px 12px -4px rgba(0,0,0,.3),
-      0 0 0 1px var(--cyber-glow-soft),
-      0 0 24px -4px var(--cyber-glow);
+    background:#e6eaf0; color:#10161e;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,.6), 0 4px 12px -4px rgba(0,0,0,.3), 0 0 0 1px var(--cyber-glow-soft), 0 0 24px -4px var(--cyber-glow);
   }
+  :root[data-theme="light"]{color-scheme: light;}
 
-  /* ================= 浅色模式：用户强制浅色 ================= */
-  :root[data-theme="light"]{
-    color-scheme: light;
-  }
-
-  /* ================= 小屏 ================= */
   @media (max-width:480px){
     .doc{padding:0 22px;}
-    .toc{margin:0 -22px;padding:10px 22px;}
-
+    .toc{margin:0 -22px; padding:10px 22px;}
     .ca-full{display:none;}
     .ca-short{display:inline;}
-
-    .donut-wrap{
-      grid-template-columns:1fr;
-      gap:18px;
-      justify-items:center;
-      padding-bottom:20px;
-    }
+    .donut-wrap{grid-template-columns:1fr; gap:18px; justify-items:center; padding-bottom:20px;}
     .donut-legend{width:100%;}
   }
 
@@ -1439,35 +730,37 @@
     .mast-meta{gap:var(--sp-3) 20px;}
     .fact-grid{grid-template-columns:1fr;}
     .fact.wide{grid-column:auto;}
-    .spec-row{grid-template-columns:1fr;gap:var(--sp-1);}
+    .spec-row{grid-template-columns:1fr; gap:var(--sp-1);}
     .spec-k{padding-top:0;}
+    .legal-row{grid-template-columns:1fr; gap:var(--sp-1);}
+    .legal-k{padding-top:0;}
     .kpi{grid-template-columns:1fr;}
-    .kpi-cell{border-right:0;border-bottom:1px solid var(--line-2);}
+    .kpi-cell{border-right:0; border-bottom:1px solid var(--line-2);}
     .kpi-cell:last-child{border-bottom:0;}
-    .foot-row{flex-direction:column;gap:2px;}
+    .foot-row{flex-direction:column; gap:2px;}
     .foot-v{text-align:left;}
     .rel{gap:var(--sp-1) var(--sp-4);}
-
-    .hl-grid{grid-template-columns:1fr;gap:8px;}
+    .hl-grid{grid-template-columns:1fr; gap:8px;}
     .hl-card{padding:14px 14px 15px;}
-
     .alloc-row{padding:14px 0 13px;}
     .alloc-row.lead{padding-left:12px;}
-    .alloc-row.lead::before{top:13px;bottom:12px;}
+    .alloc-row.lead::before{top:13px; bottom:12px;}
     .alloc-head{gap:12px;}
     .alloc-name{font-size:14px;}
     .alloc-pct{font-size:14.5px;}
-    .alloc-amt{font-size:15.5px;margin-top:5px;}
+    .alloc-amt{font-size:15.5px; margin-top:5px;}
     .alloc-bar{margin-top:9px;}
-    .alloc-vest{gap:5px;margin-top:9px;}
-    .vest-item{padding:2px 8px;gap:5px;}
+    .alloc-vest{gap:5px; margin-top:9px;}
+    .vest-item{padding:2px 8px; gap:5px;}
     .vest-k{font-size:8.5px;}
     .vest-v{font-size:11px;}
-    .alloc-note{margin-top:7px;font-size:11.5px;}
-    .alloc-links{gap:6px;margin-top:9px;}
-    .alloc-link{font-size:11px;padding:3px 9px 3px 7px;}
-
+    .alloc-note{margin-top:7px; font-size:11.5px;}
+    .alloc-links{gap:6px; margin-top:9px;}
+    .alloc-link{font-size:11px; padding:3px 9px 3px 7px;}
     .faq-a{padding-right:8px;}
+    .channels-grid{grid-template-columns:1fr;}
+    .risk-item{padding:10px 12px 10px 38px; font-size:12px;}
+    .risk-item::before{left:10px; top:10px;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1479,7 +772,6 @@
   }
 </style>
 
-<!-- 主题初始化：在 CSS 加载前就应用存储的选择，避免闪动 -->
 <script>
 (function(){
   try {
@@ -1494,7 +786,6 @@
 <body>
 <div class="doc">
 
-  <!-- ================= 文件抬头 ================= -->
   <header class="wrap masthead">
     <div class="mast-row">
       <div class="mast-left">
@@ -1536,7 +827,7 @@
     </div>
   </header>
 
-  <!-- ================= 目录导航 ================= -->
+  <!-- TOC：新增「风险声明」 -->
   <nav class="toc" aria-label="文档导航">
     <a class="toc-link" href="#highlights">核心优势</a>
     <a class="toc-link" href="#overview">基础信息</a>
@@ -1544,10 +835,10 @@
     <a class="toc-link" href="#vesting">解锁节奏</a>
     <a class="toc-link" href="#burn">通缩机制</a>
     <a class="toc-link" href="#execution">执行规则</a>
+    <a class="toc-link" href="#risks">风险声明</a>
     <a class="toc-link" href="#faq">FAQ</a>
   </nav>
 
-  <!-- ================= 摘要（#1 #5） ================= -->
   <section class="wrap abstract">
     <p>
       全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">50%</span> 划入「FDV 里程碑销毁池」——
@@ -1557,7 +848,6 @@
     </p>
   </section>
 
-  <!-- ================= 核心优势 ================= -->
   <section class="wrap sec" id="highlights">
     <div class="sec-head">
       <span class="sec-idx">★</span>
@@ -1593,7 +883,6 @@
     </div>
   </section>
 
-  <!-- ================= 01 基础信息（#8） ================= -->
   <section class="wrap sec" id="overview">
     <div class="sec-head">
       <span class="sec-idx">01</span>
@@ -1631,16 +920,11 @@
           <button class="ca-copy" id="copyBtn" type="button"
                   data-addr="68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868"
                   aria-label="复制合约地址">
-            <svg class="ico-copy" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="9" width="12" height="12" rx="2"></rect>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
-            <svg class="ico-check" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2.4"
-                 stroke-linecap="round" stroke-linejoin="round"
-                 style="display:none;" aria-hidden="true">
+            <svg class="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:none;" aria-hidden="true">
               <path d="M20 6 9 17l-5-5"></path>
             </svg>
           </button>
@@ -1653,7 +937,7 @@
     </div>
   </section>
 
-  <!-- ================= 02 代币分配（#3 #7 #9） ================= -->
+  <!-- 02 代币分配：锁仓 / 链上按钮已接真实链接 -->
   <section class="wrap sec" id="distribution">
     <div class="sec-head">
       <span class="sec-idx">02</span>
@@ -1665,56 +949,16 @@
         <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="代币分配环形图">
           <circle cx="100" cy="100" r="72" fill="none" stroke="var(--donut-track)" stroke-width="22"/>
           <g transform="rotate(-90 100 100)">
-            <circle class="donut-seg" data-seg="0" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="FDV 里程碑销毁池 50.0000%"
-                    stroke="#ff2d55" stroke-width="22"
-                    stroke-dasharray="226.19 226.20" stroke-dashoffset="0"
-                    data-base-stroke="#ff2d55" data-dark-stroke="#ff2d55"/>
-            <circle class="donut-seg" data-seg="1" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="财神基金会 10.0000%"
-                    stroke="#a8821c" stroke-width="22"
-                    stroke-dasharray="45.24 407.15" stroke-dashoffset="-226.19"
-                    data-base-stroke="#a8821c" data-dark-stroke="#d4a82a"/>
-            <circle class="donut-seg" data-seg="2" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="BG 基金会 10.0000%"
-                    stroke="#bf9a3a" stroke-width="22"
-                    stroke-dasharray="45.24 407.15" stroke-dashoffset="-271.43"
-                    data-base-stroke="#bf9a3a" data-dark-stroke="#e0b85a"/>
-            <circle class="donut-seg" data-seg="3" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="燃香赐福池 7.3119%"
-                    stroke="#c9a84a" stroke-width="22"
-                    stroke-dasharray="33.07 419.32" stroke-dashoffset="-316.67"
-                    data-base-stroke="#c9a84a" data-dark-stroke="#c9a84a"/>
-            <circle class="donut-seg" data-seg="4" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="做市 / CEX / DEX 6.0000%"
-                    stroke="#2f3841" stroke-width="22"
-                    stroke-dasharray="27.14 425.25" stroke-dashoffset="-349.74"
-                    data-base-stroke="#2f3841" data-dark-stroke="#c8cfd6"/>
-            <circle class="donut-seg" data-seg="5" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="LUCKY99 社区 5.0000%"
-                    stroke="#5b6672" stroke-width="22"
-                    stroke-dasharray="22.62 429.77" stroke-dashoffset="-376.88"
-                    data-base-stroke="#5b6672" data-dark-stroke="#b8c0c8"/>
-            <circle class="donut-seg" data-seg="6" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="FIST 社区 5.0000%"
-                    stroke="#7a8590" stroke-width="22"
-                    stroke-dasharray="22.62 429.77" stroke-dashoffset="-399.50"
-                    data-base-stroke="#7a8590" data-dark-stroke="#a8b0b8"/>
-            <circle class="donut-seg" data-seg="7" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="财神生态建设 2.9118%"
-                    stroke="#a8b0b8" stroke-width="22"
-                    stroke-dasharray="13.17 439.22" stroke-dashoffset="-422.12"
-                    data-base-stroke="#a8b0b8" data-dark-stroke="#9aa2aa"/>
-            <circle class="donut-seg" data-seg="8" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="初始流动性 2.4750%"
-                    stroke="#c4c9cf" stroke-width="22"
-                    stroke-dasharray="11.20 441.19" stroke-dashoffset="-435.29"
-                    data-base-stroke="#c4c9cf" data-dark-stroke="#8a9298"/>
-            <circle class="donut-seg" data-seg="9" cx="100" cy="100" r="72" fill="none"
-                    tabindex="0" role="img" aria-label="空投奖励 / 营销 1.3012%"
-                    stroke="#d8dce0" stroke-width="22"
-                    stroke-dasharray="5.89 446.50" stroke-dashoffset="-446.49"
-                    data-base-stroke="#d8dce0" data-dark-stroke="#7a8290"/>
+            <circle class="donut-seg" data-seg="0" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="FDV 里程碑销毁池 50.0000%" stroke="#ff2d55" stroke-width="22" stroke-dasharray="226.19 226.20" stroke-dashoffset="0" data-base-stroke="#ff2d55" data-dark-stroke="#ff2d55"/>
+            <circle class="donut-seg" data-seg="1" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="财神基金会 10.0000%" stroke="#a8821c" stroke-width="22" stroke-dasharray="45.24 407.15" stroke-dashoffset="-226.19" data-base-stroke="#a8821c" data-dark-stroke="#d4a82a"/>
+            <circle class="donut-seg" data-seg="2" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="BG 基金会 10.0000%" stroke="#bf9a3a" stroke-width="22" stroke-dasharray="45.24 407.15" stroke-dashoffset="-271.43" data-base-stroke="#bf9a3a" data-dark-stroke="#e0b85a"/>
+            <circle class="donut-seg" data-seg="3" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="燃香赐福池 7.3119%" stroke="#c9a84a" stroke-width="22" stroke-dasharray="33.07 419.32" stroke-dashoffset="-316.67" data-base-stroke="#c9a84a" data-dark-stroke="#c9a84a"/>
+            <circle class="donut-seg" data-seg="4" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="做市 / CEX / DEX 6.0000%" stroke="#2f3841" stroke-width="22" stroke-dasharray="27.14 425.25" stroke-dashoffset="-349.74" data-base-stroke="#2f3841" data-dark-stroke="#c8cfd6"/>
+            <circle class="donut-seg" data-seg="5" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="LUCKY99 社区 5.0000%" stroke="#5b6672" stroke-width="22" stroke-dasharray="22.62 429.77" stroke-dashoffset="-376.88" data-base-stroke="#5b6672" data-dark-stroke="#b8c0c8"/>
+            <circle class="donut-seg" data-seg="6" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="FIST 社区 5.0000%" stroke="#7a8590" stroke-width="22" stroke-dasharray="22.62 429.77" stroke-dashoffset="-399.50" data-base-stroke="#7a8590" data-dark-stroke="#a8b0b8"/>
+            <circle class="donut-seg" data-seg="7" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="财神生态建设 2.9118%" stroke="#a8b0b8" stroke-width="22" stroke-dasharray="13.17 439.22" stroke-dashoffset="-422.12" data-base-stroke="#a8b0b8" data-dark-stroke="#9aa2aa"/>
+            <circle class="donut-seg" data-seg="8" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="初始流动性 2.4750%" stroke="#c4c9cf" stroke-width="22" stroke-dasharray="11.20 441.19" stroke-dashoffset="-435.29" data-base-stroke="#c4c9cf" data-dark-stroke="#8a9298"/>
+            <circle class="donut-seg" data-seg="9" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" aria-label="空投奖励 / 营销 1.3012%" stroke="#d8dce0" stroke-width="22" stroke-dasharray="5.89 446.50" stroke-dashoffset="-446.49" data-base-stroke="#d8dce0" data-dark-stroke="#7a8290"/>
           </g>
           <text x="100" y="93" text-anchor="middle" class="donut-num">686.9M</text>
           <text x="100" y="113" text-anchor="middle" class="donut-label">总供应量</text>
@@ -1722,56 +966,16 @@
       </div>
 
       <div class="donut-legend">
-        <div class="lg-item" data-seg="0">
-          <span class="lg-dot" style="background:#ff2d55"></span>
-          <span class="lg-name">FDV 里程碑销毁池</span>
-          <span class="lg-pct">50.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="1">
-          <span class="lg-dot" style="background:#a8821c"></span>
-          <span class="lg-name">财神基金会</span>
-          <span class="lg-pct">10.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="2">
-          <span class="lg-dot" style="background:#bf9a3a"></span>
-          <span class="lg-name">BG 基金会</span>
-          <span class="lg-pct">10.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="3">
-          <span class="lg-dot" style="background:#c9a84a"></span>
-          <span class="lg-name">燃香赐福池</span>
-          <span class="lg-pct">7.3119%</span>
-        </div>
-        <div class="lg-item" data-seg="4">
-          <span class="lg-dot" style="background:#2f3841"></span>
-          <span class="lg-name">做市 / CEX / DEX</span>
-          <span class="lg-pct">6.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="5">
-          <span class="lg-dot" style="background:#5b6672"></span>
-          <span class="lg-name">LUCKY99 社区</span>
-          <span class="lg-pct">5.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="6">
-          <span class="lg-dot" style="background:#7a8590"></span>
-          <span class="lg-name">FIST 社区</span>
-          <span class="lg-pct">5.0000%</span>
-        </div>
-        <div class="lg-item" data-seg="7">
-          <span class="lg-dot" style="background:#a8b0b8"></span>
-          <span class="lg-name">财神生态建设</span>
-          <span class="lg-pct">2.9118%</span>
-        </div>
-        <div class="lg-item" data-seg="8">
-          <span class="lg-dot" style="background:#c4c9cf"></span>
-          <span class="lg-name">初始流动性</span>
-          <span class="lg-pct">2.4750%</span>
-        </div>
-        <div class="lg-item" data-seg="9">
-          <span class="lg-dot" style="background:#d8dce0"></span>
-          <span class="lg-name">空投奖励 / 营销</span>
-          <span class="lg-pct">1.3012%</span>
-        </div>
+        <div class="lg-item" data-seg="0"><span class="lg-dot" style="background:#ff2d55"></span><span class="lg-name">FDV 里程碑销毁池</span><span class="lg-pct">50.0000%</span></div>
+        <div class="lg-item" data-seg="1"><span class="lg-dot" style="background:#a8821c"></span><span class="lg-name">财神基金会</span><span class="lg-pct">10.0000%</span></div>
+        <div class="lg-item" data-seg="2"><span class="lg-dot" style="background:#bf9a3a"></span><span class="lg-name">BG 基金会</span><span class="lg-pct">10.0000%</span></div>
+        <div class="lg-item" data-seg="3"><span class="lg-dot" style="background:#c9a84a"></span><span class="lg-name">燃香赐福池</span><span class="lg-pct">7.3119%</span></div>
+        <div class="lg-item" data-seg="4"><span class="lg-dot" style="background:#2f3841"></span><span class="lg-name">做市 / CEX / DEX</span><span class="lg-pct">6.0000%</span></div>
+        <div class="lg-item" data-seg="5"><span class="lg-dot" style="background:#5b6672"></span><span class="lg-name">LUCKY99 社区</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="6"><span class="lg-dot" style="background:#7a8590"></span><span class="lg-name">FIST 社区</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="7"><span class="lg-dot" style="background:#a8b0b8"></span><span class="lg-name">财神生态建设</span><span class="lg-pct">2.9118%</span></div>
+        <div class="lg-item" data-seg="8"><span class="lg-dot" style="background:#c4c9cf"></span><span class="lg-name">初始流动性</span><span class="lg-pct">2.4750%</span></div>
+        <div class="lg-item" data-seg="9"><span class="lg-dot" style="background:#d8dce0"></span><span class="lg-name">空投奖励 / 营销</span><span class="lg-pct">1.3012%</span></div>
       </div>
     </div>
 
@@ -1785,15 +989,9 @@
         <div class="alloc-amt num">343,434,343 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:100%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item is-zero">
-            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">按里程碑销毁</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">按里程碑销毁</span></span>
         </div>
         <div class="alloc-note">多签 4/6 执行，价格每达一档目标即转入黑洞永久销毁，累计 343,434,343 枚，永不回流团队</div>
       </div>
@@ -1806,31 +1004,19 @@
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -1843,31 +1029,19 @@
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:20%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -1880,31 +1054,19 @@
         <div class="alloc-amt num">50,224,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:14.62%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge">
-            <span class="vest-k">TGE</span><span class="vest-v">5%</span>
-          </span>
-          <span class="vest-item is-zero">
-            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
-          </span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">5%</span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">TGE 释放 5%（约 2,511,200 枚），其余 95% 于 12 个月内线性释放；定向回馈真实参与的用户</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -1917,31 +1079,19 @@
         <div class="alloc-amt num">41,212,121 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:12%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge">
-            <span class="vest-k">TGE</span><span class="vest-v">10%</span>
-          </span>
-          <span class="vest-item is-zero">
-            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
-          </span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">TGE 释放 10%（约 4,121,212 枚），剩余 90% 于 12 个月内线性释放；先建立交易深度，再逐步释放</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -1954,31 +1104,19 @@
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -1991,31 +1129,19 @@
         <div class="alloc-amt num">34,343,434 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:10%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">36 个月线性</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -2028,31 +1154,19 @@
         <div class="alloc-amt num">20,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:5.82%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero">
-            <span class="vest-k">TGE</span><span class="vest-v">0%</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">锁仓</span><span class="vest-v">3 个月</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
-          </span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
+          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">按建设节奏分批投入，不做一次性释放</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -2065,17 +1179,17 @@
         <div class="alloc-amt num">17,000,000 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:4.95%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge">
-            <span class="vest-k">TGE</span><span class="vest-v">100%</span>
-          </span>
-          <span class="vest-item is-zero">
-            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">开盘注入</span>
-          </span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">100%</span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">开盘注入</span></span>
         </div>
         <div class="alloc-note">建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
+        <div class="alloc-links">
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
+          </a>
+        </div>
       </div>
 
       <div class="alloc-row">
@@ -2086,31 +1200,19 @@
         <div class="alloc-amt num">8,937,616 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:2.6%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge">
-            <span class="vest-k">TGE</span><span class="vest-v">10%</span>
-          </span>
-          <span class="vest-item is-zero">
-            <span class="vest-k">锁仓</span><span class="vest-v">无</span>
-          </span>
-          <span class="vest-item">
-            <span class="vest-k">释放</span><span class="vest-v">12 个月线性</span>
-          </span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">TGE 释放 10%（约 893,762 枚），剩余 90% 于 12 个月内线性释放；空投直达真实用户，营销细水长流</div>
         <div class="alloc-links">
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            锁仓
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
           </a>
-          <a class="alloc-link" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            哈希
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
           </a>
         </div>
       </div>
@@ -2124,7 +1226,6 @@
     </p>
   </section>
 
-  <!-- ================= 03 解锁节奏 ================= -->
   <section class="wrap sec" id="vesting">
     <div class="sec-head">
       <span class="sec-idx">03</span>
@@ -2137,43 +1238,36 @@
         <div class="rel-amt num">17,000,000 枚</div>
         <div class="rel-scope">初始流动性｜建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
       </div>
-
       <div class="rel">
         <div class="rel-cond">TGE 释放 10%，剩余 90% 于 12 个月内线性释放</div>
         <div class="rel-amt num">50,149,737 枚</div>
         <div class="rel-scope">做市 / CEX / DEX 流动性 · 社区空投奖励 / 营销｜TGE 约 5,014,974 枚用于开盘建仓与空投，其余按月匀速释放</div>
       </div>
-
       <div class="rel">
         <div class="rel-cond">TGE 释放 5%，剩余 95% 于 12 个月内线性释放</div>
         <div class="rel-amt num">50,224,000 枚</div>
         <div class="rel-scope">燃香赐福池｜TGE 约 2,511,200 枚用于活动启动，其余按月匀速释放，定向回馈真实参与的用户</div>
       </div>
-
       <div class="rel">
         <div class="rel-cond">锁仓 3 个月，之后 12 个月线性释放</div>
         <div class="rel-amt num">20,000,000 枚</div>
         <div class="rel-scope">财神生态建设｜3 个月冷静期后按月投入，避免短期集中释放冲击盘面</div>
       </div>
-
       <div class="rel">
         <div class="rel-cond">锁仓 3 个月，之后 36 个月线性释放</div>
         <div class="rel-amt num">206,060,606 枚</div>
         <div class="rel-scope">财神基金会 · BG 基金会 · Lucky99 社区 · Fist 社区｜占总量的 30%，拉长至 39 个月周期，长期利益与持币人一致</div>
       </div>
-
       <div class="rel hold">
         <div class="rel-cond">不释放，仅按里程碑销毁</div>
         <div class="rel-amt num">343,434,343 枚</div>
         <div class="rel-scope">FDV 里程碑销毁池｜达到价格目标即转入黑洞永久销毁，永不回流团队，也不会转作他用</div>
       </div>
-
       <div class="rel total">
         <div class="rel-cond">合计</div>
         <div class="rel-amt num">686,868,686 枚</div>
         <div class="rel-scope">与总发行量一致 · 100%</div>
       </div>
-
       <div class="rel subtotal">
         <div class="rel-cond">其中：TGE 即时释放小计</div>
         <div class="rel-amt num">≈ 24,526,174 枚</div>
@@ -2188,11 +1282,10 @@
         <li><b>Cliff</b>（锁仓期）——该期间内不产生任何解锁；</li>
         <li><b>Vesting</b>（线性释放）——锁仓期结束后按时间逐期解锁。</li>
       </ol>
-      上述锁仓与释放安排均通过链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
+      上述锁仓与释放安排均通过 Jupiter Lock 链上托管执行，第三方可随时自行查验，项目方无法单方面更改。
     </div>
   </section>
 
-  <!-- ================= 04 通缩机制（#2 #6 #11） ================= -->
   <section class="wrap sec" id="burn">
     <div class="sec-head">
       <span class="sec-idx">04</span>
@@ -2255,11 +1348,11 @@
     </p>
   </section>
 
-  <!-- ================= 05 执行规则 ================= -->
+  <!-- 05 执行规则：新增 Multisig + Governance -->
   <section class="wrap sec" id="execution">
     <div class="sec-head">
       <span class="sec-idx">05</span>
-      <h2 class="sec-title">执行规则<span>Execution &amp; Transparency</span></h2>
+      <h2 class="sec-title">执行规则<span>Execution &amp; Governance</span></h2>
     </div>
 
     <div class="spec">
@@ -2271,9 +1364,24 @@
         <div class="spec-k">Data Source</div>
         <div class="spec-v">CoinGecko、CMC、链上预言机多源取中位数，单一数据源无法影响触发结果，从源头杜绝操纵</div>
       </div>
+       <div class="spec-row">
+        <div class="spec-k">Multisig</div>
+        <div class="spec-v">
+          4/6 多签执行，6 个签名方分别代表<b>财神基金会</b>（2 席）、<b>社区</b>（3 席）与<b>独立第三方</b>（1 席）。
+          任何单一主体无法独立操作，签名地址公开于链上，可随时在 Solscan 核验。
+          社区席位过半（3/6），但 4/6 门槛要求任何决定必须跨方共识，团队与社区均无法单方面执行。
+        </div>
+      </div>
       <div class="spec-row">
-        <div class="spec-k">Authority</div>
-        <div class="spec-v">4/6 多签执行，任何单一主体无法独立操作，不存在单点控制风险</div>
+        <div class="spec-k">Governance</div>
+        <div class="spec-v">
+          $财神到 为治理代币。持币人可对以下事项发起治理提案：<br>
+          （1）生态建设基金的用途与分配；<br>
+          （2）销毁里程碑参数微调（档位阈值、判定窗口）；<br>
+          （3）多签签名方的更换与增补；<br>
+          （4）重大生态合作与资金支出。<br>
+          治理机制将随生态成熟逐步引入，具体流程与权重另行公告。
+        </div>
       </div>
       <div class="spec-row">
         <div class="spec-k">Burn Address</div>
@@ -2297,10 +1405,70 @@
     </div>
   </section>
 
-  <!-- ================= 06 FAQ（#4） ================= -->
-  <section class="wrap sec" id="faq">
+  <!-- 06 风险与声明 -->
+  <section class="wrap sec" id="risks">
     <div class="sec-head">
       <span class="sec-idx">06</span>
+      <h2 class="sec-title">风险与声明<span>Risks &amp; Disclaimers</span></h2>
+    </div>
+
+    <p class="risk-intro">
+      <b>重要提示：</b>数字资产投资存在重大风险，包括本金全部损失的可能。请勿投入无法承受损失的资金。
+      本页所有数字、比例与机制安排仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。
+    </p>
+
+    <ol class="risk-list">
+      <li class="risk-item"><b>市场风险</b> —— 数字资产价格波动剧烈，可能在短时间内大幅下跌甚至归零。本项目不承诺保本，也不承诺任何形式的收益。</li>
+      <li class="risk-item"><b>流动性风险</b> —— 代币在特定阶段可能缺乏足够的交易深度；份额解锁、市场情绪或大额持有者的行为均可能造成价格冲击，部分订单可能无法按预期价格成交。</li>
+      <li class="risk-item"><b>智能合约风险</b> —— SPL 代币合约、Jupiter Lock 锁仓合约、Squads 多签合约均可能存在未被发现的设计缺陷或漏洞，极端情况下可能导致资产损失或不可逆的错误。</li>
+      <li class="risk-item"><b>预言机与数据源风险</b> —— 销毁触发依赖 CoinGecko、CMC、链上预言机等多个价格源。若数据源故障、被操纵或彼此产生重大分歧，可能导致触发延迟、触发争议或误触发。</li>
+      <li class="risk-item"><b>执行与治理风险</b> —— 销毁、锁仓与资金调拨均依赖 4/6 多签持续运作。签名方可能失联、产生分歧、延迟执行，或在极端情况下出现恶意行为。治理机制尚在建设，投票权重与提案流程可能随时间调整。</li>
+      <li class="risk-item"><b>监管风险</b> —— 各司法辖区对数字资产的定性与监管政策存在重大不确定性。代币可能被某一辖区认定为证券、商品或其他受监管资产，从而限制其流通或交易，甚至导致项目中止。</li>
+      <li class="risk-item"><b>集中度风险</b> —— 在项目早期，代币持仓可能高度集中于少数地址。大额持有者的交易行为可能显著影响价格与市场深度。</li>
+      <li class="risk-item"><b>运营与执行风险</b> —— 项目高度依赖团队的持续投入。人员变动、资金不足、外部环境变化均可能导致路线图延期、机制调整或阶段性中止。</li>
+    </ol>
+
+    <div class="legal-grid">
+      <div class="legal-row">
+        <div class="legal-k">Region</div>
+        <div class="legal-v">
+          <b>地区限制：</b>本代币及本页内容不面向美国、中国大陆、受制裁国家或地区，以及任何法律禁止数字资产交易的辖区的居民。
+          请在使用前确认您所在地的法律法规；任何因违反属地法律而产生的责任由用户自行承担。
+        </div>
+      </div>
+      <div class="legal-row">
+        <div class="legal-k">Character</div>
+        <div class="legal-v">
+          <b>代币性质声明：</b>$财神到 <b>不是证券、不是股权、不是债券、不代表任何实体所有权或利润分配权</b>，
+          也不承诺任何形式的收益、利息或回报。代币仅用于本生态内的功能访问与治理参与。
+        </div>
+      </div>
+      <div class="legal-row">
+        <div class="legal-k">Forward-Looking</div>
+        <div class="legal-v">
+          <b>前瞻性陈述：</b>本页中使用的「将」「计划」「预期」「目标」「预计」等表述属于前瞻性陈述，
+          基于当前假设与判断，可能因实际情况变化而不再准确。这类表述不构成承诺，实际结果可能与预期存在重大差异。
+        </div>
+      </div>
+      <div class="legal-row">
+        <div class="legal-k">Tax</div>
+        <div class="legal-v">
+          <b>税务责任：</b>持有、交易或处置 $财神到 可能产生税务义务。用户应自行咨询所在地的专业税务顾问，
+          所有因持有或交易产生的税务责任由用户自行承担。
+        </div>
+      </div>
+    </div>
+
+    <p class="caption" style="border-left-color:var(--cyber);">
+      <b>免责声明：</b>本页所有内容仅作信息展示用途，不构成任何投资、法律、税务或会计建议。
+      在做出任何与 $财神到 相关的决定前，请自行进行充分调研并咨询持牌专业人士。
+    </p>
+  </section>
+
+  <!-- 07 FAQ -->
+  <section class="wrap sec" id="faq">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
       <h2 class="sec-title">常见问题<span>FAQ</span></h2>
     </div>
 
@@ -2353,10 +1521,37 @@
           执行由 4/6 多签完成，任一单一主体无法独立操作。触发口径固定，不因流通量变化而改变。
         </div>
       </details>
+
+            <details class="faq-item">
+        <summary>多签的 6 个签名方是谁？他们能不能作恶？</summary>
+        <div class="faq-a">
+          6 个签名方分别代表财神基金会（2 席）、社区（3 席）与独立第三方（1 席）。
+          任何单个主体都无法独立动用资金或触发销毁，需要至少 4 席同时签名。签名地址公开于链上，
+          可随时在 Solscan 核验。未来签名方的更换与增补将纳入治理程序，签名方无法私下替换自己。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>持币人能参与哪些治理决策？</summary>
+        <div class="faq-a">
+          治理范围涵盖生态建设基金用途、销毁机制参数微调、多签签名方更换、重大生态合作与资金支出四类事项。
+          提案由持币人发起，经社区投票通过后由多签执行。投票机制与治理门户将于 TGE 前上线，
+          具体权重与门槛会另行公告。
+        </div>
+      </details>
+
+            <details class="faq-item">
+        <summary>持币人能参与哪些治理决策？</summary>
+        <div class="faq-a">
+          治理范围涵盖生态建设基金用途、销毁机制参数微调、多签签名方更换、重大生态合作与资金支出四类事项。
+          治理机制将随生态成熟逐步引入，在此之前相关事项由 4/6 多签执行并向社区公开披露；
+          治理上线后，提案与投票的具体流程、权重与门槛将另行公告。
+        </div>
+      </details>
     </div>
   </section>
 
-  <!-- ================= 页脚（#10） ================= -->
+  <!-- 页脚：官方渠道 + 文档信息 -->
   <footer class="wrap doc-foot">
     <div class="foot-row">
       <span class="foot-k">Document</span>
@@ -2364,7 +1559,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v1.0 · 2026-10-18</span>
+      <span class="foot-v">v1.1 · 2026-10-18</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Total Supply</span>
@@ -2372,25 +1567,75 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Contract</span>
-      <span class="foot-v">68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868</span>
+      <span class="foot-v">
+        <a href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868</a>
+      </span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Network</span>
       <span class="foot-v">Solana SPL</span>
     </div>
+
+    <!-- 官方渠道 -->
+    <div class="channels">
+      <div class="channels-label">Official Channels · 官方渠道</div>
+      <div class="channels-grid">
+        <a class="channel-card" href="https://caishendao.world/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <div class="ch-text"><span class="ch-name">官网</span><span class="ch-url">caishendao.world</span></div>
+        </a>
+        <a class="channel-card" href="https://x.com/caishendaoworld" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          <div class="ch-text"><span class="ch-name">X (Twitter)</span><span class="ch-url">@caishendaoworld</span></div>
+        </a>
+        <a class="channel-card" href="https://t.me/caishendaoworld" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+          </svg>
+          <div class="ch-text"><span class="ch-name">Telegram</span><span class="ch-url">t.me/caishendaoworld</span></div>
+        </a>
+        <a class="channel-card" href="https://ant.fun/app-invite/?code=RmrnJBvZ" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <div class="ch-text"><span class="ch-name">Antfun</span><span class="ch-url">ant.fun · 邀请码 RmrnJBvZ</span></div>
+        </a>
+        <a class="channel-card" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+          <div class="ch-text"><span class="ch-name">Solscan</span><span class="ch-url">solscan.io · 链上核验</span></div>
+        </a>
+        <a class="channel-card" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <div class="ch-text"><span class="ch-name">Jupiter Lock</span><span class="ch-url">lock.jup.ag · 锁仓托管</span></div>
+        </a>
+      </div>
+    </div>
+
     <div class="disc">
-      本文档仅用于信息展示，不构成任何投资建议。数字资产价格波动剧烈，请理性判断、注意风险。
+      本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
+      完整风险披露请见「06 风险与声明」。文档版本 v1.1 · 最后更新 2026-10-18。
     </div>
   </footer>
 
 </div>
 
-<!-- 复制提示 Toast -->
 <div id="toast" role="status" aria-live="polite">合约地址已复制</div>
 
 <script>
   (function () {
-    /* ---------- 复制合约地址 ---------- */
     var btn = document.getElementById('copyBtn');
     var toast = document.getElementById('toast');
     var toastTimer = null;
@@ -2399,9 +1644,7 @@
       if (!toast) return;
       toast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () {
-        toast.classList.remove('show');
-      }, 1800);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
     }
 
     if (btn) {
@@ -2410,21 +1653,15 @@
 
       function fallback(text, cb) {
         var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed';
-        ta.style.top = '-1000px';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, text.length);
+        ta.value = text; ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
         try { document.execCommand('copy'); cb && cb(); } catch (e) {}
         document.body.removeChild(ta);
       }
 
       btn.addEventListener('click', function () {
         var text = btn.getAttribute('data-addr');
-
         var done = function () {
           icoCopy.style.display = 'none';
           icoCheck.style.display = 'block';
@@ -2436,37 +1673,24 @@
             btn.classList.remove('copied');
           }, 1500);
         };
-
         if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(text).then(done).catch(function () {
-            fallback(text, done);
-          });
-        } else {
-          fallback(text, done);
-        }
+          navigator.clipboard.writeText(text).then(done).catch(function () { fallback(text, done); });
+        } else { fallback(text, done); }
       });
     }
 
-    /* ---------- 环形图交互（#9 增加键盘支持） ---------- */
     var donutSegs = document.querySelectorAll('.donut-seg');
     var legendItems = document.querySelectorAll('.lg-item[data-seg]');
 
     function highlightSeg(idx) {
       donutSegs.forEach(function (seg) {
         if (seg.getAttribute('data-seg') === idx) {
-          seg.classList.remove('dim');
-          seg.classList.add('highlight');
-        } else {
-          seg.classList.add('dim');
-          seg.classList.remove('highlight');
-        }
+          seg.classList.remove('dim'); seg.classList.add('highlight');
+        } else { seg.classList.add('dim'); seg.classList.remove('highlight'); }
       });
     }
     function clearSegHighlight() {
-      donutSegs.forEach(function (seg) {
-        seg.classList.remove('dim');
-        seg.classList.remove('highlight');
-      });
+      donutSegs.forEach(function (seg) { seg.classList.remove('dim'); seg.classList.remove('highlight'); });
     }
 
     if (donutSegs.length && legendItems.length) {
@@ -2475,7 +1699,6 @@
         item.addEventListener('mouseenter', function () { highlightSeg(idx); });
         item.addEventListener('mouseleave', clearSegHighlight);
       });
-
       donutSegs.forEach(function (seg) {
         var idx = seg.getAttribute('data-seg');
         seg.addEventListener('mouseenter', function () { highlightSeg(idx); });
@@ -2485,19 +1708,12 @@
       });
     }
 
-    /* ---------- 目录导航高亮 ---------- */
     var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
     if (links.length) {
-      var sections = links.map(function (a) {
-        return document.querySelector(a.getAttribute('href'));
-      }).filter(Boolean);
-
+      var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
       if (sections.length && ('IntersectionObserver' in window)) {
         var linkMap = {};
-        links.forEach(function (a) {
-          linkMap[a.getAttribute('href')] = a;
-        });
-
+        links.forEach(function (a) { linkMap[a.getAttribute('href')] = a; });
         var obs = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
@@ -2513,16 +1729,11 @@
               }
             }
           });
-        }, {
-          rootMargin: '-56px 0px -70% 0px',
-          threshold: 0
-        });
-
+        }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
         sections.forEach(function (s) { obs.observe(s); });
       }
     }
 
-    /* ---------- 主题切换 ---------- */
     var root = document.documentElement;
     var themeBtn = document.getElementById('themeToggle');
     var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
@@ -2562,14 +1773,9 @@
       });
     }
 
-    function onSystemChange() {
-      if (!root.hasAttribute('data-theme')) applyUI();
-    }
-    if (darkMQ.addEventListener) {
-      darkMQ.addEventListener('change', onSystemChange);
-    } else if (darkMQ.addListener) {
-      darkMQ.addListener(onSystemChange);
-    }
+    function onSystemChange() { if (!root.hasAttribute('data-theme')) applyUI(); }
+    if (darkMQ.addEventListener) darkMQ.addEventListener('change', onSystemChange);
+    else if (darkMQ.addListener) darkMQ.addListener(onSystemChange);
 
     applyUI();
   })();
