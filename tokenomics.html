@@ -153,34 +153,85 @@
     box-shadow:0 4px 14px -4px var(--cyber-glow), 0 0 0 1px var(--cyber-glow-soft);
   }
 
+  /* ================= 摘要区 惊喜重构 ================= */
   .abstract{
-    padding:var(--sp-7) 0 var(--sp-7); border-bottom:1px solid var(--line);
+    padding:32px 0 36px; border-bottom:1px solid var(--line);
     background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
     transition:background .25s ease;
+    position: relative;
+    overflow: hidden;
   }
-  .abstract p{margin:0; font-size:14px; line-height:1.95; color:var(--ink-2);}
+  
+  /* 背景微弱的网格/点阵，增加科技感 */
+  .abstract::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(var(--line-2) 1px, transparent 1px);
+    background-size: 16px 16px; opacity: 0.4; pointer-events: none;
+    z-index: 0;
+  }
+
+  .abstract-hero {
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    margin: 0 0 24px; z-index: 1;
+  }
+
+  /* 背后的呼吸光晕 */
+  .abstract-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, var(--cyber-glow) 0%, var(--cyber-glow-soft) 40%, transparent 70%);
+    filter: blur(12px);
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+    50%      { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+
+  /* Logo 图片 */
+  .abstract-logo img{
+    display: block;
+    width: 112px; height: 112px;
+    object-fit: contain;
+    position: relative; z-index: 1;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); /* 增加立体感 */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .abstract-logo:hover img{
+    transform: scale(1.08) translateY(-4px);
+  }
+
+  /* 极具设计感的双色分隔线 */
+  .abstract-divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin: 20px auto; width: 80%; max-width: 300px;
+    position: relative; z-index: 1;
+  }
+  .abstract-divider::before,
+  .abstract-divider::after {
+    content: ""; height: 1px; flex: 1;
+  }
+  .abstract-divider::before {
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .abstract-divider::after {
+    background: linear-gradient(270deg, transparent, var(--cyber));
+  }
+  .abstract-divider-icon {
+    color: var(--cyber); font-size: 10px; line-height: 1;
+    text-shadow: 0 0 8px var(--cyber-glow);
+  }
+
+  .abstract p{
+    margin:0; font-size:14.5px; line-height:1.95; color:var(--ink-2);
+    position: relative; z-index: 1;
+    text-align: justify;
+  }
   .abstract b{color:var(--ink); font-weight:700;}
   .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
-
-  /* 摘要区 Logo 调整 */
-  .abstract-logo{
-    display:flex; justify-content:center; align-items:center;
-    margin: 4px 0 24px; /* 调整了上下间距 */
-  }
-  .abstract-logo img{
-    display:block;
-    width:110px; height:110px; /* 尺寸调大 */
-    object-fit:contain;
-    filter:drop-shadow(0 8px 20px var(--cyber-glow-soft)); /* 光晕稍微加深 */
-    user-select:none;
-    -webkit-user-drag:none;
-    pointer-events:none;
-    transition: transform .3s cubic-bezier(.34,1.2,.64,1);
-  }
-  /* 增加一点微动效：如果鼠标移上去会有放大效果，没有鼠标的手机端则无感 */
-  .abstract-logo img:hover{
-    transform: scale(1.04) translateY(-2px);
-  }
 
   .hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
   .hl-card{
@@ -1055,7 +1106,8 @@
     .toc{margin:0 -20px; padding:8px 20px;}
 
     body { font-size: 15px; line-height: 1.8; }
-    .abstract p { font-size: 14.5px; line-height: 1.95; }
+    .abstract{ padding: 28px 0 32px; }
+    .abstract p { font-size: 14.5px; line-height: 1.95; text-align: left; }
     .alloc-note { font-size: 12.5px; line-height: 1.75; }
     .rel-cond { font-size: 14.5px; }
     .rel-scope { font-size: 12.5px; line-height: 1.8; }
@@ -1071,9 +1123,9 @@
     .ca-full{display:none;}
     .ca-short{display:inline;}
 
-    /* Logo 移动端调整 */
-    .abstract-logo{ margin: 2px 0 20px; }
-    .abstract-logo img{ width:90px; height:90px; }
+    .abstract-logo img{ width: 96px; height: 96px; }
+    .abstract-glow{ width: 140px; height: 140px; }
+    .abstract-divider{ margin: 16px auto; width: 90%; }
 
     .donut-wrap{grid-template-columns:1fr; gap:16px; justify-items:center; padding-bottom:18px;}
     .donut { max-width: 160px; }
@@ -1277,6 +1329,10 @@
     details { display: block !important; }
     details > summary { display: none !important; }
     details:not([open]) > *:not(summary) { display: block !important; }
+    
+    /* 打印时隐藏光晕，保留 Logo */
+    .abstract-glow { display: none !important; }
+    .abstract::before { display: none !important; }
   }
 </style>
 
@@ -1350,8 +1406,14 @@
   </nav>
 
   <section class="wrap abstract">
-    <div class="abstract-logo">
-      <img src="../images/caishen.png" alt="财神DAO · God Of Fortune" width="110" height="110" decoding="async">
+    <div class="abstract-hero">
+      <div class="abstract-glow"></div>
+      <div class="abstract-logo">
+        <img src="../images/caishen.png" alt="财神DAO · God Of Fortune" width="112" height="112" decoding="async">
+      </div>
+      <div class="abstract-divider">
+        <span class="abstract-divider-icon">✦</span>
+      </div>
     </div>
     <p>
       全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">40.68%</span> 划入「FDV 里程碑销毁池」——
