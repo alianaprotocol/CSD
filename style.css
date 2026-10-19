@@ -33,69 +33,15 @@
   --border-gold:  rgba(255, 183, 0, .35);
   --glow-strength: 1;
   --hud-blink: 2s;
-  --hud-dot:   #26ff8f;
+  --hud-dot:   #00e5ff;
   --gold-glow:  255, 183, 0;
   --red-glow:   255, 45, 85;
   --cyan-glow:  0, 229, 255;
 }
 
-[data-theme="light"]{
-  color-scheme: light;
-  --red:      #c0392b;
-  --red-d:    #8e1c10;
-  --red-l:    #a82315;
-  --gold:     #8a6008; 
-  --gold-d:   #6b4a04;
-  --gold-l:   #7a5600; 
-  --cyan:     #0e7a8a;
-  --bg-page:        #fff7ed;
-  --bg-grid-1:      rgba(192, 57, 43, .07);
-  --bg-grid-2:      rgba(212, 160, 23, .04);
-  --bg-glow-top:    rgba(192, 57, 43, .10);
-  --bg-glow-left:   rgba(212, 160, 23, .12);
-  --bg-glow-right:  rgba(14, 122, 138, .05);
-  --scanline:       rgba(120, 60, 20, .018);
-  --vignette-1:     rgba(255, 247, 237, .5);
-  --vignette-2:     rgba(120, 60, 20, .12);
-  --text:      #2e1e0e;
-  --text-dim:  #6b4f2b;
-  --text-mute: #8a7355; 
-  --panel-bg:       rgba(255, 253, 249, .92);
-  --panel-bg-2:     rgba(255, 250, 240, .85);
-  --panel-bg-deep:  rgba(253, 240, 220, .96);
-  --panel-inner:    rgba(212, 160, 23, .12);
-  --border:       rgba(192, 57, 43, .28);
-  --border-hi:    rgba(192, 57, 43, .6);
-  --border-gold:  rgba(212, 160, 23, .5);
-  --glow-strength: .55;
-  --hud-blink: 3.4s;
-  --hud-dot:   #0e7a4d;
-  --gold-glow:  184, 134, 11;
-  --red-glow:   192, 57, 43;
-  --cyan-glow:  14, 122, 138;
-}
-
-@property --red            { syntax: '<color>';  inherits: true; initial-value: #ff2d55; }
-@property --red-d          { syntax: '<color>';  inherits: true; initial-value: #cc0e30; }
-@property --red-l          { syntax: '<color>';  inherits: true; initial-value: #ff6b85; }
-@property --gold           { syntax: '<color>';  inherits: true; initial-value: #ffb700; }
-@property --gold-d         { syntax: '<color>';  inherits: true; initial-value: #cc8f00; }
-@property --gold-l         { syntax: '<color>';  inherits: true; initial-value: #ffd966; }
-@property --cyan           { syntax: '<color>';  inherits: true; initial-value: #00e5ff; }
-@property --glow-strength  { syntax: '<number>'; inherits: true; initial-value: 1; }
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 74px;
-  transition:
-    --red .9s cubic-bezier(.4, 0, .2, 1),
-    --red-d .9s cubic-bezier(.4, 0, .2, 1),
-    --red-l .9s cubic-bezier(.4, 0, .2, 1),
-    --gold .9s cubic-bezier(.4, 0, .2, 1),
-    --gold-d .9s cubic-bezier(.4, 0, .2, 1),
-    --gold-l .9s cubic-bezier(.4, 0, .2, 1),
-    --cyan .9s cubic-bezier(.4, 0, .2, 1),
-    --glow-strength .9s cubic-bezier(.4, 0, .2, 1);
 }
 
 body{
@@ -120,7 +66,6 @@ body{
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
   position: relative;
-  transition: background-color .4s ease, color .4s ease;
 }
 
 body::before{
@@ -156,7 +101,6 @@ body::after{
 }
 
 body.gate-active .hud,
-body.gate-active #themeToggle,
 body.gate-active #perfToggle {
   opacity: 0;
   pointer-events: none;
@@ -221,59 +165,10 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   .hud-bl { display: none; }
 }
 
-/* ============ 主题切换 ============ */
-#themeToggle{
-  position: fixed;
-  top: 52px; right: 14px;
-  z-index: 9997;
-  width: 38px; height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--panel-bg);
-  border: 1px solid var(--border-gold);
-  border-radius: 6px;
-  color: var(--gold);
-  font-size: .9rem;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all .25s ease;
-  -webkit-tap-highlight-color: transparent;
-  font-family: inherit;
-  overflow: hidden;
-  padding: 0;
-}
-#themeToggle:hover{
-  border-color: var(--gold);
-  box-shadow: 0 0 18px rgba(255, 183, 0, .35);
-  transform: translateY(-1px);
-}
-#themeToggle:active{ transform: scale(.94); }
-#themeToggle::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 183, 0, .2), transparent 70%);
-  opacity: 0;
-  transition: opacity .25s ease;
-}
-#themeToggle:hover::after{ opacity: 1; }
-#themeToggle .icon-dark,
-#themeToggle .icon-light{
-  position: absolute;
-  transition: all .4s cubic-bezier(.34,1.56,.64,1);
-  font-size: .9rem;
-}
-[data-theme="dark"]  #themeToggle .icon-dark  { opacity: 1; transform: rotate(0) scale(1); }
-[data-theme="dark"]  #themeToggle .icon-light { opacity: 0; transform: rotate(90deg) scale(.6); }
-[data-theme="light"] #themeToggle .icon-dark  { opacity: 0; transform: rotate(-90deg) scale(.6); }
-[data-theme="light"] #themeToggle .icon-light { opacity: 1; transform: rotate(0) scale(1); }
-
 /* ============ 性能切换 ============ */
 #perfToggle{
   position: fixed;
-  top: 96px; right: 14px;
+  top: 52px; right: 14px;
   z-index: 9997;
   width: 38px; height: 38px;
   display: flex;
@@ -307,9 +202,7 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
 #perfToggle[data-tier="low"]    { color: var(--red-l); border-color: rgba(255, 45, 85, .5); }
 
 @media (max-width: 720px){
-  #themeToggle{ top: 44px; right: 10px; width: 34px; height: 34px; border-radius: 5px; }
-  #themeToggle .icon-dark, #themeToggle .icon-light{ font-size: .78rem; }
-  #perfToggle{ top: 82px; right: 10px; width: 34px; height: 34px; border-radius: 5px; }
+  #perfToggle{ top: 44px; right: 10px; width: 34px; height: 34px; border-radius: 5px; }
   #perfToggle .perf-icon{ font-size: .72rem; }
   #perfToggle .perf-label{ font-size: .5rem; }
 }
@@ -1527,7 +1420,6 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   transition: color .25s ease;
 }
 
-/* 复制成功状态 */
 .hero-chip.is-copied{
   border-color: #26ff8f;
   background: rgba(38, 255, 143, .1);
@@ -1541,7 +1433,6 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   text-shadow: 0 0 10px rgba(38, 255, 143, .7);
 }
 
-/* 移动端尺寸 */
 @media (max-width: 480px){
   .hero-chip{
     font-size: .7rem;
@@ -1629,8 +1520,8 @@ html[data-perf="low"]    .hud-tr::after { content: "· LOW";  }
   font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
   font-weight: 800;
-  color: var(--gold-l);
-  text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--gold), 0 0 calc(20px * var(--glow-strength)) rgba(255, 183, 0, .35);
+  color: var(--cyan);
+  text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--cyan), 0 0 calc(20px * var(--glow-strength)) rgba(0, 229, 255, .35);
   transition: color .3s ease;
 }
 .toc-head-meta .slash{ color: var(--text-mute); font-size: .82rem; }
@@ -2390,7 +2281,6 @@ ul li::before{
 .charm-box-title { font-size: 1rem; letter-spacing: 4px; background: linear-gradient(180deg, #fff3d0 0%, #ffd966 50%, #cc8f00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 14px rgba(255, 183, 0, .6)); }
 .charm-box-sub { font-family: 'JetBrains Mono', 'Noto Sans SC', monospace; font-size: .62rem; letter-spacing: 2px; color: var(--text-mute); margin-bottom: 14px; text-transform: uppercase; }
 
-/* --- 优化后的财神符预览框 --- */
 .charm-preview {
   position: relative;
   border-radius: 12px;
@@ -2493,7 +2383,7 @@ hr {
   box-shadow: 0 0 calc(8px * var(--glow-strength)) rgba(255, 45, 85, .5);
 }
 
-/* ============ 页脚 ============ */
+/* ============ 页脚（旧版兜底） ============ */
 footer {
   margin-top: 46px;
   padding: clamp(28px, 6vw, 44px) clamp(18px, 5vw, 32px);
@@ -2693,7 +2583,6 @@ footer .f-warn i { color: #ff2d55; margin-right: 4px; text-shadow: 0 0 6px rgba(
   box-shadow: 0 0 16px rgba(255, 45, 85, .6);
 }
 
-/* 移动端预览框优化 */
 @media (max-width: 480px) {
   .charm-preview {
     aspect-ratio: 3 / 4.2;
@@ -2712,7 +2601,6 @@ footer .f-warn i { color: #ff2d55; margin-right: 4px; text-shadow: 0 0 6px rgba(
 [data-perf="medium"] .hero-deity img { filter: drop-shadow(0 0 calc(16px * var(--glow-strength)) rgba(255, 183, 0, .7)) drop-shadow(0 0 calc(32px * var(--glow-strength)) rgba(255, 45, 85, .55)) drop-shadow(0 10px 22px rgba(0, 0, 0, .7)) saturate(1.15) contrast(1.03); }
 [data-perf="medium"] .cyber-footer, [data-perf="medium"] .sacred-law, [data-perf="medium"] .hero { box-shadow: 0 0 calc(40px * var(--glow-strength)) rgba(255, 45, 85, .2), inset 0 0 60px rgba(255, 45, 85, .04); }
 
-/* 低档优化 */
 html[data-perf="low"] body::before, html[data-perf="low"] body::after { display: none; }
 html[data-perf="low"] #smoke-canvas { opacity: .7; }
 html[data-perf="low"] .gate-inner-rays, html[data-perf="low"] .gate-inner-glow, html[data-perf="low"] .gate-inner-hall, html[data-perf="low"] .gate-carpet, html[data-perf="low"] .gate-seam { display: none; }
@@ -2728,16 +2616,10 @@ html[data-perf="low"] .censer-deity { filter: drop-shadow(0 3px 6px rgba(0, 0, 0
 html[data-perf="low"] #censer.full { animation: none; }
 html[data-perf="low"] .cta-orb { display: none; }
 html[data-perf="low"] .charm-cta-deity { animation: none; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .8)); }
-html[data-perf="low"] .hud, html[data-perf="low"] #themeToggle, html[data-perf="low"] #perfToggle, html[data-perf="low"] .gate-hint, html[data-perf="low"] .toc, html[data-perf="low"] .card, html[data-perf="low"] #censer, html[data-perf="low"] #charmModal, html[data-perf="low"] .law-body, html[data-perf="low"] .matrix-node, html[data-perf="low"] .odyssey-card, html[data-perf="low"] .gateway-card, html[data-perf="low"] .footer-warn { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+html[data-perf="low"] .hud, html[data-perf="low"] #perfToggle, html[data-perf="low"] .gate-hint, html[data-perf="low"] .toc, html[data-perf="low"] .card, html[data-perf="low"] #censer, html[data-perf="low"] #charmModal, html[data-perf="low"] .law-body, html[data-perf="low"] .matrix-node, html[data-perf="low"] .odyssey-card, html[data-perf="low"] .gateway-card, html[data-perf="low"] .footer-warn { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 @media (prefers-reduced-motion: reduce) { html[data-perf="low"] #smoke-canvas { display: none; } }
 body.gate-active .sr-only[href="#main"] { display: none; }
 .social-img-fallback { display: none; }
-
-/* ============================================================
-   ✦ 精修 · 浅色主题金色降噪
-   ============================================================ */
-[data-theme="light"] .hero h1, [data-theme="light"] .hero h1 i, [data-theme="light"] .glitch, [data-theme="light"] .toc-zh, [data-theme="light"] .toc-head-title, [data-theme="light"] .toc-head-meta b, [data-theme="light"] h3, [data-theme="light"] h3 i, [data-theme="light"] p strong, [data-theme="light"] li strong, [data-theme="light"] .feat h4, [data-theme="light"] .road-item h5, [data-theme="light"] .join-body h5, [data-theme="light"] .ct-roof-title, [data-theme="light"] .ct-eq-word, [data-theme="light"] .ct-node, [data-theme="light"] .node-title, [data-theme="light"] .odyssey-card h5, [data-theme="light"] .gateway-content h5, [data-theme="light"] .inv-title, [data-theme="light"] .inv-final-gold, [data-theme="light"] .faith-title, [data-theme="light"] .sc-title, [data-theme="light"] .sc-bless, [data-theme="light"] .sc-cell-value { text-shadow: 0 0 3px rgba(138, 96, 8, .18); }
-[data-theme="light"] .hero-badge, [data-theme="light"] .hero-chips span, [data-theme="light"] .notice strong { text-shadow: none; }
 
 /* ============================================================
    ✦ 精修 · 深色暗部减负
@@ -2758,18 +2640,8 @@ html[data-theme="dark"] .card, html[data-theme="dark"] .toc, html[data-theme="da
 /* ============================================================
    ✦ 精修 · 冷色锚点
    ============================================================ */
-:root { --hud-dot: #00e5ff; }
-[data-theme="light"] { --hud-dot: #0e7a8a; }
-.toc-head-meta b { color: var(--cyan); text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--cyan), 0 0 calc(20px * var(--glow-strength)) rgba(0, 229, 255, .35); }
 .scanner-live { color: var(--cyan); }
 .scanner-live i { filter: drop-shadow(0 0 calc(6px * var(--glow-strength)) var(--cyan)); }
-
-/* ============================================================
-   ✦ 精修 · 仪式块浅色描边
-   ============================================================ */
-[data-theme="light"] .creed { border-color: var(--red); box-shadow: 0 0 40px rgba(192, 57, 43, .18), inset 0 0 60px rgba(192, 57, 43, .05); }
-[data-theme="light"] .chant { border-color: var(--gold); box-shadow: 0 0 40px rgba(184, 134, 11, .16), inset 0 0 60px rgba(184, 134, 11, .04); }
-[data-theme="light"] .charm-cta, [data-theme="light"] .sacred-law, [data-theme="light"] .cyber-footer { border-color: rgba(184, 134, 11, .45); }
 
 /* ============================================================
    ✦ 精修 · 死选择器清理
@@ -2780,7 +2652,6 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
    ✦ 移动端专项优化 (修复滑动阴影与卡片卡住)
    ============================================================ */
 @media (max-width: 720px) {
-  /* 1. 移除 #censer 在滚动时引起重绘的 filter */
   #censer {
     filter: none !important;
     will-change: transform;
@@ -2790,7 +2661,6 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
     filter: none !important;
     transform: translateZ(0) translateY(-3px) scale(1.05);
   }
-  /* 2. 大幅降级 .censer-deity 的阴影，减少 GPU 负担 */
   .censer-deity {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) !important;
     will-change: transform;
@@ -2799,7 +2669,6 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
 }
 
 @media (max-width: 480px) {
-  /* 小财神进一步简化 */
   #censer {
     filter: none !important;
     transform: translateZ(0);
@@ -2812,7 +2681,6 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
     animation: none !important;
   }
 
-  /* 三炷香卡片防卡住优化 */
   .faith-card {
     min-height: 220px;
     padding: 22px 16px;
@@ -2844,6 +2712,7 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
     height: 20px;
   }
 }
+
 /* ============================================================
    ✦ 社交链接 · 链上节点徽章
    ============================================================ */
@@ -2953,7 +2822,7 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
 }
 
 /* ============================================================
-   ✦ 页脚 · 赛博圣殿（补齐新版结构）
+   ✦ 页脚 · 赛博圣殿
    ============================================================ */
 .cyber-footer {
   position: relative;
@@ -3061,9 +2930,7 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
   border: 1px dashed rgba(255, 183, 0, 0.4);
   animation: footerSpin 12s linear infinite;
 }
-.footer-icon-ring.outer {
-  inset: 0;
-}
+.footer-icon-ring.outer { inset: 0; }
 .footer-icon-ring.inner {
   inset: 12px;
   border-color: rgba(255, 45, 85, 0.5);
@@ -3194,14 +3061,11 @@ html[data-perf="low"] .law-body { backdrop-filter: none !important; -webkit-back
 }
 
 /* ============================================================
-   ✦ 补充 · 等宽字体工具类
+   ✦ 等宽字体工具类
    ============================================================ */
 .mono {
   font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
 }
-/* ============================================================
-   ✦ 补丁 · 章节级组件完整样式（恢复被误删的组件）
-   ============================================================ */
 
 /* ============================================================
    ✦ 缘起 · 财神请柬
