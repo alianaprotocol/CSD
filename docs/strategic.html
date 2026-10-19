@@ -131,8 +131,12 @@
   .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
   .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
 
+  /* 5 字段：桌面 5 列均分 */
   .mast-meta{
-    display:flex; flex-wrap:wrap; gap:var(--sp-3) 30px;
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0,1fr));
+    gap:var(--sp-4) 18px;
+    align-items:start;
     margin-top:24px; padding-top:var(--sp-4); border-top:1px solid var(--line-2);
   }
   .mast-meta .cell{min-width:0;}
@@ -237,19 +241,38 @@
   }
 
   /* ================= 摘要 ================= */
-  .abstract{
-    padding:var(--sp-7) 0 var(--sp-7); border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);
-    transition:background .25s ease;
+  .abstract-sec {
+    padding: var(--sp-7) 0 var(--sp-7);
+    border-bottom: 1px solid var(--line);
   }
-  .abstract p{margin:0; font-size:14px; line-height:1.95; color:var(--ink-2);}
-  .abstract b{color:var(--ink); font-weight:700;}
-  .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
+
+  /* 包裹内容的微背景卡片 */
+  .abstract-card {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--cyber);
+    margin-bottom: 20px;
+    transition: background-color .25s ease;
+  }
+
+  .abstract-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.95;
+    color: var(--ink-2);
+  }
+  .abstract-card b { color: var(--ink); font-weight: 700; }
+  .abstract-card .hl {
+    color: var(--cyber); font-weight: 700;
+    border-bottom: 2px solid var(--cyber-glow-soft);
+    padding-bottom: 1px;
+  }
 
   /* ===== CTA 容器 ===== */
   .cta-row{
     display:flex; flex-wrap:wrap; gap:12px;
-    margin-top:20px; align-items:center;
+    align-items:center;
   }
 
   /* 演示入口 CTA */
@@ -337,7 +360,7 @@
   /* ================= 分组卡片 ================= */
   .group-list{border-top:1px solid var(--line);}
   .group{
-    position:relative; padding:16px 0 15px 14px;
+    position:relative; padding:16px 16px 15px 14px;
     border-bottom:1px solid var(--line-2);
     transition:background-color .25s ease;
   }
@@ -353,7 +376,10 @@
   .group:hover{background:var(--cyber-glow-faint);}
   .group.is-core:hover{background:linear-gradient(90deg,var(--red-soft) 0%, var(--cyber-glow-faint) 88%);}
 
-  .group-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px;}
+  .group-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    flex-wrap:wrap;
+  }
   .group-name{
     font-size:14.5px; font-weight:700; color:var(--ink);
     line-height:1.4; letter-spacing:-.005em; min-width:0;
@@ -885,6 +911,15 @@
     .tl-vert{display:block;}
     .tbl-swipe-hint { display: flex; }
 
+    /* 抬头 5 字段：3 + 2 居中 */
+    .mast-meta{
+      grid-template-columns:repeat(6, minmax(0,1fr));
+      gap:14px 12px;
+    }
+    .mast-meta .cell:nth-child(-n+3){grid-column:span 2;}
+    .mast-meta .cell:nth-child(4){grid-column:2 / 4;}
+    .mast-meta .cell:nth-child(5){grid-column:4 / 6;}
+
     /* 合约地址：移动端显示短地址 */
     .ca-full{display:none;}
     .ca-short{display:inline;}
@@ -897,20 +932,27 @@
     .toc{margin:0 -20px; padding:8px 20px;}
 
     body{font-size:15px; line-height:1.8;}
-    .abstract p{font-size:14.5px; line-height:1.95;}
+    .abstract-card { padding:14px 16px; margin-bottom:16px; }
+    .abstract-card p{font-size:14.5px; line-height:1.95;}
     .prose p{font-size:14.5px; line-height:1.9;}
-    .group-note{font-size:12.5px; line-height:1.75;}
     .caption{font-size:12.5px; line-height:1.9;}
     .spec-v{font-size:13.5px; line-height:1.85;}
     .rule-text{font-size:13.5px; line-height:1.85;}
     .tl-val{font-size:13.5px; line-height:1.8;}
     .disc{font-size:11.5px; line-height:1.95;}
 
-    .group{padding:14px 0 13px 12px;}
-    .group::before{top:14px; bottom:13px;}
-    .group-head{gap:10px;}
-    .group-name{font-size:14px;}
-    .group-total{font-size:14.5px;}
+    /* 分组卡片移动端优化 */
+    .group{padding:14px 14px 13px 12px; margin-bottom: 8px; border-radius: 6px;}
+    .group::before{top:14px; bottom:14px; left:0; border-radius:6px 0 0 6px;}
+    .group-head{gap:8px;}
+    .group-name{font-size:14px; line-height:1.4;}
+    .group-total{font-size:14px;}
+
+    .group-stats{gap:8px; margin-top:10px;}
+    .group-stat{padding:8px 10px;}
+    .group-stat .v{font-size:13px;}
+    .sub-row{padding:8px 10px;}
+    .group-note{font-size:12px; word-break:break-word; line-height:1.75;}
 
     .spec-row{grid-template-columns:1fr; gap:4px; padding:14px 0;}
     .spec-k{padding-top:0;}
@@ -924,8 +966,10 @@
 
     .formula{font-size:11.5px; padding:12px 13px;}
 
-    .demo-cta{padding:11px 18px; min-height:42px; font-size:13px;}
-    .token-cta{padding:11px 18px; min-height:42px; font-size:13px;}
+    /* 摘要按钮移动端优化 */
+    .cta-row{flex-direction:column; gap:10px;}
+    .cta-row .demo-cta,
+    .cta-row .token-cta{width:100%; justify-content:center; font-size:13.5px; padding:12px 18px;}
 
     .tl-v-when{font-size:11px;}
     .tl-v-what{font-size:15px;}
@@ -943,6 +987,14 @@
     .stage-table th:nth-child(3), .stage-table td:nth-child(3) { font-size: 10.5px; }
     .stage-table th:nth-child(4), .stage-table td:nth-child(4) { width: 80px; font-size: 10.5px; }
     .stage-table th:nth-child(5), .stage-table td:nth-child(5) { min-width: 200px; font-size: 12px; }
+
+    /* 抬头 5 字段：2 + 2 + 1 居中 */
+    .mast-meta{
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:12px 12px;
+    }
+    .mast-meta .cell:nth-child(-n+4){grid-column:span 2;}
+    .mast-meta .cell:nth-child(5){grid-column:2 / 4;}
 
     /* 合约地址条移动端微调 */
     .ca-bar{margin-top:14px; padding:9px 10px 9px 15px; gap:8px;}
@@ -964,10 +1016,14 @@
     .theme-toggle{width:32px; height:32px; margin-top:1px;}
     .theme-toggle svg{width:16px; height:16px;}
 
-    .mast-meta{gap:var(--sp-3) 20px;}
+    .mast-meta{gap:10px 10px;}
 
-    .group-stats{grid-template-columns:1fr;}
-    .group-stat{padding:8px 11px;}
+    /* 极窄屏下保留双列，微调间距防止挤压 */
+    .group-stats{gap:6px;}
+    .group-stat{padding:8px;}
+    .group-stat .k{font-size:9px;}
+    .group-stat .v{font-size:12.5px;}
+    .group-total{font-size:13.5px;}
 
     .foot-row{flex-direction:column; gap:2px;}
     .foot-v{text-align:left;}
@@ -987,7 +1043,7 @@
     .spec-v code{font-size:11px;}
 
     .cta-row .demo-cta,
-    .cta-row .token-cta{width:100%; justify-content:center; font-size:12.5px;}
+    .cta-row .token-cta{font-size:12.5px;}
 
     .tl-v-what{font-size:14.5px;}
     .tl-v-why{font-size:12.5px;}
@@ -1039,7 +1095,14 @@
     .ca-full{display:inline !important;}
     .ca-short{display:none !important;}
     .ca-btn{display:none !important;}
-    .ca-bar{background:#fff; border-color:#ccc;}
+    .ca-bar{background:#fff; border-color:#ccc; border-left:3px solid #7a5f10;}
+    /* 打印时抬头字段恢复简单 flex 单行/换行，避免 grid 分裂 */
+    .mast-meta{
+      display:flex; flex-wrap:wrap; gap:12px 24px;
+      grid-template-columns:none;
+    }
+    .mast-meta .cell{grid-column:auto !important;}
+    .abstract-card{background:#fff; border:1px solid #ddd; border-left:3px solid #a91f27;}
     .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
     .group, .flow-step, .spec-row, .rule-item, .tl-row, .kpi, .group-stat,
     .tl-card, .dur-grid, .dur-cell{box-shadow:none !important;}
@@ -1108,10 +1171,10 @@
     </div>
 
     <div class="mast-meta">
-        <div class="cell">
-          <span class="k">目标代币</span>
-          <span class="v num">$财神DAO</span>
-        </div>
+      <div class="cell">
+        <span class="k">目标代币</span>
+        <span class="v num">$财神DAO</span>
+      </div>
       <div class="cell">
         <span class="k">目标认购</span>
         <span class="v num">$150,000</span>
@@ -1159,6 +1222,7 @@
 
   <!-- ================= 导航 ================= -->
   <nav class="toc" aria-label="文档导航">
+    <a class="toc-link" href="#abstract">方案摘要</a>
     <a class="toc-link" href="#background">专案背景</a>
     <a class="toc-link" href="#whitelist">白名单分组</a>
     <a class="toc-link" href="#summary">总额汇总</a>
@@ -1170,15 +1234,23 @@
     <a class="toc-link" href="#rules">核心规则</a>
   </nav>
 
-  <!-- ================= 摘要 ================= -->
-  <section class="wrap abstract">
-    <p>
-      本专案采用 Meteora <b>Alpha Vault</b> 的 <span class="hl">Pro-Rata（按比例分配）</span>模式，
-      结合 Launch Pool 的 DLMM 流动性池，实现公平、透明的预启动认购机制。
-      核心目的是防止狙击机器人在代币公开交易的第一时间抢购低价筹码，
-      确保真正的社区支持者能够获得公平的早期参与机会——
-      <b>所有参与者同一个资金池、同一个买入价、同一个分配公式。</b>
-    </p>
+  <!-- ================= 00 摘要 ================= -->
+  <section class="wrap sec abstract-sec" id="abstract">
+    <div class="sec-head">
+      <span class="sec-idx">00</span>
+      <h2 class="sec-title">方案摘要<span>Executive Summary</span></h2>
+    </div>
+
+    <div class="abstract-card">
+      <p>
+        本专案采用 Meteora <b>Alpha Vault</b> 的 <span class="hl">Pro-Rata（按比例分配）</span>模式，
+        结合 Launch Pool 的 DLMM 流动性池，实现公平、透明的预启动认购机制。
+        核心目的是防止狙击机器人在代币公开交易的第一时间抢购低价筹码，
+        确保真正的社区支持者能够获得公平的早期参与机会——
+        <b>所有参与者同一个资金池、同一个买入价、同一个分配公式。</b>
+      </p>
+    </div>
+
     <div class="cta-row">
       <a class="demo-cta" href="https://caishendao.world/demo/alpha" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2080,7 +2152,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v2.4 · 2026-10-19</span>
+      <span class="foot-v">v2.7 · 2026-10-19</span>
     </div>
     <div class="disc">
       本文档仅用于信息展示，不构成任何投资建议。数字资产价格波动剧烈，请理性判断、注意风险。
