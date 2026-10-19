@@ -31,10 +31,13 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 
-<link rel="preload" as="image" href="images/caishen.png">
-<link rel="preload" as="image" href="images/door-left.png">
-<link rel="preload" as="image" href="images/door-right.png">
-<link rel="preload" as="image" href="images/bag.png" fetchpriority="low">
+<!-- 首屏关键图片预加载：提升 fetchpriority 优先解码 -->
+<link rel="preload" as="image" href="images/caishen.png" fetchpriority="high">
+<link rel="preload" as="image" href="images/door-left.png" fetchpriority="high">
+<link rel="preload" as="image" href="images/door-right.png" fetchpriority="high">
+
+<!-- Font Awesome：预连接 CDN，缩短首屏阻塞时间 -->
+<link rel="preconnect" href="https://cdn.bootcdn.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="style.css">
 
@@ -136,7 +139,7 @@
   <div class="fortune-stage">
     <div class="bag" id="fortuneBag" role="button" tabindex="0" aria-label="点击财神锦囊，开出今日财神录">
       <div class="bag-halo" aria-hidden="true"></div>
-      <img class="bag-img" src="images/bag.png" alt="财神锦囊" draggable="false" loading="eager" decoding="async">
+      <img class="bag-img" src="images/bag.png" alt="财神锦囊" draggable="false" loading="lazy" decoding="async">
       <div class="bag-fallback-inner" aria-hidden="true">
         <div class="fb-top"></div>
         <div class="fb-body">
@@ -709,13 +712,10 @@
  <section id="s2" aria-labelledby="s2-title">
   <h2 id="s2-title"><i class="fas fa-shield-halved" aria-hidden="true"></i> 铁律 · 不可砸财神</h2>
 
-  <!-- 全新设计：神圣金印 · 链上圣谕 -->
   <div class="sacred-law">
-    <!-- 背景光斑与流光 -->
     <div class="law-ambient-glow" aria-hidden="true"></div>
     <div class="law-shimmer" aria-hidden="true"></div>
-    
-    <!-- 核心戒律区 -->
+
     <div class="law-core">
       <div class="law-icon-halo">
         <i class="fas fa-ban" aria-hidden="true"></i>
@@ -729,10 +729,9 @@
       </div>
     </div>
 
-    <!-- 注解与铁律列表 -->
     <div class="law-body">
       <p class="law-intro">这句话不是市场操纵，而是<strong>社区文化自律</strong>。它约束的是行为，守护的是共识。</p>
-      
+
       <ul class="law-list">
         <li>
           <span class="law-node" aria-hidden="true"></span>
@@ -753,7 +752,6 @@
       </ul>
     </div>
 
-    <!-- 誓言契约区 -->
     <div class="law-oath">
       <div class="oath-seal" aria-hidden="true">
         <span class="seal-char">财</span>
@@ -772,12 +770,9 @@
   <h2 id="s3-title"><i class="fas fa-gem" aria-hidden="true"></i> 资产 · 我们有什么</h2>
   <p>$财神DAO 的 IP 系统由四块构成，每一块都指向同一个词：<strong>财神到</strong>。</p>
 
-  <!-- 全新设计：IP 核心资产矩阵 -->
   <div class="asset-matrix">
-    <!-- 背景网格层 -->
     <div class="matrix-grid-bg" aria-hidden="true"></div>
 
-    <!-- 资产节点 01 -->
     <div class="matrix-node">
       <div class="node-glow" aria-hidden="true"></div>
       <div class="node-corner tl" aria-hidden="true"></div>
@@ -785,19 +780,18 @@
       <div class="node-corner bl" aria-hidden="true"></div>
       <div class="node-corner br" aria-hidden="true"></div>
       <span class="node-index" aria-hidden="true">MODULE.01</span>
-      
+
       <div class="node-icon-wrap">
         <div class="icon-ring" aria-hidden="true"></div>
         <i class="fas fa-music" aria-hidden="true"></i>
       </div>
-      
+
       <h4 class="node-title">主题曲《财神到》</h4>
       <p class="node-desc">社区集结号。关键节点播放，形成条件反射：主题曲一响，财神到现场。</p>
-      
+
       <div class="node-scan-line" aria-hidden="true"></div>
     </div>
 
-    <!-- 资产节点 02 -->
     <div class="matrix-node">
       <div class="node-glow" aria-hidden="true"></div>
       <div class="node-corner tl" aria-hidden="true"></div>
@@ -805,19 +799,18 @@
       <div class="node-corner bl" aria-hidden="true"></div>
       <div class="node-corner br" aria-hidden="true"></div>
       <span class="node-index" aria-hidden="true">MODULE.02</span>
-      
+
       <div class="node-icon-wrap">
         <div class="icon-ring" aria-hidden="true"></div>
         <i class="fas fa-palette" aria-hidden="true"></i>
       </div>
-      
+
       <h4 class="node-title">视觉系统</h4>
       <p class="node-desc">红金配色、财神形象、元宝、红包、祥云、铜钱、鞭炮、庙会。所有视觉指向“财神到”。</p>
-      
+
       <div class="node-scan-line" aria-hidden="true"></div>
     </div>
 
-    <!-- 资产节点 03 -->
     <div class="matrix-node">
       <div class="node-glow" aria-hidden="true"></div>
       <div class="node-corner tl" aria-hidden="true"></div>
@@ -825,19 +818,18 @@
       <div class="node-corner bl" aria-hidden="true"></div>
       <div class="node-corner br" aria-hidden="true"></div>
       <span class="node-index" aria-hidden="true">MODULE.03</span>
-      
+
       <div class="node-icon-wrap">
         <div class="icon-ring" aria-hidden="true"></div>
         <i class="fas fa-terminal" aria-hidden="true"></i>
       </div>
-      
+
       <h4 class="node-title">口令系统</h4>
       <p class="node-desc">接财神 · 不可砸财神 · 财神到财运到 · 每一次传播，都是给财神上香。</p>
-      
+
       <div class="node-scan-line" aria-hidden="true"></div>
     </div>
 
-    <!-- 资产节点 04 -->
     <div class="matrix-node">
       <div class="node-glow" aria-hidden="true"></div>
       <div class="node-corner tl" aria-hidden="true"></div>
@@ -845,15 +837,15 @@
       <div class="node-corner bl" aria-hidden="true"></div>
       <div class="node-corner br" aria-hidden="true"></div>
       <span class="node-index" aria-hidden="true">MODULE.04</span>
-      
+
       <div class="node-icon-wrap">
         <div class="icon-ring" aria-hidden="true"></div>
         <i class="fas fa-fire" aria-hidden="true"></i>
       </div>
-      
+
       <h4 class="node-title">仪式系统</h4>
       <p class="node-desc">每日一接 · 每周一香 · 每月一福 · 春节全球华人线上财神庙会。</p>
-      
+
       <div class="node-scan-line" aria-hidden="true"></div>
     </div>
 
@@ -863,14 +855,11 @@
   <section id="s4" aria-labelledby="s4-title">
   <h2 id="s4-title"><i class="fas fa-stairs" aria-hidden="true"></i> 路线 · 我们往哪走</h2>
 
-  <!-- 全新设计：链上星途 -->
   <div class="odyssey-path">
-    <!-- 中央能量光缆 -->
     <div class="odyssey-spine" aria-hidden="true">
       <div class="spine-pulse"></div>
     </div>
 
-    <!-- 阶段 01 -->
     <div class="odyssey-item">
       <div class="odyssey-node" aria-hidden="true">
         <span class="node-num">01</span>
@@ -885,7 +874,6 @@
       </div>
     </div>
 
-    <!-- 阶段 02 -->
     <div class="odyssey-item">
       <div class="odyssey-node" aria-hidden="true">
         <span class="node-num">02</span>
@@ -900,7 +888,6 @@
       </div>
     </div>
 
-    <!-- 阶段 03 -->
     <div class="odyssey-item">
       <div class="odyssey-node" aria-hidden="true">
         <span class="node-num">03</span>
@@ -921,7 +908,6 @@
   <h2 id="s5-title"><i class="fas fa-handshake-angle" aria-hidden="true"></i> 加入 · 你怎么参与</h2>
   <p>财神不渡无缘之人，但财神偏爱团结的社区。三种方式，任选其一：</p>
 
-  <!-- 共识网关 -->
   <div class="gateway-grid">
     <div class="gateway-card">
       <div class="gateway-holo-bg" aria-hidden="true"></div>
@@ -963,7 +949,6 @@
     </div>
   </div>
 
-  <!-- 社交链接：链上节点徽章 -->
   <div class="social-gateways">
     <a href="https://t.me/caishendaoworld" target="_blank" rel="noopener noreferrer" class="social-node" aria-label="加入 Telegram 社群">
       <div class="social-icon-wrap"><i class="fab fa-telegram" aria-hidden="true"></i></div>
@@ -988,7 +973,7 @@
         <img src="images/lock.svg" alt="Jupiter" class="social-img" width="40" height="40" loading="lazy" decoding="async">
 <i class="fas fa-rocket social-img-fallback" aria-hidden="true"></i>
       </div>
-     
+
       <div class="social-glow" aria-hidden="true"></div>
     </a>
     <a href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener noreferrer" class="social-node" aria-label="访问 Solscan">
@@ -996,19 +981,18 @@
         <img src="images/sol.png" alt="Solscan" class="social-img" width="40" height="40" loading="lazy" decoding="async">
 <i class="fas fa-rocket social-img-fallback" aria-hidden="true"></i>
       </div>
-     
+
       <div class="social-glow" aria-hidden="true"></div>
     </a>
   </div>
 
-  <!-- ===== 财神符 CTA（本次加回 + 全新设计） ===== -->
   <div class="charm-cta" id="charmCta">
     <div class="charm-cta-bg" aria-hidden="true">
       <div class="cta-grid"></div>
       <div class="cta-orb orb-1"></div>
       <div class="cta-orb orb-2"></div>
     </div>
-  
+
     <div class="charm-cta-inner">
       <div class="charm-cta-seal" aria-hidden="true">
         <span>符</span>
@@ -1026,22 +1010,18 @@
 
   <hr>
 <footer class="cyber-footer">
-  <!-- 背景层：全息网格与光斑 -->
   <div class="footer-bg-grid" aria-hidden="true"></div>
   <div class="footer-ambient-glow" aria-hidden="true"></div>
 
-  <!-- 顶部能量穹顶 -->
   <div class="footer-dome" aria-hidden="true">
     <span class="dome-line"></span>
     <span class="dome-node"></span>
     <span class="dome-line"></span>
   </div>
 
-  <!-- 核心标识 -->
   <div class="footer-icon-wrap">
     <div class="footer-icon-ring outer" aria-hidden="true"></div>
     <div class="footer-icon-ring inner" aria-hidden="true"></div>
-    <!-- 使用内联 SVG 替换原先的 Font Awesome 金币图标，永不出错 -->
     <svg class="footer-icon-svg" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
       <path d="M256 32C132.3 32 32 132.3 32 256s100.3 224 224 224 224-100.3 224-224S379.7 32 256 32zm0 400c-97 0-176-79-176-176s79-176 176-176 176 79 176 176-79 176-176 176z"/>
       <circle cx="256" cy="256" r="80"/>
@@ -1049,26 +1029,22 @@
     </svg>
   </div>
 
-  <!-- 核心文案 -->
   <div class="footer-main">
     各位家人，财神到，财运到。<br>
     守住 $财神DAO，就是守住财神爷。
   </div>
 
-  <!-- 副文案 -->
   <div class="footer-sub">
     不可砸财神，财神自然保你账户长红。<br>
     让每一次传播，都成为社区的一部分。
   </div>
 
-  <!-- 华丽的分割线 -->
   <div class="footer-divider" aria-hidden="true">
     <span class="divider-line"></span>
     <span class="divider-symbol">◆</span>
     <span class="divider-line"></span>
   </div>
 
-  <!-- 免责声明：玻璃拟态卡片 -->
   <div class="footer-warn">
     <div class="warn-icon" aria-hidden="true">
       <i class="fas fa-triangle-exclamation"></i>
@@ -1111,6 +1087,6 @@
 </div>
 
 <script src="script.js" defer></script>
-      
+
 </body>
 </html>
