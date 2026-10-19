@@ -162,6 +162,21 @@
   .abstract b{color:var(--ink); font-weight:700;}
   .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
 
+  /* 摘要区 Logo */
+  .abstract-logo{
+    display:flex; justify-content:center; align-items:center;
+    margin:0 0 var(--sp-5);
+  }
+  .abstract-logo img{
+    display:block;
+    width:92px; height:92px;
+    object-fit:contain;
+    filter:drop-shadow(0 6px 16px var(--cyber-glow-soft));
+    user-select:none;
+    -webkit-user-drag:none;
+    pointer-events:none;
+  }
+
   .hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
   .hl-card{
     padding:16px 16px 17px; border:1px solid var(--line); border-radius:var(--r);
@@ -1051,6 +1066,10 @@
     .ca-full{display:none;}
     .ca-short{display:inline;}
 
+    /* Logo 移动端 */
+    .abstract-logo{ margin:0 0 var(--sp-4); }
+    .abstract-logo img{ width:76px; height:76px; }
+
     .donut-wrap{grid-template-columns:1fr; gap:16px; justify-items:center; padding-bottom:18px;}
     .donut { max-width: 160px; }
     .donut-legend{width:100%; grid-template-columns: 1fr 1fr; gap: 6px 14px;}
@@ -1326,6 +1345,9 @@
   </nav>
 
   <section class="wrap abstract">
+    <div class="abstract-logo">
+      <img src="../images/caishen.png" alt="财神DAO · God Of Fortune" width="92" height="92" decoding="async">
+    </div>
     <p>
       全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">40.68%</span> 划入「FDV 里程碑销毁池」——
       币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁上限 279,422,464 枚，且永不回流团队。
