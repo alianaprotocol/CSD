@@ -1,1 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex, nofollow">
+<title>访问验证 · $财神到</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    color-scheme: light dark;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#8a939d;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --red:#a91f27; --gold:#a8821c;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --cyber:#ff2d55; --cyber-d:#cc0e30;
+    --cyber-glow:rgba(255,45,85,.45); --cyber-glow-soft:rgba(255,45,85,.18); --cyber-glow-faint:rgba(255,45,85,.06);
+    --r:3px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,45,85,.10), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(168,130,28,.10), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-size:14.5px;line-height:1.75;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease,color .25s ease;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(255,45,85,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,85,.05) 1px, transparent 1px);
+    background-size:38px 38px;
+    mask-image:radial-gradient(circle at 50% 50%, #000 20%, transparent 75%);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 20%, transparent 75%);
+  }
+  :focus-visible{outline:2px solid var(--cyber);outline-offset:3px;border-radius:4px;box-shadow:0 0 0 4px var(--cyber-glow-soft);}
 
+  .gate-card{
+    position:relative;z-index:1;
+    width:100%;max-width:400px;
+    padding:34px 30px 30px;
+    background:var(--card);
+    border:1px solid var(--line);border-radius:6px;
+    box-shadow:
+      0 24px 60px -20px rgba(20,24,29,.28),
+      0 0 0 1px var(--cyber-glow-faint),
+      0 0 40px -12px var(--cyber-glow-soft);
+    text-align:center;overflow:hidden;
+    animation:gateIn .5s cubic-bezier(.34,1.2,.64,1);
+  }
+  @keyframes gateIn{from{opacity:0;transform:translateY(14px) scale(.98);}to{opacity:1;transform:none;}}
+  .gate-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--cyber) 0%,var(--cyber) 42%,var(--gold) 42%,var(--gold) 100%);
+    box-shadow:0 0 12px var(--cyber-glow),0 0 24px var(--cyber-glow-soft);
+  }
+  .gate-card::after{
+    content:"";position:absolute;top:0;right:0;width:0;height:0;
+    border-top:18px solid var(--cyber-glow-soft);border-left:18px solid transparent;pointer-events:none;
+  }
+  .gate-card.granted{box-shadow:0 24px 60px -20px rgba(20,24,29,.28),0 0 0 1px var(--cyber-glow),0 0 56px -8px var(--cyber-glow);}
+
+  .gate-seal{
+    width:56px;height:56px;margin:0 auto 16px;border-radius:50%;
+    background:var(--cyber-glow-faint);border:1px solid var(--cyber-glow-soft);
+    display:flex;align-items:center;justify-content:center;color:var(--cyber);
+    position:relative;
+  }
+  .gate-seal::before{
+    content:"";position:absolute;inset:-7px;border-radius:50%;
+    border:1px dashed var(--cyber-glow-soft);animation:sealSpin 18s linear infinite;
+  }
+  @keyframes sealSpin{to{transform:rotate(360deg);}}
+
+  .gate-title{margin:0 0 6px;font-size:19px;font-weight:700;letter-spacing:-.01em;color:var(--ink);}
+  .gate-sub{
+    margin:0 0 24px;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+
+  .gate-form{margin:0;}
+  .gate-input-wrap{position:relative;margin-bottom:14px;}
+  .gate-input{
+    width:100%;padding:13px 46px 13px 42px;
+    background:var(--bg);border:1px solid var(--line);border-radius:var(--r);
+    color:var(--ink);font-size:14px;font-family:var(--mono);letter-spacing:.04em;
+    outline:none;-webkit-appearance:none;
+    transition:border-color .2s ease,box-shadow .25s ease,background .2s ease;
+  }
+  .gate-input::placeholder{
+    color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;letter-spacing:0;
+  }
+  .gate-input:focus{border-color:var(--cyber);box-shadow:0 0 0 3px var(--cyber-glow-soft);background:var(--card);}
+  .gate-input:disabled{opacity:.55;cursor:not-allowed;}
+  .gate-input.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(169,31,39,.14);animation:gateShake .4s ease;}
+  @keyframes gateShake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}40%{transform:translateX(5px);}
+    60%{transform:translateX(-4px);}80%{transform:translateX(3px);}
+  }
+  .gate-input-icon{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    color:var(--muted);pointer-events:none;display:flex;
+    transition:color .2s ease;
+  }
+  .gate-input:focus ~ .gate-input-icon{color:var(--cyber);}
+
+  .gate-eye{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    width:32px;height:32px;border:0;background:transparent;color:var(--muted);
+    cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;
+    transition:color .2s ease,background .15s ease;
+  }
+  .gate-eye:hover{color:var(--cyber);background:var(--cyber-glow-faint);}
+
+  .gate-btn{
+    width:100%;padding:13px 18px;border:0;border-radius:var(--r);
+    background:linear-gradient(135deg,var(--cyber),var(--cyber-d));color:#fff;
+    font-size:14px;font-weight:700;font-family:inherit;letter-spacing:.04em;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+    box-shadow:0 6px 20px -8px var(--cyber-glow);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .18s ease,box-shadow .3s ease,filter .2s ease,opacity .2s ease;
+  }
+  .gate-btn:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px);
+    box-shadow:0 10px 28px -10px var(--cyber-glow),0 0 0 1px var(--cyber-glow-soft);}
+  .gate-btn:active:not(:disabled){transform:translateY(0);}
+  .gate-btn:disabled{opacity:.65;cursor:not-allowed;transform:none;}
+
+  .spinner{
+    width:14px;height:14px;border-radius:50%;
+    border:2px solid rgba(255,255,255,.32);border-top-color:#fff;
+    animation:spin .7s linear infinite;flex:none;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .gate-msg{
+    min-height:20px;margin-top:12px;font-size:12px;line-height:1.6;
+    color:var(--red);opacity:0;transition:opacity .25s ease;
+  }
+  .gate-msg.show{opacity:1;}
+  .gate-msg.ok{color:var(--cyber);}
+
+  .gate-foot{
+    margin-top:22px;padding-top:16px;border-top:1px solid var(--line-2);
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);line-height:1.8;
+  }
+  .gate-foot .dot{
+    display:inline-block;width:5px;height:5px;border-radius:50%;
+    background:var(--cyber);box-shadow:0 0 6px var(--cyber-glow);
+    margin-right:6px;vertical-align:middle;
+  }
+
+  @media (max-width:480px){
+    .gate-card{padding:28px 22px 24px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<main class="gate-card" id="gateCard">
+  <div class="gate-seal" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+  </div>
+
+  <h1 class="gate-title">$财神到 · 内部方案验证</h1>
+  <p class="gate-sub">Private Access Required</p>
+
+  <form class="gate-form" id="gateForm" autocomplete="off" novalidate>
+    <div class="gate-input-wrap">
+      <input class="gate-input" id="gateInput" type="password" placeholder="请输入访问码"
+             autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"
+             aria-label="访问码" aria-describedby="gateMsg">
+      <span class="gate-input-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="4"/><path d="M10.8 10.8 20 20"/><path d="M17 15l2-2"/><path d="M20 18l2-2"/>
+        </svg>
+      </span>
+      <button class="gate-eye" id="gateEye" type="button" aria-label="显示或隐藏访问码">
+        <span id="gateEyeIcon" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <button class="gate-btn" id="gateBtn" type="submit"></button>
+  </form>
+
+  <div class="gate-msg" id="gateMsg" role="status" aria-live="polite"></div>
+
+  <div class="gate-foot"><span class="dot"></span>CONFIDENTIAL · FOR TEAM ONLY</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================
+   *  1. 访问码 → 跳转链接（改这里）
+   * ========================================================== */
+  var ROUTES = {
+    'caishen6868': { url: './index.html',              label: '主方案' },
+    'vip888':      { url: './vip.html',                label: 'VIP 方案' },
+    'team2024':    { url: './team.html',               label: '战队后台' },
+    'report':      { url: './report.html',             label: '数据报表' },
+    'admin':       { url: 'https://example.com/admin', label: '管理后台' }
+  };
+
+  /* ==========================================================
+   *  2. 行为参数
+   * ========================================================== */
+  var CONFIG = {
+    caseSensitive:      false,  // 访问码是否区分大小写
+    maxAttempts:        5,      // 连续失败几次锁定
+    lockSeconds:        30,     // 锁定秒数
+    redirectDelay:      650,    // 验证通过后停留多久再跳转（毫秒）
+    replaceOnRedirect:  true,   // 用 replace 跳转，验证页不进历史记录
+    reloadOnRestore:    true    // 从 bfcache 后退回来时强制刷新
+  };
+
+  /* ==========================================================
+   *  3. DOM & 图标
+   * ========================================================== */
+  var card  = document.getElementById('gateCard');
+  var form  = document.getElementById('gateForm');
+  var input = document.getElementById('gateInput');
+  var btn   = document.getElementById('gateBtn');
+  var msg   = document.getElementById('gateMsg');
+  var eye   = document.getElementById('gateEye');
+  var eyeIcon = document.getElementById('gateEyeIcon');
+
+  var SVG_ARROW = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+  var SVG_SPINNER = '<span class="spinner" aria-hidden="true"></span>';
+  var SVG_EYE = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var SVG_EYE_OFF = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
+
+  /* ==========================================================
+   *  4. 状态
+   * ========================================================== */
+  var attempts = 0;
+  var locked = false;
+  var submitting = false;
+  var lockTimer = null;
+
+  var LOOKUP = Object.create(null);
+  Object.keys(ROUTES).forEach(function (code) {
+    var key = CONFIG.caseSensitive ? code : code.toLowerCase();
+    if (LOOKUP[key]) console.warn('[gate] 访问码重复：' + code);
+    LOOKUP[key] = ROUTES[code];
+  });
+
+  /* ==========================================================
+   *  5. UI 工具
+   * ========================================================== */
+  function setBtnIdle() {
+    btn.innerHTML = '<span>进入</span>' + SVG_ARROW;
+    btn.disabled = false;
+  }
+  function setBtnBusy() {
+    btn.innerHTML = '<span>验证通过</span>' + SVG_SPINNER;
+    btn.disabled = true;
+  }
+  function setEyeVisible(visible) {
+    input.type = visible ? 'text' : 'password';
+    eyeIcon.innerHTML = visible ? SVG_EYE_OFF : SVG_EYE;
+    eye.setAttribute('aria-label', visible ? '隐藏访问码' : '显示访问码');
+  }
+  function showMsg(text, isOk) {
+    msg.textContent = text;
+    msg.classList.add('show');
+    msg.classList.toggle('ok', !!isOk);
+  }
+  function clearMsg() {
+    msg.textContent = '';
+    msg.classList.remove('show', 'ok');
+  }
+
+  /* 完整重置：任何"记忆"都在这里被抹掉 */
+  function resetGate() {
+    clearTimeout(lockTimer);
+    attempts = 0;
+    locked = false;
+    submitting = false;
+    input.value = '';
+    input.disabled = false;
+    input.classList.remove('error');
+    setEyeVisible(false);
+    setBtnIdle();
+    card.classList.remove('granted');
+    clearMsg();
+  }
+
+  /* ==========================================================
+   *  6. 验证逻辑
+   * ========================================================== */
+  function fail(text) {
+    input.classList.remove('error');
+    void input.offsetWidth;
+    input.classList.add('error');
+
+    attempts++;
+    if (attempts >= CONFIG.maxAttempts) {
+      showMsg(text);
+      startLock();
+    } else {
+      var left = CONFIG.maxAttempts - attempts;
+      showMsg(text + (left <= 2 ? '（还剩 ' + left + ' 次机会）' : ''));
+    }
+    input.select();
+  }
+
+  function startLock() {
+    locked = true;
+    var until = Date.now() + CONFIG.lockSeconds * 1000;
+    btn.disabled = true;
+    input.disabled = true;
+
+    (function tick() {
+      var left = Math.ceil((until - Date.now()) / 1000);
+      if (left > 0) {
+        showMsg('尝试次数过多，请 ' + left + ' 秒后重试');
+        lockTimer = setTimeout(tick, 250);
+      } else {
+        locked = false;
+        attempts = 0;
+        btn.disabled = false;
+        input.disabled = false;
+        input.classList.remove('error');
+        clearMsg();
+        input.focus();
+      }
+    })();
+  }
+
+  function succeed(route) {
+    submitting = true;
+    input.classList.remove('error');
+    card.classList.add('granted');
+    setBtnBusy();
+    input.disabled = true;
+
+    showMsg('验证通过 · 正在进入' + (route.label ? ' ' + route.label : '') + '…', true);
+
+    setTimeout(function () {
+      input.value = '';                       // 跳转前清掉明文
+      if (CONFIG.replaceOnRedirect) {
+        location.replace(route.url);          // 不留历史记录
+      } else {
+        location.href = route.url;
+      }
+    }, CONFIG.redirectDelay);
+  }
+
+  function unlock() {
+    if (locked || submitting) return;
+
+    var val = (input.value || '').trim();
+    if (!val) {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      showMsg('请输入访问码');
+      input.focus();
+      return;
+    }
+
+    var route = LOOKUP[CONFIG.caseSensitive ? val : val.toLowerCase()];
+    if (route) {
+      succeed(route);
+    } else {
+      fail('访问码错误，请重新输入');
+    }
+  }
+
+  /* ==========================================================
+   *  7. 事件绑定
+   * ========================================================== */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    unlock();
+  });
+
+  input.addEventListener('input', function () {
+    input.classList.remove('error');
+    if (!locked && !submitting) clearMsg();
+  });
+
+  eye.addEventListener('click', function () {
+    setEyeVisible(input.type === 'password');
+    input.focus();
+  });
+
+  /* 反自动填充：随机 name + new-password */
+  input.name = 'ac_' + Math.random().toString(36).slice(2, 10);
+  input.setAttribute('autocomplete', 'new-password');
+
+  /* ==========================================================
+   *  8. 每次访问都必须重新验证
+   * ========================================================== */
+
+  /* 正常加载：初始化，清空一切 */
+  resetGate();
+
+  /* 从 bfcache / 往返缓存恢复：强制刷新，表单不可能被还原 */
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      if (CONFIG.reloadOnRestore) {
+        location.reload();
+      } else {
+        resetGate();
+        setTimeout(function () { input.focus(); }, 50);
+      }
+    }
+  });
+
+  /* 离开页面时清空输入，防止 bfcache 保存明文密码 */
+  window.addEventListener('pagehide', function () {
+    input.value = '';
+  });
+
+  /* 页面资源加载完成后再清一次，针对浏览器自动填充 */
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      if (!submitting && !locked && input.value) {
+        input.value = '';
+      }
+    }, 300);
+    setTimeout(function () { input.focus(); }, 350);
+  });
+
+})();
+</script>
+</body>
+</html>
