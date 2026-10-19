@@ -1,36 +1,44 @@
 /* ============================================================
-   智能性能模式 · Smart Performance Tier
+   智能性能模式 · Smart Performance Tier（稳定版）
+   - 仅依赖一次性设备评分，无 FPS 自动降级
+   - 桌面 Ctrl/Cmd+Shift+P 切档；移动端长按区块号 800ms 切档
    ============================================================ */
 window.__perf = (function () {
   var KEY = 'caishen_perf_mode';
+
   var signals = {
-    cores:     (navigator.hardwareConcurrency || 2),
-    memory:    (navigator.deviceMemory || 4),
-    dpr:       (window.devicePixelRatio || 1),
-    mobile:    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
-    saveData:  !!(navigator.connection && navigator.connection.saveData),
-    slowNet:   !!(navigator.connection &&
-                  /(^|-)2g$/.test(navigator.connection.effectiveType || '')),
-    reduceMotion: !!(window.matchMedia &&
-                  window.matchMedia('(prefers-reduced-motion: reduce)').matches),
-    viewport:  Math.min(window.innerWidth, window.innerHeight)
+    cores:        (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0)
+                    ? navigator.hardwareConcurrency : undefined,
+    memory:       (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory > 0)
+                    ? navigator.deviceMemory : undefined,
+    dpr:          (window.devicePixelRatio || 1),
+    mobile:       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
+    saveData:     !!(navigator.connection && navigator.connection.saveData),
+    slowNet:      !!(navigator.connection && /(^|-)2g$/.test(navigator.connection.effectiveType || '')),
+    reduceMotion: !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches),
+    viewport:     Math.min(window.innerWidth, window.innerHeight)
   };
 
   function scoreDevice(s) {
     var n = 100;
-    n -= Math.max(0, 4 - Math.min(s.cores, 4)) * 12;
-    n -= Math.max(0, 4 - Math.min(s.memory, 4)) * 8;
-    if (s.mobile)   n -= 15;
-    if (s.saveData) n -= 25;
-    if (s.slowNet)  n -= 15;
-    if (s.viewport < 500) n -= 5;
-    if (s.reduceMotion) n = 0;
-    return Math.max(0, Math.min(100, n));
+    // 未知 = 中性 4，不惩罚
+    var cores = (typeof s.cores  === 'number' && s.cores  > 0) ? s.cores  : 4;
+    var mem   = (typeof s.memory === 'number' && s.memory > 0) ? s.memory : 4;
+    n -= Math.max(0, 4 - Math.min(cores, 4)) * 12;
+    n -= Math.max(0, 4 - Math.min(mem,   4)) * 8;
+    if (s.mobile)         n -= 12;
+    if (s.viewport < 500) n -= 3;
+    if (s.reduceMotion)   return 0;
+    n = Math.max(0, Math.min(100, n));
+    // 弱网 / 省流量 → 封顶 medium，不直接掉到 low
+    if (s.saveData || s.slowNet) n = Math.min(n, 45);
+    return n;
   }
   var baseScore = scoreDevice(signals);
 
+  // 倾向高档：只有真正弱的设备才落 low
   function scoreToTier(n) {
-    if (n >= 70) return 'high';
+    if (n >= 65) return 'high';
     if (n >= 40) return 'medium';
     return 'low';
   }
@@ -44,7 +52,7 @@ window.__perf = (function () {
   var savedMode = null;
   try { savedMode = localStorage.getItem(KEY); } catch (_) {}
 
-  var tier = 'high';
+  var tier;
   if (signals.reduceMotion) {
     tier = 'low';
   } else if (savedMode === 'high' || savedMode === 'medium' || savedMode === 'low') {
@@ -76,108 +84,67 @@ window.__perf = (function () {
     }
   }
 
-  var fpsBuf = [];
-  var frameCount = 0;
-  var windowStart = performance.now();
-  var degraded = false;
-  var samplingStopped = (tier === 'low' || signals.reduceMotion);
-  var samplingActive = false;
-
-  function startFpsSampling() {
-    if (samplingStopped || samplingActive) return;
-    samplingActive = true;
-    requestAnimationFrame(fpsLoop);
-  }
-
-  function fpsLoop(now) {
-    if (samplingStopped) {
-      samplingActive = false;
-      return;
-    }
-    if (document.hidden) {
-      windowStart = now;
-      frameCount = 0;
-      requestAnimationFrame(fpsLoop);
-      return;
-    }
-    frameCount++;
-    var elapsed = now - windowStart;
-    if (elapsed >= 1000) {
-      var fps = (frameCount * 1000) / elapsed;
-      fpsBuf.push(fps);
-      if (fpsBuf.length > 4) fpsBuf.shift();
-      frameCount = 0;
-      windowStart = now;
-
-      if (!degraded && fpsBuf.length >= 4) {
-        var avg = 0;
-        for (var i = 0; i < fpsBuf.length; i++) avg += fpsBuf[i];
-        avg /= fpsBuf.length;
-        if (avg < 42) {
-          degraded = true;
-          var nextTier = (tier === 'high') ? 'medium' : 'low';
-          console.info('[财神符] 检测到帧率偏低 (' + avg.toFixed(1) + ' fps),自动降级 → ' + nextTier);
-          setTier(nextTier, { persist: false, silent: false, reason: 'auto-fps' });
-          if (nextTier === 'low') {
-            samplingStopped = true;
-            samplingActive = false;
-            return;
-          }
-        }
-      }
-    }
-    requestAnimationFrame(fpsLoop);
-  }
-
   function setTier(t, opts) {
     if (t !== 'high' && t !== 'medium' && t !== 'low') return;
     opts = opts || {};
-    tier = t;
+    tier   = t;
     config = makeConfig(t);
     applyTier(t, true);
-
-    if (t === 'low' || signals.reduceMotion) {
-      samplingStopped = true;
-    } else if (opts.reason === 'manual') {
-      degraded = false;
-      fpsBuf = [];
-      frameCount = 0;
-      windowStart = performance.now();
-      samplingStopped = false;
-      startFpsSampling();
-      console.info('[财神符] 已恢复帧率采样 (' + t + ')');
-    }
 
     if (opts.persist) {
       try { localStorage.setItem(KEY, t); } catch (_) {}
     }
-    if (!opts.silent && window.__showToast && opts.reason) {
+    if (!opts.silent && window.__showToast) {
       var label = t === 'high' ? '高画质' : (t === 'medium' ? '均衡' : '流畅');
       window.__showToast('性能模式 · ' + label);
     }
   }
 
-  applyTier(tier, false);
-  startFpsSampling();
+  function cycleTier() {
+    var order = ['high', 'medium', 'low'];
+    var next  = order[(order.indexOf(tier) + 1) % order.length];
+    setTier(next, { persist: true });
+  }
 
+  applyTier(tier, false);
+
+  // 桌面：Ctrl/Cmd + Shift + P
   window.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
       e.preventDefault();
-      var order = ['high', 'medium', 'low'];
-      var idx = order.indexOf(tier);
-      var next = order[(idx + 1) % order.length];
-      setTier(next, { persist: true, silent: false, reason: 'manual' });
+      cycleTier();
     }
   });
 
+  // 移动端：长按 HUD 区块号 800ms
+  (function bindMobileTierToggle() {
+    var hud = document.getElementById('blockNum');
+    if (!hud) return;
+    var pressTimer = null;
+    function start() {
+      clearTimeout(pressTimer);
+      pressTimer = setTimeout(function () {
+        cycleTier();
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (_) {} }
+      }, 800);
+    }
+    function cancel() { clearTimeout(pressTimer); }
+    hud.addEventListener('touchstart',  start,  { passive: true });
+    hud.addEventListener('touchend',    cancel, { passive: true });
+    hud.addEventListener('touchcancel', cancel, { passive: true });
+    hud.addEventListener('touchmove',   cancel, { passive: true });
+    hud.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  })();
+
   return {
-    tier:    function () { return tier; },
-    config:  function () { return config; },
-    signals: signals,
-    score:   baseScore,
-    setTier: setTier,
-    isHigh:  function () { return tier === 'high'; },
-    isLow:   function () { return tier === 'low'; }
+    tier:      function () { return tier; },
+    config:    function () { return config; },
+    signals:   signals,
+    score:     baseScore,
+    setTier:   setTier,
+    cycleTier: cycleTier,
+    isHigh:    function () { return tier === 'high'; },
+    isLow:     function () { return tier === 'low'; }
   };
 })();
 
@@ -185,12 +152,14 @@ try {
   var _p = window.__perf;
   console.info(
     '%c[财神符] 性能模式:' + _p.tier().toUpperCase() +
-    '  (score=' + _p.score + ', cores=' + _p.signals.cores +
-    ', mem=' + _p.signals.memory + 'G, dpr=' + _p.signals.dpr +
+    '  (score=' + _p.score +
+    ', cores=' + (_p.signals.cores || '未知') +
+    ', mem=' + (_p.signals.memory || '未知') + 'G' +
+    ', dpr=' + _p.signals.dpr +
     ', mobile=' + _p.signals.mobile + ')',
     'color:#ffb700;font-weight:bold'
   );
-  console.info('[财神符] 手动切换: Ctrl/Cmd + Shift + P  (或在控制台调用 window.__perf.setTier("low"))');
+  console.info('[财神符] 手动切换: Ctrl/Cmd + Shift + P / 移动端长按区块号  (或 window.__perf.setTier("low"))');
 } catch (_) {}
 
 /* ============================================================
@@ -412,7 +381,6 @@ window.__showToast = (function () {
   var el = document.getElementById('blockNum');
   if (!el) return;
 
-  // 使用支持浏览器跨域请求的公共节点
   var RPC_URL = "https://solana-rpc.publicnode.com";
   var isFetching = false;
   var timer = null;
@@ -433,7 +401,6 @@ window.__showToast = (function () {
         })
       });
 
-      // 检查 HTTP 状态码，如果是 403 或 429 就抛出错误
       if (!response.ok) {
         throw new Error("HTTP " + response.status);
       }
@@ -445,7 +412,6 @@ window.__showToast = (function () {
       }
     } catch (error) {
       console.warn("[财神符] 公共节点响应失败:", error.message);
-      // 如果还在显示加载中，就变成横杠
       if (el.textContent === "#加载中..." || el.textContent === "") {
         el.textContent = "#--";
       }
@@ -456,8 +422,8 @@ window.__showToast = (function () {
 
   function startTimer() {
     if (timer) clearInterval(timer);
-    updateBlockHeight(); 
-    timer = setInterval(updateBlockHeight, 30000); 
+    updateBlockHeight();
+    timer = setInterval(updateBlockHeight, 30000);
   }
 
   function stopTimer() {
@@ -758,7 +724,12 @@ window.__metalScrape = (function () {
     if (!document.hidden) { update(); draw(); }
     requestAnimationFrame(loop);
   }
-  loop();
+  // 延迟启动，避开首屏资源解码窗口
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loop, { timeout: 2000 });
+  } else {
+    setTimeout(loop, 1500);
+  }
 
   var lastTap = 0;
   function burst(x, y, n, size, alpha) {
@@ -885,6 +856,10 @@ window.__metalScrape = (function () {
     gate.classList.add('gone');
 
     if (releaseFocus) { releaseFocus(); releaseFocus = null; }
+    if (gateSmokeStartTimer) {
+      clearTimeout(gateSmokeStartTimer);
+      gateSmokeStartTimer = null;
+    }
     if (gateSmokeTimer) {
       clearInterval(gateSmokeTimer);
       gateSmokeTimer = null;
@@ -976,9 +951,17 @@ window.__metalScrape = (function () {
     var cy = window.innerHeight * 0.55;
     if (window.__smokeBurst) window.__smokeBurst(cx + (Math.random() - 0.5) * 180, cy + (Math.random() - 0.5) * 80, 3, 18, 0.15);
   }
-  var gateSmokeInterval = (window.__perf && window.__perf.isLow()) ? 1600 : 620;
-  var gateSmokeTimer = setInterval(gateSmoke, gateSmokeInterval);
-  gateSmoke();
+  var gateSmokeInterval   = (window.__perf && window.__perf.isLow()) ? 1600 : 620;
+  var gateSmokeStartTimer = null;
+  var gateSmokeTimer      = null;
+
+  // 延迟 1200ms 启动，避开首屏资源解码窗口
+  gateSmokeStartTimer = setTimeout(function () {
+    gateSmokeStartTimer = null;
+    if (drawn) return;
+    gateSmoke();
+    gateSmokeTimer = setInterval(gateSmoke, gateSmokeInterval);
+  }, 1200);
 
   window.addEventListener('caishen:perf', function (e) {
     if (!gateSmokeTimer) return;
@@ -1331,16 +1314,16 @@ window.__metalScrape = (function () {
     ctx.font = font;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    
+
     // 1. 深度阴影层
     ctx.fillStyle = 'rgba(0,0,0,0.85)';
     ctx.fillText(text, x + depth, y + depth);
-    
+
     // 2. 赛博发光层
     ctx.shadowColor = glowColor; ctx.shadowBlur = isDark ? 45 : 20;
     ctx.fillStyle = color;
     ctx.fillText(text, x, y);
-    
+
     // 3. 金属高光层
     ctx.shadowBlur = 0;
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
@@ -1376,12 +1359,12 @@ window.__metalScrape = (function () {
 
     // 赛博符文环 (多圈同心圆 + 数据节点)
     ctx.save();
-    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)'; 
+    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)';
     ctx.lineWidth = 3;
     ctx.setLineDash([18, 24]);
     ctx.beginPath(); ctx.arc(cx, cy, size * 0.72, 0, Math.PI * 2); ctx.stroke();
-    
-    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.5)' : 'rgba(192, 57, 43, 0.5)'; 
+
+    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.5)' : 'rgba(192, 57, 43, 0.5)';
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 18]);
     ctx.beginPath(); ctx.arc(cx, cy, size * 0.64, 0, Math.PI * 2); ctx.stroke();
@@ -1402,7 +1385,7 @@ window.__metalScrape = (function () {
     if (state.usable && window.__deityImg) {
       try {
         ctx.save();
-        ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)'; 
+        ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)';
         ctx.shadowBlur = 50; ctx.shadowOffsetY = 15;
         ctx.drawImage(window.__deityImg, cx - size / 2, cy - size / 2, size, size);
         ctx.restore(); return;
@@ -1429,7 +1412,8 @@ window.__metalScrape = (function () {
     }
     ctx.putImageData(imageData, 0, 0);
   }
-   // 精准农历计算工具（基于浏览器内置 Intl 农历日历，100% 准确）
+
+  // 精准农历计算工具（基于浏览器内置 Intl 农历日历，100% 准确）
   function getLunarDate(date) {
     try {
       var parts = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {
@@ -1463,21 +1447,22 @@ window.__metalScrape = (function () {
       return { year: '丙午', month: '九月', day: '初五' };
     }
   }
-    function generateCharm() {
+
+  function generateCharm() {
     var W = 1080, H = 1920;
     var canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
     var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     var fortune = getFortune();
-    
+
     // 获取农历
     var today = new Date();
     var lunar = getLunarDate(today);
     var weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
     var weekday = weekdays[today.getDay()];
     var dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日 ' + weekday;
-    
+
     var T = {
       bgFrom: isDark ? '#080205' : '#fff7ed',
       bgMid: isDark ? '#12060c' : '#fff9ec',
@@ -1555,9 +1540,9 @@ window.__metalScrape = (function () {
 
     // 8. 分割线
     ctx.save();
-    ctx.strokeStyle = isDark ? '#ff2d55' : '#c0392b'; 
+    ctx.strokeStyle = isDark ? '#ff2d55' : '#c0392b';
     ctx.lineWidth = 4;
-    ctx.shadowColor = isDark ? '#ff2d55' : '#c0392b'; 
+    ctx.shadowColor = isDark ? '#ff2d55' : '#c0392b';
     ctx.shadowBlur = 25;
     ctx.beginPath(); ctx.moveTo(W / 2 - 350, 940); ctx.lineTo(W / 2 + 350, 940); ctx.stroke();
     ctx.restore();
@@ -1569,7 +1554,7 @@ window.__metalScrape = (function () {
     var boxH = 220;
     var boxX = (W - boxW) / 2;
     var boxY = 990;
-    
+
     ctx.save();
     ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.05)' : 'rgba(255, 255, 255, 0.6)';
     ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.4)' : 'rgba(192, 57, 43, 0.3)';
@@ -1579,7 +1564,6 @@ window.__metalScrape = (function () {
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.roundRect(boxX + 15, boxY + 15, boxW - 30, boxH - 30, 16); ctx.stroke();
     ctx.restore();
-
 
     // 10. 祝福语（红红火火放大）
     ctx.fillStyle = isDark ? '#ff2d55' : '#c0392b';
@@ -1611,12 +1595,12 @@ window.__metalScrape = (function () {
 
     ctx.fillStyle = T.titleColor;
     ctx.font = '700 34px "Noto Serif SC", "Songti SC", serif';
-        ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + ' ' + lunar.day, W / 2, 1500);
+    ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + ' ' + lunar.day, W / 2, 1500);
 
     // 13. 金色大印（尺寸 300，底部留白 80px，与日期间距舒适）
     var sealSize = 300;
     var sealX = (W - sealSize) / 2;
-    var sealY = 1540; // 1540 + 300 = 1840，底部留白 80px
+    var sealY = 1540;
 
     if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
       ctx.save();
@@ -1654,7 +1638,7 @@ window.__metalScrape = (function () {
     }
     doOpen();
   }
-  
+
   function doOpen() {
     try {
       currentDataUrl = generateCharm();
@@ -1679,13 +1663,13 @@ window.__metalScrape = (function () {
       }
     }
   }
-  
+
   function closeCharm() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
     if (releaseModalFocus) { releaseModalFocus(); releaseModalFocus = null; }
   }
-  
+
   window.__openCharm = openCharm;
   if (closeBtn) closeBtn.addEventListener('click', closeCharm);
   modal.addEventListener('click', function (e) { if (e.target === modal) closeCharm(); });
@@ -1703,7 +1687,7 @@ window.__metalScrape = (function () {
       if (window.__showToast) window.__showToast('财神符已保存');
     });
   }
-  
+
   if (shareBtn) {
     shareBtn.addEventListener('click', function () {
       if (!currentDataUrl) return;
@@ -1725,7 +1709,7 @@ window.__metalScrape = (function () {
       copyFallback();
     });
   }
-  
+
   function copyFallback() {
     var text = '$财神DAO · 全球华人第一文化 Meme IP\n财神到，财运到。只迎财神，不砸财神。\n' + location.href;
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1738,7 +1722,7 @@ window.__metalScrape = (function () {
       if (window.__showToast) window.__showToast('请长按图片保存后分享');
     }
   }
-  
+
   if (ctaBtn) {
     ctaBtn.addEventListener('click', function () {
       if (ctaBtn.disabled) return;
@@ -2037,6 +2021,7 @@ window.__metalScrape = (function () {
     });
   });
 })();
+
 /* ============================================================
    ✦ Hero Chips · 复制 / 跳转
    ============================================================ */
