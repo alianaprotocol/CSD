@@ -162,19 +162,24 @@
   .abstract b{color:var(--ink); font-weight:700;}
   .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
 
-  /* 摘要区 Logo */
+  /* 摘要区 Logo 调整 */
   .abstract-logo{
     display:flex; justify-content:center; align-items:center;
-    margin:0 0 var(--sp-5);
+    margin: 4px 0 24px; /* 调整了上下间距 */
   }
   .abstract-logo img{
     display:block;
-    width:92px; height:92px;
+    width:110px; height:110px; /* 尺寸调大 */
     object-fit:contain;
-    filter:drop-shadow(0 6px 16px var(--cyber-glow-soft));
+    filter:drop-shadow(0 8px 20px var(--cyber-glow-soft)); /* 光晕稍微加深 */
     user-select:none;
     -webkit-user-drag:none;
     pointer-events:none;
+    transition: transform .3s cubic-bezier(.34,1.2,.64,1);
+  }
+  /* 增加一点微动效：如果鼠标移上去会有放大效果，没有鼠标的手机端则无感 */
+  .abstract-logo img:hover{
+    transform: scale(1.04) translateY(-2px);
   }
 
   .hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
@@ -1066,9 +1071,9 @@
     .ca-full{display:none;}
     .ca-short{display:inline;}
 
-    /* Logo 移动端 */
-    .abstract-logo{ margin:0 0 var(--sp-4); }
-    .abstract-logo img{ width:76px; height:76px; }
+    /* Logo 移动端调整 */
+    .abstract-logo{ margin: 2px 0 20px; }
+    .abstract-logo img{ width:90px; height:90px; }
 
     .donut-wrap{grid-template-columns:1fr; gap:16px; justify-items:center; padding-bottom:18px;}
     .donut { max-width: 160px; }
@@ -1346,7 +1351,7 @@
 
   <section class="wrap abstract">
     <div class="abstract-logo">
-      <img src="../images/caishen.png" alt="财神DAO · God Of Fortune" width="92" height="92" decoding="async">
+      <img src="../images/caishen.png" alt="财神DAO · God Of Fortune" width="110" height="110" decoding="async">
     </div>
     <p>
       全网仅发行 <b>686,868,686</b> 枚 $财神到，总量恒定、不再增发。其中 <span class="hl">40.68%</span> 划入「FDV 里程碑销毁池」——
