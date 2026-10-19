@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>财神宇宙 · 入口 | $财神DAO</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<script>
+  (function(){
+    try {
+      var t = localStorage.getItem('caishen-theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ================= 颜色系统 ================= */
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --font-serif: "Songti SC", "Noto Serif SC", Georgia, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+    
+    --gold: #ffb700;
+    --gold-hover: #ffc533;
+    --cyber: #ff2d55;
+    --cyber-hover: #ff4d70;
+    
+    --transition-fast: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    --transition-smooth: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+  }
+
+  /* 深色主题 (默认) */
+  :root[data-theme="dark"] {
+    --bg-base: #060305;
+    --bg-glow: radial-gradient(60% 40% at 50% 0%, rgba(255, 45, 85, 0.15), transparent 70%),
+               radial-gradient(50% 40% at 100% 100%, rgba(255, 183, 0, 0.08), transparent 70%);
+    --grid-color: rgba(255, 45, 85, 0.04);
+    
+    --ink-primary: #f5efe6;
+    --ink-secondary: #a39582;
+    --ink-tertiary: #6b5e4e;
+    
+    --card-bg: rgba(22, 12, 18, 0.6);
+    --card-border: rgba(255, 183, 0, 0.15);
+    --card-border-hover: rgba(255, 45, 85, 0.4);
+    --card-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    
+    --glass-bg: rgba(18, 10, 14, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    
+    --icon-bg: rgba(255, 183, 0, 0.08);
+    --icon-border: rgba(255, 183, 0, 0.2);
+  }
+
+  /* 浅色主题 */
+  :root[data-theme="light"] {
+    --bg-base: #fcfaf8;
+    --bg-glow: radial-gradient(60% 40% at 50% 0%, rgba(255, 45, 85, 0.08), transparent 70%),
+               radial-gradient(50% 40% at 100% 100%, rgba(255, 183, 0, 0.12), transparent 70%);
+    --grid-color: rgba(255, 45, 85, 0.03);
+    
+    --ink-primary: #2a221c;
+    --ink-secondary: #6b5e4e;
+    --ink-tertiary: #9c8e7e;
+    
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-border: rgba(255, 183, 0, 0.3);
+    --card-border-hover: rgba(255, 45, 85, 0.3);
+    --card-shadow: 0 8px 24px -8px rgba(169, 130, 28, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+    
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    
+    --icon-bg: rgba(255, 183, 0, 0.15);
+    --icon-border: rgba(255, 183, 0, 0.3);
+  }
+
+  /* ================= 基础重置 ================= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-base);
+    color: var(--ink-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+    transition: background-color var(--transition-smooth), color var(--transition-smooth);
+  }
+
+  /* 背景特效层 */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: var(--bg-glow);
+    transition: background var(--transition-smooth);
+  }
+  .grid-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 80%);
+    transition: background-image var(--transition-smooth);
+  }
+  #particles {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* 内容容器 */
+  .app-container {
+    position: relative; z-index: 2;
+    max-width: 640px; margin: 0 auto;
+    padding: 24px 20px 80px;
+    display: flex; flex-direction: column; gap: 40px;
+  }
+
+  /* ================= 顶部导航 & 主题切换 ================= */
+  .top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: flex-end; align-items: center;
+    padding: 16px 20px;
+    pointer-events: none; /* 穿透 */
+  }
+  .theme-toggle {
+    pointer-events: auto;
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    color: var(--ink-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .theme-toggle:hover {
+    color: var(--gold);
+    transform: rotate(15deg) scale(1.05);
+  }
+  .theme-toggle:active { transform: scale(0.95); }
+  .theme-toggle svg { width: 20px; height: 20px; display: block; }
+  .theme-toggle .icon-moon { display: none; }
+  .theme-toggle .icon-sun { display: block; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+
+  /* ================= Hero 区域 ================= */
+  .hero {
+    text-align: center;
+    padding-top: 20px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--ink-tertiary);
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ""; height: 1px; width: 24px;
+    background: linear-gradient(90deg, transparent, var(--ink-tertiary), transparent);
+  }
+
+  /* 财神徽章 */
+  .badge-wrap {
+    position: relative; width: 140px; height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    user-select: none;
+    margin-bottom: 24px;
+  }
+  .badge-halo {
+    position: absolute; inset: -20px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 45, 85, 0.2) 0%, transparent 70%);
+    filter: blur(12px);
+    animation: haloPulse 4s ease-in-out infinite;
+  }
+  @keyframes haloPulse {
+    0%, 100% { opacity: 0.6; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  .badge-ring {
+    position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .badge-ring.r1 {
+    inset: -10px; border: 1px dashed var(--gold); opacity: 0.4;
+    animation: spin 20s linear infinite;
+  }
+  .badge-ring.r2 {
+    inset: 0; border: 1px solid var(--cyber); opacity: 0.3;
+    animation: spin 15s linear infinite reverse;
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .badge-scanner {
+    position: absolute; inset: -12px; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 60%, rgba(255, 45, 85, 0.5) 80%, transparent 100%);
+    mask-image: radial-gradient(circle, transparent 60%, #000 65%);
+    -webkit-mask-image: radial-gradient(circle, transparent 60%, #000 65%);
+    animation: spin 3s linear infinite;
+    z-index: -1;
+  }
+  .badge-img {
+    width: 130%; height: 130%; object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(255, 183, 0, 0.4)) drop-shadow(0 0 24px rgba(255, 45, 85, 0.2));
+    transition: transform var(--transition-fast), filter var(--transition-fast);
+  }
+  .badge-wrap:hover .badge-img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(255, 183, 0, 0.6)) drop-shadow(0 0 32px rgba(255, 45, 85, 0.4));
+  }
+
+  /* 主标题 */
+  .hero-title {
+    font-size: clamp(32px, 9vw, 42px);
+    font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--cyber) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 8px rgba(255, 183, 0, 0.2));
+  }
+  .hero-subtitle {
+    font-size: 15px; color: var(--ink-secondary); font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .hero-desc {
+    font-size: 13px; color: var(--ink-tertiary);
+    max-width: 280px; line-height: 1.7;
+  }
+
+  /* ================= 导航分组 & 列表 ================= */
+  .section {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 4px;
+  }
+  .section-icon {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--cyber));
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .section-title {
+    font-size: 13px; font-weight: 700; color: var(--ink-secondary);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title span {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+    color: var(--ink-tertiary); letter-spacing: 0.15em;
+  }
+  .section-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--card-border), transparent);
+  }
+
+  /* 卡片通用样式 */
+  .card-grid {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+  }
+  .card {
+    position: relative;
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    text-decoration: none; color: inherit;
+    transition: all var(--transition-fast);
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* 左侧装饰线 */
+  .card::before {
+    content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--cyber));
+    border-radius: 0 4px 4px 0; opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  /* 悬浮扫光 */
+  .card::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 183, 0, 0.08), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+  }
+
+  .card:hover, .card:focus-visible {
+    border-color: var(--card-border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -8px rgba(255, 45, 85, 0.15), var(--card-shadow);
+    outline: none;
+  }
+  .card:hover::before { opacity: 1; }
+  .card:hover::after { transform: translateX(100%); }
+  .card:active { transform: translateY(0) scale(0.98); }
+
+  .card-icon {
+    flex: none; width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--icon-bg);
+    border: 1px solid var(--icon-border);
+    color: var(--gold);
+    transition: all var(--transition-fast);
+  }
+  .card:hover .card-icon {
+    background: var(--cyber);
+    border-color: var(--cyber);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(255, 45, 85, 0.4);
+    transform: rotate(-5deg) scale(1.05);
+  }
+  .card-icon svg { width: 20px; height: 20px; display: block; }
+
+  .card-content { flex: 1; min-width: 0; }
+  .card-title {
+    font-size: 15px; font-weight: 600; color: var(--ink-primary);
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 12.5px; color: var(--ink-tertiary); line-height: 1.5;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  
+  .card-arrow {
+    flex: none; width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-tertiary);
+    transition: all var(--transition-fast);
+  }
+  .card:hover .card-arrow {
+    color: var(--cyber);
+    transform: translate(3px, -3px);
+  }
+  .card-arrow svg { width: 14px; height: 14px; display: block; }
+
+  /* 社交卡片特殊样式 (2列网格) */
+  .social-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
+  .social-card {
+    flex-direction: column; align-items: flex-start; gap: 12px;
+    padding: 16px;
+  }
+  .social-card::before { display: none; }
+  .social-card:hover {
+    border-color: var(--card-border-hover);
+  }
+  .social-icon {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: var(--icon-bg);
+    color: var(--gold);
+    transition: all var(--transition-fast);
+  }
+  .social-card:hover .social-icon {
+    background: var(--cyber);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 45, 85, 0.3);
+  }
+  .social-icon svg { width: 18px; height: 18px; display: block; }
+  .social-info { width: 100%; }
+  .social-name {
+    font-size: 14px; font-weight: 600; color: var(--ink-primary);
+    margin-bottom: 2px;
+  }
+  .social-handle {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--ink-tertiary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color var(--transition-fast);
+  }
+  .social-card:hover .social-handle { color: var(--cyber); }
+
+  /* ================= 页脚 ================= */
+  .footer {
+    margin-top: 20px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .footer-text {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 14px; color: var(--ink-secondary); letter-spacing: 0.1em;
+  }
+  .footer-meta {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--ink-tertiary); letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  /* 入场动画 */
+  .fade-up {
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUpAnim 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  @keyframes fadeUpAnim {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 380px) {
+    .app-container { padding: 20px 16px 60px; }
+    .badge-wrap { width: 120px; height: 120px; }
+    .card { padding: 14px; gap: 12px; }
+    .card-icon { width: 38px; height: 38px; }
+    .card-title { font-size: 14px; }
+    .card-desc { font-size: 12px; }
+    .social-card { padding: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .fade-up { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 背景层 -->
+<div class="bg-layer"></div>
+<div class="grid-layer"></div>
+<canvas id="particles"></canvas>
+
+<!-- 顶部主题切换 -->
+<div class="top-nav">
+  <button class="theme-toggle" id="themeBtn" aria-label="切换主题">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+
+<main class="app-container">
+
+  <!-- Hero 区域 -->
+  <header class="hero fade-up">
+    <div class="hero-eyebrow">Caishen.DAO · Index</div>
+    
+    <div class="badge-wrap">
+      <div class="badge-halo"></div>
+      <div class="badge-ring r1"></div>
+      <div class="badge-ring r2"></div>
+      <div class="badge-scanner"></div>
+      <img src="../images/caishen.png" alt="财神爷" class="badge-img">
+    </div>
+
+    <h1 class="hero-title">$财神DAO</h1>
+    <p class="hero-subtitle">全球华人第一文化 Meme IP</p>
+    <p class="hero-desc">从信仰到资产，从文化到娱乐<br>链上的赛博财神庙 · 属于社区的数字香火</p>
+  </header>
+
+  <!-- 文档分类 -->
+  <section class="section fade-up delay-1">
+    <div class="section-header">
+      <div class="section-icon"></div>
+      <h2 class="section-title">文档 <span>Documents</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="card-grid">
+      <a href="https://caishendao.world/docs/main" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h10l6 6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M14 4v6h6"/><path d="M8 14h6"/><path d="M8 18h4"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">项目简介</div>
+          <div class="card-desc">主线叙事 · 为什么是财神</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+
+      <a href="https://caishendao.world/docs/strategic" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Alpha 联合启动专案</div>
+          <div class="card-desc">Pro-Rata 白名单制 · 防狙击公平启动</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+
+      <a href="https://caishendao.world/tokenomics" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M15 9.5c-.8-.7-1.8-1-3-1-1.7 0-3 .8-3 2s1.3 1.8 3 2c1.7.2 3 .8 3 2s-1.3 2-3 2c-1.2 0-2.2-.3-3-1"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">代币经济方案</div>
+          <div class="card-desc">总量恒定 · 41.68% 里程碑销毁 · 锁仓透明</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+
+      <a href="https://caishendao.world/ecosystem" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">生态系统</div>
+          <div class="card-desc">燃香赐福 · 聚宝盆 · NFT · 文化院 · 商城</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+
+      <a href="https://caishendao.world/docs/tradeseason" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">交易狂欢季</div>
+          <div class="card-desc">净额积分制 · 双轨联赛 · 押金全额退还</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 演示分类 -->
+  <section class="section fade-up delay-2">
+    <div class="section-header">
+      <div class="section-icon"></div>
+      <h2 class="section-title">演示 <span>Demo</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="card-grid">
+      <a href="https://caishendao.world/demo/alpha" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Alpha 公平发射入口</div>
+          <div class="card-desc">体验 Pro-Rata 认购流程</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+
+      <a href="https://caishendao.world/demo/staking" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        </div>
+        <div class="card-content">
+          <div class="card-title">质押入口</div>
+          <div class="card-desc">单宝 / 双宝 · 四档周期 · 日线释放</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 社区分类 -->
+  <section class="section fade-up delay-3">
+    <div class="section-header">
+      <div class="section-icon"></div>
+      <h2 class="section-title">社区 <span>Community</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="social-grid">
+      <a href="https://caishendao.world/" target="_blank" rel="noopener" class="card social-card">
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 4 9 15 15 0 0 1-4 9 15 15 0 0 1-4-9 15 15 0 0 1 4-9z"/></svg>
+        </div>
+        <div class="social-info">
+          <div class="social-name">官网</div>
+          <div class="social-handle">caishendao.world</div>
+        </div>
+      </a>
+
+      <a href="https://x.com/caishendaoworld" target="_blank" rel="noopener" class="card social-card">
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </div>
+        <div class="social-info">
+          <div class="social-name">X（Twitter）</div>
+          <div class="social-handle">@caishendaoworld</div>
+        </div>
+      </a>
+
+      <a href="https://t.me/caishendaoworld" target="_blank" rel="noopener" class="card social-card">
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </div>
+        <div class="social-info">
+          <div class="social-name">Telegram</div>
+          <div class="social-handle">@caishendaoworld</div>
+        </div>
+      </a>
+
+      <a href="https://ant.fun/app-invite/?code=RmrnJBvZ" target="_blank" rel="noopener" class="card social-card">
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div class="social-info">
+          <div class="social-name">Antfun</div>
+          <div class="social-handle">邀请码 RmrnJBvZ</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer fade-up delay-4">
+    <div class="footer-text">财神到，财运到</div>
+    <div class="footer-meta">v1.3 · caishendao.world</div>
+  </footer>
+
+</main>
+
+<script>
+(function() {
+  // ================= 主题切换逻辑 =================
+  const themeBtn = document.getElementById('themeBtn');
+  const htmlEl = document.documentElement;
+  
+  themeBtn.addEventListener('click', () => {
+    const current = htmlEl.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    htmlEl.setAttribute('data-theme', next);
+    try { localStorage.setItem('caishen-theme', next); } catch (e) {}
+  });
+
+  // ================= 粒子背景 =================
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  function initCanvas() {
+    W = canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
+    H = canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    
+    particles = [];
+    if (isReduced) return;
+    
+    const count = Math.min(40, Math.floor(window.innerWidth * window.innerHeight / 25000));
+    for (let i = 0; i < count; i++) {
+      const isCyber = Math.random() < 0.3;
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: (isCyber ? Math.random() * 1.5 + 0.8 : Math.random() * 1.2 + 0.5) * (window.devicePixelRatio || 1),
+        vx: (Math.random() - 0.5) * 0.15 * (window.devicePixelRatio || 1),
+        vy: (-Math.random() * 0.2 - 0.05) * (window.devicePixelRatio || 1),
+        alpha: Math.random() * 0.4 + 0.1,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.02 + 0.01,
+        isCyber
+      });
+    }
+  }
+
+  function draw() {
+    if (isReduced) return;
+    ctx.clearRect(0, 0, W, H);
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    
+    particles.forEach(p => {
+      p.phase += p.speed;
+      p.x += p.vx + Math.sin(p.phase) * 0.2;
+      p.y += p.vy;
+      
+      if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+      
+      const a = p.alpha * (0.6 + 0.4 * Math.sin(p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      
+      if (p.isCyber) {
+        ctx.fillStyle = isDark ? `rgba(255, 45, 85, ${a})` : `rgba(255, 45, 85, ${a * 0.5})`;
+        ctx.shadowBlur = isDark ? 8 : 4;
+        ctx.shadowColor = 'rgba(255, 45, 85, 0.6)';
+      } else {
+        ctx.fillStyle = isDark ? `rgba(255, 183, 0, ${a})` : `rgba(255, 183, 0, ${a * 0.6})`;
+        ctx.shadowBlur = isDark ? 6 : 3;
+        ctx.shadowColor = 'rgba(255, 183, 0, 0.6)';
+      }
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(initCanvas, 200);
+  });
+  
+  initCanvas();
+  if (!isReduced) draw();
+
+})();
+</script>
+
+</body>
+</html>
