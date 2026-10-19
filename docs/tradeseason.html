@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" id="themeColorMeta">
+<title>$财神DAO · 交易狂欢季 | 68,888 USDC 奖池等你瓜分</title>
+<meta name="description" content="$财神DAO DEX 交易激励狂欢季：68,888 USDC 等值总奖池，28 天净额积分制双轨联赛。净买入 1.2 倍权重、首日早鸟 2.0 倍乘数、20 USDC 押金全额退还。新手任务 + 连续参与 + 早鸟保底，中小用户也能拿到奖励。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  :root{
+    color-scheme: light dark;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#8a939d;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --red-soft:#fbf4f4;
+    --gold:#a8821c;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --cyber:#ff2d55; --cyber-d:#cc0e30;
+    --cyber-glow:rgba(255,45,85,.45); --cyber-glow-soft:rgba(255,45,85,.18); --cyber-glow-faint:rgba(255,45,85,.06);
+    --toc-bg:rgba(255,255,255,.92); --abstract-from:#fcfcfd; --abstract-to:#ffffff;
+    --thead-bg:#f4f6f8; --zebra-bg:#fbfcfd; --sum-line:#efd2d4; --scroll-thumb:#d2d8dd;
+    --hero-a:#fff5f6; --hero-b:#ffffff;
+    --doc-pad:26px;
+    --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px; --r:3px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.75;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;}
+  :focus-visible{outline:2px solid var(--cyber);outline-offset:3px;border-radius:4px;box-shadow:0 0 0 4px var(--cyber-glow-soft);}
+  img,svg{max-width:100%;}
+
+  /* ================= 文档容器 ================= */
+  .doc{max-width:720px;margin:0 auto;background:var(--card);min-height:100vh;border-left:1px solid var(--line);border-right:1px solid var(--line);
+    position:relative;overflow-x:clip;padding:0 var(--doc-pad);transition:background-color .25s ease, border-color .25s ease;}
+  .doc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--cyber) 0%,var(--cyber) 42%,var(--gold) 42%,var(--gold) 100%);
+    z-index:2;box-shadow:0 0 12px var(--cyber-glow),0 0 24px var(--cyber-glow-soft);
+    animation:cyberTopPulse 4s ease-in-out infinite;}
+  @keyframes cyberTopPulse{
+    0%, 100%{ box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft); }
+    50%      { box-shadow:0 0 20px var(--cyber-glow), 0 0 40px var(--cyber-glow-soft); }
+  }
+  .wrap{padding:0;}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;letter-spacing:-.01em;}
+
+  /* ================= Hero ================= */
+  .hero{
+    position:relative;margin:0 calc(var(--doc-pad) * -1);
+    padding:52px var(--doc-pad) 40px;
+    text-align:center;overflow:hidden;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(120% 110% at 50% -25%, var(--cyber-glow-soft), transparent 62%),
+      radial-gradient(90% 70% at 100% 0%, rgba(168,130,28,.14), transparent 60%),
+      linear-gradient(180deg, var(--hero-a) 0%, var(--hero-b) 100%);
+  }
+  .hero::after{
+    content:"";position:absolute;left:50%;top:0;width:220px;height:220px;transform:translateX(-50%);
+    background:radial-gradient(circle, var(--cyber-glow-soft), transparent 70%);
+    filter:blur(28px);pointer-events:none;
+  }
+  .hero > *{position:relative;z-index:1;}
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 var(--sp-3);line-height:1;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .eyebrow::before{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber),0 0 12px var(--cyber-glow);flex:none;animation:cyberDot 2s ease-in-out infinite;}
+  @keyframes cyberDot{
+    0%, 100%{ opacity:.5; transform:scale(1); }
+    50%      { opacity:1;   transform:scale(1.3); }
+  }
+  .hero-title{margin:0;font-size:clamp(25px,7vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--ink);}
+  .hero-title em{font-style:normal;color:var(--cyber);}
+  .hero-sub{margin:10px 0 0;font-size:13.5px;color:var(--ink-3);letter-spacing:.03em;line-height:1.6;}
+  .hero-pool{margin-top:26px;line-height:1;}
+  .hero-amount{
+    font-family:var(--mono);font-size:clamp(46px,15.5vw,74px);font-weight:800;line-height:.92;letter-spacing:-.045em;
+    display:block;
+    background:linear-gradient(135deg,var(--cyber) 0%, #ff6b81 46%, var(--gold) 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 4px 18px var(--cyber-glow-soft));
+  }
+  .hero-unit{display:block;margin-top:12px;font-family:var(--mono);font-size:11.5px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);}
+
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:22px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;
+    border:1px solid var(--line);background:var(--card);font-size:11.5px;font-weight:600;color:var(--ink-3);
+    letter-spacing:.02em;line-height:1.4;transition:border-color .2s ease,color .2s ease;}
+  .chip i{color:var(--cyber);font-size:10px;}
+  .chip:hover{border-color:var(--cyber-glow-soft);color:var(--ink);}
+
+  .cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+    padding:0 26px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;
+    letter-spacing:.02em;transition:transform .18s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease, color .2s ease;
+    -webkit-tap-highlight-color:transparent;white-space:nowrap;}
+  .btn i{font-size:12px;}
+  .btn-primary{background:linear-gradient(135deg,var(--cyber),var(--cyber-d));color:#fff;
+    box-shadow:0 10px 26px -10px var(--cyber-glow),0 0 0 1px var(--cyber-glow-soft);}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 14px 32px -10px var(--cyber-glow),0 0 0 1px var(--cyber-glow);}
+  .btn-primary:active{transform:translateY(0);}
+  .btn-ghost{background:var(--card);color:var(--ink-2);border:1px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--cyber-glow-soft);color:var(--cyber);background:var(--cyber-glow-faint);}
+
+  .hero-foot{margin-top:24px;padding-top:16px;border-top:1px solid var(--line-2);
+    font-size:11.5px;color:var(--muted);letter-spacing:.02em;line-height:1.8;}
+  .hero-foot b{color:var(--ink-2);font-weight:600;}
+
+  /* ================= 主题切换 ================= */
+  .theme-toggle{
+    position:absolute;top:16px;right:var(--doc-pad);z-index:3;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px; height:36px; padding:0;
+    border:1px solid var(--line); border-radius:8px;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+  }
+  .theme-toggle:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
+  }
+  .theme-toggle:active{background:var(--cyber-glow-soft);}
+  .theme-toggle svg{width:18px; height:18px; display:block;}
+  .theme-toggle .ico-sun{display:none;}
+  .theme-toggle .ico-moon{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
+
+  /* ================= 目录 ================= */
+  .toc{position:sticky;top:0;z-index:20;display:flex;gap:6px;margin:0 calc(var(--doc-pad) * -1);padding:10px var(--doc-pad);
+    background:var(--toc-bg);
+    backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    transition:background-color .25s ease, border-color .25s ease;}
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-link{flex:none;display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-3);text-decoration:none;
+    background:transparent;border:1px solid transparent;transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;letter-spacing:.02em;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+  .toc-link:hover{background:var(--bg);color:var(--ink);border-color:var(--cyber-glow-soft);}
+  .toc-link.active{background:var(--cyber-d);color:#fff;border-color:var(--cyber);box-shadow:0 4px 14px -4px var(--cyber-glow),0 0 0 1px var(--cyber-glow-soft);}
+
+  /* ================= 摘要 ================= */
+  .abstract{padding:var(--sp-7) 0;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);}
+  .abstract p{margin:0;font-size:14px;line-height:1.95;color:var(--ink-2);}
+  .abstract p + p{margin-top:14px;}
+  .abstract b{color:var(--ink);font-weight:700;}
+  .abstract .hl{color:var(--cyber);font-weight:700;border-bottom:2px solid var(--cyber-glow-soft);padding-bottom:1px;}
+
+  /* ================= 章节 ================= */
+  .sec{padding:var(--sp-9) 0 var(--sp-7);border-bottom:1px solid var(--line);scroll-margin-top:56px;}
+  .sec:last-of-type{border-bottom:0;padding-bottom:var(--sp-10);}
+  .sec-head{display:flex;align-items:baseline;gap:var(--sp-3);margin:0 0 var(--sp-5);}
+  .sec-idx{flex:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--cyber);padding:3px 8px;line-height:1;
+    border:1px solid var(--cyber-glow-soft);border-radius:4px;background:var(--cyber-glow-faint);text-shadow:0 0 8px var(--cyber-glow-soft);
+    transition:border-color .25s ease, background .25s ease;}
+  .sec-head:hover .sec-idx{border-color:var(--cyber-glow);background:var(--cyber-glow-soft);}
+  .sec-title{margin:0;font-size:16.5px;font-weight:700;letter-spacing:-.008em;line-height:1.35;color:var(--ink);transition:color .25s ease;}
+  .sec-head:hover .sec-title{color:var(--cyber-d);}
+  .sec-title span{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:5px;line-height:1;}
+  .prose p{margin:0 0 12px;font-size:14px;line-height:1.9;color:var(--ink-2);}
+  .prose p:last-child{margin-bottom:0;}
+  .prose b{color:var(--ink);font-weight:700;}
+  .prose .hl{color:var(--cyber);font-weight:700;}
+  .gain-lead{font-size:13.5px;line-height:1.8;color:var(--ink-3);margin:0 0 16px;padding-left:12px;border-left:2px solid var(--cyber-glow-soft);}
+  .gain-lead b{color:var(--ink-2);font-weight:600;}
+
+  /* ================= 数据格 ================= */
+  .raise-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:20px 0;}
+  .raise-cell{background:var(--card);padding:18px 12px;text-align:center;transition:background-color .2s ease;}
+  .raise-cell:hover{background:var(--cyber-glow-faint);}
+  .raise-cell .amount{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--cyber);display:block;line-height:1.2;letter-spacing:-.02em;}
+  .raise-cell .label{font-size:11px;color:var(--muted);margin-top:6px;display:block;letter-spacing:.04em;line-height:1.45;}
+
+  /* ================= 步骤 ================= */
+  .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:4px;}
+  .step{background:var(--card);padding:18px 16px;transition:background-color .2s ease;position:relative;}
+  .step:hover{background:var(--cyber-glow-faint);}
+  .step-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cyber);letter-spacing:.12em;line-height:1;
+    display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
+    border:1px solid var(--cyber-glow-soft);background:var(--cyber-glow-faint);margin-bottom:10px;}
+  .step-t{font-size:14px;font-weight:700;color:var(--ink);margin:0 0 5px;letter-spacing:-.005em;line-height:1.4;}
+  .step-d{font-size:12.5px;color:var(--ink-3);line-height:1.75;margin:0;}
+  .step-d b{color:var(--ink-2);font-weight:600;}
+
+  /* ================= 任务卡片 ================= */
+  .task-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+  .task-card{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--card);transition:border-color .2s ease, background .2s ease;}
+  .task-card:hover{border-color:var(--cyber-glow-soft);background:var(--cyber-glow-faint);}
+  .task-card .task-title{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 4px;display:flex;align-items:center;gap:8px;line-height:1.4;}
+  .task-card .task-title i{color:var(--cyber);font-size:11px;flex:none;}
+  .task-card .task-cond{font-size:12px;color:var(--ink-3);line-height:1.7;margin:0 0 8px;}
+  .task-card .task-reward{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyber);line-height:1.4;}
+  .task-card .task-reward small{font-family:inherit;font-size:10.5px;font-weight:400;color:var(--muted);margin-left:4px;}
+
+  /* ================= 板块卡 ================= */
+  .sector-block{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:18px;background:var(--card);transition:border-color .25s ease, box-shadow .3s ease;}
+  .sector-block:hover{border-color:var(--cyber-glow-soft);box-shadow:0 4px 20px -12px var(--cyber-glow);}
+  .sector-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;
+    background:linear-gradient(135deg, var(--cyber-glow-faint), transparent);border-bottom:1px solid var(--line-2);}
+  .sector-title{font-size:14.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:10px;letter-spacing:-.005em;min-width:0;}
+  .sector-title .s-icon{width:26px;height:26px;border-radius:50%;background:var(--cyber-glow-soft);border:1px solid var(--cyber-glow);
+    display:flex;align-items:center;justify-content:center;color:var(--cyber);font-size:12px;flex:none;}
+  .sector-amount{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--cyber);white-space:nowrap;}
+  .sector-body{padding:16px 18px;}
+  .sector-desc{font-size:13px;color:var(--ink-3);line-height:1.8;margin:0 0 14px;}
+  .sector-desc b{color:var(--ink);font-weight:600;}
+  .sector-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+  .s-stat{padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);min-width:0;transition:border-color .2s ease;}
+  .s-stat:hover{border-color:var(--cyber-glow-soft);}
+  .s-stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;line-height:1;}
+  .s-stat .v{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.005em;}
+  .s-stat .v.is-red{color:var(--cyber);}
+
+  .sources{border-top:1px solid var(--line-2);margin-top:14px;}
+  .source-row{display:grid;grid-template-columns:20px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-2);align-items:baseline;}
+  .source-row:last-child{border-bottom:0;}
+  .source-idx{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cyber);opacity:.7;line-height:1.7;}
+  .source-text{font-size:12.5px;color:var(--ink-2);line-height:1.7;}
+  .source-text b{color:var(--ink);font-weight:600;}
+
+  /* ================= 表格 ================= */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r);background:var(--card);scrollbar-width:thin;position:relative;}
+  .tbl-scroll::-webkit-scrollbar{height:4px;}
+  .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold));border-radius:2px;}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--card);}
+  th,td{padding:11px 16px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line-2);line-height:1.5;position:relative;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{background:var(--thead-bg);color:var(--ink-3);font-weight:600;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);}
+  tbody tr:last-child td{border-bottom:0;}
+  tbody tr:nth-child(even){background:var(--zebra-bg);}
+  tbody tr{transition:background-color .18s ease;}
+  tbody tr:hover{background:var(--cyber-glow-faint);}
+  tbody td{color:var(--ink-2);}
+  tbody td:first-child{color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.02em;}
+  tr.sum td{background:var(--thead-bg)!important;font-weight:700;color:var(--ink);border-top:1px solid var(--line);}
+  .hl{color:var(--cyber)!important;font-weight:700!important;}
+
+  /* ================= 注释 / 高亮框 ================= */
+  .caption{margin:var(--sp-4) 0 0;padding:2px 0 2px var(--sp-3);border-left:2px solid var(--line);font-size:12px;line-height:1.9;color:var(--muted);}
+  .caption b{color:var(--ink-2);font-weight:600;}
+  .caption.red{border-left-color:var(--cyber);}
+
+  .hl-box{padding:16px 18px;border-radius:var(--r);background:linear-gradient(135deg, var(--cyber-glow-faint), transparent);
+    border:1px solid var(--cyber-glow-soft);margin:16px 0;}
+  .hl-box-title{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyber);
+    margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .hl-box-title::before{content:"";display:block;width:14px;height:1px;background:var(--cyber);}
+  .hl-box-body{font-size:13px;color:var(--ink-2);line-height:1.85;}
+  .hl-box-body b{color:var(--ink);font-weight:700;}
+
+  /* ================= FAQ ================= */
+  .faq details{border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;background:var(--card);overflow:hidden;
+    transition:border-color .2s ease;}
+  .faq details[open]{border-color:var(--cyber-glow-soft);background:linear-gradient(180deg,var(--cyber-glow-faint),transparent 40%);}
+  .faq summary{padding:14px 16px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;
+    -webkit-tap-highlight-color:transparent;line-height:1.6;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:"+";flex:none;font-family:var(--mono);color:var(--cyber);font-size:17px;font-weight:700;line-height:1;}
+  .faq details[open] summary::after{content:"−";}
+  .faq-a{padding:0 16px 16px;font-size:13px;color:var(--ink-2);line-height:1.85;}
+  .faq-a b{color:var(--ink);font-weight:700;}
+
+  /* ================= 结尾 CTA ================= */
+  .final-cta{margin:26px 0 6px;padding:28px 20px;border-radius:6px;text-align:center;
+    background:linear-gradient(135deg, var(--cyber-glow-faint), transparent 68%);
+    border:1px solid var(--cyber-glow-soft);}
+  .final-cta h3{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.015em;color:var(--ink);line-height:1.35;}
+  .final-cta p{margin:0 0 18px;font-size:12.5px;color:var(--ink-3);line-height:1.8;}
+
+  /* ================= 注意事项 ================= */
+  .notice-box{
+    padding:18px 20px;
+    border:1px solid var(--cyber-glow-soft);
+    border-left:3px solid var(--cyber);
+    border-radius:var(--r);
+    background:linear-gradient(135deg, var(--red-soft), transparent 70%);
+    position:relative;
+  }
+  .notice-box .hl-box-title{color:var(--cyber);font-size:11px;letter-spacing:.14em;margin-bottom:10px;}
+  .notice-box .hl-box-title::before{width:18px;}
+  .notice-body{font-size:13.5px;line-height:1.95;color:var(--ink-2);}
+  .notice-body b{color:var(--cyber-d);font-weight:700;}
+  .notice-body .line{display:block;margin-top:6px;}
+  .notice-body .line:first-child{margin-top:0;}
+
+  /* ================= 页脚 ================= */
+  .doc-foot{padding:26px 0 var(--sp-10);border-top:1px solid var(--line);margin-top:32px;position:relative;}
+  .doc-foot::before{content:"";position:absolute;top:-1px;left:0;width:34%;height:1px;background:linear-gradient(90deg, var(--cyber), transparent);box-shadow:0 0 8px var(--cyber-glow);}
+  .foot-row{display:flex;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;padding:var(--sp-2) 0;border-bottom:1px solid var(--line-2);}
+  .foot-row:last-of-type{border-bottom:0;}
+  .foot-k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.8;flex:none;}
+  .foot-v{font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.8;word-break:break-all;text-align:right;}
+  .foot-v.foot-ca{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+  .foot-ca-text{word-break:break-all;}
+
+  .copy-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;padding:0;flex:none;
+    border:1px solid var(--line);border-radius:5px;
+    background:var(--bg);color:var(--ink-3);cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color .15s ease, color .2s ease, background .15s ease, box-shadow .25s ease;
+  }
+  .copy-btn:hover{border-color:var(--cyber-glow-soft);color:var(--cyber);background:var(--cyber-glow-faint);box-shadow:0 0 10px -2px var(--cyber-glow-soft);}
+  .copy-btn.copied{color:var(--cyber);border-color:var(--cyber-glow-soft);background:var(--cyber-glow-faint);}
+  .copy-btn svg{width:12px;height:12px;display:block;}
+
+  .disc{margin-top:var(--sp-5);padding-top:var(--sp-4);border-top:1px solid var(--line-2);font-size:11px;color:var(--muted);line-height:1.95;}
+
+  /* ================= Toast ================= */
+  #toast{
+    position:fixed;left:50%;
+    bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+    transform:translateX(-50%) translateY(20px);
+    padding:10px 20px 10px 16px;border-radius:999px;
+    background:var(--ink);color:#fff;
+    font-size:12.5px;font-weight:600;letter-spacing:.02em;
+    box-shadow:0 12px 30px -10px rgba(20,24,29,.45),0 4px 12px -4px rgba(20,24,29,.2),0 0 0 1px var(--cyber-glow-soft),0 0 24px -4px var(--cyber-glow);
+    opacity:0;pointer-events:none;
+    transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
+    z-index:10000;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  }
+  #toast::before{
+    content:"✓";display:inline-flex;align-items:center;justify-content:center;
+    width:16px;height:16px;border-radius:50%;
+    background:var(--cyber);color:#fff;font-size:10px;font-weight:700;line-height:1;
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ================= 返回顶部 ================= */
+  .back-top{
+    position:fixed;right:20px;
+    bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index:30;
+    width:40px;height:40px;padding:0;
+    display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);border-radius:50%;
+    background:var(--card);color:var(--ink-3);cursor:pointer;
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
+    opacity:0;transform:translateY(12px);pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .back-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .back-top:hover{
+    border-color:var(--cyber-glow);color:var(--cyber);
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25),0 0 14px -2px var(--cyber-glow-soft);
+  }
+  .back-top svg{width:18px;height:18px;display:block;}
+
+  /* ================= 深色主题 ================= */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+      --red-soft:#241418; --gold:#d4a82a;
+      --cyber:#ff2d55; --cyber-d:#cc0e30;
+      --cyber-glow:rgba(255,45,85,.55); --cyber-glow-soft:rgba(255,45,85,.22); --cyber-glow-faint:rgba(255,45,85,.08);
+      --toc-bg:rgba(16,22,30,.92); --abstract-from:#161c25; --abstract-to:#10161e;
+      --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
+      --hero-a:#140a10; --hero-b:#10161e;
+    }
+    :root:not([data-theme="light"]) #toast{
+      background:#e6eaf0; color:#10161e;
+      box-shadow:0 12px 30px -10px rgba(0,0,0,.6),0 4px 12px -4px rgba(0,0,0,.3),0 0 0 1px var(--cyber-glow-soft),0 0 24px -4px var(--cyber-glow);
+    }
+    :root:not([data-theme="light"]) .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
+    :root:not([data-theme="light"]) .notice-box{background:linear-gradient(135deg, rgba(255,45,85,.10), transparent 70%);}
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+    --red-soft:#241418; --gold:#d4a82a;
+    --cyber:#ff2d55; --cyber-d:#cc0e30;
+    --cyber-glow:rgba(255,45,85,.55); --cyber-glow-soft:rgba(255,45,85,.22); --cyber-glow-faint:rgba(255,45,85,.08);
+    --toc-bg:rgba(16,22,30,.92); --abstract-from:#161c25; --abstract-to:#10161e;
+    --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
+    --hero-a:#140a10; --hero-b:#10161e;
+  }
+  :root[data-theme="dark"] #toast{
+    background:#e6eaf0; color:#10161e;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,.6),0 4px 12px -4px rgba(0,0,0,.3),0 0 0 1px var(--cyber-glow-soft),0 0 24px -4px var(--cyber-glow);
+  }
+  :root[data-theme="dark"] .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
+  :root[data-theme="dark"] .notice-box{background:linear-gradient(135deg, rgba(255,45,85,.10), transparent 70%);}
+  :root[data-theme="light"]{color-scheme: light;}
+
+  /* ================= 响应式 ================= */
+  @media (max-width:720px){
+    .toc-link{padding:8px 14px;min-height:40px;display:inline-flex;align-items:center;}
+    .theme-toggle{width:40px;height:40px;}
+    .theme-toggle svg{width:19px;height:19px;}
+    .copy-btn{width:32px;height:32px;}
+    .back-top{width:42px;height:42px;}
+    .back-top svg{width:19px;height:19px;}
+  }
+
+  @media (max-width:600px){
+    .steps{grid-template-columns:1fr;}
+    .task-grid{grid-template-columns:1fr;}
+  }
+
+  @media (max-width:480px){
+    :root{--doc-pad:20px;}
+    body{font-size:15px;line-height:1.8;}
+    .toc{padding:8px var(--doc-pad);}
+
+    .hero{padding:44px var(--doc-pad) 32px;}
+    .theme-toggle{top:12px;}
+    .hero-sub{font-size:12.5px;}
+    .eyebrow{font-size:10.5px;letter-spacing:.16em;}
+    .btn{width:100%;}
+    .cta-row{gap:8px;}
+
+    .abstract{padding:24px 0;}
+    .abstract p{font-size:14.5px;line-height:1.95;}
+
+    .sec{padding:32px 0 24px;}
+    .sec-head{margin-bottom:18px;}
+    .sec-title{font-size:16px;}
+
+    .raise-overview{grid-template-columns:1fr;margin:16px 0;}
+    .raise-cell{padding:14px 12px;}
+    .sector-stats{grid-template-columns:1fr;}
+
+    .sector-header{padding:12px 14px;gap:8px;}
+    .sector-title{font-size:14px;gap:8px;}
+    .sector-title .s-icon{width:24px;height:24px;font-size:11px;}
+    .sector-amount{font-size:14px;}
+    .sector-body{padding:14px;}
+
+    .hl-box{padding:14px 16px;}
+    .hl-box-body{font-size:13px;line-height:1.85;}
+
+    .notice-box{padding:16px 16px;border-left-width:3px;}
+    .notice-body{font-size:13.5px;line-height:1.95;}
+
+    .caption{font-size:12.5px;line-height:1.9;}
+    .source-text{font-size:13px;}
+    .source-row{padding:10px 0;}
+
+    th,td{padding:10px 12px;}
+    thead th{font-size:10px;letter-spacing:.06em;}
+    tbody td:first-child{font-size:11px;}
+
+    .foot-row{flex-direction:column;gap:2px;}
+    .foot-v{text-align:left;}
+    .foot-v.foot-ca{justify-content:flex-start;}
+
+    .final-cta{padding:24px 16px;}
+    .final-cta h3{font-size:16.5px;}
+
+    #toast{bottom:calc(64px + env(safe-area-inset-bottom, 0px));}
+  }
+
+  @media (max-width:400px){
+    :root{--doc-pad:18px;}
+    .toc{padding:8px var(--doc-pad);}
+    .hero-title{font-size:22px;}
+    .theme-toggle{width:34px;height:34px;}
+    .theme-toggle svg{width:16px;height:16px;}
+    .back-top{right:14px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));width:38px;height:38px;}
+    .back-top svg{width:17px;height:17px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+  }
+</style>
+
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<div class="doc">
+
+  <!-- ================= Hero ================= -->
+  <header class="hero" id="top">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+
+    <div class="eyebrow">Solana · DEX Trading Carnival</div>
+    <h1 class="hero-title"><em>$财神DAO</em> 交易狂欢季</h1>
+    <p class="hero-sub">买得越多、拿得越久、战队越强，收益越高 · 押金全额退还</p>
+
+    <div class="hero-pool">
+      <span class="hero-amount num">68,888</span>
+      <span class="hero-unit">USDC 等值总奖池</span>
+    </div>
+
+    <div class="chips">
+      <span class="chip"><i class="fas fa-bolt"></i>首日早鸟 2.0×</span>
+      <span class="chip"><i class="fas fa-crown"></i>冠军独享 5,500</span>
+      <span class="chip"><i class="fas fa-seedling"></i>新手任务 + 连续参与</span>
+      <span class="chip"><i class="fas fa-shield-halved"></i>押金全额退还</span>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#join">查看怎么参与 <i class="fas fa-arrow-right"></i></a>
+      <a class="btn btn-ghost" href="#rewards">先看奖池</a>
+    </div>
+
+    <p class="hero-foot">
+      代币总量恒定 <b>686,868,686</b> 枚 · 无增发 · 无冻结权限<br>
+      奖励以 USDC 计价，结束 <b>7 天内</b>按 24h TWAP 折算 <b>$财神DAO</b> 自动空投
+    </p>
+  </header>
+
+  <!-- ================= 目录导航 ================= -->
+  <nav class="toc" aria-label="页面导航">
+    <a class="toc-link" href="#overview">概览</a>
+    <a class="toc-link" href="#join">怎么参与</a>
+    <a class="toc-link" href="#rewards">奖池</a>
+    <a class="toc-link" href="#points">积分</a>
+    <a class="toc-link" href="#personal">个人</a>
+    <a class="toc-link" href="#team">战队</a>
+    <a class="toc-link" href="#starter">新手 &amp; 连续</a>
+    <a class="toc-link" href="#gacha">宝盒</a>
+    <a class="toc-link" href="#early">早鸟</a>
+    <a class="toc-link" href="#rules">保障</a>
+    <a class="toc-link" href="#faq">问答</a>
+  </nav>
+
+  <!-- ================= 概览 ================= -->
+  <section class="wrap abstract" id="overview">
+    <p>
+      <b>$财神DAO</b> 发行于 Solana 主网，总量恒定 <b>686,868,686</b> 枚，无增发、无冻结权限。
+      本次交易狂欢季投入 <span class="hl">68,888 USDC 等值 $财神DAO</span> 作为总奖池，
+      用 <b>28 天</b>「净额积分制」个人 + 战队双轨联赛，奖励真实交易、真实持币、真实社区。
+    </p>
+    <p>
+      简单说：<span class="hl">净买入越多、拿得越久、战队越强，你能拿到的积分和奖励就越高</span>。
+      净买入享受 <b>1.2 倍</b>权重，净卖出权重降至 <b>0.1</b>；日均持仓越高，乘数越高（<b>0.7–1.5×</b>）；加入战队再叠 <b>1.1×</b> 加成。
+      新手任务和连续参与奖励额外送积分，不占用主奖池。
+    </p>
+    <p>
+      报名只需锁定 <b>20 USDC 等值 $财神DAO</b> 押金，活动结束后 <b>24 小时内全额退还</b>（退还报名时锁定的代币数量，不随币价变动）。
+      全部奖励以 <b>USDC 计价、$财神DAO 发放</b>，结束后 <b>7 天内</b>自动空投，无需手动领取。
+    </p>
+
+    <div class="raise-overview" style="margin-bottom:0;">
+      <div class="raise-cell"><span class="amount">28</span><span class="label">天活动周期</span></div>
+      <div class="raise-cell"><span class="amount">20</span><span class="label">USDC 押金<br>全额退还</span></div>
+      <div class="raise-cell"><span class="amount">7</span><span class="label">天内<br>自动发放奖励</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 01 怎么参与 ================= -->
+  <section class="wrap sec" id="join">
+    <div class="sec-head">
+      <span class="sec-idx">01</span>
+      <h2 class="sec-title">四步拿到奖励<span>How To Join</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>完成报名后当天开始计分，交易、持仓、组队同步累积，五重奖励可叠加。</p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">1</span>
+        <h3 class="step-t">锁定押金，完成报名</h3>
+        <p class="step-d">用 <b>20 USDC 等值 $财神DAO</b> 锁定押金，通过 4 项安全检查后进入白名单，当天开始计分。押金活动结束 <b>24 小时内全额退还</b>。</p>
+      </div>
+      <div class="step">
+        <span class="step-n">2</span>
+        <h3 class="step-t">交易赚「财神积分」</h3>
+        <p class="step-d">净买入享 <b>1.2 倍</b>权重，首日早鸟乘数 <b>2.0×</b>，持仓越久乘数越高。积分实时累计，段位自动升级。</p>
+      </div>
+      <div class="step">
+        <span class="step-n">3</span>
+        <h3 class="step-t">组队放大收益</h3>
+        <p class="step-d">邀请好友组成战队，冲击战队榜。队长独享 <b>30%</b> 分成，队员按积分比例瓜分 <b>70%</b>，全员额外 <b>1.1×</b> 积分加成。</p>
+      </div>
+      <div class="step">
+        <span class="step-n">4</span>
+        <h3 class="step-t">瓜分 68,888 USDC</h3>
+        <p class="step-d">段位奖 + 王者榜 + 战队奖 + 宝盒 + 早鸟奖，五重收益可叠加。结束 <b>7 天内</b>自动空投至报名钱包。</p>
+      </div>
+    </div>
+
+    <div class="hl-box" style="margin-top:20px;">
+      <div class="hl-box-title">报名门槛 · 4 项安全检查</div>
+      <div class="hl-box-body">
+        <b>历史交易 ≥ 3 笔</b>　·　<b>SOL 余额 ≥ 0.01</b>　·　<b>钱包年龄 ≥ 3 天</b>　·　<b>不在黑名单</b><br>
+        全部通过即可进入白名单。门槛用于拦截批量注册的女巫钱包，保护真实参与者的奖池不被稀释。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 奖池 ================= -->
+  <section class="wrap sec" id="rewards">
+    <div class="sec-head">
+      <span class="sec-idx">02</span>
+      <h2 class="sec-title">你能拿到哪几份<span>Prize Pools</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>五重奖池独立计算、可叠加。冲榜拿王者榜和战队奖，达标拿段位奖，早鸟期额外拿冲刺奖，积分还能抽宝盒。</p>
+
+    <div class="raise-overview">
+      <div class="raise-cell"><span class="amount">20,000</span><span class="label">个人段位奖<br>含青铜瓜分池 3,000</span></div>
+      <div class="raise-cell"><span class="amount">13,000</span><span class="label">个人王者榜<br>Top 10 瓜分</span></div>
+      <div class="raise-cell"><span class="amount">20,666</span><span class="label">战队赛道<br>Top 战队 + 最佳新人</span></div>
+    </div>
+    <div class="raise-overview" style="grid-template-columns:repeat(2,1fr);">
+      <div class="raise-cell"><span class="amount">8,333</span><span class="label">财神宝盒<br>积分抽取，抽完即止</span></div>
+      <div class="raise-cell"><span class="amount">6,889</span><span class="label">早鸟冲刺<br>前 7 天额外奖池</span></div>
+    </div>
+
+    <div class="tbl-scroll" style="margin-top:20px;">
+      <table>
+        <thead><tr><th>模块</th><th>占比</th><th>USDC 等值</th><th>怎么拿</th></tr></thead>
+        <tbody>
+          <tr><td>个人王者榜</td><td class="num">18.87%</td><td class="num">13,000</td><td>积分冲进 Top 10</td></tr>
+          <tr><td>个人段位奖</td><td class="num">29.03%</td><td class="num">20,000</td><td>积分达标即得</td></tr>
+          <tr><td>战队赛道</td><td class="num">30.00%</td><td class="num">20,666</td><td>组队冲榜，队长队员分</td></tr>
+          <tr><td>财神宝盒</td><td class="num">12.10%</td><td class="num">8,333</td><td>50 积分抽一次</td></tr>
+          <tr><td>早鸟冲刺</td><td class="num">10.00%</td><td class="num">6,889</td><td>前 7 天净买入排名</td></tr>
+          <tr class="sum"><td>合计</td><td class="num">100%</td><td class="num">68,888</td><td>押金独立运作，不计入奖池</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hl-box" style="margin-top:20px;">
+      <div class="hl-box-title">奖励折算与发放</div>
+      <div class="hl-box-body">
+        <b>计价：</b>全部奖励以 USDC 计价，页面展示的 USDC 等值仅为参考。<br>
+        <b>折算：</b>实得代币数量 = USDC 等值奖励 ÷ 活动结束时 $财神DAO/USDC 的 <b>24h TWAP</b>。<br>
+        <b>TWAP 口径：</b>取 Meteora TWAP 的<b>中位数</b>，并<b>排除最后 2 小时</b>数据。<br>
+        <b>发放节奏：</b>活动结束后 <b>48 小时</b>锁定积分 → 公示 <b>3 天</b> → 申诉期 <b>3 天</b> → <b>7 天内</b>自动空投。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 积分 ================= -->
+  <section class="wrap sec" id="points">
+    <div class="sec-head">
+      <span class="sec-idx">03</span>
+      <h2 class="sec-title">怎么买、拿多久，积分最高<span>Point System</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>同样买入 500 USDC，首日买入比第 8 天买入多拿 1 倍积分；持有 14 天比不持有多 20%–50%；组队再多 10%。</p>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        总积分公式：<b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>，
+        <b>财神积分 = S<sub>final</sub> × 100</b>。排行榜、段位门槛、宝盒消耗均以财神积分计。
+      </p>
+      <p>每日 UTC 00:00 结算前一日（UTC 00:00–23:59）的净买入与卖出，应用当日早鸟乘数，累加即为总交易积分。</p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-calculator"></i></span>净买入怎么算</div>
+        <span class="sector-amount">1.2 / 0.3 / 0.1</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc"><b>核心逻辑：</b>按当日净买入方向差异化计分——净买入为正时，卖出也能拿到 0.3 权重；一旦当日净买入 ≤ 0，卖出权重直接降至 0.1。买入并持有是拿积分最划算的方式。</p>
+
+        <div class="hl-box" style="margin-top:8px;">
+          <div class="hl-box-title">计分公式</div>
+          <div class="hl-box-body">
+            <b>当净买入 &gt; 0 时：</b>S<sub>trade</sub> = (V<sub>净买入</sub> × 1.2 + V<sub>卖出</sub> × 0.3) / 100<br>
+            <b>当净买入 ≤ 0 时：</b>S<sub>trade</sub> = V<sub>卖出</sub> × 0.1 / 100
+          </div>
+        </div>
+
+        <div class="sector-stats" style="margin-top:14px;">
+          <div class="s-stat"><div class="k">净买入权重</div><div class="v is-red">1.2</div></div>
+          <div class="s-stat"><div class="k">卖出权重（净买入 &gt; 0）</div><div class="v is-red">0.3</div></div>
+          <div class="s-stat"><div class="k">卖出权重（净买入 ≤ 0）</div><div class="v is-red">0.1</div></div>
+          <div class="s-stat"><div class="k">单笔最低门槛</div><div class="v">20 USDC</div></div>
+        </div>
+
+        <p class="caption">
+          <b>场景 A（买入并持有）：</b>买入 500、卖出 200，净买入 300。<br>
+          S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = <b>420 财神积分</b>。<br>
+          <b>场景 B（买入后立刻卖出）：</b>买入 100、卖出 300，净买入 −200。<br>
+          S = 300 × 0.1 / 100 = <b>0.3 原始积分</b> = <b>30 财神积分</b>。<br>
+          <b>结论：</b>同样 300 USDC 的卖出额，买入并持有可得 360 财神积分，买入后立刻卖出只有 30 财神积分——<b>刷量效率仅为真实交易的 1/12</b>。
+        </p>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-clock"></i></span>越早买，积分越多 E<sub>i</sub></div>
+        <span class="sector-amount">最高 2.0×</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>活动阶段</th><th>乘数</th><th>你能多拿多少</th></tr></thead>
+            <tbody>
+              <tr><td>第 1 天</td><td class="hl">2.0</td><td>同样买入，积分翻倍</td></tr>
+              <tr><td>第 2–3 天</td><td class="hl">1.5</td><td>多拿 50%</td></tr>
+              <tr><td>第 4–7 天</td><td class="hl">1.2</td><td>多拿 20%</td></tr>
+              <tr><td>第 8 天起</td><td>1.0</td><td>标准积分</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>应用方式：</b>按<b>交易发生日</b>逐日应用，每日结算使用当日乘数，不影响持仓乘数与战队加成。<b>行动建议：</b>想冲榜的话，首日完成第一笔有效买入最划算。</p>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-hand-holding-heart"></i></span>拿得越久，乘数越高 M<sub>hold</sub></div>
+        <span class="sector-amount">0.7 – 1.5×</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc">每日 UTC 00:00 对白名单地址做余额快照（时间随机），按 USDC 等值计算日均持仓。</p>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>日均持仓（USDC 等值）</th><th>乘数</th><th>你能多拿多少</th></tr></thead>
+            <tbody>
+              <tr><td>&lt; 50</td><td class="hl">0.7</td><td>积分打 7 折</td></tr>
+              <tr><td>50 – 200</td><td>1.0</td><td>标准积分</td></tr>
+              <tr><td>200 – 500</td><td class="hl">1.2</td><td>多拿 20%</td></tr>
+              <tr><td>&gt; 500</td><td class="hl">1.5</td><td>多拿 50%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>示例：</b>参与 14 天，前 7 天每天持仓 300 USDC，后 7 天为 0。日均持仓 = (300×7 + 0×7) / 14 = 150 USDC → 乘数 <b>1.0</b>。<b>行动建议：</b>如果打算冲段位，尽量让日均持仓保持在 200 USDC 以上。</p>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">有效交易过滤（不影响正常交易）</div>
+      <div class="hl-box-body">
+        <b>微交易：</b>单笔 &lt; 20 USDC 不计分。<br>
+        <b>短持仓：</b>买卖间隔 &lt; 3 分钟不计分。<br>
+        <b>对敲交易：</b>10 分钟内买卖金额偏差 &lt; 5%，积分清零并标记。<br>
+        <b>高频往返：</b>1 小时内买卖对 &gt; 5 组，标记并人工审核。<br>
+        <b>初始持仓：</b>活动开始前已持有的代币卖出，优先扣除初始持仓，不计入卖出积分。<br>
+        <b>失败交易：</b>链上 err 不为 null，不计分。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 个人赛道 ================= -->
+  <section class="wrap sec" id="personal">
+    <div class="sec-head">
+      <span class="sec-idx">04</span>
+      <h2 class="sec-title">个人赛道：达标即得<span>Personal Track</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>积分达到对应门槛，就能锁定段位奖励；积分冲进 Top 10，还能瓜分王者榜。两个奖池独立计算。</p>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-layer-group"></i></span>段位阶梯奖 · 达标即得</div>
+        <span class="sector-amount">20,000 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>段位</th><th>财神积分门槛</th><th>你能拿到</th><th>名额</th><th>小计</th></tr></thead>
+            <tbody>
+              <tr><td>青铜</td><td class="num">100 – 499</td><td class="hl">瓜分 3,000</td><td>不限</td><td class="num">3,000</td></tr>
+              <tr><td>白银</td><td class="num">500 – 1,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
+              <tr><td>黄金</td><td class="num">2,000 – 7,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
+              <tr><td>钻石</td><td class="num">8,000 – 19,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
+              <tr><td>铂金</td><td class="num">20,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
+              <tr class="sum"><td>合计</td><td>—</td><td>—</td><td>—</td><td class="num">20,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sources" style="margin-top:16px;">
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>青铜瓜分池</b>：按最终财神积分占青铜总积分的比例瓜分 3,000 USDC，单人上限 <b>10 USDC</b>，剩余部分滚入王者榜奖池。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>青铜参与条件</b>：有效交易 ≥ 3 笔，净买入 ≥ 50 USDC，押金合格，无违规记录。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>白银及以上</b>：达标即得，奖池发完即止；若达标人数超过名额，按最终财神积分从高到低录取。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>发放时间</b>：活动结束后 7 天内，按结束日 24h TWAP 折算 $财神DAO 自动发放。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-crown"></i></span>个人王者榜 · Top 10 瓜分</div>
+        <span class="sector-amount">13,000 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>名次</th><th>你能拿到（USDC 等值）</th></tr></thead>
+            <tbody>
+              <tr><td>第 1 名</td><td class="hl">5,500</td></tr>
+              <tr><td>第 2 名</td><td>3,000</td></tr>
+              <tr><td>第 3 名</td><td>2,000</td></tr>
+              <tr><td>第 4–10 名</td><td>瓜分 2,500</td></tr>
+              <tr class="sum"><td>合计</td><td class="num">13,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption red"><b>并列处理：</b>若第 1 名并列，平分第 1 名奖励；若第 10 名并列，平分第 4–10 名剩余奖池。发放时间同段位奖。<br><b>结束持仓锁定：</b>王者榜 Top 10 需在活动结束时仍持有 ≥ 100 USDC 等值 $财神DAO，若提前卖出则取消王者榜资格，该部分奖励滚入下一名次。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 战队赛道 ================= -->
+  <section class="wrap sec" id="team">
+    <div class="sec-head">
+      <span class="sec-idx">05</span>
+      <h2 class="sec-title">战队赛道：组队多拿 1.1×<span>Squad Track</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>加入有效战队后，每一笔有效交易额外享受 <b>1.1×</b> 积分加成；战队冲进 Top 8，队长和队员按比例瓜分奖池。队长拿 30%，队员分 70%。</p>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-users"></i></span>战队规则与奖池</div>
+        <span class="sector-amount">20,666 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat"><div class="k">队长押金</div><div class="v">50 USDC 等值</div></div>
+          <div class="s-stat"><div class="k">每队人数上限</div><div class="v">50 人</div></div>
+          <div class="s-stat"><div class="k">有效队员门槛</div><div class="v is-red">≥ 300 财神积分</div></div>
+          <div class="s-stat"><div class="k">战队注册费</div><div class="v">无</div></div>
+        </div>
+        <div class="hl-box">
+          <div class="hl-box-title">战队排名公式 · 归一化加权</div>
+          <div class="hl-box-body">
+            <b>战队得分 = (战队总积分 ÷ 最高总积分) × 40 + (有效队员人均积分 ÷ 最高人均积分) × 40 + (新增持币地址数 ÷ 最高新增持币地址数) × 20</b><br>
+            三项指标分别除以所有战队中的最大值，再按 40 / 40 / 20 加权，量纲统一，避免「大户队」一家独大。队员越多、人均越强、新增持币越多，排名越高。
+          </div>
+        </div>
+        <div class="tbl-scroll" style="margin-top:16px;">
+          <table>
+            <thead><tr><th>名次</th><th>奖池</th><th>队长分成</th><th>队员分成</th></tr></thead>
+            <tbody>
+              <tr><td>Top 1</td><td class="hl">7,000</td><td>30% = 2,100</td><td>70% = 4,900</td></tr>
+              <tr><td>Top 2–3</td><td>各 3,000</td><td>30% = 900</td><td>70% = 2,100</td></tr>
+              <tr><td>Top 4–8</td><td>各 1,000</td><td>30% = 300</td><td>70% = 700</td></tr>
+              <tr><td>最佳新人</td><td>2,666</td><td>30% = 800</td><td>70% = 1,866</td></tr>
+              <tr class="sum"><td>合计</td><td class="num">20,666</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>队长不参与队员池分配。</b>最佳新人战队：成立时间 &lt; 14 天且进入前 20 名。队员按个人财神积分比例瓜分队员池。活动结束后 7 天内，队长与队员奖励分别自动空投。战队成员在个人积分上额外享受 <b>1.1×</b> 战队加成（B<sub>team</sub>），队长与队员均适用。</p>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">战队反作弊</div>
+      <div class="hl-box-body">
+        同一 IP 或同一资金来源加入同一战队 &gt; 3 人 → 标记审核。<br>
+        战队内女巫占比 &gt; 30% → 取消整队资格，没收队长押金。<br>
+        队长未督促队员交易不影响排名，但队长分成仅来自有效队员。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 新手任务 & 连续参与 ================= -->
+  <section class="wrap sec" id="starter">
+    <div class="sec-head">
+      <span class="sec-idx">06</span>
+      <h2 class="sec-title">新手任务 &amp; 连续参与<span>Starter &amp; Streak</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>不冲榜也能拿积分。完成新手任务额外送 <b>500 财神积分 + 1 张宝盒券</b>；连续 7 天或 14 天参与，再送 <b>300–800 财神积分</b>。这些积分直接计入总积分，影响段位和排名。</p>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-seedling"></i></span>新手任务 · 首周专享</div>
+        <span class="sector-amount">+500 积分</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc"><b>适合刚报名的用户：</b>四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可免费抽一次宝盒。</p>
+        <div class="task-grid">
+          <div class="task-card">
+            <div class="task-title"><i class="fas fa-check-circle"></i>完成报名</div>
+            <p class="task-cond">通过 4 项安全检查并锁定押金</p>
+            <div class="task-reward">+50 财神积分</div>
+          </div>
+          <div class="task-card">
+            <div class="task-title"><i class="fas fa-arrow-trend-up"></i>首笔有效交易</div>
+            <p class="task-cond">单笔 ≥ 20 USDC 的买入或卖出</p>
+            <div class="task-reward">+100 财神积分</div>
+          </div>
+          <div class="task-card">
+            <div class="task-title"><i class="fas fa-hand-holding-heart"></i>首次持仓 24h</div>
+            <p class="task-cond">持仓 ≥ 50 USDC 等值满 24 小时</p>
+            <div class="task-reward">+150 财神积分</div>
+          </div>
+          <div class="task-card">
+            <div class="task-title"><i class="fas fa-user-plus"></i>邀请首个好友</div>
+            <p class="task-cond">好友完成报名并通过安全检查</p>
+            <div class="task-reward">+200 财神积分</div>
+          </div>
+        </div>
+        <div class="hl-box" style="margin-top:4px;">
+          <div class="hl-box-title">全部完成额外奖励</div>
+          <div class="hl-box-body">
+            四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可在活动期间免费抽取一次宝盒。
+          </div>
+        </div>
+        <p class="caption"><b>奖励来源：</b>新手任务积分由活动方额外提供，<b>不占用主奖池</b>；宝盒券从宝盒池中列支，抽完即止。<b>反作弊：</b>任务奖励需通过钱包年龄、历史交易、最低净买入门槛，批量注册钱包不计入。</p>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-fire"></i></span>连续参与 · 日活奖励</div>
+        <span class="sector-amount">+800 积分</span>
+      </div>
+      <div class="sector-body">
+        <p class="sector-desc"><b>适合持续交易或持仓的用户：</b>连续天数越长，积分奖励越高。交易和持仓两条线独立计算，可同时享受。</p>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>连续天数</th><th>条件</th><th>你能拿到</th></tr></thead>
+            <tbody>
+              <tr><td>连续 7 天</td><td>每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl">+300 财神积分</td></tr>
+              <tr><td>连续 14 天</td><td>每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl">+800 财神积分</td></tr>
+              <tr><td>连续 7 天</td><td>每日持仓 ≥ 100 USDC 等值</td><td class="hl">+200 财神积分</td></tr>
+              <tr><td>连续 14 天</td><td>每日持仓 ≥ 100 USDC 等值</td><td class="hl">+500 财神积分</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>奖励来源：</b>连续参与积分由活动方额外提供，<b>不占用主奖池</b>。<b>断签规则：</b>中断一天即重新计数，建议每日完成一笔小额有效交易保持连续。<b>反作弊：</b>同 IP 多地址、对敲交易不计入连续天数。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 财神宝盒 ================= -->
+  <section class="wrap sec" id="gacha">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
+      <h2 class="sec-title">财神宝盒：积分换惊喜<span>Fortune Box</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>50 财神积分抽一次，<b>100% 中奖</b>，最高 500 USDC 等值。建议先冲段位，再抽宝盒——段位按最高积分锁定，宝盒只消耗最终积分。</p>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-gift"></i></span>积分抽奖 · 抽完即止</div>
+        <span class="sector-amount">8,333 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat"><div class="k">消耗</div><div class="v is-red">50 财神积分 / 次</div></div>
+          <div class="s-stat"><div class="k">预计可抽次数</div><div class="v">约 800 次</div></div>
+          <div class="s-stat"><div class="k">期望奖励</div><div class="v is-red">约 10.3 USDC / 次</div></div>
+          <div class="s-stat"><div class="k">中奖率</div><div class="v">100%</div></div>
+        </div>
+        <div class="tbl-scroll" style="margin-top:14px;">
+          <table>
+            <thead><tr><th>概率</th><th>奖励区间</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>85%</td><td>1 – 3 USDC</td><td>小额，维持参与感</td></tr>
+              <tr><td>13%</td><td>10 – 30 USDC</td><td>中额，制造惊喜</td></tr>
+              <tr><td class="hl">2%</td><td class="hl">100 – 500 USDC</td><td>大奖，冲榜之外的意外之喜</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          <b>策略提示：</b>段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。<b>建议先冲段位，再抽宝盒</b>；如果王者榜竞争激烈，抽宝盒前请评估对排名的影响。<br>
+          <b>扣除方式：</b>每次抽取<b>扣除 50 财神积分</b>，从用户总积分中实时扣减。<br>
+          <b>保底机制：</b>连续 10 次未中奖可获 1 USDC 安慰奖。<br>
+          <b>随机性：</b>使用链下可验证随机数，每日公示种子哈希。<br>
+          <b>发放：</b>中奖奖励在活动结束后 7 天内随主奖池一并发放。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 08 早鸟冲刺 ================= -->
+  <section class="wrap sec" id="early">
+    <div class="sec-head">
+      <span class="sec-idx">08</span>
+      <h2 class="sec-title">早鸟冲刺：首周保底 + 按比例<span>Early Bird Bonus</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>前 7 天净买入达标，<b>先拿保底，再按净买入量瓜分剩余奖池</b>，单人设有上限。越早买入，越容易拿到保底。</p>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>早鸟奖池独立于基础积分，专为活动前 7 天积极净买入的用户准备。每日 UTC 00:00 快照前一日净买入量，按排名瓜分对应奖池。</p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-bolt"></i></span>前 7 天冲刺奖池</div>
+        <span class="sector-amount">6,889 USDC</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>阶段</th><th>额外奖池</th><th>保底 + 按比例</th><th>单人上限</th></tr></thead>
+            <tbody>
+              <tr><td>第 1 天</td><td class="hl">3,000 USDC</td><td>前 100 名每人保底 <b>10 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">100 USDC</td></tr>
+              <tr><td>第 2–3 天</td><td class="hl">2,500 USDC</td><td>前 200 名每人保底 <b>5 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">80 USDC</td></tr>
+              <tr><td>第 4–7 天</td><td class="hl">1,389 USDC</td><td>前 300 名每人保底 <b>3 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">50 USDC</td></tr>
+              <tr><td>第 8 天起</td><td>无额外池</td><td>仅保留基础积分和早鸟乘数</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sources" style="margin-top:16px;">
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>最低净买入门槛：</b>参与早鸟排名，当日净买入量须 ≥ <b>50 USDC 等值</b>，未达标不进入排名。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值计；负值按 0 计，不参与排名。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>排名并列：</b>净买入量相同者，按当日交易笔数多者优先；仍并列则按首次交易时间早者优先。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>结束持仓锁定：</b>获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO；若提前卖出，取消早鸟奖励资格，该部分滚入王者榜奖池。</span></div>
+          <div class="source-row"><span class="source-idx">05</span><span class="source-text"><b>奖励发放：</b>活动结束后 7 天内统一折算 $财神DAO 发放，与基础积分奖励同步。</span></div>
+          <div class="source-row"><span class="source-idx">06</span><span class="source-text"><b>防刷限制：</b>净买入量仅统计有效交易（单笔 ≥ 20 USDC，非对敲，非自成交）。</span></div>
+        </div>
+        <p class="caption">每日 UTC 00:30 更新前一日早鸟榜。早鸟奖池独立列支，不与王者榜冲突；早鸟乘数（积分加成）与早鸟奖池（额外奖金）可同时享受。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 09 押金与公平保障 ================= -->
+  <section class="wrap sec" id="rules">
+    <div class="sec-head">
+      <span class="sec-idx">09</span>
+      <h2 class="sec-title">押金与公平保障<span>Deposit &amp; Fair Play</span></h2>
+    </div>
+
+    <p class="gain-lead"><b>你能得到：</b>押金只是临时锁定，活动结束后 <b>24 小时内原数退还</b>；公平性补丁让刷量成本更高、误伤更少，规则可复算、可申诉、可公示。</p>
+
+    <div class="prose" style="margin-bottom:16px;">
+      <p>
+        报名需锁定 <b>20 USDC 等值 $财神DAO</b> 作为押金，通过安全检查后进入白名单才开始计分。
+        押金机制有三重作用：<b>拦截批量女巫、锁定流通盘、抑制活动期间砸盘</b>。
+        对参与者来说，它只是一笔<b>活动结束后 24 小时内全额退还</b>的临时锁定。
+      </p>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-shield-halved"></i></span>报名检查项</div>
+        <span class="sector-amount">4 项</span>
+      </div>
+      <div class="sector-body">
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>检查项</th><th>阈值</th><th>不通过处理</th></tr></thead>
+            <tbody>
+              <tr><td>历史交易数</td><td>≥ 3 笔</td><td>拒绝报名</td></tr>
+              <tr><td>SOL 余额</td><td>≥ 0.01</td><td>拒绝报名</td></tr>
+              <tr><td>钱包年龄</td><td>≥ 3 天</td><td>拒绝报名</td></tr>
+              <tr><td>黑名单</td><td>不在黑名单</td><td>拒绝报名</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-coins"></i></span>押金规则</div>
+        <span class="sector-amount">全额退还</span>
+      </div>
+      <div class="sector-body">
+        <div class="sector-stats">
+          <div class="s-stat"><div class="k">普通用户押金</div><div class="v is-red">20 USDC 等值</div></div>
+          <div class="s-stat"><div class="k">队长额外押金</div><div class="v is-red">50 USDC 等值</div></div>
+          <div class="s-stat"><div class="k">退还时间</div><div class="v is-red">结束后 24 小时内</div></div>
+          <div class="s-stat"><div class="k">退还方式</div><div class="v">退还原始锁定代币数量</div></div>
+        </div>
+        <div class="sources">
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>报名锁定</b>：20 USDC 等值 $财神DAO，按报名时币价锁定代币数量。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>正常退还</b>：活动结束后 <b>24 小时内</b>，退还报名时锁定的原始 $财神DAO 代币数量，不随币价变动。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>违规没收</b>：女巫 / 对敲违规，押金转入销毁地址或奖池，并在活动页面公示脱敏记录。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>抑制抛压</b>：押金锁定减少流通盘，活动期间卖压更低，对所有参与者都是利好。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-scale-balanced"></i></span>公平性补丁 · 让刷量成本更高</div>
+        <span class="sector-amount">4 项</span>
+      </div>
+      <div class="sector-body">
+        <div class="sources" style="margin-top:0;">
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>滚动净买入辅助风控：</b>保留当日净买入作为主口径，同时观察 <b>7 日滚动净买入占比</b>。若单日净买入异常高、次日出现大额卖出，标记进入人工复核，不直接清零。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>随机快照：</b>每日随机 3–5 次快照，取中位数作为日均持仓。快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>结束持仓锁定：</b>早鸟奖要求结束前最后 24h 日均持仓 ≥ 50 USDC；王者榜 Top 10 要求活动结束时持仓 ≥ 100 USDC。减少领奖前后砸盘。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>三段式处理：</b>所有异常先「标记 → 复核 → 处罚」，正常高频用户可申诉，避免误伤。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sector-block">
+      <div class="sector-header">
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-file-shield"></i></span>公示与申诉入口</div>
+        <span class="sector-amount">透明可查</span>
+      </div>
+      <div class="sector-body">
+        <div class="sources" style="margin-top:0;">
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>公平性公示：</b>奖池地址、押金锁定地址、销毁记录、违规处理脱敏记录、随机数种子哈希、发放交易哈希，统一在活动页面「透明度」入口公示。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>申诉入口：</b>活动页面提供申诉表单，被标记用户可在公示期内提交证据。<b>48 小时内响应</b>，处理结果在页面公示。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>申诉期：</b>活动结束后 3 天申诉期，覆盖段位、王者榜、早鸟奖、战队奖和宝盒异常。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>规则可复算：</b>积分公式、快照规则、排名规则全部公开，用户可根据链上交易记录自行复算。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-title">押金如何保护奖池</div>
+      <div class="hl-box-body">
+        以 <b>500 人</b>报名、人均锁定 20 USDC 等值 $财神DAO 计算，总锁定量约 <b>10,000 USDC 等值</b>。
+        即便其中 10% 因违规被没收销毁，仍有 <b>9,000 USDC 等值</b>的 $财神DAO 在活动期间处于锁定状态 ——
+        流通盘更小、抛压更低，所有守规参与者都能受益。
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10 FAQ ================= -->
+  <section class="wrap sec" id="faq">
+    <div class="sec-head">
+      <span class="sec-idx">10</span>
+      <h2 class="sec-title">常见问题<span>FAQ</span></h2>
+    </div>
+
+    <div class="faq">
+      <details>
+        <summary>押金怎么退？多久到账？</summary>
+        <div class="faq-a">活动结束后 <b>24 小时内</b>自动退还到报名钱包，退还的是<b>报名时锁定的原始 $财神DAO 代币数量</b>，不随币价变动，无需手动领取。</div>
+      </details>
+      <details>
+        <summary>奖励什么时候发？发什么？</summary>
+        <div class="faq-a">活动结束后 <b>48 小时</b>锁定积分，公示 3 天、申诉期 3 天，随后在 <b>7 天内</b>统一空投。奖励以 <b>USDC 计价、$财神DAO 发放</b>，按结束时的 24h TWAP 折算。</div>
+      </details>
+      <details>
+        <summary>我只买不卖，能拿多少积分？</summary>
+        <div class="faq-a">净买入部分按 <b>1.2 倍</b>权重计入，同时享受早鸟乘数（首日最高 2.0×）和持仓乘数（最高 1.5×）。若加入战队还可叠加 <b>1.1×</b> 加成，各项乘数相乘计算。新手任务和连续参与还能额外加积分。</div>
+      </details>
+      <details>
+        <summary>反复买卖刷量有用吗？</summary>
+        <div class="faq-a">作用非常有限。当当日净买入 ≤ 0 时，卖出积分权重从 0.3 降为 <b>0.1</b>，同样金额的刷量只能拿到真实交易的 <b>1/12</b>；同时 10 分钟内金额偏差 &lt; 5% 的对敲交易会被清零并标记。活动还增加了 7 日滚动净买入辅助风控和随机快照，进一步压缩刷量空间。</div>
+      </details>
+      <details>
+        <summary>青铜段位是不是没什么奖励？</summary>
+        <div class="faq-a">青铜是门槛最低的普惠档：财神积分 100–499 即可进入，按积分占比<b>瓜分 3,000 USDC</b>，单人上限 10 USDC。参与条件为有效交易 ≥ 3 笔、净买入 ≥ 50 USDC。完成新手任务还能额外拿 500 积分，更容易进入白银。</div>
+      </details>
+      <details>
+        <summary>新手任务和连续参与奖励从哪里来？会稀释主奖池吗？</summary>
+        <div class="faq-a">不会。新手任务积分由活动方<b>额外提供</b>，不占用 68,888 USDC 主奖池；宝盒券从宝盒池中列支，抽完即止。连续参与积分同样由活动方额外提供，不影响主奖池分配。</div>
+      </details>
+      <details>
+        <summary>早鸟奖现在怎么分？大户还会通吃吗？</summary>
+        <div class="faq-a">早鸟奖改为<b>保底 + 按比例 + 单人上限</b>的混合分配。第 1 天前 100 名每人保底 10 USDC，剩余按净买入量占比瓜分，单人上限 100 USDC。这样中小用户能拿到保底，大户也不能通吃。</div>
+      </details>
+      <details>
+        <summary>持仓快照时间固定吗？会不会被定点操纵？</summary>
+        <div class="faq-a">不固定。每日随机 3–5 次快照，取中位数作为日均持仓，快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</div>
+      </details>
+      <details>
+        <summary>如果被误判违规，怎么申诉？</summary>
+        <div class="faq-a">活动页面提供申诉表单，被标记用户可在公示期内提交链上交易记录等证据。<b>48 小时内响应</b>，处理结果在页面公示。所有异常采用「标记 → 复核 → 处罚」三段式，不会直接清零。</div>
+      </details>
+      <details>
+        <summary>抽宝盒会不会影响我的段位？</summary>
+        <div class="faq-a">不会。段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。建议先冲段位，再抽宝盒。</div>
+      </details>
+      <details>
+        <summary>早鸟奖和早鸟乘数可以同时拿吗？</summary>
+        <div class="faq-a">可以。早鸟乘数是<b>积分加成</b>，早鸟奖池是<b>额外奖金</b>，两者独立计算、同时享受。但早鸟奖池获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO。</div>
+      </details>
+    </div>
+
+    <div class="final-cta">
+      <h3>68,888 USDC 奖池已经开启</h3>
+      <p>20 USDC 押金全额退还 · 新手任务 + 连续参与额外送积分 · 早鸟保底 + 按比例 · 结束后 7 天内自动空投</p>
+      <a class="btn btn-primary" href="#join">现在就去参与 <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </section>
+
+  <!-- ================= 风险提示 ================= -->
+  <section class="wrap sec" id="notice">
+    <div class="sec-head">
+      <span class="sec-idx">!</span>
+      <h2 class="sec-title">风险提示<span>Risk Disclosure</span></h2>
+    </div>
+
+    <div class="notice-box">
+      <div class="hl-box-title"><i class="fas fa-triangle-exclamation" aria-hidden="true" style="font-size:11px;"></i> 请务必阅读</div>
+      <div class="notice-body">
+        <span class="line">加密资产风险极高，代币价格波动剧烈。本页面所有 USDC 等值奖励仅作展示参考，<b>最终以链上实际发放数量为准</b>。</span>
+        <span class="line">押金退还的是<b>报名时锁定的原始代币数量</b>，币价涨跌不影响退还数量，但押金代币本身价值会随市场波动。</span>
+        <span class="line">请遵守当地法律法规，仅以可承受损失的资金参与。受限制地区用户不参与本次活动。</span>
+        <span class="line">活动规则、金额、时间与乘数以官方最终公告及链上实际执行结果为准。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="wrap doc-foot">
+    <div class="foot-row"><span class="foot-k">Event</span><span class="foot-v">$财神DAO · DEX 交易狂欢季</span></div>
+    <div class="foot-row"><span class="foot-k">Total Pool</span><span class="foot-v">68,888 USDC 等值 $财神DAO</span></div>
+    <div class="foot-row"><span class="foot-k">Duration</span><span class="foot-v">4 周 / 28 天</span></div>
+    <div class="foot-row">
+      <span class="foot-k">Contract</span>
+      <span class="foot-v foot-ca">
+        <span class="foot-ca-text">68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868</span>
+        <button class="copy-btn" id="copyBtn" type="button" data-addr="68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868" aria-label="复制合约地址">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </span>
+    </div>
+    <div class="foot-row"><span class="foot-k">Network</span><span class="foot-v">Solana SPL</span></div>
+    <div class="foot-row"><span class="foot-k">Status</span><span class="foot-v">Official · 官方活动页面</span></div>
+    <div class="foot-row"><span class="foot-k">Transparency</span><span class="foot-v">奖池地址 · 押金锁定地址 · 销毁记录 · 随机数种子哈希 · 发放交易哈希（活动页公示）</span></div>
+    <div class="disc">本页面内容仅用于活动说明，不构成任何投资建议或收益承诺。<br>数字资产价格波动剧烈，请理性判断、注意风险。所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。</div>
+  </footer>
+
+</div>
+
+<button id="backTop" class="back-top" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+  </svg>
+</button>
+
+<div id="toast" role="status" aria-live="polite">已复制</div>
+
+<script>
+  (function () {
+    /* ================= 主题系统 ================= */
+    var root = document.documentElement;
+    var themeBtn = document.getElementById('themeToggle');
+    var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    var STORAGE_KEY = 'gof-theme';
+    var themeColorMeta = document.getElementById('themeColorMeta');
+
+    function currentTheme() {
+      var attr = root.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+    function applyThemeUI() {
+      var t = currentTheme();
+      if (themeBtn) {
+        themeBtn.setAttribute('data-icon', t);
+        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.title = label;
+      }
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', t === 'dark' ? '#0a0e14' : '#ffffff');
+      }
+    }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+        applyThemeUI();
+      });
+    }
+    function onSysChange() {
+      if (!root.hasAttribute('data-theme')) applyThemeUI();
+    }
+    if (darkMQ.addEventListener) darkMQ.addEventListener('change', onSysChange);
+    else if (darkMQ.addListener) darkMQ.addListener(onSysChange);
+    applyThemeUI();
+
+    /* ================= Toast ================= */
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+    function showToast(msg) {
+      if (!toast) return;
+      if (msg) toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+    }
+
+    function fallbackCopy(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function copyText(text, cb) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(cb).catch(function () { fallbackCopy(text, cb); });
+      } else { fallbackCopy(text, cb); }
+    }
+
+    var copyBtn = document.getElementById('copyBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        copyText(copyBtn.getAttribute('data-addr'), function () {
+          copyBtn.classList.add('copied');
+          showToast('合约地址已复制');
+          setTimeout(function () { copyBtn.classList.remove('copied'); }, 1500);
+        });
+      });
+    }
+
+    /* ================= 目录导航高亮 ================= */
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+    if (links.length) {
+      var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+      if (sections.length && ('IntersectionObserver' in window)) {
+        var linkMap = {};
+        links.forEach(function (a) { linkMap[a.getAttribute('href')] = a; });
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              links.forEach(function (a) { a.classList.remove('active'); });
+              var a = linkMap['#' + entry.target.id];
+              if (a) {
+                a.classList.add('active');
+                var toc = a.parentElement;
+                if (toc && toc.scrollWidth > toc.clientWidth) {
+                  var target = a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2;
+                  toc.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+                }
+              }
+            }
+          });
+        }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
+        sections.forEach(function (s) { obs.observe(s); });
+      }
+    }
+
+    /* ================= 返回顶部 ================= */
+    var backTop = document.getElementById('backTop');
+    if (backTop) {
+      var onScroll = function () {
+        if (window.scrollY > 600) backTop.classList.add('show');
+        else backTop.classList.remove('show');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      backTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  })();
+</script>
+</body>
+</html>
