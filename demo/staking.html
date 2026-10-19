@@ -1,824 +1,1829 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>聚宝盆 - 财神到 Staking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { 
-            --primary-red: #DC2626; 
-            --primary-gold: #F59E0B;
-            --solana-purple: #9945FF;
-            --solana-green: #14F195;
-            --bg-main: #F8FAFC;
-        }
-        body { background: var(--bg-main); }
-        .caishen-gradient { background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-gold) 100%); }
-        .solana-gradient { background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-green) 100%); }
-        .caishen-text {
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-        .active-scale { transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
-        .active-scale:active { transform: scale(0.96); }
-        .btn-disabled {
-            background: #E5E7EB !important;
-            color: #9CA3AF !important;
-            box-shadow: none !important;
-            cursor: not-allowed;
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .animate-pulse-dot { animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        
-        .sheet-backdrop {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .sheet-backdrop.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .sheet-panel {
-            transform: translateY(100%);
-            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-        }
-        .sheet-backdrop.active .sheet-panel {
-            transform: translateY(0);
-        }
-        
-        @keyframes progress-fill { from { width: 0; } }
-        .progress-bar-fill { animation: progress-fill 1s ease-out; }
-        
-        .copy-toast { opacity: 0; transition: opacity 0.2s; }
-        .copy-toast.show { opacity: 1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>聚宝盆 · 财神到 Staking</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'dark' ? '#0a0e14' : '#ffffff');
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      var m2 = document.querySelector('meta[name="theme-color"]');
+      if (m2) m2.setAttribute('content', '#0a0e14');
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  :root{
+    color-scheme: light;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+
+    --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
+    --cyber-glow:rgba(255,45,85,.45);
+    --cyber-glow-soft:rgba(255,45,85,.18);
+    --cyber-glow-faint:rgba(255,45,85,.06);
+
+    --gold:#a8821c; --gold-d:#8a6a14; --gold-soft:rgba(168,130,28,.10);
+    --ok:#0e9f6e; --ok-soft:rgba(14,159,110,.10);
+    --info:#3b82f6; --info-soft:rgba(59,130,246,.10);
+    --danger:#e02424; --danger-soft:rgba(224,36,36,.10);
+
+    --brand-1:#dc2626; --brand-2:#f59e0b;
+    --bar-bg:rgba(255,255,255,.92);
+    --hover-bg:rgba(20,24,29,.05);
+
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+    --shadow-card:0 1px 2px rgba(20,24,29,.04), 0 8px 24px -16px rgba(20,24,29,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+
+      --cyber:#ff2d55; --cyber-d:#ff5a6a; --cyber-l:#ff8fa0;
+      --cyber-glow:rgba(255,45,85,.55);
+      --cyber-glow-soft:rgba(255,45,85,.22);
+      --cyber-glow-faint:rgba(255,45,85,.08);
+
+      --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
+      --ok:#34d399; --ok-soft:rgba(52,211,153,.12);
+      --info:#60a5fa; --info-soft:rgba(96,165,250,.12);
+      --danger:#f87171; --danger-soft:rgba(248,113,113,.12);
+
+      --brand-1:#ff2d55; --brand-2:#ffb700;
+      --bar-bg:rgba(16,22,30,.92);
+      --hover-bg:rgba(230,236,240,.06);
+      --shadow-card:0 1px 2px rgba(0,0,0,.35);
+    }
+  }
+
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+
+    --cyber:#ff2d55; --cyber-d:#ff5a6a; --cyber-l:#ff8fa0;
+    --cyber-glow:rgba(255,45,85,.55);
+    --cyber-glow-soft:rgba(255,45,85,.22);
+    --cyber-glow-faint:rgba(255,45,85,.08);
+
+    --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
+    --ok:#34d399; --ok-soft:rgba(52,211,153,.12);
+    --info:#60a5fa; --info-soft:rgba(96,165,250,.12);
+    --danger:#f87171; --danger-soft:rgba(248,113,113,.12);
+
+    --brand-1:#ff2d55; --brand-2:#ffb700;
+    --bar-bg:rgba(16,22,30,.92);
+    --hover-bg:rgba(230,236,240,.06);
+    --shadow-card:0 1px 2px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{ color-scheme: light; }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  :focus-visible{ outline:2px solid var(--cyber); outline-offset:2px; border-radius:6px; }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
+
+  .app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    min-height:100dvh;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));
+    position:relative;
+  }
+
+  /* ============ 顶栏 ============ */
+  .appbar{
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    background:var(--bar-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .appbar-title{
+    flex:1; min-width:0;
+    font-size:15px; font-weight:700; letter-spacing:-.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    padding-left:2px;
+  }
+  .appbar-right{ display:flex; align-items:center; gap:6px; flex:none; }
+
+  .icon-btn{
+    flex:none;
+    width:36px; height:36px;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:0; border:1px solid var(--line); border-radius:10px;
+    background:var(--card); color:var(--ink-3);
+    cursor:pointer;
+    transition:background-color .18s ease, border-color .18s ease,
+               color .18s ease, box-shadow .25s ease, transform .15s ease;
+  }
+  .icon-btn:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
+  }
+  .icon-btn:active{ transform:scale(.94); }
+  .icon-btn svg{ width:18px; height:18px; display:block; }
+
+  .theme-toggle .ico-sun{ display:none; }
+  .theme-toggle .ico-moon{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-sun{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-moon{ display:none; }
+
+  .wallet-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    height:32px; padding:0 10px 0 5px;
+    border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.01em;
+    cursor:pointer; white-space:nowrap;
+    transition:background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .25s ease;
+  }
+  .wallet-chip:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 10px -2px var(--cyber-glow-soft);
+  }
+  .wallet-chip:active{ transform:scale(.97); }
+  .wallet-dot{
+    width:18px; height:18px; border-radius:50%; flex:none;
+    background:linear-gradient(135deg,#9945FF,#14F195);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+  }
+
+  /* ============ 主体 ============ */
+  .app-main{
+    padding:14px 14px 0;
+    display:flex; flex-direction:column; gap:18px;
+  }
+
+  .block-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin:0 0 10px; padding:0 2px;
+  }
+  .block-head h3{
+    margin:0; font-size:14px; font-weight:700; letter-spacing:-.005em;
+    color:var(--ink); display:flex; align-items:center; gap:6px;
+  }
+  .block-head h3 svg{ width:15px; height:15px; color:var(--cyber); flex:none; }
+  .block-head .meta{
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+    letter-spacing:.02em; white-space:nowrap;
+  }
+  .ghost-btn{
+    padding:4px 10px;
+    border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-family:inherit; font-size:11.5px; font-weight:600;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  .ghost-btn:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+
+  /* ============ 收益概览 ============ */
+  .reward-card{
+    position:relative; overflow:hidden;
+    padding:18px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--shadow-card);
+  }
+  .reward-card::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(90% 120% at 100% 0%, var(--cyber-glow-soft) 0%, transparent 55%);
+  }
+  .reward-card::after{
+    content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--cyber) 0%, var(--gold) 100%);
+    opacity:.85;
+  }
+  .reward-inner{ position:relative; }
+
+  .reward-label{
+    display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+    font-size:11.5px; font-weight:600; color:var(--muted);
+    letter-spacing:.02em; margin-bottom:7px;
+  }
+  .reward-label svg{ width:13px; height:13px; flex:none; }
+  .reward-label-en{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.12em;
+    text-transform:uppercase; opacity:.7;
+  }
+
+  .reward-value{
+    display:flex; align-items:baseline; gap:7px;
+    margin-bottom:15px; min-width:0;
+  }
+  .reward-num{
+    font-family:var(--mono);
+    font-size:30px; font-weight:700; letter-spacing:-.03em; line-height:1.1;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--brand-1);
+  }
+  .reward-token{ font-size:13px; font-weight:500; color:var(--muted); white-space:nowrap; }
+
+  /* ============ 按钮 ============ */
+  .btn-primary{
+    width:100%;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    padding:14px 16px;
+    border:0; border-radius:12px;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    color:#fff;
+    font-family:inherit; font-size:15px; font-weight:700; letter-spacing:.02em;
+    cursor:pointer;
+    box-shadow:0 8px 20px -10px var(--brand-1), 0 2px 8px -4px rgba(0,0,0,.12);
+    transition:transform .15s cubic-bezier(.4,0,.2,1), box-shadow .25s ease, filter .2s ease;
+  }
+  .btn-primary svg{ width:16px; height:16px; flex:none; }
+  .btn-primary:hover{ filter:brightness(1.05); }
+  .btn-primary:active{ transform:scale(.98); }
+  .btn-primary:disabled,
+  .btn-primary.btn-disabled{
+    background:var(--line);
+    color:var(--muted);
+    box-shadow:none;
+    cursor:not-allowed;
+    transform:none;
+    filter:none;
+  }
+
+  .btn-gold{
+    width:100%;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    padding:13px 16px;
+    border:0; border-radius:12px;
+    background:linear-gradient(135deg,#f59e0b 0%,#f97316 100%);
+    color:#fff;
+    font-family:inherit; font-size:14px; font-weight:700; letter-spacing:.02em;
+    cursor:pointer;
+    box-shadow:0 8px 20px -10px #f59e0b, 0 2px 8px -4px rgba(0,0,0,.12);
+    transition:transform .15s cubic-bezier(.4,0,.2,1), filter .2s ease;
+  }
+  .btn-gold svg{ width:16px; height:16px; flex:none; }
+  .btn-gold:hover{ filter:brightness(1.05); }
+  .btn-gold:active{ transform:scale(.98); }
+
+  .btn-ghost{
+    flex:1;
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    padding:13px 14px;
+    border:1px solid var(--line); border-radius:12px;
+    background:var(--bg); color:var(--ink-2);
+    font-family:inherit; font-size:13.5px; font-weight:600;
+    text-decoration:none; cursor:pointer;
+    transition:all .18s ease;
+  }
+  .btn-ghost svg{ width:15px; height:15px; flex:none; }
+  .btn-ghost:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+  }
+  .btn-ghost:active{ transform:scale(.98); }
+
+  /* ============ 资产横滑 ============ */
+  .hscroll{
+    display:flex; gap:10px;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    padding:2px 14px 8px;
+    margin:0 -14px;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  .hscroll::-webkit-scrollbar{ display:none; }
+
+  .asset-card{
+    flex:none; width:132px;
+    padding:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    scroll-snap-align:start;
+    transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease;
+  }
+  .asset-card:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 6px 18px -12px var(--cyber-glow);
+    transform:translateY(-1px);
+  }
+  .asset-top{ display:flex; align-items:center; gap:7px; margin-bottom:9px; }
+  .asset-icon{
+    width:24px; height:24px; border-radius:50%; flex:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700;
+  }
+  .asset-name{ font-size:11.5px; font-weight:700; color:var(--ink); line-height:1.3; }
+  .asset-price{
+    font-family:var(--mono); font-size:9.5px; color:var(--muted);
+    line-height:1.4; letter-spacing:.01em;
+  }
+  .asset-amt{
+    font-family:var(--mono); font-size:13.5px; font-weight:700;
+    color:var(--ink); letter-spacing:-.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .asset-usd{
+    font-family:var(--mono); font-size:10px; color:var(--muted);
+    margin-top:1px; line-height:1.4;
+  }
+
+  /* ============ 仓位 ============ */
+  .positions{ display:grid; gap:10px; }
+
+  .pos-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    transition:border-color .2s ease, box-shadow .25s ease;
+  }
+  .pos-card:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 8px 24px -18px var(--cyber-glow);
+  }
+
+  .pos-top{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:12px; margin-bottom:12px;
+  }
+  .pos-name{
+    display:flex; align-items:center; gap:7px; flex-wrap:wrap;
+    font-size:13.5px; font-weight:700; color:var(--ink);
+    line-height:1.4; margin-bottom:4px;
+  }
+  .pos-meta{
+    font-family:var(--mono); font-size:10.5px; color:var(--muted);
+    letter-spacing:.01em; line-height:1.5;
+  }
+  .pos-apy{ text-align:right; flex:none; }
+  .pos-apy-val{
+    font-family:var(--mono); font-size:17px; font-weight:700;
+    letter-spacing:-.02em; line-height:1.2;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--brand-1);
+  }
+  .pos-apy-lbl{
+    font-family:var(--mono); font-size:9.5px; color:var(--muted);
+    letter-spacing:.12em; margin-top:1px;
+  }
+
+  .pos-progress-head{
+    display:flex; justify-content:space-between;
+    font-family:var(--mono); font-size:10px; color:var(--muted);
+    margin-bottom:5px;
+  }
+  .progress{
+    height:5px; background:var(--line-2);
+    border-radius:3px; overflow:hidden; margin-bottom:12px;
+  }
+  .progress > i{
+    display:block; height:100%; border-radius:3px;
+    background:linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    box-shadow:0 0 8px var(--cyber-glow);
+    animation:progress-fill 1s ease-out;
+  }
+  @keyframes progress-fill{ from{ width:0; } }
+
+  .pos-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    padding-top:11px; border-top:1px solid var(--line-2);
+  }
+  .pos-grid > div:last-child{ text-align:right; }
+  .pos-k{
+    display:block; font-size:10px; color:var(--muted);
+    margin-bottom:3px; line-height:1.4;
+  }
+  .pos-v{
+    display:block; font-family:var(--mono); font-size:12px; font-weight:700;
+    color:var(--ink); letter-spacing:-.005em; line-height:1.5;
+  }
+  .pos-v.is-gold{ color:var(--gold); }
+
+  /* ============ 徽章 ============ */
+  .badge{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:2px 7px; border-radius:4px;
+    font-size:9.5px; font-weight:600; line-height:1.7;
+    white-space:nowrap; letter-spacing:.02em;
+  }
+  .badge-ok{ background:var(--ok-soft); color:var(--ok); }
+  .badge-pending{ background:var(--info-soft); color:var(--info); }
+
+  .dot-pulse{
+    width:5px; height:5px; border-radius:50%; flex:none;
+    background:currentColor;
+    animation:pulse-dot 2s cubic-bezier(.4,0,.6,1) infinite;
+  }
+  @keyframes pulse-dot{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+
+  /* ============ 分段控件 ============ */
+  .segmented{
+    display:flex; gap:4px; padding:4px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:12px;
+  }
+  .seg-btn{
+    flex:1;
+    padding:9px 8px;
+    border:1px solid transparent; border-radius:9px;
+    background:transparent; color:var(--ink-3);
+    font-family:inherit; font-size:13px; font-weight:600;
+    cursor:pointer;
+    transition:all .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .seg-btn:hover{ color:var(--ink-2); }
+  .seg-btn.active{
+    background:var(--cyber-glow-soft);
+    color:var(--cyber-d);
+    border-color:var(--cyber-glow-soft);
+    box-shadow:inset 0 0 0 1px var(--cyber-glow-faint);
+  }
+
+  /* ============ 周期 / 合作币选择 ============ */
+  .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+
+  .opt-btn{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:1px;
+    padding:9px 4px;
+    border:1px solid var(--line); border-radius:10px;
+    background:var(--card); color:var(--ink-3);
+    font-family:inherit; cursor:pointer;
+    transition:all .18s ease;
+    -webkit-tap-highlight-color:transparent;
+    min-width:0;
+  }
+  .opt-btn:hover{ border-color:var(--cyber-glow-soft); color:var(--ink-2); }
+  .opt-btn:active{ transform:scale(.97); }
+  .opt-btn .o-sub{
+    font-size:10.5px; font-weight:500; line-height:1.5; color:inherit;
+  }
+  .opt-btn .o-main{
+    font-family:var(--mono); font-size:13px; font-weight:700;
+    letter-spacing:-.01em; line-height:1.4; color:inherit;
+    white-space:nowrap; max-width:100%;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .opt-btn.active{
+    border-color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    color:var(--cyber-d);
+    box-shadow:0 0 0 1px var(--cyber-glow-soft), 0 0 16px -6px var(--cyber-glow);
+  }
+
+  .hidden{ display:none !important; }
+
+  /* ============ 输入区 ============ */
+  .price-hint{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; flex-wrap:wrap;
+    padding:7px 10px; margin-bottom:14px;
+    background:var(--bg);
+    border:1px solid var(--line-2);
+    border-radius:8px;
+    font-size:11px; color:var(--muted);
+    line-height:1.5;
+  }
+  .price-hint b{ color:var(--ink-2); font-weight:700; font-family:var(--mono); }
+  .price-hint .hl{ color:var(--cyber); font-weight:700; font-family:var(--mono); }
+
+  .input-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:6px;
+  }
+  .input-label{ font-size:12px; font-weight:600; color:var(--ink-3); }
+
+  .max-btn{
+    padding:4px 9px;
+    border:1px solid var(--cyber-glow-soft); border-radius:6px;
+    background:var(--cyber-glow-faint); color:var(--cyber);
+    font-family:var(--mono); font-size:10.5px; font-weight:700;
+    letter-spacing:.02em; cursor:pointer;
+    transition:all .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .max-btn:hover{
+    background:var(--cyber-glow-soft);
+    box-shadow:0 0 10px -2px var(--cyber-glow);
+  }
+  .max-btn:active{ transform:scale(.95); }
+
+  .input-row{
+    display:flex; align-items:center; gap:8px;
+    padding-bottom:11px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .input-row input{
+    flex:1; min-width:0;
+    border:0; outline:none; background:transparent;
+    color:var(--ink);
+    font-family:var(--mono); font-size:26px; font-weight:700;
+    letter-spacing:-.02em; line-height:1.3;
+    padding:0;
+  }
+  .input-row input::placeholder{ color:var(--muted); opacity:.45; }
+
+  .input-suffix{
+    flex:none;
+    display:inline-flex; align-items:center; gap:5px;
+    padding:5px 9px;
+    background:var(--bg);
+    border:1px solid var(--line); border-radius:8px;
+    font-family:var(--mono); font-size:11.5px; font-weight:700;
+    color:var(--ink-2); letter-spacing:.02em;
+  }
+
+  .warn-line{
+    display:flex; align-items:center; gap:5px;
+    margin-top:8px;
+    font-size:11.5px; font-weight:600; color:var(--danger);
+    line-height:1.5;
+  }
+  .warn-line svg{ width:13px; height:13px; flex:none; }
+
+  /* ============ 拆分明细 ============ */
+  #breakdown-area{ margin-top:12px; display:grid; gap:6px; }
+
+  .bd-block{
+    padding:10px 11px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+  .bd-top{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+  }
+  .bd-name{
+    font-size:11.5px; font-weight:600; color:var(--ink-2);
+    display:flex; align-items:center; gap:5px; min-width:0;
+  }
+  .bd-name em{
+    font-style:normal; font-family:var(--mono);
+    font-size:9.5px; color:var(--muted); letter-spacing:.04em;
+  }
+  .bd-amt{
+    flex:none;
+    font-family:var(--mono); font-size:12px; font-weight:700;
+    color:var(--ink); letter-spacing:-.01em;
+  }
+  .bd-amt.is-bad{ color:var(--danger); }
+  .bd-bottom{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-top:3px;
+    font-family:var(--mono); font-size:10px; color:var(--muted);
+  }
+  .bd-bottom .ok{ color:var(--ok); }
+  .bd-bottom .bad{ color:var(--danger); }
+
+  /* ============ 预估收益 ============ */
+  .est-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    padding-top:12px; margin-top:12px;
+    border-top:1px dashed var(--line);
+  }
+  .est-item{ min-width:0; }
+  .est-item:last-child{ text-align:right; }
+  .est-k{
+    display:block;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:4px; line-height:1.4;
+  }
+  .est-v{
+    font-family:var(--mono); font-size:14px; font-weight:700;
+    letter-spacing:-.01em; line-height:1.4;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .est-v.is-gold{ color:var(--gold); }
+  .est-v.is-red{ color:var(--cyber); }
+
+  /* ============ 操作记录 ============ */
+  .activity{
+    display:flex; align-items:center; gap:10px;
+    padding:10px; margin:0 -10px;
+    border-radius:10px; cursor:pointer;
+    transition:background-color .18s ease;
+  }
+  .activity:hover{ background:var(--hover-bg); }
+  .activity:active{ background:var(--cyber-glow-faint); }
+
+  .activity-icon{
+    flex:none; width:32px; height:32px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .activity-icon svg{ width:15px; height:15px; }
+  .activity-icon.type-stake{ background:var(--cyber-glow-faint); color:var(--cyber); }
+  .activity-icon.type-claim{ background:var(--gold-soft); color:var(--gold); }
+  .activity-icon.type-pending{ background:var(--info-soft); color:var(--info); }
+
+  .activity-body{ flex:1; min-width:0; }
+  .activity-title{
+    font-size:12.5px; font-weight:600; color:var(--ink);
+    line-height:1.5;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .activity-title span{
+    font-size:10px; color:var(--muted); font-weight:400; margin-left:2px;
+  }
+  .activity-time{
+    font-family:var(--mono); font-size:10px; color:var(--muted);
+    margin-top:1px; line-height:1.5;
+  }
+  .activity-right{
+    flex:none; display:flex; align-items:center; gap:4px;
+  }
+  .activity-right .chev{ width:12px; height:12px; color:var(--muted); opacity:.5; }
+
+  /* ============ 规则 ============ */
+  .rules{
+    margin:0; padding:0; list-style:none;
+    display:grid; gap:8px;
+  }
+  .rules li{
+    position:relative;
+    padding-left:14px;
+    font-size:11.5px; line-height:1.75; color:var(--ink-3);
+  }
+  .rules li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:4px; height:4px; border-radius:50%;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+  .rules b{ color:var(--ink-2); font-weight:600; }
+  .rules .is-red{ color:var(--cyber); font-weight:700; }
+
+  /* ============ 底部固定操作栏 ============ */
+  .actionbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));
+    background:var(--bar-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-top:1px solid var(--line-2);
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .actionbar-inner{
+    max-width:480px; margin:0 auto; padding:0 14px;
+  }
+
+  /* ============ 底部抽屉 ============ */
+  .sheet-backdrop{
+    position:fixed; inset:0; z-index:50;
+    display:flex; align-items:flex-end; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .sheet-backdrop.active{ opacity:1; pointer-events:auto; }
+
+  .sheet-scrim{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.5);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+  }
+
+  .sheet-panel{
+    position:relative;
+    width:100%; max-width:480px;
+    max-height:85vh;
+    background:var(--card);
+    border-radius:20px 20px 0 0;
+    overflow-y:auto; overscroll-behavior:contain;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.32,.72,0,1);
+    box-shadow:0 -8px 40px -10px rgba(0,0,0,.35);
+    -webkit-overflow-scrolling:touch;
+  }
+  .sheet-backdrop.active .sheet-panel{ transform:translateY(0); }
+
+  .sheet-head{
+    position:sticky; top:0; z-index:2;
+    background:var(--card);
+    padding:10px 16px 12px;
+    border-bottom:1px solid var(--line-2);
+    border-radius:20px 20px 0 0;
+  }
+  .sheet-grab{
+    width:36px; height:4px; border-radius:2px;
+    background:var(--line); margin:0 auto 12px;
+  }
+  .sheet-head-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .sheet-title{
+    margin:0; font-size:15px; font-weight:700;
+    color:var(--ink); letter-spacing:-.01em;
+  }
+  .sheet-close{
+    flex:none; width:30px; height:30px;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:0; border:0; border-radius:8px;
+    background:transparent; color:var(--muted);
+    cursor:pointer;
+    transition:background-color .18s ease, color .18s ease;
+  }
+  .sheet-close:hover{ background:var(--hover-bg); color:var(--ink); }
+  .sheet-close svg{ width:17px; height:17px; }
+
+  .sheet-body{
+    padding:16px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+
+  .dt-head{
+    display:flex; align-items:center; gap:12px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .dt-icon{
+    flex:none; width:44px; height:44px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .dt-icon svg{ width:20px; height:20px; }
+  .dt-icon.type-stake{ background:var(--cyber-glow-faint); color:var(--cyber); }
+  .dt-icon.type-claim{ background:var(--gold-soft); color:var(--gold); }
+
+  .dt-titles{ flex:1; min-width:0; }
+  .dt-title{
+    margin:0; font-size:14px; font-weight:700;
+    color:var(--ink); line-height:1.4;
+  }
+  .dt-sub{
+    margin:2px 0 0;
+    font-family:var(--mono); font-size:10.5px; color:var(--muted);
+    line-height:1.5;
+  }
+
+  .dt-section{ display:flex; flex-direction:column; gap:7px; }
+  .dt-label{
+    margin:0;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted);
+    line-height:1.4;
+  }
+  .dt-list{
+    background:var(--bg);
+    border:1px solid var(--line-2);
+    border-radius:12px;
+    padding:4px 12px;
+  }
+  .dt-row{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:14px; padding:9px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .dt-row:last-child{ border-bottom:0; }
+  .dt-k{
+    font-size:12px; color:var(--muted); flex:none; line-height:1.6;
+  }
+  .dt-v{
+    font-size:12px; font-weight:600; color:var(--ink-2);
+    text-align:right; line-height:1.6; word-break:break-word;
+  }
+
+  .dt-hash{
+    font-family:var(--mono); font-size:10.5px; line-height:1.7;
+    color:var(--ink-3); word-break:break-all;
+    margin:0 0 8px; padding:8px 9px;
+    background:var(--card);
+    border:1px solid var(--line-2); border-radius:8px;
+  }
+  .dt-copy{
+    flex:none; display:inline-flex; align-items:center; gap:4px;
+    padding:2px 8px;
+    border:1px solid var(--cyber-glow-soft); border-radius:999px;
+    background:var(--cyber-glow-faint); color:var(--cyber);
+    font-family:inherit; font-size:10.5px; font-weight:600;
+    cursor:pointer; line-height:1.7;
+    transition:all .18s ease;
+  }
+  .dt-copy:hover{ background:var(--cyber-glow-soft); }
+  .dt-copy svg{ width:11px; height:11px; }
+
+  .dt-actions{
+    display:flex; gap:8px; padding-top:2px;
+  }
+  .dt-actions .btn-primary{
+    flex:1; width:auto;
+    padding:13px 14px; font-size:13.5px;
+  }
+
+  /* ============ Toast ============ */
+  #copy-toast{
+    position:fixed; top:70px; left:50%;
+    transform:translateX(-50%) translateY(-6px);
+    padding:9px 18px 9px 14px;
+    border-radius:999px;
+    background:var(--ink); color:var(--card);
+    font-size:12px; font-weight:600; letter-spacing:.02em;
+    box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-soft);
+    opacity:0; pointer-events:none; white-space:nowrap;
+    transition:opacity .25s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
+    z-index:60;
+    display:inline-flex; align-items:center; gap:7px;
+  }
+  #copy-toast::before{
+    content:"✓"; display:inline-flex; align-items:center; justify-content:center;
+    width:15px; height:15px; border-radius:50%;
+    background:var(--cyber); color:#fff;
+    font-size:9px; font-weight:700; line-height:1;
+    box-shadow:0 0 8px var(--cyber-glow);
+    flex:none;
+  }
+  #copy-toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* ============ 响应式微调 ============ */
+  @media (max-width:380px){
+    .app-main{ padding:12px 12px 0; gap:16px; }
+    .hscroll{ margin:0 -12px; padding:2px 12px 8px; }
+    .appbar{ padding:9px 12px; gap:6px; }
+    .appbar-title{ font-size:14px; }
+    .wallet-chip{ height:30px; font-size:10.5px; padding:0 8px 0 5px; }
+    .wallet-dot{ width:16px; height:16px; }
+    .reward-num{ font-size:27px; }
+    .actionbar-inner{ padding:0 12px; }
+    .icon-btn{ width:34px; height:34px; }
+    .icon-btn svg{ width:17px; height:17px; }
+    .opt-btn{ padding:8px 3px; }
+    .opt-btn .o-main{ font-size:12px; }
+    .opt-btn .o-sub{ font-size:10px; }
+    .grid-4{ gap:4px; }
+  }
+
+  @media (max-width:340px){
+    .appbar-title{ display:none; }
+    .appbar-right{ margin-left:auto; }
+    .opt-btn .o-main{ font-size:11px; }
+    .opt-btn .o-sub{ font-size:9.5px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      transition-duration:.001ms !important;
+    }
+  }
+</style>
 </head>
-<body class="text-gray-800 font-sans antialiased selection:bg-red-100">
+<body>
 
-    <div class="max-w-md mx-auto min-h-screen relative pb-32">
-        
-        <!-- 顶部装饰背景 -->
-        <div class="caishen-gradient absolute top-0 left-0 w-full h-[18.5rem] rounded-b-[1.9rem] shadow-lg"></div>
-        
-        <!-- 顶部导航 -->
-        <div class="relative z-10 p-4 flex justify-between items-center text-white">
-            <button class="p-2 bg-white/20 rounded-full backdrop-blur-sm active-scale hover:bg-white/30">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <div class="flex items-center gap-2">
-                <span class="text-xl hidden">🏮</span>
-                <h1 class="text-lg font-bold tracking-wide">财神聚宝盆Demo</h1>
-            </div>
-            <button onclick="copyWalletAddress()" class="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 active-scale hover:bg-white/30 transition">
-                <div class="w-5 h-5 rounded-full solana-gradient flex items-center justify-center">
-                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.955 13.567c-1.085-.5-6.577-2.92-8.185-3.633-.26-.116-.52-.232-.78-.348 1.2-1.2 3.6-3.6 3.6-3.6s-2.4-2.4-3.6-3.6c-.26-.116-.52-.232-.78-.348-1.608-.713-7.1-3.133-8.185-3.633-1.085-.5-2.17-.5-3.255 0-1.085.5-6.577 2.92-8.185 3.633-.26.116-.52.232-.78.348 1.2 1.2 3.6 3.6 3.6 3.6s-2.4 2.4-3.6 3.6c.26.116.52.232.78.348 1.608.713 7.1 3.133 8.185 3.633 1.085.5 2.17.5 3.255 0z"/></svg>
-                </div>
-                <span class="text-xs font-medium">7xKX...9mPq</span>
-            </button>
-        </div>
+<div class="app">
 
-        <!-- 1. 核心收益概览卡片 -->
-        <div class="relative z-10 px-4 mt-2">
-            <div class="glass-card rounded-2xl p-5 shadow-xl">
-                <p class="text-gray-500 text-xs mb-1 flex items-center gap-1">
-                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-                    待领取收益 (Est. Reward)
-                </p>
-                <h2 class="text-3xl font-bold caishen-text mb-4 tracking-tight">1,245.50 <span class="text-base text-gray-500 font-normal">$财神到</span></h2>
-                
-                <button class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl shadow-md shadow-amber-200 transition-all active-scale flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    一键领取收益
-                </button>
-            </div>
-        </div>
-
-        <!-- 2. 我的资产 (横向滑动卡片) -->
-        <div class="relative z-10 mt-6 px-4">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-white text-sm flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                    我的钱包资产
-                </h3>
-                <button class="text-xs text-white/80 bg-white/10 px-2 py-1 rounded-md backdrop-blur-sm active-scale">刷新</button>
-            </div>
-            
-            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 snap-x snap-mandatory">
-                <div class="flex-shrink-0 w-36 bg-white/95 backdrop-blur rounded-xl p-3 shadow-sm snap-start border border-white/50">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center text-xs">💰</div>
-                        <div>
-                            <p class="text-xs font-bold text-gray-800">财神到</p>
-                            <p class="text-[10px] text-gray-400">单价 $0.01</p>
-                        </div>
-                    </div>
-                    <p class="text-sm font-bold text-gray-800 truncate">10,000.00</p>
-                    <p class="text-[10px] text-gray-500">≈ $100.00</p>
-                </div>
-                <div class="flex-shrink-0 w-36 bg-white/95 backdrop-blur rounded-xl p-3 shadow-sm snap-start border border-white/50">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600">B</div>
-                        <div>
-                            <p class="text-xs font-bold text-gray-800">BG</p>
-                            <p class="text-[10px] text-gray-400">单价 $0.0001</p>
-                        </div>
-                    </div>
-                    <p class="text-sm font-bold text-gray-800 truncate">500,000</p>
-                    <p class="text-[10px] text-gray-500">≈ $50.00</p>
-                </div>
-                <div class="flex-shrink-0 w-36 bg-white/95 backdrop-blur rounded-xl p-3 shadow-sm snap-start border border-white/50">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-600">F</div>
-                        <div>
-                            <p class="text-xs font-bold text-gray-800">FIST</p>
-                            <p class="text-[10px] text-gray-400">单价 $0.001</p>
-                        </div>
-                    </div>
-                    <p class="text-sm font-bold text-gray-800 truncate">50,000</p>
-                    <p class="text-[10px] text-gray-500">≈ $50.00</p>
-                </div>
-                <div class="flex-shrink-0 w-36 bg-white/95 backdrop-blur rounded-xl p-3 shadow-sm snap-start border border-white/50">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs font-bold text-green-600">L</div>
-                        <div>
-                            <p class="text-xs font-bold text-gray-800">LUCKY99</p>
-                            <p class="text-[10px] text-gray-400">单价 $0.1</p>
-                        </div>
-                    </div>
-                    <p class="text-sm font-bold text-gray-800 truncate">1,000</p>
-                    <p class="text-[10px] text-gray-500">≈ $100.00</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. 我的质押仓位 -->
-        <div class="relative z-10 px-4 mt-6">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
-                    我的质押仓位
-                </h3>
-                <span class="text-xs text-gray-400">共 2 个仓位</span>
-            </div>
-            
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3">
-                <div class="flex justify-between items-start mb-3">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-xs font-bold text-gray-800">单宝生财 · 90 天</span>
-                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-50 text-green-600">进行中</span>
-                        </div>
-                        <p class="text-[10px] text-gray-400">入场时间: 2026-09-15 14:30</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-lg font-bold caishen-text">80%</p>
-                        <p class="text-[10px] text-gray-400">APY</p>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <div class="flex justify-between text-[10px] text-gray-500 mb-1">
-                        <span>已锁仓 62 天</span>
-                        <span>剩余 28 天</span>
-                    </div>
-                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full caishen-gradient rounded-full progress-bar-fill" style="width: 68.8%"></div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100">
-                    <div>
-                        <p class="text-[10px] text-gray-400 mb-0.5">质押本金</p>
-                        <p class="text-xs font-bold text-gray-800">100.00 USDC</p>
-                        <p class="text-[10px] text-gray-400">= 10,000 财神到</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-gray-400 mb-0.5">已累积收益</p>
-                        <p class="text-xs font-bold text-amber-600">+15.07 财神到</p>
-                        <p class="text-[10px] text-gray-400">≈ $0.15</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-start mb-3">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-xs font-bold text-gray-800">双宝聚财 · 30 天</span>
-                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600">
-                                <span class="w-1 h-1 rounded-full bg-blue-500 animate-pulse-dot"></span> 处理中
-                            </span>
-                        </div>
-                        <p class="text-[10px] text-gray-400">入场时间: 2026-10-14 09:15</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-lg font-bold caishen-text">55%</p>
-                        <p class="text-[10px] text-gray-400">APY</p>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100">
-                    <div>
-                        <p class="text-[10px] text-gray-400 mb-0.5">财神到 (60%)</p>
-                        <p class="text-xs font-bold text-gray-800">3,000 个</p>
-                        <p class="text-[10px] text-gray-400">= 30.00 USDC</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-gray-400 mb-0.5">BG (40%)</p>
-                        <p class="text-xs font-bold text-gray-800">200,000 个</p>
-                        <p class="text-[10px] text-gray-400">= 20.00 USDC</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. 质押配置区域 -->
-        <div class="relative z-10 px-4 mt-6 space-y-4">
-            
-            <div class="flex justify-between items-center mb-1">
-                <h3 class="font-bold text-gray-800 text-sm">新建质押</h3>
-            </div>
-            
-            <div class="bg-white rounded-2xl p-1 flex shadow-sm border border-gray-100">
-                <button onclick="switchTab('single')" id="tab-single" class="flex-1 py-2.5 text-sm font-bold rounded-xl bg-red-50 text-red-600 transition-all">单宝生财</button>
-                <button onclick="switchTab('double')" id="tab-double" class="flex-1 py-2.5 text-sm font-bold rounded-xl text-gray-500 transition-all">双宝聚财</button>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-gray-800 text-sm">选择锁仓周期</h3>
-                    <span class="text-[10px] text-gray-500 bg-gray-100 px-2 py-1 rounded-full">APY 随周期递增</span>
-                </div>
-                <div class="grid grid-cols-4 gap-2" id="period-selector">
-                    <button onclick="selectPeriod(30)" class="period-btn active bg-red-50 border-red-500 border text-red-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all shadow-sm" data-days="30">
-                        <span class="text-[10px] font-medium">30 天</span>
-                        <span class="text-sm font-bold apy-display">40%</span>
-                    </button>
-                    <button onclick="selectPeriod(90)" class="period-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all" data-days="90">
-                        <span class="text-[10px] font-medium">90 天</span>
-                        <span class="text-sm font-bold apy-display">80%</span>
-                    </button>
-                    <button onclick="selectPeriod(120)" class="period-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all" data-days="120">
-                        <span class="text-[10px] font-medium">120 天</span>
-                        <span class="text-sm font-bold apy-display">110%</span>
-                    </button>
-                    <button onclick="selectPeriod(180)" class="period-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all" data-days="180">
-                        <span class="text-[10px] font-medium">180 天</span>
-                        <span class="text-sm font-bold apy-display">170%</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="partner-token-selector" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-gray-800 text-sm">选择合作币 (占比 40%)</h3>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <button onclick="selectPartner('BG')" class="partner-btn active bg-red-50 border-red-500 border text-red-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all shadow-sm" data-token="BG">
-                        <span class="text-sm font-bold">BG</span>
-                        <span class="text-[10px] opacity-80 mt-0.5">$0.0001</span>
-                    </button>
-                    <button onclick="selectPartner('FIST')" class="partner-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all" data-token="FIST">
-                        <span class="text-sm font-bold">FIST</span>
-                        <span class="text-[10px] opacity-80 mt-0.5">$0.001</span>
-                    </button>
-                    <button onclick="selectPartner('LUCKY99')" class="partner-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all" data-token="LUCKY99">
-                        <span class="text-sm font-bold">LUCKY99</span>
-                        <span class="text-[10px] opacity-80 mt-0.5">$0.1</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 mb-4 text-[11px] text-gray-500">
-                    <span>财神到价格: <b class="text-gray-700">$0.01</b></span>
-                    <span>1 USDC = <b class="text-red-600">100</b> 财神到</span>
-                </div>
-
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-gray-500 font-medium">总质押价值</span>
-                    <button onclick="setMax()" class="text-[10px] text-red-500 font-bold bg-red-50 px-2 py-1 rounded-md active-scale hover:bg-red-100 transition">MAX (150 USDC)</button>
-                </div>
-                <div class="flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <input type="number" id="stake-input" placeholder="0.00" class="flex-1 text-2xl font-bold text-gray-800 outline-none bg-transparent placeholder-gray-300" oninput="calculateReward()">
-                    <div class="flex items-center gap-1.5 bg-gray-100 px-2 py-1.5 rounded-lg">
-                        <span class="font-bold text-gray-700 text-xs">USDC</span>
-                    </div>
-                </div>
-                
-                <div id="min-threshold-warning" class="hidden mt-2 flex items-center gap-1 text-xs text-red-500 font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    最低质押门槛为 10 USDC
-                </div>
-
-                <div id="breakdown-area" class="mt-4 space-y-2 hidden"></div>
-                
-                <div class="mt-4 pt-4 border-t border-dashed border-gray-200 grid grid-cols-2 gap-4">
-                    <div class="text-left">
-                        <span class="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">预估日收益 (T+1)</span>
-                        <span class="font-bold text-amber-600 text-sm" id="est-daily-reward">0.00 财神到</span>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">到期总收益</span>
-                        <span class="font-bold text-red-600 text-sm" id="est-total-reward">0.00 财神到</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        近期操作记录
-                    </h3>
-                    <button class="text-xs text-gray-400 active-scale">查看全部 →</button>
-                </div>
-                
-                <div class="space-y-1" id="activity-list">
-                    <div onclick="openDetail(0)" class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-gray-50 transition cursor-pointer active-scale">
-                        <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-800 truncate">质押 100 USDC <span class="text-[10px] text-gray-400 font-normal">(单宝 90天)</span></p>
-                            <p class="text-[10px] text-gray-400">今天 14:30 · 7xKX...9mPq</p>
-                        </div>
-                        <div class="text-right flex-shrink-0 flex items-center gap-1">
-                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-50 text-green-600">成功</span>
-                            <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </div>
-                    </div>
-
-                    <div onclick="openDetail(1)" class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-gray-50 transition cursor-pointer active-scale">
-                        <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-800 truncate">领取收益 15.50 财神到</p>
-                            <p class="text-[10px] text-gray-400">昨天 09:15 · 7xKX...9mPq</p>
-                        </div>
-                        <div class="text-right flex-shrink-0 flex items-center gap-1">
-                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-50 text-green-600">成功</span>
-                            <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </div>
-                    </div>
-
-                    <div onclick="openDetail(2)" class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-gray-50 transition cursor-pointer active-scale">
-                        <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-800 truncate">质押 50 USDC <span class="text-[10px] text-gray-400 font-normal">(双宝 30天)</span></p>
-                            <p class="text-[10px] text-gray-400">3天前 · 7xKX...9mPq</p>
-                        </div>
-                        <div class="text-right flex-shrink-0 flex items-center gap-1">
-                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600">
-                                <span class="w-1 h-1 rounded-full bg-blue-500 animate-pulse-dot"></span> 处理中
-                            </span>
-                            <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <h4 class="text-xs font-bold text-gray-800 mb-2 flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    释放规则与风控说明
-                </h4>
-                <ul class="text-[11px] text-gray-500 space-y-1.5 list-disc list-inside leading-relaxed">
-                    <li><span class="text-gray-700 font-medium">线性释放：</span>T+1 起每日释放，每日可领收益。</li>
-                    <li><span class="text-gray-700 font-medium">本金与收益：</span>到期原路返还，APY 为简单年化，<span class="text-red-500 font-bold">非复利</span>。</li>
-                    <li><span class="text-gray-700 font-medium">双宝计价：</span>按总质押 USDC 等值计算，合作币按入场快照价，收益统一以 $财神到 结算。</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40">
-            <div class="max-w-md mx-auto">
-                <button id="stake-btn" class="w-full caishen-gradient text-white font-bold py-4 rounded-xl shadow-lg shadow-red-200 transition-all active-scale text-base tracking-wide btn-disabled" disabled onclick="alert('触发 Phantom/Solflare 钱包连接与质押合约调用')">
-                    请输入质押金额
-                </button>
-            </div>
-        </div>
-
+  <!-- ================= 顶栏 ================= -->
+  <header class="appbar">
+    <button class="icon-btn" type="button" aria-label="返回">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+    <div class="appbar-title">财神聚宝盆</div>
+    <div class="appbar-right">
+      <button class="wallet-chip" type="button" onclick="copyWalletAddress()" aria-label="复制钱包地址">
+        <span class="wallet-dot" aria-hidden="true"></span>
+        <span>7xKX...9mPq</span>
+      </button>
+      <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
     </div>
+  </header>
 
-    <div id="detail-sheet" class="sheet-backdrop fixed inset-0 z-50 flex items-end justify-center">
-        <div onclick="closeDetail()" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-        <div class="sheet-panel relative w-full max-w-md bg-white rounded-t-3xl shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white pt-3 pb-2 border-b border-gray-100 rounded-t-3xl z-10">
-                <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-3"></div>
-                <div class="flex justify-between items-center px-5">
-                    <h3 class="font-bold text-gray-800 text-base">交易详情</h3>
-                    <button onclick="closeDetail()" class="p-1.5 hover:bg-gray-100 rounded-full active-scale">
-                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="p-5 space-y-4" id="detail-content"></div>
+  <main class="app-main">
+
+    <!-- ================= 收益概览 ================= -->
+    <section class="reward-card" aria-label="待领取收益">
+      <div class="reward-inner">
+        <div class="reward-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>待领取收益</span>
+          <span class="reward-label-en">Est. Reward</span>
         </div>
+
+        <div class="reward-value">
+          <span class="reward-num">1,245.50</span>
+          <span class="reward-token">$财神到</span>
+        </div>
+
+        <button class="btn-gold" type="button" onclick="copyText('', '演示环境暂不支持领取')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          一键领取收益
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 钱包资产 ================= -->
+    <section aria-label="我的钱包资产">
+      <div class="block-head">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="7" width="18" height="14" rx="2"></rect>
+            <path d="M3 11h18"></path>
+            <path d="M7 15h2"></path>
+          </svg>
+          我的钱包资产
+        </h3>
+        <button class="ghost-btn" type="button">刷新</button>
+      </div>
+
+      <div class="hscroll">
+        <div class="asset-card">
+          <div class="asset-top">
+            <div class="asset-icon" style="background:var(--cyber-glow-faint);color:var(--cyber);">财</div>
+            <div style="min-width:0;">
+              <p class="asset-name">财神到</p>
+              <p class="asset-price">$0.01</p>
+            </div>
+          </div>
+          <p class="asset-amt">10,000.00</p>
+          <p class="asset-usd">≈ $100.00</p>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-top">
+            <div class="asset-icon" style="background:var(--info-soft);color:var(--info);">B</div>
+            <div style="min-width:0;">
+              <p class="asset-name">BG</p>
+              <p class="asset-price">$0.0001</p>
+            </div>
+          </div>
+          <p class="asset-amt">500,000</p>
+          <p class="asset-usd">≈ $50.00</p>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-top">
+            <div class="asset-icon" style="background:var(--gold-soft);color:var(--gold);">A</div>
+            <div style="min-width:0;">
+              <p class="asset-name">ANTFUN</p>
+              <p class="asset-price">$0.0005</p>
+            </div>
+          </div>
+          <p class="asset-amt">1,000,000</p>
+          <p class="asset-usd">≈ $500.00</p>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-top">
+            <div class="asset-icon" style="background:var(--ok-soft);color:var(--ok);">F</div>
+            <div style="min-width:0;">
+              <p class="asset-name">FIST</p>
+              <p class="asset-price">$0.001</p>
+            </div>
+          </div>
+          <p class="asset-amt">50,000</p>
+          <p class="asset-usd">≈ $50.00</p>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-top">
+            <div class="asset-icon" style="background:var(--ok-soft);color:var(--ok);">L</div>
+            <div style="min-width:0;">
+              <p class="asset-name">LUCKY99</p>
+              <p class="asset-price">$0.1</p>
+            </div>
+          </div>
+          <p class="asset-amt">1,000</p>
+          <p class="asset-usd">≈ $100.00</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 质押仓位 ================= -->
+    <section aria-label="我的质押仓位">
+      <div class="block-head">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"></path>
+          </svg>
+          我的质押仓位
+        </h3>
+        <span class="meta">共 2 个仓位</span>
+      </div>
+
+      <div class="positions">
+
+        <article class="pos-card">
+          <div class="pos-top">
+            <div style="min-width:0;">
+              <div class="pos-name">
+                单宝生财 · 90 天
+                <span class="badge badge-ok">进行中</span>
+              </div>
+              <p class="pos-meta">入场 2026-09-15 14:30</p>
+            </div>
+            <div class="pos-apy">
+              <div class="pos-apy-val">80%</div>
+              <div class="pos-apy-lbl">APY</div>
+            </div>
+          </div>
+
+          <div class="pos-progress-head">
+            <span>已锁仓 62 天</span>
+            <span>剩余 28 天</span>
+          </div>
+          <div class="progress"><i style="width:68.8%"></i></div>
+
+          <div class="pos-grid">
+            <div>
+              <span class="pos-k">质押本金</span>
+              <span class="pos-v">100.00 USDC</span>
+              <span class="pos-k" style="margin-top:2px;">= 10,000 财神到</span>
+            </div>
+            <div>
+              <span class="pos-k">已累积收益</span>
+              <span class="pos-v is-gold">+15.07 财神到</span>
+              <span class="pos-k" style="margin-top:2px;">≈ $0.15</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="pos-card">
+          <div class="pos-top">
+            <div style="min-width:0;">
+              <div class="pos-name">
+                双宝聚财 · 30 天
+                <span class="badge badge-pending">
+                  <span class="dot-pulse"></span>处理中
+                </span>
+              </div>
+              <p class="pos-meta">入场 2026-10-14 09:15</p>
+            </div>
+            <div class="pos-apy">
+              <div class="pos-apy-val">55%</div>
+              <div class="pos-apy-lbl">APY</div>
+            </div>
+          </div>
+
+          <div class="pos-grid">
+            <div>
+              <span class="pos-k">财神到 (60%)</span>
+              <span class="pos-v">3,000 个</span>
+              <span class="pos-k" style="margin-top:2px;">= 30.00 USDC</span>
+            </div>
+            <div>
+              <span class="pos-k">BG (40%)</span>
+              <span class="pos-v">200,000 个</span>
+              <span class="pos-k" style="margin-top:2px;">= 20.00 USDC</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= 新建质押 ================= -->
+    <section aria-label="新建质押">
+      <div class="block-head">
+        <h3>新建质押</h3>
+      </div>
+
+      <div class="segmented" role="tablist" aria-label="质押模式">
+        <button type="button" id="tab-single" class="seg-btn active" role="tab" aria-selected="true" onclick="switchTab('single')">单宝生财</button>
+        <button type="button" id="tab-double" class="seg-btn" role="tab" aria-selected="false" onclick="switchTab('double')">双宝聚财</button>
+      </div>
+
+      <div class="card" style="margin-bottom:12px;">
+        <div class="block-head" style="margin-bottom:10px;padding:0;">
+          <h3 style="font-size:13px;color:var(--ink-2);">选择锁仓周期</h3>
+          <span class="meta">APY 随周期递增</span>
+        </div>
+        <div class="grid-4" id="period-selector">
+          <button type="button" class="opt-btn active" data-days="30" onclick="selectPeriod(30)">
+            <span class="o-sub">30 天</span>
+            <span class="o-main apy-display">40%</span>
+          </button>
+          <button type="button" class="opt-btn" data-days="90" onclick="selectPeriod(90)">
+            <span class="o-sub">90 天</span>
+            <span class="o-main apy-display">80%</span>
+          </button>
+          <button type="button" class="opt-btn" data-days="120" onclick="selectPeriod(120)">
+            <span class="o-sub">120 天</span>
+            <span class="o-main apy-display">110%</span>
+          </button>
+          <button type="button" class="opt-btn" data-days="180" onclick="selectPeriod(180)">
+            <span class="o-sub">180 天</span>
+            <span class="o-main apy-display">170%</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="partner-token-selector" style="margin-bottom:12px;">
+        <div class="block-head" style="margin-bottom:10px;padding:0;">
+          <h3 style="font-size:13px;color:var(--ink-2);">选择合作币 (占比 40%)</h3>
+        </div>
+        <div class="grid-4">
+          <button type="button" class="opt-btn active" data-token="BG" onclick="selectPartner('BG')">
+            <span class="o-main">BG</span>
+            <span class="o-sub">$0.0001</span>
+          </button>
+          <button type="button" class="opt-btn" data-token="ANTFUN" onclick="selectPartner('ANTFUN')">
+            <span class="o-main">ANTFUN</span>
+            <span class="o-sub">$0.0005</span>
+          </button>
+          <button type="button" class="opt-btn" data-token="FIST" onclick="selectPartner('FIST')">
+            <span class="o-main">FIST</span>
+            <span class="o-sub">$0.001</span>
+          </button>
+          <button type="button" class="opt-btn" data-token="LUCKY99" onclick="selectPartner('LUCKY99')">
+            <span class="o-main">LUCKY99</span>
+            <span class="o-sub">$0.1</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="price-hint">
+          <span>财神到价格：<b>$0.01</b></span>
+          <span>1 USDC = <span class="hl">100</span> 财神到</span>
+        </div>
+
+        <div class="input-head">
+          <span class="input-label">总质押价值</span>
+          <button class="max-btn" type="button" onclick="setMax()">MAX · 150 USDC</button>
+        </div>
+
+        <div class="input-row">
+          <input type="number" id="stake-input" inputmode="decimal" placeholder="0.00" aria-label="质押金额" oninput="calculateReward()">
+          <span class="input-suffix">USDC</span>
+        </div>
+
+        <div id="min-threshold-warning" class="warn-line hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          </svg>
+          最低质押门槛为 10 USDC
+        </div>
+
+        <div id="breakdown-area" class="hidden"></div>
+
+        <div class="est-row">
+          <div class="est-item">
+            <span class="est-k">预估日收益 (T+1)</span>
+            <span class="est-v is-gold" id="est-daily-reward">0.00 财神到</span>
+          </div>
+          <div class="est-item">
+            <span class="est-k">到期总收益</span>
+            <span class="est-v is-red" id="est-total-reward">0.00 财神到</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 操作记录 ================= -->
+    <section class="card" aria-label="近期操作记录">
+      <div class="block-head" style="padding:0;">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <polyline points="12 7 12 12 16 14"></polyline>
+          </svg>
+          近期操作记录
+        </h3>
+        <button class="ghost-btn" type="button">查看全部 →</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div class="activity" onclick="openDetail(0)" role="button" tabindex="0">
+          <div class="activity-icon type-stake">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+          <div class="activity-body">
+            <div class="activity-title">质押 100 USDC <span>(单宝 90天)</span></div>
+            <div class="activity-time">今天 14:30 · 7xKX...9mPq</div>
+          </div>
+          <div class="activity-right">
+            <span class="badge badge-ok">成功</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="activity" onclick="openDetail(1)" role="button" tabindex="0">
+          <div class="activity-icon type-claim">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <div class="activity-body">
+            <div class="activity-title">领取收益 15.50 财神到</div>
+            <div class="activity-time">昨天 09:15 · 7xKX...9mPq</div>
+          </div>
+          <div class="activity-right">
+            <span class="badge badge-ok">成功</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="activity" onclick="openDetail(2)" role="button" tabindex="0">
+          <div class="activity-icon type-pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+          <div class="activity-body">
+            <div class="activity-title">质押 50 USDC <span>(双宝 30天)</span></div>
+            <div class="activity-time">3天前 · 7xKX...9mPq</div>
+          </div>
+          <div class="activity-right">
+            <span class="badge badge-pending"><span class="dot-pulse"></span>处理中</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 规则说明 ================= -->
+    <section class="card" aria-label="释放规则与风控说明">
+      <div class="block-head" style="padding:0;margin-bottom:10px;">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="9" y1="13" x2="15" y2="13"></line>
+            <line x1="9" y1="17" x2="15" y2="17"></line>
+          </svg>
+          释放规则与风控说明
+        </h3>
+      </div>
+      <ul class="rules">
+        <li><b>线性释放：</b>T+1 起每日释放，每日可领收益。</li>
+        <li><b>本金与收益：</b>到期原路返还，APY 为简单年化，<span class="is-red">非复利</span>。</li>
+        <li><b>双宝计价：</b>按总质押 USDC 等值计算，合作币按入场快照价，收益统一以 $财神到 结算。</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ================= 底部固定操作栏 ================= -->
+  <div class="actionbar">
+    <div class="actionbar-inner">
+      <button id="stake-btn" class="btn-primary btn-disabled" type="button" disabled
+              onclick="copyText('', '演示环境 · 将唤起 Phantom / Solflare 钱包')">
+        请输入质押金额
+      </button>
     </div>
+  </div>
 
-    <div id="copy-toast" class="copy-toast fixed top-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-4 py-2 rounded-full shadow-lg z-[60]">
-        ✓ 已复制到剪贴板
+</div>
+
+<!-- ================= 详情抽屉 ================= -->
+<div id="detail-sheet" class="sheet-backdrop" role="dialog" aria-modal="true" aria-label="交易详情">
+  <div class="sheet-scrim" onclick="closeDetail()"></div>
+  <div class="sheet-panel">
+    <div class="sheet-head">
+      <div class="sheet-grab"></div>
+      <div class="sheet-head-row">
+        <h3 class="sheet-title">交易详情</h3>
+        <button class="sheet-close" type="button" onclick="closeDetail()" aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </div>
+    <div class="sheet-body" id="detail-content"></div>
+  </div>
+</div>
 
-    <script>
-        const singleAPYs = { 30: 40, 90: 80, 120: 110, 180: 170 };
-        const doubleAPYs = { 30: 55, 90: 105, 120: 140, 180: 200 };
-        const tokenPrices = { '财神到': 0.01, 'BG': 0.0001, 'FIST': 0.001, 'LUCKY99': 0.1 };
-        const tokenBalances = { '财神到': 10000, 'BG': 500000, 'FIST': 50000, 'LUCKY99': 1000, 'USDC': 150 };
-        const walletAddress = '7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o';
-        
-        const activities = [
-            {
-                type: 'stake',
-                title: '质押 100 USDC',
-                subtitle: '单宝质押 · 90 天',
-                time: '2026-10-15 14:30:25',
-                status: 'success',
-                txHash: '5KtPQ8vL3mN7rW2xY9cB4hJ6kM1sD8gA3eQ5uI0oP7tR2vL4mN9wX1yZ5cB3hJ6kM8sD2gA7eQ4uI9oP6t',
-                address: '7xKX...9mPq',
-                details: {
-                    '质押模式': '单宝质押',
-                    '锁仓周期': '90 天',
-                    'APY': '80%',
-                    '质押本金': '100.00 USDC',
-                    '等价代币': '10,000 财神到',
-                    '预估总收益': '19.73 财神到',
-                    '预估日收益': '0.22 财神到',
-                    '到期时间': '2027-01-13 14:30'
-                }
-            },
-            {
-                type: 'claim',
-                title: '领取收益 15.50 财神到',
-                subtitle: '来自 3 个质押仓位',
-                time: '2026-10-14 09:15:42',
-                status: 'success',
-                txHash: '3vL8mN2wX4yZ8cB6hJ9kM1sD5gA0eQ7uI2oP9tR4vL6mN1wX3yZ7cB5hJ8kM0sD4gA9eQ6uI1oP8tR3vL5mN0w',
-                address: '7xKX...9mPq',
-                details: {
-                    '领取数量': '15.50 财神到',
-                    '折合价值': '$0.155 USDC',
-                    '来源仓位': '3 个',
-                    '累计已领取': '1,245.50 财神到',
-                    'Gas 费用': '0.000005 SOL'
-                }
-            },
-            {
-                type: 'stake',
-                title: '质押 50 USDC',
-                subtitle: '双宝聚财 · 30 天',
-                time: '2026-10-12 16:20:18',
-                status: 'pending',
-                txHash: '9cB4hJ6kM1sD8gA3eQ5uI0oP7tR2vL4mN9wX1yZ5cB3hJ6kM8sD2gA7eQ4uI9oP6tR1vL3mN8wX0yZ4cB2hJ5kM7s',
-                address: '7xKX...9mPq',
-                details: {
-                    '质押模式': '双宝聚财',
-                    '锁仓周期': '30 天',
-                    'APY': '55%',
-                    '总质押价值': '50.00 USDC',
-                    '财神到 (60%)': '3,000 个 = 30.00 USDC',
-                    'BG (40%)': '200,000 个 = 20.00 USDC',
-                    'BG 快照价': '$0.0001',
-                    '预估总收益': '2.26 财神到',
-                    '到期时间': '2026-11-11 16:20'
-                }
-            }
-        ];
-        
-        let currentTab = 'single';
-        let currentPeriod = 30;
-        let currentPartner = 'BG';
+<!-- ================= Toast ================= -->
+<div id="copy-toast" role="status" aria-live="polite">已复制</div>
 
-        function formatNumber(num, decimals = 2) {
-            if (isNaN(num)) return '0';
-            return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-        }
+<script>
+  /* ==================== 数据 ==================== */
+  const singleAPYs = { 30: 40, 90: 80, 120: 110, 180: 170 };
+  const doubleAPYs = { 30: 55, 90: 105, 120: 140, 180: 200 };
+  const tokenPrices = {
+    '财神到': 0.01,
+    'BG': 0.0001,
+    'ANTFUN': 0.0005,
+    'FIST': 0.001,
+    'LUCKY99': 0.1
+  };
+  const tokenBalances = {
+    '财神到': 10000,
+    'BG': 500000,
+    'ANTFUN': 1000000,
+    'FIST': 50000,
+    'LUCKY99': 1000,
+    'USDC': 150
+  };
+  const walletAddress = '7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o';
 
-        function switchTab(tab) {
-            currentTab = tab;
-            const singleBtn = document.getElementById('tab-single');
-            const doubleBtn = document.getElementById('tab-double');
-            const partnerSelector = document.getElementById('partner-token-selector');
+  const activities = [
+    {
+      type: 'stake',
+      title: '质押 100 USDC',
+      subtitle: '单宝质押 · 90 天',
+      time: '2026-10-15 14:30:25',
+      status: 'success',
+      txHash: '5KtPQ8vL3mN7rW2xY9cB4hJ6kM1sD8gA3eQ5uI0oP7tR2vL4mN9wX1yZ5cB3hJ6kM8sD2gA7eQ4uI9oP6t',
+      address: '7xKX...9mPq',
+      details: {
+        '质押模式': '单宝质押',
+        '锁仓周期': '90 天',
+        'APY': '80%',
+        '质押本金': '100.00 USDC',
+        '等价代币': '10,000 财神到',
+        '预估总收益': '19.73 财神到',
+        '预估日收益': '0.22 财神到',
+        '到期时间': '2027-01-13 14:30'
+      }
+    },
+    {
+      type: 'claim',
+      title: '领取收益 15.50 财神到',
+      subtitle: '来自 3 个质押仓位',
+      time: '2026-10-14 09:15:42',
+      status: 'success',
+      txHash: '3vL8mN2wX4yZ8cB6hJ9kM1sD5gA0eQ7uI2oP9tR4vL6mN1wX3yZ7cB5hJ8kM0sD4gA9eQ6uI1oP8tR3vL5mN0w',
+      address: '7xKX...9mPq',
+      details: {
+        '领取数量': '15.50 财神到',
+        '折合价值': '$0.155 USDC',
+        '来源仓位': '3 个',
+        '累计已领取': '1,245.50 财神到',
+        'Gas 费用': '0.000005 SOL'
+      }
+    },
+    {
+      type: 'stake',
+      title: '质押 50 USDC',
+      subtitle: '双宝聚财 · 30 天',
+      time: '2026-10-12 16:20:18',
+      status: 'pending',
+      txHash: '9cB4hJ6kM1sD8gA3eQ5uI0oP7tR2vL4mN9wX1yZ5cB3hJ6kM8sD2gA7eQ4uI9oP6tR1vL3mN8wX0yZ4cB2hJ5kM7s',
+      address: '7xKX...9mPq',
+      details: {
+        '质押模式': '双宝聚财',
+        '锁仓周期': '30 天',
+        'APY': '55%',
+        '总质押价值': '50.00 USDC',
+        '财神到 (60%)': '3,000 个 = 30.00 USDC',
+        'BG (40%)': '200,000 个 = 20.00 USDC',
+        'BG 快照价': '$0.0001',
+        '预估总收益': '2.26 财神到',
+        '到期时间': '2026-11-11 16:20'
+      }
+    }
+  ];
 
-            if (tab === 'single') {
-                singleBtn.className = 'flex-1 py-2.5 text-sm font-bold rounded-xl bg-red-50 text-red-600 transition-all';
-                doubleBtn.className = 'flex-1 py-2.5 text-sm font-bold rounded-xl text-gray-500 transition-all';
-                partnerSelector.classList.add('hidden');
-            } else {
-                doubleBtn.className = 'flex-1 py-2.5 text-sm font-bold rounded-xl bg-red-50 text-red-600 transition-all';
-                singleBtn.className = 'flex-1 py-2.5 text-sm font-bold rounded-xl text-gray-500 transition-all';
-                partnerSelector.classList.remove('hidden');
-            }
-            updatePeriodButtons();
-            calculateReward();
-        }
+  let currentTab = 'single';
+  let currentPeriod = 30;
+  let currentPartner = 'BG';
 
-        function selectPeriod(days) {
-            currentPeriod = days;
-            updatePeriodButtons();
-            calculateReward();
-        }
+  /* ==================== 工具 ==================== */
+  function formatNumber(num, decimals = 2) {
+    if (isNaN(num)) return '0';
+    return num.toLocaleString('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
+  }
 
-        function selectPartner(token) {
-            currentPartner = token;
-            const buttons = document.querySelectorAll('.partner-btn');
-            buttons.forEach(btn => {
-                if (btn.getAttribute('data-token') === token) {
-                    btn.className = 'partner-btn active bg-red-50 border-red-500 border text-red-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all shadow-sm';
-                } else {
-                    btn.className = 'partner-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all';
-                }
-            });
-            calculateReward();
-        }
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
 
-        function updatePeriodButtons() {
-            const buttons = document.querySelectorAll('.period-btn');
-            const apyMap = currentTab === 'single' ? singleAPYs : doubleAPYs;
-            
-            buttons.forEach(btn => {
-                const days = parseInt(btn.getAttribute('data-days'));
-                const apy = apyMap[days];
-                
-                if (days === currentPeriod) {
-                    btn.className = 'period-btn active bg-red-50 border-red-500 border text-red-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all shadow-sm';
-                } else {
-                    btn.className = 'period-btn bg-white border-gray-200 border text-gray-600 py-3 rounded-xl flex flex-col items-center justify-center transition-all';
-                }
-                btn.querySelector('.apy-display').innerText = apy + '%';
-            });
-        }
+  function copyText(text, msg) {
+    const done = () => {
+      const toast = document.getElementById('copy-toast');
+      toast.textContent = msg || '已复制';
+      toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove('show'), 1700);
+    };
+    if (!text) { done(); return; }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
 
-        function calculateReward() {
-            const input = document.getElementById('stake-input').value;
-            const totalUsdc = parseFloat(input) || 0;
-            
-            const dailyRewardEl = document.getElementById('est-daily-reward');
-            const totalRewardEl = document.getElementById('est-total-reward');
-            const breakdownArea = document.getElementById('breakdown-area');
-            const warningEl = document.getElementById('min-threshold-warning');
-            const stakeBtn = document.getElementById('stake-btn');
-            
-            const apyMap = currentTab === 'single' ? singleAPYs : doubleAPYs;
-            const currentAPY = apyMap[currentPeriod];
+  function copyWalletAddress() {
+    copyText(walletAddress, '钱包地址已复制');
+  }
 
-            // 默认状态
-            let hasInsufficientBalance = false;
+  function copyHash(hash) {
+    copyText(hash, '交易签名已复制');
+  }
 
-            if (totalUsdc > 0 && totalUsdc < 10) {
-                warningEl.classList.remove('hidden');
-                stakeBtn.disabled = true;
-                stakeBtn.classList.add('btn-disabled');
-                stakeBtn.innerText = '未达最低门槛';
-            } else if (totalUsdc > 0) {
-                warningEl.classList.add('hidden');
-            } else {
-                warningEl.classList.add('hidden');
-                stakeBtn.disabled = true;
-                stakeBtn.classList.add('btn-disabled');
-                stakeBtn.innerText = '请输入质押金额';
-            }
+  /* ==================== 主题 ==================== */
+  (function initTheme() {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    const meta = document.querySelector('meta[name="theme-color"]');
 
-            if (totalUsdc > 0) {
-                const dailyRewardUsdc = totalUsdc * (currentAPY / 100) / 365;
-                const totalRewardUsdc = dailyRewardUsdc * currentPeriod;
-                
-                const dailyRewardToken = dailyRewardUsdc / tokenPrices['财神到'];
-                const totalRewardToken = totalRewardUsdc / tokenPrices['财神到'];
-                
-                dailyRewardEl.innerText = `+ ${formatNumber(dailyRewardToken)} 财神到`;
-                totalRewardEl.innerText = `+ ${formatNumber(totalRewardToken)} 财神到`;
+    function currentTheme() {
+      const a = root.getAttribute('data-theme');
+      if (a === 'dark' || a === 'light') return a;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+    function applyUI() {
+      const t = currentTheme();
+      if (btn) {
+        btn.setAttribute('data-icon', t);
+        const label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        btn.setAttribute('aria-label', label);
+        btn.title = label;
+      }
+      if (meta) meta.setAttribute('content', t === 'dark' ? '#0a0e14' : '#ffffff');
+    }
+    if (btn) {
+      btn.addEventListener('click', function () {
+        const next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('gof-theme', next); } catch (e) {}
+        applyUI();
+      });
+    }
+    if (darkMQ.addEventListener) {
+      darkMQ.addEventListener('change', function () {
+        if (!root.hasAttribute('data-theme')) applyUI();
+      });
+    } else if (darkMQ.addListener) {
+      darkMQ.addListener(function () {
+        if (!root.hasAttribute('data-theme')) applyUI();
+      });
+    }
+    applyUI();
+  })();
 
-                breakdownArea.classList.remove('hidden');
-                if (currentTab === 'single') {
-                    const caishenAmount = totalUsdc / tokenPrices['财神到'];
-                    const balance = tokenBalances['财神到'];
-                    const isSufficient = balance >= caishenAmount;
-                    const shortage = caishenAmount - balance;
-                    
-                    if (!isSufficient) hasInsufficientBalance = true;
-                    
-                    breakdownArea.innerHTML = `
-                        <div class="flex justify-between items-center text-xs bg-gray-50 p-3 rounded-lg">
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500">💰 需锁定 财神到</span>
-                                ${isSufficient 
-                                    ? '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
-                                    : '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
-                                }
-                            </div>
-                            <div class="text-right">
-                                <span class="font-bold text-gray-800">${formatNumber(caishenAmount)} 个</span>
-                                ${!isSufficient ? `<div class="text-[10px] text-red-500 mt-0.5">还差 ${formatNumber(shortage)} 个</div>` : ''}
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    const caishenUsdc = totalUsdc * 0.6;
-                    const partnerUsdc = totalUsdc * 0.4;
-                    const caishenAmount = caishenUsdc / tokenPrices['财神到'];
-                    const partnerAmount = partnerUsdc / tokenPrices[currentPartner];
-                    
-                    const caishenBalance = tokenBalances['财神到'];
-                    const partnerBalance = tokenBalances[currentPartner];
-                    const isCaishenSufficient = caishenBalance >= caishenAmount;
-                    const isPartnerSufficient = partnerBalance >= partnerAmount;
-                    const caishenShortage = caishenAmount - caishenBalance;
-                    const partnerShortage = partnerAmount - partnerBalance;
-                    
-                    if (!isCaishenSufficient || !isPartnerSufficient) hasInsufficientBalance = true;
-                    
-                    breakdownArea.innerHTML = `
-                        <div class="bg-red-50 rounded-lg p-3 space-y-1">
-                            <div class="flex justify-between items-center text-xs">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-red-700 font-medium">💰 财神到 (60%)</span>
-                                    ${isCaishenSufficient 
-                                        ? '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
-                                        : '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
-                                    }
-                                </div>
-                                <div class="text-right">
-                                    <span class="font-bold text-red-700">${formatNumber(caishenAmount)} 个</span>
-                                    ${!isCaishenSufficient ? `<div class="text-[10px] text-red-500 mt-0.5">还差 ${formatNumber(caishenShortage)} 个</div>` : ''}
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center text-[10px] text-red-500/70">
-                                <span>等值价值</span>
-                                <span>${formatNumber(caishenUsdc)} USDC</span>
-                            </div>
-                        </div>
-                        <div class="bg-amber-50 rounded-lg p-3 space-y-1">
-                            <div class="flex justify-between items-center text-xs">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-amber-700 font-medium">🤝 ${currentPartner} (40%)</span>
-                                    ${isPartnerSufficient 
-                                        ? '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
-                                        : '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
-                                    }
-                                </div>
-                                <div class="text-right">
-                                    <span class="font-bold text-amber-700">${formatNumber(partnerAmount)} 个</span>
-                                    ${!isPartnerSufficient ? `<div class="text-[10px] text-red-500 mt-0.5">还差 ${formatNumber(partnerShortage)} 个</div>` : ''}
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center text-[10px] text-amber-600/70">
-                                <span>快照价 $${tokenPrices[currentPartner]}</span>
-                                <span>${formatNumber(partnerUsdc)} USDC</span>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // 更新按钮状态
-                if (hasInsufficientBalance) {
-                    stakeBtn.disabled = true;
-                    stakeBtn.classList.add('btn-disabled');
-                    stakeBtn.innerText = '代币余额不足';
-                } else if (totalUsdc >= 10) {
-                    stakeBtn.disabled = false;
-                    stakeBtn.classList.remove('btn-disabled');
-                    stakeBtn.innerText = '立即质押';
-                }
-            } else {
-                dailyRewardEl.innerText = '0.00 财神到';
-                totalRewardEl.innerText = '0.00 财神到';
-                breakdownArea.classList.add('hidden');
-            }
-        }
+  /* ==================== 交互逻辑 ==================== */
+  function switchTab(tab) {
+    currentTab = tab;
 
-        function setMax() {
-            document.getElementById('stake-input').value = tokenBalances['USDC'];
-            calculateReward();
-        }
+    const singleBtn = document.getElementById('tab-single');
+    const doubleBtn = document.getElementById('tab-double');
+    const partnerSelector = document.getElementById('partner-token-selector');
 
-        function copyWalletAddress() {
-            navigator.clipboard.writeText(walletAddress).then(() => {
-                const toast = document.getElementById('copy-toast');
-                toast.innerText = '✓ 钱包地址已复制';
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 1500);
-            });
-        }
+    const isSingle = tab === 'single';
+    singleBtn.classList.toggle('active', isSingle);
+    singleBtn.setAttribute('aria-selected', isSingle ? 'true' : 'false');
+    doubleBtn.classList.toggle('active', !isSingle);
+    doubleBtn.setAttribute('aria-selected', !isSingle ? 'true' : 'false');
 
-        function openDetail(index) {
-            const activity = activities[index];
-            const content = document.getElementById('detail-content');
-            
-            const typeConfig = {
-                stake: { icon: 'M12 6v6m0 0v6m0-6h6m-6 0H6', color: 'red', label: '质押' },
-                claim: { icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4', color: 'amber', label: '领取' }
-            };
-            const config = typeConfig[activity.type];
-            
-            const statusHtml = activity.status === 'success' 
-                ? '<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-600">✓ 交易成功</span>'
-                : '<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-600"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse-dot"></span> 等待确认</span>';
-            
-            let detailsHtml = '';
-            for (const [key, value] of Object.entries(activity.details)) {
-                detailsHtml += `
-                    <div class="flex justify-between items-start py-2.5 border-b border-gray-50 last:border-0">
-                        <span class="text-xs text-gray-500 flex-shrink-0">${key}</span>
-                        <span class="text-xs font-medium text-gray-800 text-right ml-4">${value}</span>
-                    </div>
-                `;
-            }
-            
-            content.innerHTML = `
-                <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
-                    <div class="w-12 h-12 rounded-full bg-${config.color}-50 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-${config.color}-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${config.icon}"/>
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-bold text-gray-800 text-base">${activity.title}</p>
-                        <p class="text-xs text-gray-500 mt-0.5">${activity.subtitle}</p>
-                    </div>
-                    ${statusHtml}
-                </div>
-                
-                <div>
-                    <h4 class="text-xs font-bold text-gray-800 mb-2 uppercase tracking-wider">交易参数</h4>
-                    <div class="bg-gray-50 rounded-xl p-1">
-                        ${detailsHtml}
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="text-xs font-bold text-gray-800 mb-2 uppercase tracking-wider">链上信息 (Solana)</h4>
-                    <div class="bg-gray-50 rounded-xl p-3 space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">交易签名 (Signature)</span>
-                            <button onclick="copyHash('${activity.txHash}')" class="flex items-center gap-1 text-xs text-red-500 font-medium active-scale">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                                复制
-                            </button>
-                        </div>
-                        <p class="text-[10px] text-gray-600 font-mono break-all leading-relaxed">${activity.txHash}</p>
-                        
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
-                            <span class="text-xs text-gray-500">发起钱包</span>
-                            <span class="text-[10px] text-gray-600 font-mono">${activity.address}</span>
-                        </div>
-                        
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
-                            <span class="text-xs text-gray-500">交易时间</span>
-                            <span class="text-[10px] text-gray-600">${activity.time}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex gap-2 pt-2">
-                    <a href="https://solscan.io/tx/${activity.txHash}" target="_blank" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 rounded-xl text-sm transition flex items-center justify-center gap-1.5 active-scale">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        Solscan 查看
-                    </a>
-                    <button onclick="closeDetail()" class="flex-1 caishen-gradient text-white font-medium py-3 rounded-xl text-sm active-scale shadow-md shadow-red-200">
-                        完成
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('detail-sheet').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    partnerSelector.classList.toggle('hidden', isSingle);
 
-        function closeDetail() {
-            document.getElementById('detail-sheet').classList.remove('active');
-            document.body.style.overflow = '';
-        }
+    updatePeriodButtons();
+    calculateReward();
+  }
 
-        function copyHash(hash) {
-            navigator.clipboard.writeText(hash).then(() => {
-                const toast = document.getElementById('copy-toast');
-                toast.innerText = '✓ 交易签名已复制';
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 1500);
-            });
-        }
+  function selectPeriod(days) {
+    currentPeriod = days;
+    updatePeriodButtons();
+    calculateReward();
+  }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeDetail();
-        });
+  function selectPartner(token) {
+    currentPartner = token;
+    document.querySelectorAll('[data-token]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.token === token);
+    });
+    calculateReward();
+  }
 
-        updatePeriodButtons();
-    </script>
+  function updatePeriodButtons() {
+    const apyMap = currentTab === 'single' ? singleAPYs : doubleAPYs;
+    document.querySelectorAll('[data-days]').forEach(btn => {
+      const days = parseInt(btn.dataset.days, 10);
+      const apy = apyMap[days];
+      btn.classList.toggle('active', days === currentPeriod);
+      const apyEl = btn.querySelector('.apy-display');
+      if (apyEl && apy != null) apyEl.textContent = apy + '%';
+    });
+  }
+
+  function calculateReward() {
+    const inputEl = document.getElementById('stake-input');
+    const totalUsdc = parseFloat(inputEl.value) || 0;
+
+    const dailyRewardEl = document.getElementById('est-daily-reward');
+    const totalRewardEl = document.getElementById('est-total-reward');
+    const breakdownArea = document.getElementById('breakdown-area');
+    const warningEl = document.getElementById('min-threshold-warning');
+    const stakeBtn = document.getElementById('stake-btn');
+
+    const apyMap = currentTab === 'single' ? singleAPYs : doubleAPYs;
+    const currentAPY = apyMap[currentPeriod];
+
+    const belowMin = totalUsdc > 0 && totalUsdc < 10;
+    let insufficient = false;
+
+    warningEl.classList.toggle('hidden', !belowMin);
+
+    if (totalUsdc > 0) {
+      const dailyUsdc = totalUsdc * (currentAPY / 100) / 365;
+      const totalUsdcReward = dailyUsdc * currentPeriod;
+      const dailyToken = dailyUsdc / tokenPrices['财神到'];
+      const totalToken = totalUsdcReward / tokenPrices['财神到'];
+
+      dailyRewardEl.textContent = '+ ' + formatNumber(dailyToken) + ' 财神到';
+      totalRewardEl.textContent = '+ ' + formatNumber(totalToken) + ' 财神到';
+
+      breakdownArea.classList.remove('hidden');
+
+      if (currentTab === 'single') {
+        const caishenAmount = totalUsdc / tokenPrices['财神到'];
+        const balance = tokenBalances['财神到'];
+        const isSufficient = balance >= caishenAmount;
+        const shortage = caishenAmount - balance;
+        if (!isSufficient) insufficient = true;
+
+        breakdownArea.innerHTML =
+          '<div class="bd-block">' +
+            '<div class="bd-top">' +
+              '<span class="bd-name">💰 需锁定 财神到</span>' +
+              '<span class="bd-amt' + (isSufficient ? '' : ' is-bad') + '">' +
+                formatNumber(caishenAmount) + ' 个' +
+              '</span>' +
+            '</div>' +
+            '<div class="bd-bottom">' +
+              '<span class="' + (isSufficient ? 'ok' : 'bad') + '">' +
+                (isSufficient ? '✓ 余额充足' : '⚠ 还差 ' + formatNumber(shortage) + ' 个') +
+              '</span>' +
+              '<span>余额 ' + formatNumber(balance) + '</span>' +
+            '</div>' +
+          '</div>';
+      } else {
+        const caishenUsdc = totalUsdc * 0.6;
+        const partnerUsdc = totalUsdc * 0.4;
+        const caishenAmount = caishenUsdc / tokenPrices['财神到'];
+        const partnerAmount = partnerUsdc / tokenPrices[currentPartner];
+
+        const caishenBalance = tokenBalances['财神到'];
+        const partnerBalance = tokenBalances[currentPartner];
+
+        const isCaishenSufficient = caishenBalance >= caishenAmount;
+        const isPartnerSufficient = partnerBalance >= partnerAmount;
+        const caishenShortage = caishenAmount - caishenBalance;
+        const partnerShortage = partnerAmount - partnerBalance;
+
+        if (!isCaishenSufficient || !isPartnerSufficient) insufficient = true;
+
+        breakdownArea.innerHTML =
+          '<div class="bd-block">' +
+            '<div class="bd-top">' +
+              '<span class="bd-name">💰 财神到 <em>60%</em></span>' +
+              '<span class="bd-amt' + (isCaishenSufficient ? '' : ' is-bad') + '">' +
+                formatNumber(caishenAmount) + ' 个' +
+              '</span>' +
+            '</div>' +
+            '<div class="bd-bottom">' +
+              '<span class="' + (isCaishenSufficient ? 'ok' : 'bad') + '">' +
+                (isCaishenSufficient ? '✓ 余额充足' : '⚠ 还差 ' + formatNumber(caishenShortage) + ' 个') +
+              '</span>' +
+              '<span>' + formatNumber(caishenUsdc) + ' USDC</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="bd-block">' +
+            '<div class="bd-top">' +
+              '<span class="bd-name">🤝 ' + currentPartner + ' <em>40%</em></span>' +
+              '<span class="bd-amt' + (isPartnerSufficient ? '' : ' is-bad') + '">' +
+                formatNumber(partnerAmount) + ' 个' +
+              '</span>' +
+            '</div>' +
+            '<div class="bd-bottom">' +
+              '<span class="' + (isPartnerSufficient ? 'ok' : 'bad') + '">' +
+                (isPartnerSufficient ? '✓ 余额充足' : '⚠ 还差 ' + formatNumber(partnerShortage) + ' 个') +
+              '</span>' +
+              '<span>快照价 $' + tokenPrices[currentPartner] + '</span>' +
+            '</div>' +
+          '</div>';
+      }
+    } else {
+      dailyRewardEl.textContent = '0.00 财神到';
+      totalRewardEl.textContent = '0.00 财神到';
+      breakdownArea.classList.add('hidden');
+      breakdownArea.innerHTML = '';
+    }
+
+    /* 按钮状态 */
+    let btnText = '立即质押';
+    let disabled = false;
+
+    if (totalUsdc <= 0) {
+      btnText = '请输入质押金额';
+      disabled = true;
+    } else if (belowMin) {
+      btnText = '未达最低门槛';
+      disabled = true;
+    } else if (insufficient) {
+      btnText = '代币余额不足';
+      disabled = true;
+    }
+
+    stakeBtn.disabled = disabled;
+    stakeBtn.classList.toggle('btn-disabled', disabled);
+    stakeBtn.textContent = btnText;
+  }
+
+  function setMax() {
+    document.getElementById('stake-input').value = tokenBalances['USDC'];
+    calculateReward();
+  }
+
+  /* ==================== 详情抽屉 ==================== */
+  const ICON_STAKE = '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>';
+  const ICON_CLAIM = '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line>';
+
+  function openDetail(index) {
+    const activity = activities[index];
+    const content = document.getElementById('detail-content');
+
+    const isStake = activity.type === 'stake';
+    const iconPath = isStake ? ICON_STAKE : ICON_CLAIM;
+    const iconClass = isStake ? 'type-stake' : 'type-claim';
+
+    const statusHtml = activity.status === 'success'
+      ? '<span class="badge badge-ok">✓ 交易成功</span>'
+      : '<span class="badge badge-pending"><span class="dot-pulse"></span>等待确认</span>';
+
+    let detailsHtml = '';
+    for (const [key, value] of Object.entries(activity.details)) {
+      detailsHtml +=
+        '<div class="dt-row">' +
+          '<span class="dt-k">' + key + '</span>' +
+          '<span class="dt-v">' + value + '</span>' +
+        '</div>';
+    }
+
+    content.innerHTML =
+      '<div class="dt-head">' +
+        '<div class="dt-icon ' + iconClass + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            iconPath +
+          '</svg>' +
+        '</div>' +
+        '<div class="dt-titles">' +
+          '<p class="dt-title">' + activity.title + '</p>' +
+          '<p class="dt-sub">' + activity.subtitle + '</p>' +
+        '</div>' +
+        statusHtml +
+      '</div>' +
+
+      '<div class="dt-section">' +
+        '<h4 class="dt-label">交易参数</h4>' +
+        '<div class="dt-list">' + detailsHtml + '</div>' +
+      '</div>' +
+
+      '<div class="dt-section">' +
+        '<h4 class="dt-label">链上信息 · Solana</h4>' +
+        '<div class="dt-list">' +
+          '<div class="dt-row">' +
+            '<span class="dt-k">交易签名</span>' +
+            '<button class="dt-copy" type="button" onclick="copyHash(\'' + activity.txHash + '\')">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                '<rect x="9" y="9" width="12" height="12" rx="2"></rect>' +
+                '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
+              '</svg>' +
+              '复制' +
+            '</button>' +
+          '</div>' +
+          '<p class="dt-hash">' + activity.txHash + '</p>' +
+          '<div class="dt-row">' +
+            '<span class="dt-k">发起钱包</span>' +
+            '<span class="dt-v">' + activity.address + '</span>' +
+          '</div>' +
+          '<div class="dt-row">' +
+            '<span class="dt-k">交易时间</span>' +
+            '<span class="dt-v">' + activity.time + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="dt-actions">' +
+        '<a class="btn-ghost" href="https://solscan.io/tx/' + activity.txHash + '" target="_blank" rel="noopener">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>' +
+            '<polyline points="15 3 21 3 21 9"></polyline>' +
+            '<line x1="10" y1="14" x2="21" y2="3"></line>' +
+          '</svg>' +
+          'Solscan' +
+        '</a>' +
+        '<button class="btn-primary" type="button" onclick="closeDetail()">完成</button>' +
+      '</div>';
+
+    document.getElementById('detail-sheet').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetail() {
+    document.getElementById('detail-sheet').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeDetail();
+  });
+
+  /* ==================== 初始化 ==================== */
+  updatePeriodButtons();
+  calculateReward();
+</script>
+
 </body>
 </html>
