@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)">
+<title>$财神DAO | 全球华人第一文化 Meme IP</title>
+<meta name="description" content="$财神DAO 项目总结：用千年财神信仰承接华人共识，以链上机制沉淀为可持续的资产、生态与社区。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    color-scheme: light dark;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --gold:#a8821c; --gold-d:#8a6a12;
+    --gold-glow:rgba(168,130,28,.28);
+    --gold-glow-soft:rgba(168,130,28,.12);
+    --cyber:#e02844; --cyber-d:#b91a34; --cyber-l:#ff6b85;
+    --cyber-glow:rgba(224,40,68,.30);
+    --cyber-glow-soft:rgba(224,40,68,.12);
+    --cyber-glow-faint:rgba(224,40,68,.045);
+    --toc-bg:rgba(255,255,255,.94);
+    --hero-a:#fff7f8; --hero-b:#ffffff;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px;
+    --r:3px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-size:15px; line-height:1.8;
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  :focus-visible{outline:2px solid var(--cyber); outline-offset:3px; border-radius:4px; box-shadow:0 0 0 4px var(--cyber-glow-soft);}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:-.01em;}
+
+  .doc{
+    max-width:720px; margin:0 auto; background:var(--card); min-height:100vh;
+    border-left:1px solid var(--line); border-right:1px solid var(--line);
+    position:relative; overflow-x:clip; padding:0 26px;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .doc::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--cyber) 0%, var(--cyber) 42%, var(--gold) 42%, var(--gold) 100%);
+    z-index:2;
+    box-shadow:0 0 12px var(--cyber-glow), 0 0 24px var(--cyber-glow-soft);
+    animation:topPulse 4s ease-in-out infinite;
+  }
+  @keyframes topPulse{
+    0%,100%{box-shadow:0 0 12px var(--cyber-glow),0 0 24px var(--cyber-glow-soft);}
+    50%    {box-shadow:0 0 20px var(--cyber-glow),0 0 40px var(--cyber-glow-soft);}
+  }
+  .wrap{padding:0;}
+
+  /* ================= Hero ================= */
+  .hero{
+    position:relative;
+    margin:0 -26px;
+    padding:52px 26px 36px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(120% 100% at 50% -20%, var(--cyber-glow-soft), transparent 60%),
+      radial-gradient(80% 60% at 100% 0%, var(--gold-glow-soft), transparent 60%),
+      linear-gradient(180deg, var(--hero-a) 0%, var(--hero-b) 100%);
+  }
+  .hero::after{
+    content:""; position:absolute; left:50%; top:0;
+    width:240px; height:240px; transform:translateX(-50%);
+    background:radial-gradient(circle, var(--cyber-glow-soft), transparent 70%);
+    filter:blur(30px); pointer-events:none;
+  }
+  .hero > *{position:relative; z-index:1;}
+
+  .eyebrow{
+    font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted);
+    margin:0 0 14px; line-height:1;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .eyebrow::before{
+    content:""; display:block; width:5px; height:5px; border-radius:50%;
+    background:var(--cyber); box-shadow:0 0 6px var(--cyber),0 0 12px var(--cyber-glow);
+    flex:none; animation:dotPulse 2s ease-in-out infinite;
+  }
+  @keyframes dotPulse{
+    0%,100%{opacity:.5; transform:scale(1);}
+    50%    {opacity:1;  transform:scale(1.3);}
+  }
+
+  .hero-title{
+    margin:0; font-size:clamp(34px,10vw,48px); font-weight:800;
+    letter-spacing:-.035em; line-height:1.02; color:var(--ink);
+  }
+  .hero-title em{
+    font-style:normal;
+    background:linear-gradient(135deg, var(--cyber) 0%, var(--cyber-l) 55%, var(--gold) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+  .hero-sub{
+    margin:14px 0 0; font-size:14px; color:var(--ink-3);
+    letter-spacing:.02em; line-height:1.6;
+  }
+  .hero-sub b{color:var(--ink-2); font-weight:600;}
+
+  .hero-thesis{
+    margin:26px auto 0;
+    max-width:520px;
+    padding:16px 20px;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:6px;
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    font-size:14px; line-height:1.8; color:var(--ink-2);
+    text-align:left;
+  }
+  .hero-thesis b{color:var(--ink); font-weight:700;}
+  .hero-thesis .accent{color:var(--cyber); font-weight:700;}
+
+  .hero-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    margin:26px -4px 0;
+    padding:0;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .hero-stat{
+    background:var(--card);
+    padding:14px 6px 13px;
+    text-align:center;
+    transition:background .2s ease;
+  }
+  .hero-stat:hover{background:var(--cyber-glow-faint);}
+  .hero-stat .v{
+    display:block; font-family:var(--mono); font-size:15px; font-weight:700;
+    color:var(--ink); line-height:1.2; letter-spacing:-.02em;
+  }
+  .hero-stat .v.is-red{color:var(--cyber);}
+  .hero-stat .k{
+    display:block; margin-top:5px; font-size:10px; color:var(--muted);
+    letter-spacing:.04em; line-height:1.3; font-weight:500;
+  }
+
+  .theme-toggle{
+    position:absolute; top:16px; right:26px; z-index:3;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; padding:0;
+    border:1px solid var(--line); border-radius:8px;
+    background:var(--card); color:var(--ink-3); cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+  }
+  .theme-toggle:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
+  }
+  .theme-toggle svg{width:18px; height:18px; display:block;}
+  .theme-toggle .ico-sun{display:none;}
+  .theme-toggle .ico-moon{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
+  .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
+
+  /* ================= 目录 ================= */
+  .toc{
+    position:sticky; top:0; z-index:20;
+    display:flex; gap:6px;
+    margin:0 -26px; padding:10px 26px;
+    background:var(--toc-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    overflow-x:auto; scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-link{
+    flex:none; display:inline-block;
+    padding:5px 12px; border-radius:999px;
+    font-size:12px; font-weight:600;
+    color:var(--ink-3); text-decoration:none;
+    background:transparent; border:1px solid transparent;
+    transition:background .18s ease, color .18s ease, border-color .18s ease, box-shadow .3s ease;
+    letter-spacing:.02em; white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toc-link:hover{background:var(--bg); color:var(--ink); border-color:var(--cyber-glow-soft);}
+  .toc-link.active{
+    background:var(--cyber-d); color:#fff; border-color:var(--cyber);
+    box-shadow:0 4px 14px -4px var(--cyber-glow), 0 0 0 1px var(--cyber-glow-soft);
+  }
+
+  /* ================= 章节 ================= */
+  .sec{
+    padding:44px 0 36px;
+    border-bottom:1px solid var(--line);
+    scroll-margin-top:56px;
+    position:relative;
+  }
+  .sec:last-of-type{border-bottom:0; padding-bottom:48px;}
+
+  .sec-head{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:18px;
+    align-items:start;
+    margin:0 0 24px;
+    position:relative;
+  }
+  .sec-num{
+    font-family:var(--mono);
+    font-size:44px;
+    font-weight:800;
+    line-height:.85;
+    letter-spacing:-.05em;
+    color:var(--cyber);
+    opacity:.22;
+    user-select:none;
+    grid-column:1;
+    transition:opacity .3s ease;
+  }
+  .sec:hover .sec-num{opacity:.32;}
+  .sec-titles{
+    grid-column:2;
+    padding-top:4px;
+    min-width:0;
+  }
+  .sec-title{
+    margin:0;
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .sec-title span{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:400;
+    color:var(--muted);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-top:6px;
+    line-height:1;
+  }
+  .sec-lead{
+    margin:0 0 22px;
+    font-size:14.5px;
+    color:var(--ink-3);
+    line-height:1.85;
+    padding-left:2px;
+    text-wrap:pretty;
+  }
+  .sec-lead b{color:var(--ink-2); font-weight:600;}
+
+  /* ================= 理念卡 ================= */
+  .principle-list{display:grid; gap:14px;}
+
+  .principle{
+    position:relative;
+    padding:22px 20px 20px 22px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--card);
+    overflow:hidden;
+    transition:border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.34,1.2,.64,1), box-shadow .3s ease;
+  }
+  .principle::before{
+    content:"";
+    position:absolute; left:0; top:18px; bottom:18px;
+    width:3px;
+    background:var(--gold);
+    border-radius:0 3px 3px 0;
+    transition:background .25s ease, box-shadow .25s ease;
+  }
+  .principle.is-key::before{
+    background:var(--cyber);
+    box-shadow:0 0 10px var(--cyber-glow);
+  }
+  .principle:hover{
+    border-color:var(--cyber-glow-soft);
+    transform:translateY(-1px);
+    box-shadow:0 10px 24px -14px var(--cyber-glow);
+  }
+  .principle.is-key:hover{
+    background:linear-gradient(135deg, var(--cyber-glow-faint) 0%, transparent 70%);
+  }
+  .principle:hover::before{
+    background:var(--cyber);
+    box-shadow:0 0 10px var(--cyber-glow);
+  }
+
+  .pr-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .pr-num{
+    flex:none;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    color:var(--cyber);
+    letter-spacing:.1em;
+    line-height:1;
+    padding:4px 7px;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:3px;
+    background:var(--cyber-glow-faint);
+  }
+  .pr-t{
+    margin:0;
+    font-size:16px;
+    font-weight:800;
+    color:var(--ink);
+    line-height:1.35;
+    letter-spacing:-.01em;
+  }
+
+  .pr-quote{
+    margin:0 0 12px;
+    padding:10px 0 10px 14px;
+    border-left:2px solid var(--cyber-glow-soft);
+    font-family:var(--serif);
+    font-size:15.5px;
+    font-style:italic;
+    color:var(--ink);
+    line-height:1.65;
+    letter-spacing:.005em;
+    font-weight:500;
+  }
+  .pr-quote b{font-style:normal; color:var(--cyber); font-weight:700;}
+
+  .pr-d{
+    margin:0;
+    font-size:13.5px;
+    color:var(--ink-3);
+    line-height:1.85;
+    text-wrap:pretty;
+  }
+  .pr-d b{color:var(--ink); font-weight:700;}
+
+  /* ================= 主张卡 ================= */
+  .claim-list{
+    display:grid;
+    gap:12px;
+    counter-reset:claim;
+  }
+  .claim{
+    position:relative;
+    display:grid;
+    grid-template-columns:44px 1fr;
+    gap:16px;
+    padding:18px 18px 18px 16px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--card);
+    transition:border-color .2s ease, background .2s ease, box-shadow .3s ease;
+  }
+  .claim:hover{
+    border-color:var(--cyber-glow-soft);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 6px 20px -12px var(--cyber-glow);
+  }
+  .claim-idx{
+    font-family:var(--mono);
+    font-size:22px;
+    font-weight:800;
+    line-height:.9;
+    color:var(--cyber);
+    letter-spacing:-.04em;
+    text-align:right;
+    opacity:.72;
+    padding-top:2px;
+  }
+  .claim-body{min-width:0;}
+  .claim-t{
+    margin:0 0 6px;
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.45;
+    letter-spacing:-.005em;
+  }
+  .claim-ev{
+    margin:0;
+    font-size:13px;
+    color:var(--ink-3);
+    line-height:1.85;
+    text-wrap:pretty;
+  }
+  .claim-ev b{color:var(--ink); font-weight:700;}
+  .claim-ev code{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink);
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:1px 6px;
+    margin:0 2px;
+    line-height:1.6;
+    letter-spacing:-.005em;
+  }
+
+  /* ================= 对比卡 ================= */
+  .compare-list{display:grid; gap:14px;}
+
+  .compare{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--card);
+    overflow:hidden;
+    transition:border-color .25s ease, box-shadow .3s ease;
+  }
+  .compare:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 8px 24px -14px var(--cyber-glow);
+  }
+  .compare-side{
+    padding:16px 16px 15px;
+    min-width:0;
+  }
+  .compare-side.old{
+    background:linear-gradient(180deg, var(--bg) 0%, transparent 100%);
+  }
+  .compare-side.new{
+    background:linear-gradient(180deg, var(--cyber-glow-faint) 0%, transparent 100%);
+  }
+  .compare-label{
+    display:block;
+    font-family:var(--mono);
+    font-size:9.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1;
+    margin:0 0 8px;
+  }
+  .compare-side.new .compare-label{color:var(--cyber);}
+  .compare-t{
+    margin:0;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink-2);
+    line-height:1.45;
+    letter-spacing:-.005em;
+  }
+  .compare-side.new .compare-t{color:var(--ink);}
+  .compare-d{
+    margin:6px 0 0;
+    font-size:12.5px;
+    color:var(--ink-3);
+    line-height:1.75;
+    text-wrap:pretty;
+  }
+  .compare-side.new .compare-d{color:var(--ink-2);}
+  .compare-side.new .compare-d b{color:var(--cyber); font-weight:700;}
+
+  .compare-vs{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 10px;
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    color:var(--muted);
+    letter-spacing:.08em;
+    border-left:1px solid var(--line-2);
+    border-right:1px solid var(--line-2);
+    background:var(--card);
+    position:relative;
+  }
+  .compare-vs::before{
+    content:"";
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--cyber);
+    box-shadow:0 0 6px var(--cyber-glow);
+  }
+
+  /* ================= 增长引擎 ================= */
+  .engine-list{
+    display:grid;
+    gap:16px;
+  }
+  .engine{
+    position:relative;
+    padding:24px 22px 22px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--card);
+    overflow:hidden;
+    transition:border-color .25s ease, box-shadow .3s ease;
+  }
+  .engine::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:2px;
+    background:linear-gradient(90deg, var(--cyber), var(--cyber-l) 40%, var(--gold) 100%);
+    opacity:.7;
+    transition:opacity .25s ease;
+  }
+  .engine:hover{
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 10px 28px -16px var(--cyber-glow);
+  }
+  .engine:hover::before{opacity:1;}
+
+  .engine-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .engine-icon{
+    flex:none;
+    width:38px; height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:var(--cyber-glow-faint);
+    border:1px solid var(--cyber-glow-soft);
+    color:var(--cyber);
+  }
+  .engine-icon svg{width:18px; height:18px; display:block;}
+  .engine-titles{min-width:0; flex:1;}
+  .engine-tag{
+    display:block;
+    font-family:var(--mono);
+    font-size:9.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    line-height:1;
+    margin:0 0 5px;
+  }
+  .engine-t{
+    margin:0;
+    font-size:16.5px;
+    font-weight:800;
+    color:var(--ink);
+    line-height:1.3;
+    letter-spacing:-.012em;
+  }
+
+  .engine-lead{
+    margin:0 0 16px;
+    padding:10px 0 10px 14px;
+    border-left:2px solid var(--cyber-glow-soft);
+    font-family:var(--serif);
+    font-size:14.5px;
+    font-style:italic;
+    color:var(--ink-2);
+    line-height:1.7;
+    text-wrap:pretty;
+  }
+  .engine-lead b{font-style:normal; color:var(--cyber); font-weight:700;}
+
+  .engine-items{
+    display:grid;
+    gap:0;
+    border-top:1px dashed var(--line-2);
+  }
+  .engine-item{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px;
+    padding:13px 0;
+    border-bottom:1px dashed var(--line-2);
+    align-items:baseline;
+    transition:padding-left .2s ease, background .2s ease;
+    position:relative;
+  }
+  .engine-item:last-child{border-bottom:0;}
+  .engine-item:hover{padding-left:6px; background:var(--cyber-glow-faint);}
+  .engine-item-idx{
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--cyber);
+    letter-spacing:.08em;
+    line-height:1.9;
+    flex:none;
+  }
+  .engine-item-body{min-width:0;}
+  .engine-item-t{
+    display:block;
+    margin:0 0 3px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.5;
+    letter-spacing:-.005em;
+  }
+  .engine-item-d{
+    margin:0;
+    font-size:12.5px;
+    color:var(--ink-3);
+    line-height:1.8;
+    text-wrap:pretty;
+  }
+  .engine-item-d b{color:var(--ink-2); font-weight:600;}
+  .engine-item-d code{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-2);
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:1px 6px;
+    margin:0 1px;
+    line-height:1.6;
+    letter-spacing:-.005em;
+  }
+
+  /* ================= 策略卡 ================= */
+  .strategy-list{display:grid; gap:12px;}
+
+  .strategy{
+    position:relative;
+    padding:18px 18px 16px 20px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--card);
+    transition:border-color .2s ease, background .2s ease, box-shadow .3s ease;
+  }
+  .strategy::before{
+    content:"";
+    position:absolute; left:0; top:16px; bottom:16px;
+    width:3px;
+    border-radius:0 3px 3px 0;
+    background:var(--cyber);
+    opacity:.7;
+    transition:opacity .2s ease, box-shadow .2s ease;
+  }
+  .strategy:hover{
+    border-color:var(--cyber-glow-soft);
+    background:linear-gradient(135deg, var(--cyber-glow-faint) 0%, transparent 70%);
+  }
+  .strategy:hover::before{
+    opacity:1;
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .st-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:0 0 8px;
+    flex-wrap:wrap;
+  }
+  .st-verb{
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    line-height:1;
+    padding:3px 7px;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:3px;
+    background:var(--cyber-glow-faint);
+  }
+  .st-t{
+    margin:0;
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.45;
+    letter-spacing:-.005em;
+    flex:1;
+    min-width:0;
+  }
+  .st-d{
+    margin:0;
+    font-size:13px;
+    color:var(--ink-3);
+    line-height:1.85;
+    text-wrap:pretty;
+  }
+  .st-d b{color:var(--ink); font-weight:700;}
+
+  /* ================= 总结 ================= */
+  .final{
+    position:relative;
+    padding:36px 24px 32px;
+    border:1px solid var(--cyber-glow-soft);
+    border-radius:8px;
+    background:
+      radial-gradient(120% 100% at 50% 0%, var(--cyber-glow-soft), transparent 60%),
+      linear-gradient(180deg, var(--cyber-glow-faint) 0%, transparent 80%);
+    text-align:center;
+    overflow:hidden;
+  }
+  .final::before{
+    content:"";
+    position:absolute; left:50%; top:-40px;
+    width:200px; height:200px;
+    transform:translateX(-50%);
+    background:radial-gradient(circle, var(--cyber-glow), transparent 70%);
+    filter:blur(30px);
+    pointer-events:none;
+  }
+  .final > *{position:relative; z-index:1;}
+  .final-label{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--cyber);
+    font-weight:700;
+    margin:0 0 16px;
+    line-height:1;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .final-label::before,
+  .final-label::after{
+    content:"";
+    display:block;
+    width:22px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--cyber-glow-soft), transparent);
+  }
+  .final-text{
+    margin:0 auto;
+    max-width:520px;
+    font-size:15.5px;
+    line-height:1.95;
+    color:var(--ink-2);
+    text-wrap:pretty;
+  }
+  .final-text strong{color:var(--ink); font-weight:700;}
+  .final-line{
+    margin:24px auto 0;
+    padding-top:20px;
+    border-top:1px solid var(--cyber-glow-soft);
+    max-width:420px;
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:700;
+    color:var(--cyber);
+    letter-spacing:.04em;
+    line-height:1.3;
+    font-style:italic;
+  }
+  .final-line::after{
+    content:"";
+    display:block;
+    width:40px;
+    height:2px;
+    margin:14px auto 0;
+    background:linear-gradient(90deg, transparent, var(--cyber), transparent);
+    border-radius:1px;
+    opacity:.6;
+  }
+
+  /* ================= 页脚 ================= */
+  .doc-foot{
+    padding:28px 0 44px;
+    border-top:1px solid var(--line);
+    margin-top:36px;
+    position:relative;
+  }
+  .doc-foot::before{
+    content:"";
+    position:absolute; top:-1px; left:0;
+    width:34%; height:1px;
+    background:linear-gradient(90deg, var(--cyber), transparent);
+    box-shadow:0 0 8px var(--cyber-glow);
+  }
+  .foot-row{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    padding:8px 0;
+    border-bottom:1px solid var(--line-2);
+  }
+  .foot-row:last-of-type{border-bottom:0;}
+  .foot-k{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1.8;
+    flex:none;
+  }
+  .foot-v{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-3);
+    line-height:1.8;
+    word-break:break-all;
+    text-align:right;
+  }
+  .foot-v a{
+    color:var(--ink-2);
+    text-decoration:none;
+    border-bottom:1px dashed var(--line);
+    transition:color .18s ease, border-color .18s ease;
+  }
+  .foot-v a:hover{
+    color:var(--cyber);
+    border-bottom-color:var(--cyber-glow-soft);
+  }
+  .disc{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--line-2);
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.95;
+  }
+
+  /* ================= 返回顶部 ================= */
+  .back-top{
+    position:fixed;
+    right:20px;
+    bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index:30;
+    width:40px; height:40px; padding:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:var(--card);
+    color:var(--ink-3);
+    cursor:pointer;
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
+    opacity:0;
+    transform:translateY(12px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .back-top.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .back-top:hover{
+    border-color:var(--cyber-glow); color:var(--cyber);
+    box-shadow:0 4px 16px -6px rgba(20,24,29,.25), 0 0 14px -2px var(--cyber-glow-soft);
+  }
+  .back-top svg{width:18px; height:18px; display:block;}
+
+  /* ================= 滚动揭示 ================= */
+  .reveal{
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .6s cubic-bezier(.25,.8,.4,1), transform .6s cubic-bezier(.25,.8,.4,1);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+  }
+
+  /* ================= 深色 ================= */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+      --gold:#d4a82a; --gold-d:#e0b85a;
+      --gold-glow:rgba(212,168,42,.4);
+      --gold-glow-soft:rgba(212,168,42,.18);
+      --cyber:#e64357; --cyber-d:#ff5a6a; --cyber-l:#ff8a98;
+      --cyber-glow:rgba(230,67,87,.40);
+      --cyber-glow-soft:rgba(230,67,87,.16);
+      --cyber-glow-faint:rgba(230,67,87,.06);
+      --toc-bg:rgba(16,22,30,.94);
+      --hero-a:#140a10; --hero-b:#10161e;
+    }
+    :root:not([data-theme="light"]) .hero-thesis{background:rgba(16,22,30,.6);}
+    :root:not([data-theme="light"]) .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+    --gold:#d4a82a; --gold-d:#e0b85a;
+    --gold-glow:rgba(212,168,42,.4);
+    --gold-glow-soft:rgba(212,168,42,.18);
+    --cyber:#e64357; --cyber-d:#ff5a6a; --cyber-l:#ff8a98;
+    --cyber-glow:rgba(230,67,87,.40);
+    --cyber-glow-soft:rgba(230,67,87,.16);
+    --cyber-glow-faint:rgba(230,67,87,.06);
+    --toc-bg:rgba(16,22,30,.94);
+    --hero-a:#140a10; --hero-b:#10161e;
+  }
+  :root[data-theme="dark"] .hero-thesis{background:rgba(16,22,30,.6);}
+  :root[data-theme="dark"] .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
+  :root[data-theme="light"]{color-scheme: light;}
+
+  /* ================= 响应式 ================= */
+  @media (max-width:720px){
+    .toc-link{padding:8px 14px; min-height:40px; display:inline-flex; align-items:center;}
+    .theme-toggle{width:40px; height:40px;}
+    .theme-toggle svg{width:19px; height:19px;}
+  }
+
+  @media (max-width:480px){
+    body{font-size:15.5px; line-height:1.82;}
+    .doc{padding:0 20px;}
+    .toc{margin:0 -20px; padding:8px 20px;}
+
+    .hero{margin:0 -20px; padding:44px 20px 30px;}
+    .hero-title{font-size:clamp(30px,9vw,38px);}
+    .hero-sub{font-size:13px;}
+    .hero-thesis{margin-top:22px; padding:14px 16px; font-size:13.5px; line-height:1.85;}
+    .hero-stats{margin:22px -2px 0; grid-template-columns:repeat(2,1fr);}
+    .hero-stat{padding:12px 6px 11px;}
+    .hero-stat .v{font-size:14px;}
+    .hero-stat .k{font-size:9.5px;}
+    .theme-toggle{top:12px; right:20px;}
+
+    .sec{padding:36px 0 28px;}
+    .sec-head{gap:14px; margin-bottom:20px;}
+    .sec-num{font-size:36px;}
+    .sec-title{font-size:18px;}
+
+    .principle{padding:18px 16px 16px 18px;}
+    .pr-head{gap:10px; margin-bottom:10px;}
+    .pr-t{font-size:15px;}
+    .pr-quote{font-size:14.5px; padding:8px 0 8px 12px; margin-bottom:10px;}
+    .pr-d{font-size:13px; line-height:1.88;}
+
+    .claim{grid-template-columns:36px 1fr; gap:12px; padding:16px 14px 16px 12px;}
+    .claim-idx{font-size:19px;}
+    .claim-t{font-size:14px;}
+    .claim-ev{font-size:12.5px; line-height:1.88;}
+
+    .compare{padding:0;}
+    .compare-side{padding:14px 12px 13px;}
+    .compare-vs{padding:0 6px; font-size:9px;}
+    .compare-t{font-size:13px;}
+    .compare-d{font-size:12px; line-height:1.7;}
+
+    .engine{padding:20px 16px 16px;}
+    .engine-head{gap:10px; margin-bottom:12px;}
+    .engine-icon{width:34px; height:34px;}
+    .engine-icon svg{width:16px; height:16px;}
+    .engine-t{font-size:15.5px;}
+    .engine-lead{font-size:13.5px; padding:8px 0 8px 12px; margin-bottom:14px;}
+    .engine-item{padding:12px 0; gap:12px;}
+    .engine-item-t{font-size:13px;}
+    .engine-item-d{font-size:12px; line-height:1.8;}
+
+    .strategy{padding:16px 14px 14px 18px;}
+    .st-t{font-size:14px;}
+    .st-d{font-size:12.5px; line-height:1.88;}
+
+    .final{padding:28px 18px 24px;}
+    .final-text{font-size:14.5px; line-height:1.95;}
+    .final-line{font-size:19px; margin-top:20px; padding-top:18px;}
+
+    .foot-row{flex-direction:column; gap:2px;}
+    .foot-v{text-align:left;}
+    .back-top{right:14px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); width:38px; height:38px;}
+    .back-top svg{width:17px; height:17px;}
+  }
+
+  @media (max-width:400px){
+    .doc{padding:0 18px;}
+    .toc{margin:0 -18px; padding:8px 18px;}
+    .hero{margin:0 -18px; padding:40px 18px 26px;}
+    .theme-toggle{right:18px;}
+    .hero-title{font-size:28px;}
+    .hero-thesis{font-size:13px;}
+    .sec-num{font-size:32px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      transition-duration:.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+
+  @media print{
+    :root{
+      color-scheme: light;
+      --ink:#000; --ink-2:#222; --ink-3:#444; --muted:#555;
+      --line:#ccc; --line-2:#e5e5e5; --bg:#fff; --card:#fff;
+      --cyber:#a91f27; --cyber-d:#7e161c; --cyber-l:#a91f27;
+      --cyber-glow:transparent; --cyber-glow-soft:transparent; --cyber-glow-faint:transparent;
+      --gold:#7a5f10; --gold-glow:transparent; --gold-glow-soft:transparent;
+      --toc-bg:#fff;
+      --hero-a:#fff; --hero-b:#fff;
+    }
+    @page{margin:16mm 14mm;}
+    html{font-size:10.5pt;}
+    body{background:#fff; color:#000; font-size:10.5pt; line-height:1.6;}
+    .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
+    .doc::before, .doc-foot::before{display:none !important;}
+    .theme-toggle, .toc, .back-top{display:none !important;}
+    .hero{background:#fff; text-align:left; padding:16px 0; margin:0;}
+    .hero-thesis{background:#fff; border:1px solid #ddd; border-left:3px solid #a91f27;}
+    .hero-stats{border:1px solid #ccc;}
+    .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
+    .principle, .claim, .compare, .engine, .strategy, .final{box-shadow:none !important;}
+    .principle:hover, .claim:hover, .compare:hover, .engine:hover, .strategy:hover{transform:none !important; background:#fff !important;}
+    .reveal{opacity:1 !important; transform:none !important;}
+  }
+</style>
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ================= Hero ================= -->
+  <header class="hero" id="top">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+
+    <div class="eyebrow">Global Chinese Cultural IP · Solana</div>
+    <h1 class="hero-title"><em>$财神DAO</em></h1>
+    <p class="hero-sub">全球华人第一文化 Meme IP · 链上赛博财神庙</p>
+
+    <div class="hero-thesis">
+      <b>$财神DAO</b> 用千年财神信仰承接华人共识，用链上机制把这股共识沉淀为可持续的<span class="accent">资产</span>、<span class="accent">生态</span>与<span class="accent">社区</span>。
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="v num">6.868亿</span>
+        <span class="k">总量恒定</span>
+      </div>
+      <div class="hero-stat">
+        <span class="v num is-red">41.68%</span>
+        <span class="k">销毁上限</span>
+      </div>
+      <div class="hero-stat">
+        <span class="v num">108</span>
+        <span class="k">创世 NFT</span>
+      </div>
+      <div class="hero-stat">
+        <span class="v num">5 / 7</span>
+        <span class="k">多签执行</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 目录 ================= -->
+  <nav class="toc" aria-label="文档导航">
+    <a class="toc-link" href="#philosophy">理念</a>
+    <a class="toc-link" href="#trust">信任</a>
+    <a class="toc-link" href="#appeal">吸引力</a>
+    <a class="toc-link" href="#engine">增长引擎</a>
+    <a class="toc-link" href="#strategy">策略</a>
+    <a class="toc-link" href="#summary">总结</a>
+  </nav>
+
+  <!-- ================= 01 核心理念 ================= -->
+  <section class="wrap sec" id="philosophy">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">核心理念<span>Core Philosophy</span></h2>
+      </div>
+    </div>
+
+    <p class="sec-lead reveal">三条理念，决定了这个项目从哪里来、靠什么立、往哪里走。</p>
+
+    <div class="principle-list">
+      <article class="principle is-key reveal">
+        <div class="pr-head">
+          <span class="pr-num">01</span>
+          <h3 class="pr-t">文化即共识</h3>
+        </div>
+        <p class="pr-quote">"用文化半径，<b>替代流量半径</b>。"</p>
+        <p class="pr-d">有华人的地方，就有财神、红包、春联和"恭喜发财"。项目不发明新符号，而是唤醒一个已经被验证千年的符号——文化不是营销素材，而是共识的底层协议。</p>
+      </article>
+
+      <article class="principle reveal">
+        <div class="pr-head">
+          <span class="pr-num">02</span>
+          <h3 class="pr-t">信仰即资产</h3>
+        </div>
+        <p class="pr-quote">"现实中的仪式，<b>被翻译成链上行为</b>。"</p>
+        <p class="pr-d">香炉是钱包，上香是转发，接神是持有，供奉是建设，庙会是社区。情感与资产因此绑定在一起——不是靠叙事，而是靠可执行的行为映射。</p>
+      </article>
+
+      <article class="principle is-key reveal">
+        <div class="pr-head">
+          <span class="pr-num">03</span>
+          <h3 class="pr-t">长期即铁律</h3>
+        </div>
+        <p class="pr-quote">"约束的不是价格，<b>而是行为</b>。"</p>
+        <p class="pr-d">"只迎财神，不砸财神"——不诋毁、不欺诈、不制造恐慌、不背叛共识。它守护的是社区质量，而不是短期行情。这是这个社区最稀缺的品格。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= 02 为什么值得信任 ================= -->
+  <section class="wrap sec" id="trust">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">为什么值得信任<span>Why Trust</span></h2>
+      </div>
+    </div>
+
+    <p class="sec-lead reveal">可靠不是一句话，而是一组可被验证的事实。每一条主张，都配着一项证据。</p>
+
+    <div class="claim-list">
+      <div class="claim reveal">
+        <div class="claim-idx">01</div>
+        <div class="claim-body">
+          <h3 class="claim-t">规则写在链上，不写在公告里</h3>
+          <p class="claim-ev">总量恒定 <b>686,868,686</b> 枚，无增发权限；全部分配额通过链上托管，第三方可随时核验；每一笔销毁、每一次发放都留有交易哈希，可逐笔复查。</p>
+        </div>
+      </div>
+
+      <div class="claim reveal">
+        <div class="claim-idx">02</div>
+        <div class="claim-body">
+          <h3 class="claim-t">通缩有上限，也有路径</h3>
+          <p class="claim-ev"><b>41.68%</b> 的供应量划入 FDV 里程碑销毁池，按 <code>$10M–$1B</code> 十二档逐级触发，全部转入黑洞、永不回流团队。销毁池与团队份额完全隔离——即使项目停止运营，这部分代币也不会被任何人动用。</p>
+        </div>
+      </div>
+
+      <div class="claim reveal">
+        <div class="claim-idx">03</div>
+        <div class="claim-body">
+          <h3 class="claim-t">决策不依赖单点</h3>
+          <p class="claim-ev">关键操作由 <b>5/7 多签</b>执行，签名方覆盖基金会、社区与独立第三方；销毁触发采用多源价格取中位数；任何单一主体都无法独立改变规则。</p>
+        </div>
+      </div>
+
+      <div class="claim reveal">
+        <div class="claim-idx">04</div>
+        <div class="claim-body">
+          <h3 class="claim-t">风险被提前说明</h3>
+          <p class="claim-ev">项目文档主动披露市场、合约、预言机、监管、集中度等风险，明确代币不是证券、不承诺收益、不构成投资建议。<b>把边界讲清楚，本身就是一种可靠。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 为什么有吸引力 ================= -->
+  <section class="wrap sec" id="appeal">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">为什么有吸引力<span>Why Attractive</span></h2>
+      </div>
+    </div>
+
+    <p class="sec-lead reveal">吸引力不来自承诺，而来自机制本身对真实参与者的奖励。旧世界与新结构，一眼可见。</p>
+
+    <div class="compare-list">
+      <div class="compare reveal">
+        <div class="compare-side old">
+          <span class="compare-label">旧世界</span>
+          <p class="compare-t">先到先得，机器人抢跑</p>
+          <p class="compare-d">谁手快谁拿低价，真实社区支持者永远是最后上车的人。</p>
+        </div>
+        <div class="compare-vs"></div>
+        <div class="compare-side new">
+          <span class="compare-label">新结构</span>
+          <p class="compare-t">统一资金池 · 统一买入价</p>
+          <p class="compare-d">同一个资金池、同一个买入价、同一个分配公式——<b>真正的支持者拿到同一个价格</b>。</p>
+        </div>
+      </div>
+
+      <div class="compare reveal">
+        <div class="compare-side old">
+          <span class="compare-label">旧世界</span>
+          <p class="compare-t">刷量套利，投机者通吃</p>
+          <p class="compare-d">高频往返、对敲交易、快照套利，机制被设计成奖励最快的人。</p>
+        </div>
+        <div class="compare-vs"></div>
+        <div class="compare-side new">
+          <span class="compare-label">新结构</span>
+          <p class="compare-t">机制奖励真实参与</p>
+          <p class="compare-d">让<b>长期持有、真实参与、持续传播</b>的人获得更多，让短期投机和砸盘收割付出代价。</p>
+        </div>
+      </div>
+
+      <div class="compare reveal">
+        <div class="compare-side old">
+          <span class="compare-label">旧世界</span>
+          <p class="compare-t">单点依赖，叙事一停就散</p>
+          <p class="compare-d">故事讲完，流量散尽，生态没有承接结构。</p>
+        </div>
+        <div class="compare-vs"></div>
+        <div class="compare-side new">
+          <span class="compare-label">新结构</span>
+          <p class="compare-t">八条入口，共用一个核心资产</p>
+          <p class="compare-d">燃香赐福与聚宝盆已跑通闭环，NFT、文化院、商城、小游戏、DAO、福报依次展开——<b>多点承接，自我强化</b>。</p>
+        </div>
+      </div>
+
+      <div class="compare reveal">
+        <div class="compare-side old">
+          <span class="compare-label">旧世界</span>
+          <p class="compare-t">身份泛化，人人一样</p>
+          <p class="compare-d">没有可沉淀的身份，没有长期共建者的位置。</p>
+        </div>
+        <div class="compare-vs"></div>
+        <div class="compare-side new">
+          <span class="compare-label">新结构</span>
+          <p class="compare-t">108 枚创世身份 + 联名双重权益</p>
+          <p class="compare-d">唯一编号、极少数发行，作为生态权益中枢；<b>既不稀释创世稀缺性，又把外部社区接进生态</b>。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 增长引擎 ================= -->
+  <section class="wrap sec" id="engine">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">增长引擎<span>Growth Engines</span></h2>
+      </div>
+    </div>
+
+    <p class="sec-lead reveal">机制决定"能不能长久"，增长决定"能不能被看见"。传播与运营，是这个生态的两台发动机。</p>
+
+    <div class="engine-list">
+
+      <!-- Engine 01 · 传播引擎 -->
+      <article class="engine reveal">
+        <div class="engine-head">
+          <div class="engine-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 11l18-5v12L3 13v-2z"></path>
+              <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+            </svg>
+          </div>
+          <div class="engine-titles">
+            <span class="engine-tag">Engine · 01</span>
+            <h3 class="engine-t">传播引擎</h3>
+          </div>
+        </div>
+
+        <p class="engine-lead">让「财神到」<b>从一句口号，变成一场持续发生的社区事件</b>。</p>
+
+        <div class="engine-items">
+          <div class="engine-item">
+            <span class="engine-item-idx">A</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">财神直播间</span>
+              <p class="engine-item-d">常态化开播，把文化传播做成可互动的实时场域——<b>让共识有温度，让节奏有呼吸</b>。</p>
+            </div>
+          </div>
+          <div class="engine-item">
+            <span class="engine-item-idx">B</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">抽奖活动</span>
+              <p class="engine-item-d">高频小激励，降低第一次参与的门槛——<b>第一次伸手，就不再是陌生人</b>。</p>
+            </div>
+          </div>
+          <div class="engine-item">
+            <span class="engine-item-idx">C</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">社区联名活动</span>
+              <p class="engine-item-d">与 BG / CY2000 / FIST / LUCKY99 等社区联合开展——<b>单点传播变成网状扩散</b>，让共识跨社区流动。</p>
+            </div>
+          </div>
+          <div class="engine-item">
+            <span class="engine-item-idx">D</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">社交矩阵</span>
+              <p class="engine-item-d">覆盖 <code>X（Twitter）</code> / <code>Telegram</code> / <code>Antfun</code> 等主流阵地，多平台并行运营——<b>一处点火，处处回响</b>，让「财神到」在全球华人社区同步发声。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Engine 02 · 运营引擎 -->
+      <article class="engine reveal">
+        <div class="engine-head">
+          <div class="engine-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M12 7v5l3 2"></path>
+              <path d="M12 3v1.5"></path>
+              <path d="M12 19.5V21"></path>
+            </svg>
+          </div>
+          <div class="engine-titles">
+            <span class="engine-tag">Engine · 02</span>
+            <h3 class="engine-t">运营引擎</h3>
+          </div>
+        </div>
+
+        <p class="engine-lead">不是临时拼凑的班底，而是<b>有方法论、有节奏感的操盘团队</b>。</p>
+
+        <div class="engine-items">
+          <div class="engine-item">
+            <span class="engine-item-idx">A</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">方法论沉淀</span>
+              <p class="engine-item-d">完整走过 Solana 生态周期，熟悉 Meme 从冷启到沉淀的完整节拍——<b>不是凭感觉，是凭经验</b>。</p>
+            </div>
+          </div>
+          <div class="engine-item">
+            <span class="engine-item-idx">B</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">节奏感</span>
+              <p class="engine-item-d">冷启动、爆发期、沉淀期，每个阶段该做什么、力度多大、何时收手，<b>心里有数</b>。</p>
+            </div>
+          </div>
+          <div class="engine-item">
+            <span class="engine-item-idx">C</span>
+            <div class="engine-item-body">
+              <span class="engine-item-t">班底稳定</span>
+              <p class="engine-item-d">核心成员长期在线，不因行情波动掉队——<b>运营不是短跑，是马拉松</b>。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= 05 策略方向 ================= -->
+  <section class="wrap sec" id="strategy">
+    <div class="sec-head reveal">
+      <span class="sec-num">05</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">策略方向<span>Strategy</span></h2>
+      </div>
+    </div>
+
+    <p class="sec-lead reveal">策略不是路线图，而是每一次决策背后的判断标准。每一条都指向同一个动作与同一条边界。</p>
+
+    <div class="strategy-list">
+      <article class="strategy reveal">
+        <div class="st-head">
+          <span class="st-verb">Act 01</span>
+          <h3 class="st-t">先立信，再扩张</h3>
+        </div>
+        <p class="st-d">启动阶段以公平机制建立口碑，用透明披露换取信任；生态扩张时，每一个新产品上线前都先发布机制文档，明确数值口径、发放来源与风控边界——<b>不靠预期管理，靠规则先行</b>。</p>
+      </article>
+
+      <article class="strategy reveal">
+        <div class="st-head">
+          <span class="st-verb">Act 02</span>
+          <h3 class="st-t">用文化做流量，用机制做留存</h3>
+        </div>
+        <p class="st-d">主题曲、视觉系统、口令系统、仪式系统构成可复用的传播素材；燃香、质押、NFT 三条路径分别承接信仰型、资产型、身份型用户，<b>让不同需求的人都能在生态里找到位置</b>。</p>
+      </article>
+
+      <article class="strategy reveal">
+        <div class="st-head">
+          <span class="st-verb">Act 03</span>
+          <h3 class="st-t">横向运营，纵向沉淀</h3>
+        </div>
+        <p class="st-d">赛季与竞赛作为横向模块为各产品导流，奖励来自既有生态预算、不新增铸币；纵向则靠产品本身的收益结构与权益结构，<b>把流量沉淀为长期持币与长期共建</b>。</p>
+      </article>
+
+      <article class="strategy reveal">
+        <div class="st-head">
+          <span class="st-verb">Act 04</span>
+          <h3 class="st-t">多签过渡，渐进去中心化</h3>
+        </div>
+        <p class="st-d">现阶段由多签执行并向社区公示，治理范围覆盖生态基金、销毁参数、签名方更换与重大支出；治理机制随生态成熟逐步引入，<b>不急于放权，也不拖延交权</b>。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= 06 总结 ================= -->
+  <section class="wrap sec" id="summary">
+    <div class="sec-head reveal">
+      <span class="sec-num">06</span>
+      <div class="sec-titles">
+        <h2 class="sec-title">一句话<span>In One Sentence</span></h2>
+      </div>
+    </div>
+
+    <div class="final reveal">
+      <span class="final-label">Summary</span>
+      <p class="final-text">
+        <strong>$财神DAO</strong> 做的不是一个新的 Meme，而是把华人最大的文化公约数，翻译成一套<strong>可复算、可验证、可迭代</strong>的链上结构——<br>
+        文化提供共识，机制提供公平，传播提供声量，运营提供节奏，治理提供信任。
+      </p>
+      <div class="final-line">财神到，财运到。</div>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="wrap doc-foot">
+    <div class="foot-row">
+      <span class="foot-k">Document</span>
+      <span class="foot-v">God Of Fortune · Project Summary</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Contract</span>
+      <span class="foot-v">
+        <a href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">68Fya6…6868 · Solscan ↗</a>
+      </span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Network</span>
+      <span class="foot-v">Solana SPL</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Total Supply</span>
+      <span class="foot-v">686,868,686</span>
+    </div>
+    <div class="foot-row">
+      <span class="foot-k">Version</span>
+      <span class="foot-v">v1.3 · 2026-10-20</span>
+    </div>
+    <div class="disc">
+      本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
+      所有机制、参数与时间以官方最终公告及链上实际执行结果为准。
+    </div>
+  </footer>
+
+</div>
+
+<button id="backTop" class="back-top" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+  </svg>
+</button>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var themeBtn = document.getElementById('themeToggle');
+    var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    var STORAGE_KEY = 'gof-theme';
+
+    function currentTheme() {
+      var attr = root.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+    function applyUI() {
+      var t = currentTheme();
+      if (themeBtn) {
+        themeBtn.setAttribute('data-icon', t);
+        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.title = label;
+      }
+    }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+        applyUI();
+      });
+    }
+    function onSystemChange() { if (!root.hasAttribute('data-theme')) applyUI(); }
+    if (darkMQ.addEventListener) darkMQ.addEventListener('change', onSystemChange);
+    else if (darkMQ.addListener) darkMQ.addListener(onSystemChange);
+    applyUI();
+
+    /* 目录高亮 */
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+    if (links.length && ('IntersectionObserver' in window)) {
+      var sections = links.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+
+      var linkMap = {};
+      links.forEach(function (a) { linkMap[a.getAttribute('href')] = a; });
+
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            links.forEach(function (a) { a.classList.remove('active'); });
+            var a = linkMap['#' + entry.target.id];
+            if (a) {
+              a.classList.add('active');
+              var toc = a.parentElement;
+              if (toc && toc.scrollWidth > toc.clientWidth) {
+                var t = a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2;
+                toc.scrollTo({ left: Math.max(0, t), behavior: 'smooth' });
+              }
+            }
+          }
+        });
+      }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
+
+      sections.forEach(function (s) { obs.observe(s); });
+    }
+
+    /* 滚动揭示 */
+    var revealEls = document.querySelectorAll('.reveal');
+    if (revealEls.length && ('IntersectionObserver' in window)) {
+      var revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObs.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+      revealEls.forEach(function (el) { revealObs.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    }
+
+    /* 返回顶部 */
+    var backTop = document.getElementById('backTop');
+    if (backTop) {
+      var onScroll = function () {
+        if (window.scrollY > 600) backTop.classList.add('show');
+        else backTop.classList.remove('show');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      backTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  })();
+</script>
+</body>
+</html>
