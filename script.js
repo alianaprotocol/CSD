@@ -1,7 +1,5 @@
 /* ============================================================
-   智能性能模式 · Smart Performance Tier（稳定版）
-   - 仅依赖一次性设备评分，无 FPS 自动降级
-   - 桌面 Ctrl/Cmd+Shift+P 切档；移动端长按区块号 800ms 切档
+   智能性能模式 · Smart Performance Tier（稳定版 · Dark Only）
    ============================================================ */
 window.__perf = (function () {
   var KEY = 'caishen_perf_mode';
@@ -21,7 +19,6 @@ window.__perf = (function () {
 
   function scoreDevice(s) {
     var n = 100;
-    // 未知 = 中性 4，不惩罚
     var cores = (typeof s.cores  === 'number' && s.cores  > 0) ? s.cores  : 4;
     var mem   = (typeof s.memory === 'number' && s.memory > 0) ? s.memory : 4;
     n -= Math.max(0, 4 - Math.min(cores, 4)) * 12;
@@ -30,13 +27,11 @@ window.__perf = (function () {
     if (s.viewport < 500) n -= 3;
     if (s.reduceMotion)   return 0;
     n = Math.max(0, Math.min(100, n));
-    // 弱网 / 省流量 → 封顶 medium，不直接掉到 low
     if (s.saveData || s.slowNet) n = Math.min(n, 45);
     return n;
   }
   var baseScore = scoreDevice(signals);
 
-  // 倾向高档：只有真正弱的设备才落 low
   function scoreToTier(n) {
     if (n >= 65) return 'high';
     if (n >= 40) return 'medium';
@@ -108,7 +103,6 @@ window.__perf = (function () {
 
   applyTier(tier, false);
 
-  // 桌面：Ctrl/Cmd + Shift + P
   window.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
       e.preventDefault();
@@ -116,7 +110,6 @@ window.__perf = (function () {
     }
   });
 
-  // 移动端：长按 HUD 区块号 800ms
   (function bindMobileTierToggle() {
     var hud = document.getElementById('blockNum');
     if (!hud) return;
@@ -266,43 +259,6 @@ var __modalHelpers = (function () {
 })();
 
 /* ============================================================
-   主题切换
-   ============================================================ */
-(function () {
-  var KEY = 'caishen_theme';
-  var btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    try { localStorage.setItem(KEY, t); } catch (_) {}
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', t === 'light' ? '#fff7ed' : '#060305');
-    try { window.dispatchEvent(new CustomEvent('caishen:theme', { detail: { theme: t } })); } catch (_) {}
-  }
-  btn.addEventListener('click', function () {
-    var current = document.documentElement.getAttribute('data-theme') || 'dark';
-    var next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    if (window.__smokeBurst) {
-      var r = btn.getBoundingClientRect();
-      window.__smokeBurst(r.left + r.width / 2, r.top + r.height / 2, 8, 14, 0.22);
-    }
-  });
-  if (window.matchMedia) {
-    try {
-      var mql = window.matchMedia('(prefers-color-scheme: light)');
-      if (mql.addEventListener) {
-        mql.addEventListener('change', function (e) {
-          var saved = null;
-          try { saved = localStorage.getItem(KEY); } catch (_) {}
-          if (!saved) applyTheme(e.matches ? 'light' : 'dark');
-        });
-      }
-    } catch (_) {}
-  }
-})();
-
-/* ============================================================
    财神图 & 金色宝印预加载
    ============================================================ */
 window.__deityState = { ready: false, usable: false, reason: 'loading' };
@@ -341,7 +297,6 @@ window.__deityImg = (function () {
   return img;
 })();
 
-/* 预加载本地金色财神宝印 */
 window.__goldenSealState = { ready: false };
 window.__goldenSealImg = (function () {
   var img = new Image();
@@ -375,7 +330,7 @@ window.__showToast = (function () {
 })();
 
 /* ============================================================
-   HUD 区块号 (纯前端终极版 - 突破 CORS 封锁)
+   HUD 区块号
    ============================================================ */
 (function () {
   var el = document.getElementById('blockNum');
@@ -551,7 +506,7 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ① 香火粒子系统
+   ① 香火粒子系统（Dark Only）
    ============================================================ */
 (function () {
   var canvas = document.getElementById('smoke-canvas');
@@ -582,26 +537,16 @@ window.__metalScrape = (function () {
   var SPRITE = 64;
   var dustOnScroll = perf.dustOnScroll;
 
-  var PALETTES = {
-    dark: {
-      mode: 'lighter',
-      stops: [
-        [0,    'rgba(255, 233, 184, 1)'],
-        [0.3,  'rgba(255, 183, 0, 0.65)'],
-        [0.6,  'rgba(255, 45, 85, 0.25)'],
-        [1,    'rgba(255, 45, 85, 0)']
-      ]
-    },
-    light: {
-      mode: 'source-over',
-      stops: [
-        [0,    'rgba(168, 35, 21, 0.85)'],
-        [0.3,  'rgba(192, 57, 43, 0.50)'],
-        [0.6,  'rgba(212, 160, 23, 0.20)'],
-        [1,    'rgba(212, 160, 23, 0)']
-      ]
-    }
+  var DARK_PALETTE = {
+    mode: 'lighter',
+    stops: [
+      [0,    'rgba(255, 233, 184, 1)'],
+      [0.3,  'rgba(255, 183, 0, 0.65)'],
+      [0.6,  'rgba(255, 45, 85, 0.25)'],
+      [1,    'rgba(255, 45, 85, 0)']
+    ]
   };
+
   function makeSprite(palette) {
     var c = document.createElement('canvas');
     c.width = c.height = SPRITE;
@@ -612,28 +557,9 @@ window.__metalScrape = (function () {
     sctx.fillRect(0, 0, SPRITE, SPRITE);
     return c;
   }
-  var initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  var currentPalette = PALETTES[initialTheme] || PALETTES.dark;
-  var currentSprite = makeSprite(currentPalette);
-  var currentMode = currentPalette.mode;
-  var targetSprite = null, targetPalette = null;
-  var transitionStart = 0, TRANSITION_MS = 900, isTransitioning = false;
 
-  function switchPalette(theme) {
-    var newPalette = PALETTES[theme] || PALETTES.dark;
-    if (!isTransitioning && currentPalette === newPalette) return;
-    if (isTransitioning && targetPalette === newPalette) return;
-    targetPalette = newPalette;
-    targetSprite = makeSprite(newPalette);
-    transitionStart = performance.now();
-    isTransitioning = true;
-  }
-  window.__switchParticleTheme = switchPalette;
-
-  window.addEventListener('caishen:theme', function (e) {
-    var theme = (e && e.detail && e.detail.theme) || 'dark';
-    switchPalette(theme);
-  });
+  var currentSprite = makeSprite(DARK_PALETTE);
+  var currentMode = DARK_PALETTE.mode;
 
   window.addEventListener('caishen:perf', function (e) {
     var cfg = e.detail.config;
@@ -687,35 +613,12 @@ window.__metalScrape = (function () {
   }
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    if (isTransitioning && targetSprite) {
-      var elapsed = performance.now() - transitionStart;
-      var raw = Math.min(1, elapsed / TRANSITION_MS);
-      var eased = raw < 0.5 ? 4 * raw * raw * raw : 1 - Math.pow(-2 * raw + 2, 3) / 2;
-      ctx.globalCompositeOperation = 'source-over';
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        if (p.alpha <= 0.002) continue;
-        var px = p.x - p.size, py = p.y - p.size, sz = p.size * 2;
-        ctx.globalAlpha = p.alpha * (1 - eased);
-        ctx.drawImage(currentSprite, px, py, sz, sz);
-        ctx.globalAlpha = p.alpha * eased;
-        ctx.drawImage(targetSprite, px, py, sz, sz);
-      }
-      if (raw >= 1) {
-        isTransitioning = false;
-        currentSprite = targetSprite;
-        currentPalette = targetPalette;
-        currentMode = currentPalette.mode;
-        targetSprite = null; targetPalette = null;
-      }
-    } else {
-      ctx.globalCompositeOperation = currentMode;
-      for (var j = 0; j < particles.length; j++) {
-        var q = particles[j];
-        if (q.alpha <= 0.002) continue;
-        ctx.globalAlpha = q.alpha;
-        ctx.drawImage(currentSprite, q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
-      }
+    ctx.globalCompositeOperation = currentMode;
+    for (var j = 0; j < particles.length; j++) {
+      var q = particles[j];
+      if (q.alpha <= 0.002) continue;
+      ctx.globalAlpha = q.alpha;
+      ctx.drawImage(currentSprite, q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
     }
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
@@ -724,7 +627,6 @@ window.__metalScrape = (function () {
     if (!document.hidden) { update(); draw(); }
     requestAnimationFrame(loop);
   }
-  // 延迟启动，避开首屏资源解码窗口
   if ('requestIdleCallback' in window) {
     requestIdleCallback(loop, { timeout: 2000 });
   } else {
@@ -744,7 +646,7 @@ window.__metalScrape = (function () {
     if (now - lastTap < 55) return;
     lastTap = now;
     if (e.target && e.target.closest &&
-        e.target.closest('#gate, #censer, #charmModal, #themeToggle, button, a, input, textarea, select')) return;
+        e.target.closest('#gate, #censer, #charmModal, button, a, input, textarea, select')) return;
     burst(e.clientX, e.clientY, 2 + Math.floor(Math.random() * 3));
   }, { passive: true });
 
@@ -955,7 +857,6 @@ window.__metalScrape = (function () {
   var gateSmokeStartTimer = null;
   var gateSmokeTimer      = null;
 
-  // 延迟 1200ms 启动，避开首屏资源解码窗口
   gateSmokeStartTimer = setTimeout(function () {
     gateSmokeStartTimer = null;
     if (drawn) return;
@@ -1275,7 +1176,7 @@ window.__metalScrape = (function () {
 })();
 
 /* ============================================================
-   ⑤ 财神符生成 (V3.0 终极赛博重构 · 大印居中镇底 · 9:16 全屏)
+   ⑤ 财神符生成（Dark Only）
    ============================================================ */
 (function () {
   var modal = document.getElementById('charmModal');
@@ -1287,7 +1188,6 @@ window.__metalScrape = (function () {
   if (!modal) return;
   var currentDataUrl = null;
   var releaseModalFocus = null;
-  window.addEventListener('caishen:theme', function () { currentDataUrl = null; });
 
   function getFortune() {
     var GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
@@ -1308,23 +1208,19 @@ window.__metalScrape = (function () {
     };
   }
 
-  // 3D 金属浮雕文字引擎 (赛博融合)
-  function draw3DText(ctx, text, x, y, font, color, glowColor, depth, isDark) {
+  function draw3DText(ctx, text, x, y, font, color, glowColor, depth) {
     ctx.save();
     ctx.font = font;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // 1. 深度阴影层
     ctx.fillStyle = 'rgba(0,0,0,0.85)';
     ctx.fillText(text, x + depth, y + depth);
 
-    // 2. 赛博发光层
-    ctx.shadowColor = glowColor; ctx.shadowBlur = isDark ? 45 : 20;
+    ctx.shadowColor = glowColor; ctx.shadowBlur = 45;
     ctx.fillStyle = color;
     ctx.fillText(text, x, y);
 
-    // 3. 金属高光层
     ctx.shadowBlur = 0;
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.fillText(text, x - 2, y - 2);
@@ -1348,30 +1244,27 @@ window.__metalScrape = (function () {
     ctx.restore();
   }
 
-  function drawDeity(ctx, cx, cy, size, T, isDark) {
-    // 赛博能量背景光环
+  function drawDeity(ctx, cx, cy, size) {
     var glow = ctx.createRadialGradient(cx, cy, size * 0.1, cx, cy, size * 0.85);
-    glow.addColorStop(0, isDark ? 'rgba(255, 183, 0, 0.6)' : 'rgba(212, 160, 23, 0.4)');
-    glow.addColorStop(0.4, isDark ? 'rgba(255, 45, 85, 0.2)' : 'rgba(192, 57, 43, 0.1)');
+    glow.addColorStop(0, 'rgba(255, 183, 0, 0.6)');
+    glow.addColorStop(0.4, 'rgba(255, 45, 85, 0.2)');
     glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(cx, cy, size * 0.85, 0, Math.PI * 2); ctx.fill();
 
-    // 赛博符文环 (多圈同心圆 + 数据节点)
     ctx.save();
-    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)';
+    ctx.strokeStyle = 'rgba(255, 183, 0, 0.8)';
     ctx.lineWidth = 3;
     ctx.setLineDash([18, 24]);
     ctx.beginPath(); ctx.arc(cx, cy, size * 0.72, 0, Math.PI * 2); ctx.stroke();
 
-    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.5)' : 'rgba(192, 57, 43, 0.5)';
+    ctx.strokeStyle = 'rgba(255, 45, 85, 0.5)';
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 18]);
     ctx.beginPath(); ctx.arc(cx, cy, size * 0.64, 0, Math.PI * 2); ctx.stroke();
 
-    // 数据流节点 (模拟算力中心)
     ctx.setLineDash([]);
-    ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)';
+    ctx.fillStyle = 'rgba(255, 183, 0, 0.8)';
     for (var i = 0; i < 16; i++) {
       var angle = (i / 16) * Math.PI * 2;
       var nx = cx + Math.cos(angle) * size * 0.72;
@@ -1380,20 +1273,18 @@ window.__metalScrape = (function () {
     }
     ctx.restore();
 
-    // 绘制财神像
     var state = window.__deityState || {};
     if (state.usable && window.__deityImg) {
       try {
         ctx.save();
-        ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.8)';
+        ctx.shadowColor = 'rgba(255, 183, 0, 1)';
         ctx.shadowBlur = 50; ctx.shadowOffsetY = 15;
         ctx.drawImage(window.__deityImg, cx - size / 2, cy - size / 2, size, size);
         ctx.restore(); return;
       } catch (e) {}
     }
-    // 回退方案
     var r = size * 0.4;
-    ctx.fillStyle = isDark ? '#ffb700' : '#d4a017';
+    ctx.fillStyle = '#ffb700';
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#1a0609';
     ctx.font = '900 ' + Math.round(size * 0.5) + 'px "Noto Serif SC", serif';
@@ -1413,7 +1304,6 @@ window.__metalScrape = (function () {
     ctx.putImageData(imageData, 0, 0);
   }
 
-  // 精准农历计算工具（基于浏览器内置 Intl 农历日历，100% 准确）
   function getLunarDate(date) {
     try {
       var parts = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {
@@ -1453,10 +1343,8 @@ window.__metalScrape = (function () {
     var canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
-    var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     var fortune = getFortune();
 
-    // 获取农历
     var today = new Date();
     var lunar = getLunarDate(today);
     var weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
@@ -1464,27 +1352,25 @@ window.__metalScrape = (function () {
     var dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日 ' + weekday;
 
     var T = {
-      bgFrom: isDark ? '#080205' : '#fff7ed',
-      bgMid: isDark ? '#12060c' : '#fff9ec',
-      bgTo: isDark ? '#040102' : '#fce8c4',
-      gridColor: isDark ? 'rgba(255, 45, 85, 0.08)' : 'rgba(192, 57, 43, 0.08)',
-      gridColor2: isDark ? 'rgba(255, 183, 0, 0.04)' : 'rgba(212, 160, 23, 0.05)',
-      borderOuter: isDark ? '#ff2d55' : '#c0392b',
-      borderInner: isDark ? 'rgba(255, 183, 0, 0.8)' : 'rgba(184, 134, 11, 0.8)',
-      cornerColor: isDark ? '#ffb700' : '#b8860b',
-      titleColor: isDark ? '#ffe9b8' : '#8e1c10',
-      titleGlow: isDark ? '#ffb700' : '#d4a017',
-      signColor: isDark ? '#fff3d0' : '#5a2e0e',
-      signGlow: isDark ? '#ff2d55' : '#a82315',
-      textMuted: isDark ? 'rgba(255, 183, 0, 0.6)' : 'rgba(142, 28, 16, 0.7)'
+      bgFrom: '#080205',
+      bgMid: '#12060c',
+      bgTo: '#040102',
+      gridColor: 'rgba(255, 45, 85, 0.08)',
+      gridColor2: 'rgba(255, 183, 0, 0.04)',
+      borderOuter: '#ff2d55',
+      borderInner: 'rgba(255, 183, 0, 0.8)',
+      cornerColor: '#ffb700',
+      titleColor: '#ffe9b8',
+      titleGlow: '#ffb700',
+      signColor: '#fff3d0',
+      signGlow: '#ff2d55',
+      textMuted: 'rgba(255, 183, 0, 0.6)'
     };
 
-    // 1. 背景
     var bg = ctx.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0, T.bgFrom); bg.addColorStop(.4, T.bgMid); bg.addColorStop(1, T.bgTo);
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
-    // 2. 网格
     ctx.save();
     ctx.strokeStyle = T.gridColor2; ctx.lineWidth = 1;
     for (var gx = 0; gx < W; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
@@ -1494,18 +1380,16 @@ window.__metalScrape = (function () {
     for (var gy2 = 0; gy2 < H; gy2 += 120) { ctx.beginPath(); ctx.moveTo(0, gy2); ctx.lineTo(W, gy2); ctx.stroke(); }
     ctx.restore();
 
-    // 3. 氛围光
     var topGlow = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, H * 0.55);
-    topGlow.addColorStop(0, isDark ? 'rgba(255, 45, 85, 0.45)' : 'rgba(212, 160, 23, 0.35)');
+    topGlow.addColorStop(0, 'rgba(255, 45, 85, 0.45)');
     topGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = topGlow; ctx.fillRect(0, 0, W, H);
 
     var bottomGlow = ctx.createRadialGradient(W / 2, H, 0, W / 2, H, H * 0.4);
-    bottomGlow.addColorStop(0, isDark ? 'rgba(255, 183, 0, 0.15)' : 'rgba(192, 57, 43, 0.1)');
+    bottomGlow.addColorStop(0, 'rgba(255, 183, 0, 0.15)');
     bottomGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = bottomGlow; ctx.fillRect(0, 0, W, H);
 
-    // 4. 外框
     ctx.save();
     ctx.strokeStyle = T.borderOuter; ctx.lineWidth = 3;
     ctx.shadowColor = T.borderOuter; ctx.shadowBlur = 30;
@@ -1524,57 +1408,50 @@ window.__metalScrape = (function () {
     ctx.stroke();
     ctx.restore();
 
-    // 5. 顶部代码
     ctx.fillStyle = T.cornerColor;
     ctx.font = '600 24px "JetBrains Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('// $ CAISHEN.DAO · ON-CHAIN TALISMAN', W / 2, 140);
 
-    // 6. 财神像
-    drawDeity(ctx, W / 2, 460, 560, T, isDark);
+    drawDeity(ctx, W / 2, 460, 560);
 
-    // 7. 主标题
     draw3DText(ctx, '财 神 符', W / 2, 840,
       '900 150px "Noto Serif SC", "Songti SC", serif',
-      T.titleColor, T.titleGlow, 12, isDark);
+      T.titleColor, T.titleGlow, 12);
 
-    // 8. 分割线
     ctx.save();
-    ctx.strokeStyle = isDark ? '#ff2d55' : '#c0392b';
+    ctx.strokeStyle = '#ff2d55';
     ctx.lineWidth = 4;
-    ctx.shadowColor = isDark ? '#ff2d55' : '#c0392b';
+    ctx.shadowColor = '#ff2d55';
     ctx.shadowBlur = 25;
     ctx.beginPath(); ctx.moveTo(W / 2 - 350, 940); ctx.lineTo(W / 2 + 350, 940); ctx.stroke();
     ctx.restore();
     ctx.fillStyle = T.cornerColor;
     ctx.save(); ctx.translate(W / 2, 940); ctx.rotate(Math.PI / 4); ctx.fillRect(-10, -10, 20, 20); ctx.restore();
 
-    // 9. 信息框
     var boxW = W - 160;
     var boxH = 220;
     var boxX = (W - boxW) / 2;
     var boxY = 990;
 
     ctx.save();
-    ctx.fillStyle = isDark ? 'rgba(255, 183, 0, 0.05)' : 'rgba(255, 255, 255, 0.6)';
-    ctx.strokeStyle = isDark ? 'rgba(255, 183, 0, 0.4)' : 'rgba(192, 57, 43, 0.3)';
+    ctx.fillStyle = 'rgba(255, 183, 0, 0.05)';
+    ctx.strokeStyle = 'rgba(255, 183, 0, 0.4)';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.roundRect(boxX, boxY, boxW, boxH, 24); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = isDark ? 'rgba(255, 45, 85, 0.3)' : 'rgba(212, 160, 23, 0.2)';
+    ctx.strokeStyle = 'rgba(255, 45, 85, 0.3)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.roundRect(boxX + 15, boxY + 15, boxW - 30, boxH - 30, 16); ctx.stroke();
     ctx.restore();
 
-    // 10. 祝福语（红红火火放大）
-    ctx.fillStyle = isDark ? '#ff2d55' : '#c0392b';
+    ctx.fillStyle = '#ff2d55';
     ctx.font = '700 40px "JetBrains Mono", monospace';
     ctx.fillText('[ ' + fortune.label + ' ]', W / 2, 1040);
 
     draw3DText(ctx, fortune.text, W / 2, 1125,
       '800 64px "Noto Serif SC", "Songti SC", serif',
-      T.signColor, T.signGlow, 6, isDark);
+      T.signColor, T.signGlow, 6);
 
-    // 11. 随机吉祥话
     var SLOGANS = [
       '五路财神 · 八方来财', '招财进宝 · 日进斗金', '金库充盈 · 银库满仓',
       '财星高照 · 鸿运当头', '正财偏财 · 滚滚而来', '福禄双全 · 富贵盈门'
@@ -1582,13 +1459,12 @@ window.__metalScrape = (function () {
     var randomSlogan = SLOGANS[Math.floor(Math.random() * SLOGANS.length)];
     draw3DText(ctx, randomSlogan, W / 2, 1290,
       '700 52px "Noto Serif SC", "Songti SC", serif',
-      T.titleColor, T.titleGlow, 4, isDark);
+      T.titleColor, T.titleGlow, 4);
 
     ctx.fillStyle = T.textMuted;
     ctx.font = '500 36px "Noto Serif SC", serif';
     ctx.fillText('财神到，财运到', W / 2, 1370);
 
-    // 12. 日期（公历+农历，去掉落款，优化间距）
     ctx.fillStyle = T.cornerColor;
     ctx.font = '700 34px "Noto Serif SC", "Songti SC", serif';
     ctx.fillText(dateStr, W / 2, 1440);
@@ -1597,22 +1473,20 @@ window.__metalScrape = (function () {
     ctx.font = '700 34px "Noto Serif SC", "Songti SC", serif';
     ctx.fillText('农历 ' + lunar.year + '年 ' + lunar.month + ' ' + lunar.day, W / 2, 1500);
 
-    // 13. 金色大印（尺寸 300，底部留白 80px，与日期间距舒适）
     var sealSize = 300;
     var sealX = (W - sealSize) / 2;
     var sealY = 1540;
 
     if (window.__goldenSealState && window.__goldenSealState.ready && window.__goldenSealImg) {
       ctx.save();
-      ctx.shadowColor = isDark ? 'rgba(255, 183, 0, 1)' : 'rgba(184, 134, 11, 0.9)';
-      ctx.shadowBlur = isDark ? 60 : 30;
+      ctx.shadowColor = 'rgba(255, 183, 0, 1)';
+      ctx.shadowBlur = 60;
       ctx.drawImage(window.__goldenSealImg, sealX, sealY, sealSize, sealSize);
       ctx.restore();
     } else {
       drawSeal(ctx, W / 2, sealY + sealSize / 2, sealSize * 0.8, T);
     }
 
-    // 14. 噪点
     addCanvasNoise(ctx, W, H);
 
     try {
