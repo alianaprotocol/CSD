@@ -237,6 +237,11 @@
   .reward-card::before{
     content:""; position:absolute; inset:0; pointer-events:none;
     background:radial-gradient(90% 120% at 100% 0%, var(--cyber-glow-soft) 0%, transparent 55%);
+    animation:reward-breathe 5s ease-in-out infinite;
+  }
+  @keyframes reward-breathe{
+    0%,100%{ opacity:.55; }
+    50%{ opacity:1; }
   }
   .reward-card::after{
     content:""; position:absolute; top:0; left:0; right:0; height:2px;
@@ -263,6 +268,7 @@
   .reward-num{
     font-family:var(--mono);
     font-size:30px; font-weight:700; letter-spacing:-.03em; line-height:1.1;
+    font-variant-numeric:tabular-nums;
     background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -329,51 +335,244 @@
   }
   .btn-ghost:active{ transform:scale(.98); }
 
-  /* ============ 资产横滑 ============ */
+  /* ============================================================
+     资产总览（新增）
+     ============================================================ */
+  .portfolio{
+    position:relative; overflow:hidden;
+    margin-bottom:12px;
+    padding:14px 15px 15px;
+    border-radius:16px;
+    background:
+      radial-gradient(130% 150% at 0% 0%, var(--cyber-glow-faint) 0%, transparent 62%),
+      radial-gradient(110% 130% at 100% 100%, var(--gold-soft) 0%, transparent 60%),
+      var(--card);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-card);
+  }
+  .portfolio::after{
+    content:""; position:absolute; top:0; left:15px; right:15px; height:1px;
+    background:linear-gradient(90deg, transparent, var(--cyber-glow-soft), transparent);
+  }
+
+  .pf-row{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:12px; margin-bottom:13px;
+  }
+  .pf-info{ min-width:0; }
+  .pf-label{
+    display:block;
+    font-size:11px; font-weight:600; color:var(--muted);
+    letter-spacing:.04em; margin-bottom:2px;
+  }
+  .pf-value{
+    display:flex; align-items:baseline;
+    font-family:var(--mono);
+    font-size:27px; font-weight:700;
+    letter-spacing:-.035em; line-height:1.05;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .pf-sym{
+    font-size:16px; font-weight:600; color:var(--muted);
+    margin-right:2px; letter-spacing:0;
+  }
+  .pf-dec{
+    font-size:16px; font-weight:600; color:var(--muted);
+    letter-spacing:-.01em;
+  }
+
+  .pf-pill{
+    flex:none;
+    display:inline-flex; align-items:center; gap:3px;
+    padding:4px 9px 4px 6px;
+    border-radius:999px;
+    background:var(--ok-soft); color:var(--ok);
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    letter-spacing:.01em; line-height:1.5;
+    box-shadow:inset 0 0 0 1px rgba(14,159,110,.14);
+  }
+  .pf-pill svg{ width:11px; height:11px; }
+
+  .pf-track{
+    display:flex; gap:2px; height:6px;
+    border-radius:4px; overflow:hidden;
+    background:var(--line-2);
+  }
+  .pf-track i{
+    display:block; height:100%; width:var(--w);
+    background:var(--c);
+    border-radius:3px;
+    opacity:.9;
+    transition:width .7s cubic-bezier(.4,0,.2,1), opacity .2s ease;
+  }
+  .pf-track i:hover{ opacity:1; }
+
+  .pf-legend{
+    display:flex; flex-wrap:wrap; gap:8px 12px;
+    margin-top:10px;
+  }
+  .pf-legend span{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:var(--mono); font-size:9.5px; font-weight:600;
+    color:var(--muted); letter-spacing:.02em;
+  }
+  .pf-legend em{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--c); flex:none;
+    font-style:normal;
+  }
+
+  /* ============================================================
+     资产卡片（重设计）
+     ============================================================ */
   .hscroll{
     display:flex; gap:10px;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
-    padding:2px 14px 8px;
-    margin:0 -14px;
+    padding:6px 14px 14px;
+    margin:0 -14px -6px;
     scroll-snap-type:x mandatory;
     scrollbar-width:none;
+    scroll-padding-left:14px;
   }
   .hscroll::-webkit-scrollbar{ display:none; }
 
   .asset-card{
-    flex:none; width:132px;
+    position:relative;
+    flex:none; width:140px;
     padding:12px;
-    background:var(--card);
+    border-radius:16px;
+    background:
+      radial-gradient(120% 95% at 100% 0%, var(--c1-soft) 0%, transparent 62%),
+      linear-gradient(165deg, var(--card) 0%, var(--card) 100%);
     border:1px solid var(--line);
-    border-radius:12px;
+    overflow:hidden;
+    isolation:isolate;
     scroll-snap-align:start;
-    transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease;
+    animation:ac-in .5s cubic-bezier(.22,1.2,.36,1) backwards;
+    animation-delay:calc(var(--i,0) * 55ms);
+    transition:transform .3s cubic-bezier(.34,1.3,.64,1),
+               box-shadow .3s ease,
+               border-color .3s ease;
+    -webkit-tap-highlight-color:transparent;
   }
+
+  @keyframes ac-in{
+    from{ opacity:0; transform:translateY(12px) scale(.94); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* 底部彩色渐隐线 */
+  .asset-card::after{
+    content:"";
+    position:absolute; left:12px; right:12px; bottom:0; height:2px;
+    border-radius:2px 2px 0 0;
+    background:linear-gradient(90deg, var(--c1), transparent 85%);
+    opacity:.45;
+    pointer-events:none;
+  }
+
+  /* 扫光 */
+  .ac-shine{
+    position:absolute; inset:0; z-index:2;
+    background:linear-gradient(105deg,
+      transparent 38%,
+      rgba(255,255,255,.22) 50%,
+      transparent 62%);
+    transform:translateX(-110%);
+    transition:transform .65s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+  }
+  .asset-card:hover .ac-shine{ transform:translateX(110%); }
+
   .asset-card:hover{
-    border-color:var(--cyber-glow-soft);
-    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 6px 18px -12px var(--cyber-glow);
-    transform:translateY(-1px);
+    transform:translateY(-3px);
+    border-color:transparent;
+    box-shadow:
+      0 0 0 1px var(--c1-soft),
+      0 12px 28px -18px var(--c1-glow),
+      0 3px 10px -6px rgba(20,24,29,.14);
   }
-  .asset-top{ display:flex; align-items:center; gap:7px; margin-bottom:9px; }
-  .asset-icon{
-    width:24px; height:24px; border-radius:50%; flex:none;
-    display:inline-flex; align-items:center; justify-content:center;
-    font-size:11px; font-weight:700;
+  .asset-card:active{ transform:translateY(-1px) scale(.985); }
+
+  .ac-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:6px; margin-bottom:9px;
   }
-  .asset-name{ font-size:11.5px; font-weight:700; color:var(--ink); line-height:1.3; }
-  .asset-price{
-    font-family:var(--mono); font-size:9.5px; color:var(--muted);
-    line-height:1.4; letter-spacing:.01em;
+
+  .ac-icon{
+    flex:none;
+    width:28px; height:28px; border-radius:9px;
+    display:grid; place-items:center;
+    font-family:var(--mono);
+    font-size:12px; font-weight:800; letter-spacing:-.02em;
+    color:#fff;
+    background:linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+    box-shadow:
+      0 4px 12px -5px var(--c1-glow),
+      inset 0 1px 0 rgba(255,255,255,.28),
+      inset 0 -1px 0 rgba(0,0,0,.10);
+    text-shadow:0 1px 1px rgba(0,0,0,.18);
   }
-  .asset-amt{
-    font-family:var(--mono); font-size:13.5px; font-weight:700;
-    color:var(--ink); letter-spacing:-.01em;
+
+  .ac-chg{
+    font-family:var(--mono);
+    font-size:9.5px; font-weight:700;
+    letter-spacing:.02em; line-height:1.6;
+    padding:1px 5px; border-radius:5px;
+    white-space:nowrap;
+  }
+  .ac-chg.up{ color:var(--ok); background:var(--ok-soft); }
+  .ac-chg.down{ color:var(--danger); background:var(--danger-soft); }
+
+  .ac-name{
+    margin:0;
+    font-size:11px; font-weight:600;
+    color:var(--ink-3); letter-spacing:.02em;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .asset-usd{
-    font-family:var(--mono); font-size:10px; color:var(--muted);
-    margin-top:1px; line-height:1.4;
+
+  .ac-amt{
+    margin:3px 0 0;
+    font-family:var(--mono);
+    font-size:15px; font-weight:700;
+    letter-spacing:-.025em; line-height:1.25;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
+
+  .ac-usd{
+    margin:1px 0 0;
+    font-family:var(--mono);
+    font-size:10px; font-weight:600;
+    color:var(--muted); letter-spacing:.01em;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .ac-foot{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:6px;
+    margin-top:9px; padding-top:8px;
+    border-top:1px dashed var(--line-2);
+  }
+  .ac-price{
+    font-family:var(--mono);
+    font-size:9.5px; font-weight:600;
+    color:var(--muted); letter-spacing:.01em;
+    white-space:nowrap;
+  }
+  .ac-spark{
+    flex:none; width:44px; height:16px;
+    display:block;
+  }
+  .ac-spark svg{ display:block; width:100%; height:100%; overflow:visible; }
+  .ac-spark .line{
+    fill:none; stroke:var(--c1); stroke-width:1.6;
+    stroke-linecap:round; stroke-linejoin:round;
+    filter:drop-shadow(0 0 3px var(--c1-glow));
+  }
+  .ac-spark .area{ fill:var(--c1); opacity:.14; stroke:none; }
 
   /* ============ 仓位 ============ */
   .positions{ display:grid; gap:10px; }
@@ -407,6 +606,7 @@
   .pos-apy-val{
     font-family:var(--mono); font-size:17px; font-weight:700;
     letter-spacing:-.02em; line-height:1.2;
+    font-variant-numeric:tabular-nums;
     background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -430,7 +630,7 @@
     display:block; height:100%; border-radius:3px;
     background:linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
     box-shadow:0 0 8px var(--cyber-glow);
-    animation:progress-fill 1s ease-out;
+    animation:progress-fill 1s cubic-bezier(.4,0,.2,1);
   }
   @keyframes progress-fill{ from{ width:0; } }
 
@@ -446,6 +646,7 @@
   .pos-v{
     display:block; font-family:var(--mono); font-size:12px; font-weight:700;
     color:var(--ink); letter-spacing:-.005em; line-height:1.5;
+    font-variant-numeric:tabular-nums;
   }
   .pos-v.is-gold{ color:var(--gold); }
 
@@ -572,6 +773,7 @@
     color:var(--ink);
     font-family:var(--mono); font-size:26px; font-weight:700;
     letter-spacing:-.02em; line-height:1.3;
+    font-variant-numeric:tabular-nums;
     padding:0;
   }
   .input-row input::placeholder{ color:var(--muted); opacity:.45; }
@@ -602,6 +804,10 @@
     background:var(--bg);
     border:1px solid var(--line);
     border-radius:10px;
+    animation:bd-in .28s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes bd-in{
+    from{ opacity:0; transform:translateY(-4px); }
   }
   .bd-top{
     display:flex; align-items:center; justify-content:space-between;
@@ -619,6 +825,7 @@
     flex:none;
     font-family:var(--mono); font-size:12px; font-weight:700;
     color:var(--ink); letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
   }
   .bd-amt.is-bad{ color:var(--danger); }
   .bd-bottom{
@@ -646,6 +853,7 @@
   .est-v{
     font-family:var(--mono); font-size:14px; font-weight:700;
     letter-spacing:-.01em; line-height:1.4;
+    font-variant-numeric:tabular-nums;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .est-v.is-gold{ color:var(--gold); }
@@ -893,12 +1101,14 @@
   /* ============ 响应式微调 ============ */
   @media (max-width:380px){
     .app-main{ padding:12px 12px 0; gap:16px; }
-    .hscroll{ margin:0 -12px; padding:2px 12px 8px; }
+    .hscroll{ margin:0 -12px -6px; padding:6px 12px 14px; scroll-padding-left:12px; }
     .appbar{ padding:9px 12px; gap:6px; }
     .appbar-title{ font-size:14px; }
     .wallet-chip{ height:30px; font-size:10.5px; padding:0 8px 0 5px; }
     .wallet-dot{ width:16px; height:16px; }
     .reward-num{ font-size:27px; }
+    .pf-value{ font-size:24px; }
+    .pf-sym,.pf-dec{ font-size:15px; }
     .actionbar-inner{ padding:0 12px; }
     .icon-btn{ width:34px; height:34px; }
     .icon-btn svg{ width:17px; height:17px; }
@@ -906,6 +1116,7 @@
     .opt-btn .o-main{ font-size:12px; }
     .opt-btn .o-sub{ font-size:10px; }
     .grid-4{ gap:4px; }
+    .asset-card{ width:134px; }
   }
 
   @media (max-width:340px){
@@ -913,11 +1124,13 @@
     .appbar-right{ margin-left:auto; }
     .opt-btn .o-main{ font-size:11px; }
     .opt-btn .o-sub{ font-size:9.5px; }
+    .pf-legend{ display:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{
       animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
       transition-duration:.001ms !important;
     }
   }
@@ -991,7 +1204,7 @@
       </div>
     </section>
 
-    <!-- ================= 钱包资产 ================= -->
+    <!-- ================= 钱包资产（重设计） ================= -->
     <section aria-label="我的钱包资产">
       <div class="block-head">
         <h3>
@@ -1005,66 +1218,148 @@
         <button class="ghost-btn" type="button">刷新</button>
       </div>
 
+      <!-- 总资产概览 -->
+      <div class="portfolio">
+        <div class="pf-row">
+          <div class="pf-info">
+            <span class="pf-label">总资产估值</span>
+            <span class="pf-value">
+              <span class="pf-sym">$</span><span id="pf-int">0</span><span class="pf-dec">.00</span>
+            </span>
+          </div>
+          <span class="pf-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 15 12 9 18 15"></polyline>
+            </svg>
+            +1.57%
+          </span>
+        </div>
+
+        <div class="pf-track" aria-hidden="true">
+          <i style="--w:12.5%;--c:#ff2d55"></i>
+          <i style="--w:6.25%;--c:#3b82f6"></i>
+          <i style="--w:62.5%;--c:#a855f7"></i>
+          <i style="--w:6.25%;--c:#0e9f6e"></i>
+          <i style="--w:12.5%;--c:#f59e0b"></i>
+        </div>
+
+        <div class="pf-legend">
+          <span><em style="--c:#ff2d55"></em>财神到</span>
+          <span><em style="--c:#3b82f6"></em>BG</span>
+          <span><em style="--c:#a855f7"></em>ANTFUN</span>
+          <span><em style="--c:#0e9f6e"></em>FIST</span>
+          <span><em style="--c:#f59e0b"></em>LUCKY99</span>
+        </div>
+      </div>
+
+      <!-- 币种卡片（横向滑动） -->
       <div class="hscroll">
-        <div class="asset-card">
-          <div class="asset-top">
-            <div class="asset-icon" style="background:var(--cyber-glow-faint);color:var(--cyber);">财</div>
-            <div style="min-width:0;">
-              <p class="asset-name">财神到</p>
-              <p class="asset-price">$0.01</p>
-            </div>
-          </div>
-          <p class="asset-amt">10,000.00</p>
-          <p class="asset-usd">≈ $100.00</p>
-        </div>
 
-        <div class="asset-card">
-          <div class="asset-top">
-            <div class="asset-icon" style="background:var(--info-soft);color:var(--info);">B</div>
-            <div style="min-width:0;">
-              <p class="asset-name">BG</p>
-              <p class="asset-price">$0.0001</p>
-            </div>
+        <!-- 财神到 -->
+        <article class="asset-card" style="--i:0;--c1:#ff2d55;--c2:#ffb700;--c1-soft:rgba(255,45,85,.11);--c1-glow:rgba(255,45,85,.42);">
+          <span class="ac-shine" aria-hidden="true"></span>
+          <div class="ac-head">
+            <span class="ac-icon" aria-hidden="true">财</span>
+            <span class="ac-chg up">+2.4%</span>
           </div>
-          <p class="asset-amt">500,000</p>
-          <p class="asset-usd">≈ $50.00</p>
-        </div>
+          <p class="ac-name">财神到</p>
+          <p class="ac-amt">10,000.00</p>
+          <p class="ac-usd">≈ $100.00</p>
+          <div class="ac-foot">
+            <span class="ac-price">$0.0100</span>
+            <span class="ac-spark" aria-hidden="true">
+              <svg viewBox="0 0 44 16" preserveAspectRatio="none">
+                <path class="area" d="M0,12 L6,10 L12,11 L18,7 L24,8 L30,5 L36,6 L44,3 L44,16 L0,16 Z"/>
+                <path class="line" d="M0,12 L6,10 L12,11 L18,7 L24,8 L30,5 L36,6 L44,3"/>
+              </svg>
+            </span>
+          </div>
+        </article>
 
-        <div class="asset-card">
-          <div class="asset-top">
-            <div class="asset-icon" style="background:var(--gold-soft);color:var(--gold);">A</div>
-            <div style="min-width:0;">
-              <p class="asset-name">ANTFUN</p>
-              <p class="asset-price">$0.0005</p>
-            </div>
+        <!-- BG -->
+        <article class="asset-card" style="--i:1;--c1:#3b82f6;--c2:#60a5fa;--c1-soft:rgba(59,130,246,.11);--c1-glow:rgba(59,130,246,.42);">
+          <span class="ac-shine" aria-hidden="true"></span>
+          <div class="ac-head">
+            <span class="ac-icon" aria-hidden="true">B</span>
+            <span class="ac-chg down">-1.2%</span>
           </div>
-          <p class="asset-amt">1,000,000</p>
-          <p class="asset-usd">≈ $500.00</p>
-        </div>
+          <p class="ac-name">BG</p>
+          <p class="ac-amt">500,000</p>
+          <p class="ac-usd">≈ $50.00</p>
+          <div class="ac-foot">
+            <span class="ac-price">$0.0001</span>
+            <span class="ac-spark" aria-hidden="true">
+              <svg viewBox="0 0 44 16" preserveAspectRatio="none">
+                <path class="area" d="M0,9 L6,11 L12,8 L18,10 L24,7 L30,9 L36,6 L44,8 L44,16 L0,16 Z"/>
+                <path class="line" d="M0,9 L6,11 L12,8 L18,10 L24,7 L30,9 L36,6 L44,8"/>
+              </svg>
+            </span>
+          </div>
+        </article>
 
-        <div class="asset-card">
-          <div class="asset-top">
-            <div class="asset-icon" style="background:var(--ok-soft);color:var(--ok);">F</div>
-            <div style="min-width:0;">
-              <p class="asset-name">FIST</p>
-              <p class="asset-price">$0.001</p>
-            </div>
+        <!-- ANTFUN -->
+        <article class="asset-card" style="--i:2;--c1:#a855f7;--c2:#ec4899;--c1-soft:rgba(168,85,247,.12);--c1-glow:rgba(168,85,247,.42);">
+          <span class="ac-shine" aria-hidden="true"></span>
+          <div class="ac-head">
+            <span class="ac-icon" aria-hidden="true">A</span>
+            <span class="ac-chg up">+8.6%</span>
           </div>
-          <p class="asset-amt">50,000</p>
-          <p class="asset-usd">≈ $50.00</p>
-        </div>
+          <p class="ac-name">ANTFUN</p>
+          <p class="ac-amt">1,000,000</p>
+          <p class="ac-usd">≈ $500.00</p>
+          <div class="ac-foot">
+            <span class="ac-price">$0.0005</span>
+            <span class="ac-spark" aria-hidden="true">
+              <svg viewBox="0 0 44 16" preserveAspectRatio="none">
+                <path class="area" d="M0,13 L6,12 L12,9 L18,10 L24,6 L30,7 L36,3 L44,2 L44,16 L0,16 Z"/>
+                <path class="line" d="M0,13 L6,12 L12,9 L18,10 L24,6 L30,7 L36,3 L44,2"/>
+              </svg>
+            </span>
+          </div>
+        </article>
 
-        <div class="asset-card">
-          <div class="asset-top">
-            <div class="asset-icon" style="background:var(--ok-soft);color:var(--ok);">L</div>
-            <div style="min-width:0;">
-              <p class="asset-name">LUCKY99</p>
-              <p class="asset-price">$0.1</p>
-            </div>
+        <!-- FIST -->
+        <article class="asset-card" style="--i:3;--c1:#0e9f6e;--c2:#34d399;--c1-soft:rgba(14,159,110,.11);--c1-glow:rgba(14,159,110,.42);">
+          <span class="ac-shine" aria-hidden="true"></span>
+          <div class="ac-head">
+            <span class="ac-icon" aria-hidden="true">F</span>
+            <span class="ac-chg up">+0.9%</span>
           </div>
-          <p class="asset-amt">1,000</p>
-          <p class="asset-usd">≈ $100.00</p>
-        </div>
+          <p class="ac-name">FIST</p>
+          <p class="ac-amt">50,000</p>
+          <p class="ac-usd">≈ $50.00</p>
+          <div class="ac-foot">
+            <span class="ac-price">$0.0010</span>
+            <span class="ac-spark" aria-hidden="true">
+              <svg viewBox="0 0 44 16" preserveAspectRatio="none">
+                <path class="area" d="M0,7 L6,9 L12,8 L18,11 L24,9 L30,12 L36,10 L44,11 L44,16 L0,16 Z"/>
+                <path class="line" d="M0,7 L6,9 L12,8 L18,11 L24,9 L30,12 L36,10 L44,11"/>
+              </svg>
+            </span>
+          </div>
+        </article>
+
+        <!-- LUCKY99 -->
+        <article class="asset-card" style="--i:4;--c1:#f59e0b;--c2:#f97316;--c1-soft:rgba(245,158,11,.12);--c1-glow:rgba(245,158,11,.42);">
+          <span class="ac-shine" aria-hidden="true"></span>
+          <div class="ac-head">
+            <span class="ac-icon" aria-hidden="true">L</span>
+            <span class="ac-chg down">-3.1%</span>
+          </div>
+          <p class="ac-name">LUCKY99</p>
+          <p class="ac-amt">1,000</p>
+          <p class="ac-usd">≈ $100.00</p>
+          <div class="ac-foot">
+            <span class="ac-price">$0.1000</span>
+            <span class="ac-spark" aria-hidden="true">
+              <svg viewBox="0 0 44 16" preserveAspectRatio="none">
+                <path class="area" d="M0,11 L6,8 L12,9 L18,6 L24,7 L30,4 L36,5 L44,3 L44,16 L0,16 Z"/>
+                <path class="line" d="M0,11 L6,8 L12,9 L18,6 L24,7 L30,4 L36,5 L44,3"/>
+              </svg>
+            </span>
+          </div>
+        </article>
+
       </div>
     </section>
 
@@ -1552,6 +1847,24 @@
       });
     }
     applyUI();
+  })();
+
+  /* ==================== 总资产数字滚动 ==================== */
+  (function animatePortfolio() {
+    const el = document.getElementById('pf-int');
+    if (!el) return;
+    const target = 800;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { el.textContent = target.toLocaleString('en-US'); return; }
+    const dur = 900;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   })();
 
   /* ==================== 交互逻辑 ==================== */
