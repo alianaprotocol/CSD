@@ -264,4 +264,179 @@ CREATE TABLE burn_records (
 4. **RPC 节点**：建议使用自己的 RPC 节点（Helius / QuickNode / Triton），公共 RPC 有频率限制，不适合生产。
 5. **后端扫描兜底**：建议增加定时任务扫描黑洞地址转入记录，补录前端漏报的订单。
 
-以上是完整页面的文字版说明。如果需要我进一步展开某个模块（比如后端 `confirm` 接口的具体校验代码、锁仓地址解析逻辑），可以继续问。
+
+---
+
+以下是 **“社区 SDK + 索引 API（以 MadeOnSol 为例）”** 的文字版方案。核心思路是**读写分离**：用 MadeOnSol 解决“查得到”的问题，用社区 SDK 解决“领得了”的问题，用户在 DApp 内完成从查看数据到领取的全部操作，无需跳转 `lock.jup.ag`。
+
+---
+
+## 一、整体架构：读用 MadeOnSol，写用社区 SDK
+
+```
+┌─────────────────────────────────────────────────────┐
+│                      前端 DApp                        │
+│  展示 claimable / next_unlock   │  点击「领取」按钮     │
+└───────────────┬───────────────────────┬──────────────┘
+                │                       │
+                ▼                       ▼
+┌───────────────────────────┐ ┌─────────────────────────┐
+│      你的后端              │ │      你的后端            │
+│  调 MadeOnSol token_locks │ │  调社区 SDK              │
+│  拿 claimable/next_unlock │ │  构造 withdraw 指令      │
+│  → 缓存 → 匹配用户数据     │ │  → 返回给前端签名发送     │
+└───────────────┬───────────┘ └───────────┬─────────────┘
+                │                         │
+                ▼                         ▼
+        MadeOnSol API               Solana RPC
+        （索引聚合层）              （Jupiter Lock 程序）
+```
+
+**关键结论**：MadeOnSol 负责**读**（查询派生数据），社区 SDK 负责**写**（构造领取交易）。两者不重叠、不冲突，配合使用才能在不跳转外部页面的前提下，提供完整的“查看—领取”体验。
+
+---
+
+## 二、读：用 MadeOnSol 获取 `claimable` 和 `next_unlock`
+
+### 2.1 调用方式
+
+MadeOnSol 提供了官方的 **TypeScript SDK（`madeonsol`）**，可以直接在后端 Node.js 环境使用：
+
+```bash
+npm install madeonsol
+```
+
+```javascript
+import { MadeOnSolREST } from "madeonsol";
+
+const client = new MadeOnSolREST({ apiKey: process.env.MADEONSOL_API_KEY });
+
+// 按 mint 地址聚合查询该代币下所有锁仓合约
+const res = await client.token.locks("你的财神DAO代币Mint地址", {
+  program: "jupiter-lock"  // 只查 Jupiter Lock 的锁仓
+});
+
+// res.data 中包含每笔锁仓的完整派生视图
+```
+
+### 2.2 返回的关键字段
+
+`token_locks` 返回的每一条锁仓记录，都包含你需要的所有派生字段：
+
+| 字段 | 含义 | 前端用途 |
+|:---|:---|:---|
+| **`claimable`** | 当前可领取数量 | 展示“待领取 X 枚” |
+| **`next_unlock`** | 下次解锁时间 | 展示“下次释放：2026-11-01” |
+| **`withdrawn`** | 已领取数量 | 展示“已领取 X 枚” |
+| **`unlocked`** | 已解锁数量 | 计算进度条 |
+| **`locked_raw`** | 当前仍锁定的数量 | 展示剩余锁定 |
+| **`LockStatus`** | 锁仓状态（活跃/已完成等） | 状态徽章 |
+| **`seconds_until_next_unlock`** | 距离下次解锁的秒数 | 倒计时展示 |
+
+此外，返回结果还包含一个 **`summary`** 汇总对象，内含 `lock_count`（锁仓总数）、`nearest_next_unlock`（最近的下次解锁时间）等聚合信息。
+
+### 2.3 后端缓存策略（50 用户场景的关键）
+
+`token_locks` 是**按 mint 聚合查询**，一次调用返回该代币下**所有**锁仓合约，而不是每个用户单独调一次。因此：
+
+- **后端调用一次** → 拿到全量锁仓列表 → 在本地用“用户钱包 ↔ 锁仓地址”映射匹配出当前用户的数据。
+- **缓存 5–10 分钟**：50 个用户共享同一份缓存结果，日调用量大约在 **20–150 次**之间，完全在 MadeOnSol 免费层的 **200 次/天**额度之内。
+
+**不要做的事**：前端直连 MadeOnSol、无缓存、每次刷新都实时查询。这种设计会让 50 个用户轻松打满 200 次额度。
+
+---
+
+## 三、写：用社区 SDK 构造 `withdraw` 指令
+
+### 3.1 SDK 选择
+
+社区维护的 **`ChiefWoods/jupiter-sdk`** 是一个 Codama 生成的链上程序 SDK，包含 `lock` 产品，支持三种客户端形态：
+
+| 形态 | 导入路径 | 适用场景 |
+|:---|:---|:---|
+| **web3js** | `jupiter-sdk/lock/web3js` | 配合 `@solana/web3.js` v3 使用 |
+| **kit** | `jupiter-sdk/lock/kit` | 配合 `@solana/kit` 使用 |
+| **rust** | `jupiter-program-sdk` with `lock` feature | Rust 后端 / CPI |
+
+对于大多数 DApp 前端，**`web3js` 形态**是最直接的选择。
+
+### 3.2 构造领取指令
+
+Codama 生成的 SDK 会根据 IDL 自动生成指令构造函数。`lock` 产品的领取指令通常命名为 `createWithdrawInstruction`（或类似的 `getWithdrawInstructionAsync`，取决于 SDK 版本）。
+
+```javascript
+import { createWithdrawInstruction, LOCK_PROGRAM_ID } 
+  from "jupiter-sdk/lock/web3js";
+import { Transaction } from "@solana/web3.js";
+
+// 从 MadeOnSol 数据中拿到该用户的锁仓账户地址
+const lockAccount = userLock.lockAddress;
+
+const instruction = await createWithdrawInstruction({
+  // 账户参数：锁仓账户、接收者钱包、代币账户等
+  // 具体参数名以 SDK 生成的类型定义为准
+  lock: lockAccount,
+  recipient: userWallet,
+  // ... 其他必要账户
+});
+
+const tx = new Transaction().add(instruction);
+// 让用户钱包签名并发送
+```
+
+> **注意**：`withdraw` 指令所需的具体账户参数，会因 Jupiter Lock 程序的版本而异。建议在 Devnet 上先用 SDK 测试，确认参数结构无误后再上主网。SDK 的 README 中明确说明它是 **社区独立维护、非官方包**，因此锁定一个经过验证的 SDK 版本并固定依赖，是必要的工程实践。
+
+### 3.3 领取的本质
+
+Jupiter Lock 的官方 FAQ 确认：**解锁的代币不会自动发送，接收者必须手动触发一笔 claim 交易**才能将代币从托管账户转入自己的钱包。`lock.jup.ag` 只是一个前端界面，链上真正执行的是 Jupiter Lock 程序的 `withdraw` 指令。你的 DApp 只要构造并发送这笔指令，用户就完成了领取，**完全不需要离开你的页面**。
+
+---
+
+## 四、完整流程：从查看到领取
+
+```
+1. 用户打开燃香页
+   → 后端调 MadeOnSol token_locks($财神DAO mint)（有缓存则读缓存）
+   → 匹配出当前用户的锁仓数据
+   → 前端展示 claimable、next_unlock、withdrawn、释放进度
+
+2. 用户点击「领取」
+   → 前端从后端拿到该用户的锁仓账户地址（lockAddress）
+   → 调社区 SDK createWithdrawInstruction 构造 withdraw 交易
+   → 钱包弹出签名 → 用户确认
+   → 交易发送 → 等待链上确认
+
+3. 确认成功后
+   → 前端刷新 → 后端重新调 token_locks（或等待缓存过期）
+   → claimable 减少、withdrawn 增加
+   → 前端更新展示
+```
+
+**领取动作本身不消耗 MadeOnSol 的 API 额度**，因为它走的是 Solana RPC + 社区 SDK，不经过 MadeOnSol。
+
+---
+
+## 五、费用与额度（50 用户场景）
+
+| 项目 | 费用 | 说明 |
+|:---|:---|:---|
+| **MadeOnSol 免费层** | **€0** | 200 次/天。后端缓存 5–10 分钟后，50 用户日调用量约 20–150 次，**通常够用** |
+| **MadeOnSol Pro** | **€43/月** | 10,000 次/天，取消 5 分钟数据延迟。仅在缓存后仍频繁超限、或对实时性有硬性要求时升级 |
+| **社区 SDK** | **免费** | 开源 npm 包，无调用费用 |
+| **Solana RPC** | 按节点收费 | 建议使用自己的 RPC（Helius / QuickNode），公共 RPC 有频率限制 |
+
+**关于“多注册几个免费 Key 轮换”**：不建议。MadeOnSol 通过**已验证邮箱**识别唯一用户，同邮箱不管用哪种登录方式都共用一个账户的额度；批量注册不同邮箱属于免费层滥用，有被关联封禁的风险。**做好后端缓存，一个免费 Key 就够了。**
+
+---
+
+## 六、需要提前确认的两件事
+
+1. **锁仓账户地址是否可得**：你的后台必须保存每一笔燃香对应的 **锁仓账户地址（Lock Account Address）**，而不只是 `lock.jup.ag` 的页面 URL。这是构造 `withdraw` 指令和匹配 MadeOnSol 数据的共同前提。
+
+2. **SDK 版本的指令参数**：`createWithdrawInstruction` 的具体账户参数名和结构，以你所使用的 `jupiter-sdk` 版本生成的 TypeScript 类型为准。建议在 Devnet 上完成一次完整的“查询 → 构造 → 签名 → 确认”闭环测试，再切换到主网。
+
+---
+
+## 七、总结
+
+**MadeOnSol 解决“查”，社区 SDK 解决“领”，你的后端做“缓存 + 匹配”，前端做“展示 + 签名”。** 四层各司其职，用户全程不跳转 `lock.jup.ag`，50 用户场景下免费层足够支撑，唯一需要提前锁定的是**锁仓账户地址**和**SDK 的指令参数结构**。
