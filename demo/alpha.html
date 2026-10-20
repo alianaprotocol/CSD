@@ -9,7 +9,7 @@
 <style>
 /* ============ 重置 ============ */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 120px; }
 html, body { overflow-x: hidden; width: 100%; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -19,7 +19,7 @@ body {
   font-size: 15px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ============ 主题 ============ */
@@ -111,7 +111,7 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
 .brand-mark {
-  width: 30px; height: 30px; border-radius: 9px;
+  width: 32px; height: 32px; border-radius: 9px;
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   display: grid; place-items: center;
   font-weight: 800; font-size: 15px; color: #fff;
@@ -124,21 +124,23 @@ body {
 .wallet-btn {
   display: flex; align-items: center; gap: 6px;
   background: var(--surface); border: 1px solid var(--border);
-  color: var(--text); padding: 7px 10px; border-radius: 8px;
+  color: var(--text); padding: 8px 11px; border-radius: 8px;
   font-size: 11px; font-weight: 600; font-family: var(--mono);
   cursor: pointer; transition: .15s;
+  min-height: 36px;
 }
 .wallet-btn:hover { border-color: var(--border-2); }
-.wdot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+.wdot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; box-shadow: 0 0 6px var(--success); }
 
 .theme-toggle {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 8px; color: var(--muted); cursor: pointer;
   transition: .15s;
 }
 .theme-toggle:hover { border-color: var(--border-2); color: var(--text); }
+.theme-toggle:active { transform: scale(.94); }
 .theme-toggle svg { width: 16px; height: 16px; }
 .theme-toggle .icon-sun { display: none; }
 .theme-toggle .icon-moon { display: block; }
@@ -170,7 +172,7 @@ body {
 .hero-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .hero-id { display: flex; align-items: center; gap: 11px; min-width: 0; flex: 1; }
 .token-ico {
-  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
   background: linear-gradient(135deg, var(--accent-soft), var(--gold-soft));
   border: 1px solid var(--border-2);
   display: grid; place-items: center;
@@ -204,11 +206,20 @@ body {
   padding: 11px 14px; border-radius: var(--radius-sm);
   background: var(--bg); border: 1px solid var(--border);
   margin-bottom: 15px;
+  transition: background .3s, border-color .3s;
 }
 .countdown-label { font-size: 11.5px; color: var(--muted); font-weight: 500; }
 .countdown-value {
   font-family: var(--mono); font-size: 20px; font-weight: 700;
   color: var(--accent-text); letter-spacing: .5px;
+  transition: color .3s;
+}
+.countdown.urgent .countdown-value { color: var(--warning-text); }
+.countdown.critical { border-color: var(--accent-glow); background: var(--accent-soft); }
+.countdown.critical .countdown-value { color: var(--accent-text); animation: countdownPulse 1s ease-in-out infinite; }
+@keyframes countdownPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .55; }
 }
 
 .progress-head {
@@ -226,7 +237,10 @@ body {
   background: linear-gradient(90deg, var(--accent), var(--accent-dark));
   transition: width .8s cubic-bezier(.4,0,.2,1);
 }
-.progress-fill.over { background: linear-gradient(90deg, var(--gold), #b8860b); }
+.progress-fill.over {
+  background: linear-gradient(90deg, var(--gold), #b8860b 55%, var(--gold));
+  box-shadow: 0 0 10px var(--gold-glow);
+}
 .progress-tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
 .over-tag {
   display: inline-flex;
@@ -284,13 +298,14 @@ body {
 .ca-full { display: none; }
 .ca-short { display: inline; }
 .ca-btn {
-  flex: none; width: 28px; height: 28px;
+  flex: none; width: 32px; height: 32px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--surface); border: 1px solid var(--border-2);
   border-radius: 6px; color: var(--muted); cursor: pointer;
   transition: .15s;
 }
 .ca-btn:hover { color: var(--gold-text); border-color: var(--gold); }
+.ca-btn:active { transform: scale(.92); }
 .ca-btn svg { width: 14px; height: 14px; }
 .ca-btn.copied { color: var(--success-text); border-color: var(--success); background: var(--success-soft); }
 .ca-btn .ico-check { display: none; }
@@ -300,7 +315,7 @@ body {
 /* ============ Tab 导航 ============ */
 .tab-nav {
   position: sticky;
-  top: calc(52px + env(safe-area-inset-top, 0px));
+  top: calc(53px + env(safe-area-inset-top, 0px));
   z-index: 30;
   display: flex;
   gap: 3px;
@@ -314,7 +329,8 @@ body {
 }
 .tab-btn {
   flex: 1;
-  padding: 9px 2px;
+  min-height: 40px;
+  padding: 10px 2px;
   border-radius: 7px;
   border: none;
   background: transparent;
@@ -328,6 +344,7 @@ body {
   letter-spacing: .02em;
 }
 .tab-btn:hover { color: var(--text-2); }
+.tab-btn:active { transform: scale(.96); }
 .tab-btn.active {
   background: var(--accent);
   color: #fff;
@@ -452,13 +469,18 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 12px;
-  transition: border-color .15s;
+  transition: border-color .15s, background .15s;
 }
-.input-box:focus-within { border-color: var(--border-2); }
+.input-box:focus-within { border-color: var(--accent-glow); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input-box.error { border-color: var(--accent); background: var(--accent-soft); }
+.input-box.error:focus-within { box-shadow: 0 0 0 3px var(--accent-soft); }
 .input-head {
   display: flex; justify-content: space-between;
   font-size: 11px; color: var(--muted); margin-bottom: 6px;
+  gap: 8px;
 }
+.input-head .balance { white-space: nowrap; }
+.input-head .balance b { color: var(--text-2); font-weight: 600; font-family: var(--mono); }
 .input-row { display: flex; align-items: center; gap: 8px; }
 .input-row input {
   flex: 1; min-width: 0;
@@ -471,12 +493,14 @@ body {
 .btn-max {
   background: var(--surface-2); color: var(--text);
   border: 1px solid var(--border-2);
-  font-size: 10.5px; font-weight: 700;
-  padding: 5px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 700;
+  padding: 7px 12px; border-radius: 6px;
   cursor: pointer; font-family: inherit;
   transition: .15s; flex-shrink: 0;
+  min-height: 34px;
 }
 .btn-max:hover { background: var(--surface-3); }
+.btn-max:active { transform: scale(.94); }
 
 .quick-amounts { display: flex; gap: 6px; margin-top: 10px; }
 .quick-amounts button {
@@ -484,19 +508,21 @@ body {
   background: var(--bg);
   border: 1px solid var(--border);
   color: var(--muted);
-  padding: 8px 0;
+  padding: 11px 0;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   transition: .15s;
+  min-height: 40px;
 }
 .quick-amounts button:hover {
   border-color: var(--border-2);
   color: var(--text);
   background: var(--surface-2);
 }
+.quick-amounts button:active { transform: scale(.95); }
 
 .input-meta {
   display: flex; justify-content: space-between;
@@ -523,27 +549,35 @@ body {
 .preview-row .num.accent { color: var(--accent-text); }
 
 .btn-primary {
-  width: 100%; margin-top: 14px; padding: 13px;
+  width: 100%; margin-top: 14px; padding: 14px;
   border-radius: var(--radius-sm); border: none;
   font-size: 14px; font-weight: 700; font-family: inherit;
   background: var(--accent); color: #fff;
   cursor: pointer; transition: .15s;
   box-shadow: 0 4px 16px -5px var(--accent-glow);
+  min-height: 48px;
 }
-.btn-primary:hover { background: var(--accent-dark); }
-.btn-primary:active { transform: translateY(1px); }
-.btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-dark); }
+.btn-primary:active:not(:disabled) { transform: scale(.985); }
+.btn-primary:disabled {
+  background: var(--surface-3);
+  color: var(--muted);
+  box-shadow: none;
+  cursor: not-allowed;
+}
 
 .btn-secondary {
-  width: 100%; margin-top: 14px; padding: 12px;
+  width: 100%; margin-top: 14px; padding: 13px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-2);
   font-size: 13.5px; font-weight: 700; font-family: inherit;
   background: var(--surface-2); color: var(--text-2);
   cursor: pointer; transition: .15s;
+  min-height: 46px;
 }
 .btn-secondary:disabled { opacity: .5; cursor: not-allowed; }
 .btn-secondary:not(:disabled):hover { background: var(--surface-3); color: var(--text); }
+.btn-secondary:not(:disabled):active { transform: scale(.985); }
 
 .footnote {
   margin-top: 10px; font-size: 11px;
@@ -860,14 +894,14 @@ body {
 }
 .bottom-bar .btn-primary {
   width: auto; margin-top: 0;
-  padding: 11px 24px; font-size: 13.5px;
-  flex-shrink: 0;
+  padding: 12px 26px; font-size: 13.5px;
+  flex-shrink: 0; min-height: 44px;
 }
 
 /* ============ Toast ============ */
 .toast {
   position: fixed;
-  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(100px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%) translateY(20px);
   background: var(--surface-3);
@@ -896,8 +930,9 @@ body {
   .kpi-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
   .bottom-bar { display: none; }
   body { padding-bottom: 40px; }
-  .tab-nav { top: calc(56px + env(safe-area-inset-top, 0px)); }
+  .tab-nav { top: calc(57px + env(safe-area-inset-top, 0px)); }
   .countdown-value { font-size: 22px; }
+  .toast { bottom: 32px; }
 }
 @media (min-width: 720px) {
   .topbar { padding-left: 24px; padding-right: 24px; }
@@ -906,12 +941,14 @@ body {
   .card { padding: 18px; }
 }
 @media (max-width: 380px) {
-  .tab-btn { font-size: 11px; padding: 8px 1px; }
+  .tab-btn { font-size: 11px; padding: 9px 1px; }
   .wallet-btn span:not(.wdot) { max-width: 62px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .countdown-value { font-size: 18px; }
   .input-row input { font-size: 20px; }
   .hero-name { font-size: 15px; }
   .dur-cell b { font-size: 16px; }
+  .wl-v { font-size: 13.5px; }
+  .pos-v { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -964,8 +1001,8 @@ body {
       <div class="hero-id">
         <div class="token-ico">财</div>
         <div style="min-width:0">
-          <h1 class="hero-name">财神DAO Alpha Vault</h1>
-          <div class="hero-meta">GOF / USDC · Pro-Rata · Merkle</div>
+          <h1 class="hero-name">财神预分配池 </h1>
+          <div class="hero-meta">Meteora Alpha Vault + DLMM</div>
         </div>
       </div>
       <span class="status-badge">
@@ -973,7 +1010,7 @@ body {
       </span>
     </div>
 
-    <div class="countdown">
+    <div class="countdown" id="countdownWrap">
       <span class="countdown-label">距认购截止</span>
       <span class="countdown-value num" id="countdown">06:12:45</span>
     </div>
@@ -1122,13 +1159,13 @@ body {
         </div>
       </div>
 
-      <div class="input-box">
+      <div class="input-box" id="inputBox">
         <div class="input-head">
           <span>认购金额</span>
-          <span class="num">余额 <span id="walletBalance">2,340.50</span> USDC</span>
+          <span class="balance">余额 <b id="walletBalance">2,340.50</b> USDC</span>
         </div>
         <div class="input-row">
-          <input type="number" id="amountInput" placeholder="0.00" value="200" step="10" min="0" inputmode="decimal" />
+          <input type="number" id="amountInput" placeholder="0.00" value="200" step="10" min="0" inputmode="decimal" autocomplete="off" />
           <span class="input-unit">USDC</span>
           <button class="btn-max" id="maxBtn" type="button">MAX</button>
         </div>
@@ -1157,7 +1194,7 @@ body {
         </div>
         <div class="preview-row">
           <span>预估获得代币</span>
-          <span class="num accent" id="prevTokens">43,243 GOF</span>
+          <span class="num accent" id="prevTokens">43,243 财神DAO</span>
         </div>
       </div>
 
@@ -1197,7 +1234,7 @@ body {
         </div>
         <div class="pos-cell success">
           <div class="pos-k">预估代币</div>
-          <div class="pos-v num" id="posTokens">32,432<small>GOF</small></div>
+          <div class="pos-v num" id="posTokens">32,432<small>财神DAO</small></div>
         </div>
       </div>
 
@@ -1209,7 +1246,7 @@ body {
         <div class="vesting-bar"><div class="vesting-fill" id="vestFill"></div></div>
         <div class="vesting-foot">
           <span>已解锁可领</span>
-          <span class="num" id="vestClaimable">0 GOF</span>
+          <span class="num" id="vestClaimable">0 财神DAO</span>
         </div>
       </div>
 
@@ -1603,7 +1640,6 @@ body {
       ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
   }
 
-  /* 当前 Pro-Rata 比例与个人仓位 */
   function currentPosition() {
     var pool = Math.max(state.totalRaised, 1);
     var ratio = Math.min(1, state.targetCap / pool);
@@ -1616,7 +1652,6 @@ body {
     };
   }
 
-  /* 存款后的预估 */
   function previewFor(amount) {
     var newPool = state.totalRaised + amount;
     var newUser = state.userDeposit + amount;
@@ -1628,6 +1663,22 @@ body {
       refund: newUser - buy,
       tokens: buy / state.tokenPrice
     };
+  }
+
+  /* 校验输入金额，返回状态与原因 */
+  function getAmountState() {
+    var num = parseFloat(el.amountInput.value);
+    var remaining = state.whitelistCap - state.userDeposit;
+    if (isNaN(num) || num <= 0) {
+      return { amount: 0, valid: false, reason: 'empty' };
+    }
+    if (num > remaining + 1e-6) {
+      return { amount: num, valid: false, reason: 'cap', remaining: remaining };
+    }
+    if (num > state.walletBalance + 1e-6) {
+      return { amount: num, valid: false, reason: 'balance' };
+    }
+    return { amount: num, valid: true };
   }
 
   /* ============================================================
@@ -1656,8 +1707,10 @@ body {
     vestFill: document.getElementById('vestFill'),
     vestClaimable: document.getElementById('vestClaimable'),
     amountInput: document.getElementById('amountInput'),
+    inputBox: document.getElementById('inputBox'),
     depositBtn: document.getElementById('depositBtn'),
-    txList: document.getElementById('txList')
+    txList: document.getElementById('txList'),
+    countdownWrap: document.getElementById('countdownWrap')
   };
 
   /* ============================================================
@@ -1698,23 +1751,43 @@ body {
     el.posDeposit.innerHTML = fmt(state.userDeposit) + '<small>USDC</small>';
     el.posBuy.innerHTML = fmt(pos.buy) + '<small>USDC</small>';
     el.posRefund.innerHTML = fmt(pos.refund) + '<small>USDC</small>';
-    el.posTokens.innerHTML = fmtInt(pos.tokens) + '<small>GOF</small>';
+    el.posTokens.innerHTML = fmtInt(pos.tokens) + '<small>财神DAO</small>';
 
     /* 交易记录 */
     renderTx();
 
-    /* 输入预览 */
+    /* 输入预览 + 按钮状态 */
     updatePreview();
+    updateDepositButton();
   }
 
   function updatePreview() {
-    var amount = parseFloat(el.amountInput.value);
-    if (isNaN(amount) || amount < 0) amount = 0;
-
+    var s = getAmountState();
+    var amount = s.valid ? s.amount : 0;
     var p = previewFor(amount);
     el.prevTotal.textContent = fmt(p.total) + ' USDC';
     el.prevBuy.textContent = fmt(p.buy) + ' USDC';
-    el.prevTokens.textContent = fmtInt(p.tokens) + ' GOF';
+    el.prevTokens.textContent = fmtInt(p.tokens) + ' 财神DAO';
+  }
+
+  function updateDepositButton() {
+    var s = getAmountState();
+    var hasError = (s.reason === 'cap' || s.reason === 'balance');
+    el.inputBox.classList.toggle('error', hasError);
+
+    if (s.reason === 'empty') {
+      el.depositBtn.textContent = '请输入金额';
+      el.depositBtn.disabled = true;
+    } else if (s.reason === 'cap') {
+      el.depositBtn.textContent = '超出剩余额度 ' + fmt(s.remaining) + ' USDC';
+      el.depositBtn.disabled = true;
+    } else if (s.reason === 'balance') {
+      el.depositBtn.textContent = '钱包余额不足';
+      el.depositBtn.disabled = true;
+    } else {
+      el.depositBtn.textContent = '认购 ' + fmt(s.amount) + ' USDC';
+      el.depositBtn.disabled = false;
+    }
   }
 
   function renderTx() {
@@ -1754,24 +1827,16 @@ body {
      认购
      ============================================================ */
   function handleDeposit() {
-    var amount = parseFloat(el.amountInput.value);
-    var remaining = state.whitelistCap - state.userDeposit;
-
-    if (isNaN(amount) || amount <= 0) {
-      showToast('请输入有效金额', 'error');
+    var s = getAmountState();
+    if (!s.valid) {
+      if (s.reason === 'empty') showToast('请输入有效金额', 'error');
+      else if (s.reason === 'cap') showToast('超出白名单剩余额度（剩余 ' + fmt(s.remaining) + ' USDC）', 'error');
+      else if (s.reason === 'balance') showToast('钱包余额不足', 'error');
       return;
     }
-    if (amount > remaining + 1e-6) {
-      showToast('超出白名单剩余额度（剩余 ' + fmt(remaining) + ' USDC）', 'error');
-      return;
-    }
-    if (amount > state.walletBalance + 1e-6) {
-      showToast('钱包余额不足', 'error');
-      return;
-    }
+    var amount = s.amount;
 
     el.depositBtn.disabled = true;
-    var original = el.depositBtn.textContent;
     el.depositBtn.textContent = '处理中…';
 
     setTimeout(function () {
@@ -1781,9 +1846,6 @@ body {
       state.transactions.unshift({ amount: amount, time: new Date() });
 
       el.amountInput.value = '';
-      el.depositBtn.disabled = false;
-      el.depositBtn.textContent = '认购';
-
       refreshUI();
       showToast('成功认购 ' + fmt(amount) + ' USDC', 'success');
     }, 650);
@@ -1793,13 +1855,8 @@ body {
      输入事件
      ============================================================ */
   el.amountInput.addEventListener('input', function () {
-    var amount = parseFloat(el.amountInput.value);
-    if (!isNaN(amount) && amount > 0) {
-      el.depositBtn.textContent = '认购 ' + fmt(amount) + ' USDC';
-    } else {
-      el.depositBtn.textContent = '认购';
-    }
     updatePreview();
+    updateDepositButton();
   });
 
   document.getElementById('maxBtn').addEventListener('click', function () {
@@ -1832,8 +1889,10 @@ body {
      ============================================================ */
   var tabBtns = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.panel');
+  var tabNav = document.querySelector('.tab-nav');
 
-  function switchTab(tab) {
+  function switchTab(tab, options) {
+    options = options || {};
     Array.prototype.forEach.call(tabBtns, function (b) {
       var on = b.getAttribute('data-tab') === tab;
       b.classList.toggle('active', on);
@@ -1842,6 +1901,19 @@ body {
     Array.prototype.forEach.call(panels, function (p) {
       p.classList.toggle('active', p.getAttribute('data-panel') === tab);
     });
+    /* 滚动校正：避免切换后内容被吸顶导航遮挡 */
+    if (options.scrollToTop !== false && tabNav) {
+      requestAnimationFrame(function () {
+        var activePanel = document.querySelector('.panel.active');
+        if (!activePanel) return;
+        var navBottom = tabNav.getBoundingClientRect().bottom;
+        var panelTop = activePanel.getBoundingClientRect().top;
+        if (panelTop < navBottom + 8) {
+          var target = window.scrollY + panelTop - navBottom - 8;
+          window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+        }
+      });
+    }
   }
 
   Array.prototype.forEach.call(tabBtns, function (btn) {
@@ -1852,7 +1924,7 @@ body {
 
   /* 底部「去认购」 */
   document.getElementById('bottomDepositBtn').addEventListener('click', function () {
-    switchTab('deposit');
+    switchTab('deposit', { scrollToTop: false });
     setTimeout(function () {
       var input = document.getElementById('amountInput');
       if (input) {
@@ -1910,14 +1982,20 @@ body {
   });
 
   /* ============================================================
-     倒计时
+     倒计时（带紧急状态）
      ============================================================ */
   var deadline = Date.now() + (6 * 3600 + 12 * 60 + 45) * 1000;
   var countdownEl = document.getElementById('countdown');
+  var countdownWrap = el.countdownWrap;
 
   function updateCountdown() {
     var diff = deadline - Date.now();
-    if (diff <= 0) { countdownEl.textContent = '00:00:00'; return; }
+    if (diff <= 0) {
+      countdownEl.textContent = '00:00:00';
+      countdownWrap.classList.remove('urgent');
+      countdownWrap.classList.add('critical');
+      return;
+    }
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
     var s = Math.floor((diff % 60000) / 1000);
@@ -1925,6 +2003,11 @@ body {
       String(h).padStart(2, '0') + ':' +
       String(m).padStart(2, '0') + ':' +
       String(s).padStart(2, '0');
+
+    var critical = diff < 5 * 60 * 1000;
+    var urgent = diff < 60 * 60 * 1000 && !critical;
+    countdownWrap.classList.toggle('critical', critical);
+    countdownWrap.classList.toggle('urgent', urgent);
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
