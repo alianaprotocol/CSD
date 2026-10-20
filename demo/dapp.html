@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<title>财神DAO · DApp 入口</title>
+<title>财神DAO · DApp</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 <script>
 (function(){
@@ -250,6 +250,50 @@
   }
   @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 
+  /* ============ Banner ============ */
+  .banner-list{ display:flex; flex-direction:column; gap:12px; }
+
+  .banner{
+    display:block;
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--card);
+    box-shadow:var(--shadow-card);
+    text-decoration:none;
+    color:inherit;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .22s cubic-bezier(.4,0,.2,1),
+               border-color .22s ease, box-shadow .28s ease;
+  }
+  .banner:hover{
+    transform:translateY(-2px);
+    border-color:var(--cyber-glow-soft);
+    box-shadow:0 14px 34px -22px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-faint);
+  }
+  .banner:active{ transform:scale(.99); }
+
+  .banner-img{
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:5 / 2;
+    object-fit:cover;
+    transition:transform .45s cubic-bezier(.4,0,.2,1);
+  }
+  .banner:hover .banner-img{ transform:scale(1.035); }
+
+  .banner-tag{
+    position:absolute; left:10px; top:10px;
+    padding:3px 9px; border-radius:999px;
+    font-size:10px; font-weight:700; letter-spacing:.06em;
+    color:#fff; line-height:1.6;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    box-shadow:0 4px 12px -6px var(--brand-1);
+    pointer-events:none;
+  }
+
   /* ============ 区块头 ============ */
   .block-head{
     display:flex; align-items:center; justify-content:space-between;
@@ -475,6 +519,7 @@
     .eco-stat .v{ font-size:12px; }
     .soon-grid{ gap:6px; }
     .soon-item{ padding:13px 4px; font-size:11px; }
+    .banner-img{ aspect-ratio:16 / 9; }
   }
 
   @media (max-width:330px){
@@ -538,6 +583,23 @@
       <div class="hero-line">
         <span class="pulse-dot" aria-hidden="true"></span>
         <span>2 个生态已上线 · Solana SPL</span>
+      </div>
+    </section>
+
+    <!-- ================= Banner ================= -->
+    <section aria-label="活动与公告">
+      <div class="banner-list">
+
+        <!-- Banner 1：改 href 与 src 即可 -->
+        <a class="banner" href="https://caishendao.world/demo/trade_season" target="_self">
+          <img class="banner-img"
+               src="../images/banner_season.webp"
+               alt="财神DAO 交易狂欢季"
+               width="1000" height="400"
+               loading="lazy" decoding="async">
+          <span class="banner-tag">特别活动</span>
+        </a>
+
       </div>
     </section>
 
