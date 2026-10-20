@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#060309">
 <title>$财神DAO · 交易狂欢季</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E6%97%BA%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='74' font-size='70' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E6%97%BA%3C/text%3E%3C/svg%3E">
 <style>
 /* ============================================================
    $财神到 CYBER-RED DESIGN SYSTEM · SPA EDITION (UI/UX Polished)
@@ -52,7 +52,6 @@ body{
   outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;
   box-shadow:0 0 0 4px rgba(255,210,63,.15);
 }
-/* 修复：按钮默认左对齐导致的居中失效问题，改用 flex 居中控制 */
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;}
 img,svg{max-width:100%;display:block;}
 .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
@@ -151,6 +150,9 @@ img,svg{max-width:100%;display:block;}
   font-size:9px;letter-spacing:.8px;color:var(--sol-green);
   padding:1px 5px;border-radius:3px;
   background:rgba(20,241,149,.1);border:1px solid rgba(20,241,149,.22);
+}
+.wallet .balance{
+  color:var(--txt);font-weight:700;margin-left:2px;
 }
 .cd{
   display:flex;align-items:center;gap:6px;
@@ -370,42 +372,124 @@ img,svg{max-width:100%;display:block;}
   border:1px solid rgba(255,210,63,.3);
   box-shadow:0 0 0 1px rgba(255,210,63,.08),0 26px 60px -30px rgba(255,31,61,.7),inset 0 1px 0 rgba(255,255,255,.06);
 }
+/* 建议三：增加背景装饰元素 */
+.pool-banner::before{
+  content:"💎";
+  position:absolute;
+  left:10%;top:20%;
+  font-size:24px;
+  opacity:0.15;
+  filter:blur(1px);
+  animation:float 4s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+.pool-banner::after{
+  content:"💰";
+  position:absolute;
+  right:10%;top:40%;
+  font-size:32px;
+  opacity:0.2;
+  filter:blur(1px);
+  animation:float 5s ease-in-out infinite reverse;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(10deg); }
+}
+
 .pool-glow{
   position:absolute;top:-80px;left:50%;transform:translateX(-50%);
   width:260px;height:180px;pointer-events:none;
   background:radial-gradient(circle,rgba(255,210,63,.25),transparent 65%);
-  filter:blur(30px);
+  filter:blur(30px);z-index:0;
 }
-.pool-banner > *{position:relative;z-index:1;}
-.pool-eyebrow{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:10px;
-  padding:3px 9px;border-radius:99px;
-  background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.25);
+.pool-banner{
+  position:relative;margin:12px var(--pad) 0;
+  padding:16px 18px; /* 修改：上下 20px 改为 16px，减少上下留白 */
+  border-radius:var(--r-lg);overflow:hidden;text-align:center;
+  background:
+    radial-gradient(120% 100% at 50% -20%,rgba(255,31,61,.2),transparent 65%),
+    radial-gradient(90% 70% at 100% 100%,rgba(153,69,255,.16),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  border:1px solid rgba(255,210,63,.3);
+  box-shadow:0 0 0 1px rgba(255,210,63,.08),0 26px 60px -30px rgba(255,31,61,.7),inset 0 1px 0 rgba(255,255,255,.06);
 }
 .pool-dot{
   width:4px;height:4px;border-radius:50%;background:var(--gold);
   box-shadow:0 0 6px var(--gold);animation:blink 1.6s ease-in-out infinite;
 }
-.pool-title{
-  margin:0 0 10px;font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.3px;
+.pool-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px; /* 修改：10px 改为 8px */
+  padding:3px 9px;border-radius:99px;
+  background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.25);
 }
-.pool-amount{display:flex;align-items:baseline;justify-content:center;gap:5px;line-height:1;}
+
+.pool-title{
+  margin:0 0 6px; /* 修改：10px 改为 6px */
+  font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.3px;
+}
+
 .pool-amount .num{
-  font-family:var(--mono);font-size:48px;font-weight:900;letter-spacing:-2.5px;
+  font-family:var(--mono);font-size:42px; /* 修改：48px 缩小为 42px，更紧凑 */
+  font-weight:900;letter-spacing:-2px;
   background:linear-gradient(135deg,var(--gold) 0%,#fff3b0 45%,var(--red) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 6px 22px rgba(255,210,63,.5));
+}
+
+.pool-sub{
+  font-size:11px;color:var(--dim);letter-spacing:.2px;
+  margin-top:6px; /* 修改：8px 改为 6px */
 }
 .pool-cur{
   font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:.1em;
   color:var(--gold);margin-bottom:6px;
 }
 .pool-sub{font-size:11px;color:var(--dim);letter-spacing:.2px;margin-top:8px;}
-.pool-cta{display:flex;gap:8px;margin-top:16px;}
 
-/* 修复：按钮文字居中、Flex布局 */
+/* 建议一：微型数据看板与参与头像 */
+.pool-stats-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:8px; /* 修改：12px 改为 8px */
+  margin:12px 0 14px; /* 修改：18px 上下留白压缩至 12px 和 14px */
+}
+.pool-avatars{
+  display:flex;align-items:center;justify-content:center;
+}
+.pool-avatars img, .pool-avatars span{
+  width:22px;height:22px; /* 修改：缩小一点头像 */
+  border-radius:50%;
+  border:2px solid #100b14;margin-left:-8px;
+  background:var(--gold-soft);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;
+  position: relative;
+}
+.pool-avatars img:first-child, .pool-avatars span:first-child{margin-left:0;}
+.pool-avatar-more{
+  background:var(--card) !important;color:var(--dim) !important;
+  font-family:var(--mono);font-size:9px !important;
+}
+.pool-data{
+  display:flex;align-items:center;gap:16px;
+  background:rgba(255,255,255,.04);border:1px solid var(--brd);
+  padding:6px 16px;border-radius:99px;
+}
+.pool-data-item{display:flex;align-items:baseline;gap:6px;}
+.pool-data-item .k{font-size:10px;color:var(--dim2);}
+.pool-data-item .v{font-family:var(--mono);font-size:12px;font-weight:800;color:var(--txt);}
+.pool-data-item .v.gold{color:var(--gold);}
+.pool-data-item .v small{font-size:9px;}
+.pool-data-divider{width:1px;height:12px;background:var(--brd);}
+
+.pool-cta{
+  display:flex;gap:8px;
+  margin-top:4px; /* 修改：原本 16px，因为上面看板已有 margin，这里缩减到 4px 即可 */
+}
 .pool-btn{
   flex:1;min-height:var(--tap);padding:0 16px;border-radius:12px;
   font-size:13px;font-weight:800;letter-spacing:.4px;
@@ -468,7 +552,7 @@ img,svg{max-width:100%;display:block;}
 }
 .task.done .tk-check{background:linear-gradient(135deg,var(--red),#ff5570);border-color:transparent;color:#fff;font-weight:900;box-shadow:0 0 14px rgba(255,31,61,.6);}
 .task.claim .tk-check{border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold);}
-.tk-body{flex:1;min-width:0;}
+.tk-body{flex:1;min-width:0;text-align:left;}
 .tk-t{font-size:12.5px;font-weight:650;letter-spacing:.2px;}
 .task.done .tk-t{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(143,130,153,.45);}
 .tk-d{font-family:var(--mono);font-size:9.5px;color:var(--dim2);margin-top:3px;letter-spacing:.2px;}
@@ -477,7 +561,6 @@ img,svg{max-width:100%;display:block;}
 .tk-pts.dim{color:var(--dim2);font-weight:600;}
 .task.claim .tk-pts{color:var(--gold);}
 
-/* 修复：领取按钮居中 */
 .task-claim-btn{
   font-family:var(--mono);font-size:10px;font-weight:800;
   padding:6px 11px;border-radius:6px;letter-spacing:.4px;
@@ -512,6 +595,16 @@ img,svg{max-width:100%;display:block;}
   background:linear-gradient(90deg,var(--gold),#fff3b0);
   box-shadow:0 0 8px rgba(255,210,63,.6);
   transition:width .4s cubic-bezier(.22,1,.36,1);
+}
+.task-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 15px;background:rgba(255,255,255,.02);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.task-footer span{font-size:11px;color:var(--dim2);}
+.task-footer-btn{
+  font-size:11.5px;color:var(--gold);font-weight:700;
+  display:flex;align-items:center;gap:4px;
 }
 
 /* ============================================================
@@ -550,8 +643,6 @@ img,svg{max-width:100%;display:block;}
   border-top:1px solid rgba(255,210,63,.22);
   border-bottom:0;
 }
-
-/* 修复：奖牌/名次标签自适应宽度，解决 #1204 挤压问题 */
 .rank-medal{
   flex:none;min-width:26px;height:26px;padding:0 6px;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
@@ -563,9 +654,18 @@ img,svg{max-width:100%;display:block;}
 .rank-medal.bronze{background:linear-gradient(135deg,#d68a5c,#a5602e);color:#1a0500;box-shadow:0 0 12px rgba(214,138,92,.4);}
 .rank-medal.me{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line);font-size:10px;}
 
+.rank-avatar{
+  width:28px;height:28px;flex:0 0 28px;border-radius:50%;
+  background:radial-gradient(circle at 32% 26%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:12px;font-weight:900;color:#2a0a00;
+  box-shadow:0 0 8px rgba(255,210,63,.4);overflow:hidden;
+}
+.rank-avatar img{width:100%;height:100%;object-fit:cover;}
+
 .rank-addr{
   flex:1;font-family:var(--mono);font-size:11.5px;color:var(--txt);letter-spacing:.2px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;text-align:left;
 }
 .rank-row.me .rank-addr{color:var(--gold);font-weight:700;}
 .rank-addr em{
@@ -575,6 +675,13 @@ img,svg{max-width:100%;display:block;}
 }
 .rank-pts{font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--gold);white-space:nowrap;letter-spacing:-.02em;}
 .rank-pts small{font-size:9px;color:var(--dim);font-weight:600;margin-left:2px;letter-spacing:.3px;}
+.rank-footer{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:12px;background:rgba(255,255,255,.02);
+  border-top:1px solid rgba(255,255,255,.05);
+  font-size:11px;color:var(--dim);cursor:pointer;transition:color .2s;
+}
+.rank-footer:hover{color:var(--gold);}
 
 /* ============================================================
    战队摘要卡（首页）
@@ -603,8 +710,27 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
   font-family:var(--mono);font-size:9.5px;color:var(--dim2);
   margin-top:4px;letter-spacing:.2px;
 }
+.team-summary-progress{
+  margin-top:6px;height:4px;border-radius:99px;background:rgba(255,255,255,.06);
+  overflow:hidden;max-width:120px;
+}
+.team-summary-progress i{
+  display:block;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--sol-purple),var(--pink));
+  box-shadow:0 0 8px rgba(153,69,255,.5);
+}
+.team-summary-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+}
+.team-summary-score{
+  font-family:var(--mono);font-size:14px;font-weight:800;color:var(--gold);
+  line-height:1;
+}
+.team-summary-label{
+  font-family:var(--mono);font-size:9px;color:var(--dim2);
+}
 .team-summary-arrow{
-  color:var(--dim2);font-size:16px;flex:none;transition:transform .2s,color .2s;
+  color:var(--dim2);font-size:16px;flex:none;margin-left:2px;transition:transform .2s,color .2s;
 }
 .team-summary:hover .team-summary-arrow,.team-summary:active .team-summary-arrow{transform:translateX(3px);color:var(--gold);}
 .rank-badge{
@@ -702,7 +828,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 .d2{background:var(--gold);box-shadow:0 0 6px var(--gold);}
 .d3{background:var(--sol-purple);box-shadow:0 0 6px var(--sol-purple);}
 
-/* 主按钮 */
 .btn-primary{
   width:100%;min-height:var(--tap);border-radius:13px;
   font-size:13.5px;font-weight:800;letter-spacing:.5px;color:#1a0500;
@@ -884,7 +1009,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
   margin-top:6px;
 }
 
-/* 修复：抽奖按钮文字居中、字间距正常 */
 .gacha-btn{
   width:100%;margin-top:18px;min-height:52px;border-radius:14px;
   font-size:14px;font-weight:900;letter-spacing:1px;color:#1a0500;
@@ -921,13 +1045,20 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 }
 .prob-tier.big{background:var(--red-soft);color:var(--red);border-color:var(--red-line);}
 .prob-tier.mid{background:var(--gold-soft);color:var(--gold);border-color:var(--gold-line);}
-.prob-text{font-size:12px;color:var(--txt);font-weight:600;}
+.prob-text{font-size:12px;color:var(--txt);font-weight:600;text-align:left;}
 .prob-text small{font-family:var(--mono);font-size:10px;color:var(--dim);margin-left:4px;font-weight:400;}
+
+.prob-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:70px;}
 .prob-pct{
-  font-family:var(--mono);font-size:12.5px;font-weight:800;
+  font-family:var(--mono);font-size:12px;font-weight:800;
   color:var(--gold);white-space:nowrap;letter-spacing:-.02em;
 }
 .prob-pct.big{color:var(--red);}
+.prob-bar{
+  width:100%;height:3px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;
+}
+.prob-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),#fff3b0);}
+.prob-bar i.big{background:linear-gradient(90deg,var(--red),#ff9aa8);}
 
 /* 记录 */
 .history-row{
@@ -936,7 +1067,13 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 }
 .history-row:last-child{border-bottom:0;}
 .history-info{min-width:0;flex:1;text-align:left;}
-.history-title{font-size:12px;color:var(--txt);font-weight:600;}
+.history-title{font-size:12px;color:var(--txt);font-weight:600;display:flex;align-items:center;gap:6px;}
+.history-status{
+  font-family:var(--mono);font-size:8.5px;font-weight:700;
+  padding:1px 4px;border-radius:3px;
+  background:rgba(20,241,149,.1);color:var(--sol-green);
+  border:1px solid rgba(20,241,149,.2);
+}
 .history-time{
   font-family:var(--mono);font-size:9.5px;color:var(--dim2);
   margin-top:3px;letter-spacing:.2px;
@@ -986,7 +1123,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
   margin-top:6px;letter-spacing:.2px;
 }
 
-/* 修复：记录按钮居中 */
 .balance-cta{
   flex:none;
   font-family:var(--mono);font-size:10px;font-weight:800;
@@ -1040,6 +1176,14 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
   background:linear-gradient(90deg,transparent,rgba(0,240,255,.4),transparent);
   opacity:.6;
 }
+.shop-item-badge{
+  position:absolute;top:0;right:0;
+  font-family:var(--mono);font-size:8.5px;font-weight:800;
+  padding:2.5px 7px;border-radius:0 0 0 8px;
+  background:rgba(0,240,255,.15);color:var(--cyan);
+  border-left:1px solid rgba(0,240,255,.2);border-bottom:1px solid rgba(0,240,255,.2);
+  letter-spacing:.4px;
+}
 .shop-item-icon{
   width:44px;height:44px;border-radius:12px;
   display:flex;align-items:center;justify-content:center;
@@ -1060,6 +1204,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 }
 .shop-item-foot{
   display:flex;align-items:center;justify-content:space-between;gap:6px;
+  margin-top:4px;
 }
 .shop-price{
   font-family:var(--mono);font-size:12px;font-weight:800;
@@ -1067,7 +1212,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 }
 .shop-price small{font-size:9px;color:var(--dim);font-weight:600;margin-left:2px;}
 
-/* 修复：兑换按钮居中 */
 .shop-btn{
   font-family:var(--mono);font-size:10px;font-weight:800;
   padding:6px 10px;border-radius:7px;letter-spacing:.4px;
@@ -1080,6 +1224,10 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 .shop-btn:hover{filter:brightness(1.08);}
 .shop-btn:active{transform:scale(.95);}
 .shop-btn:disabled,.shop-btn.sold{background:rgba(255,255,255,.05);color:var(--dim2);box-shadow:none;cursor:not-allowed;filter:none;}
+.shop-stock{
+  font-family:var(--mono);font-size:8.5px;color:var(--dim2);
+  margin-top:2px;text-align:right;width:100%;
+}
 
 /* ============================================================
    我的页
@@ -1193,7 +1341,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 .day.today b{color:var(--gold);}
 .day.locked{opacity:.7;}
 
-/* 修复：签到按钮居中 */
 .checkin-btn{
   width:100%;min-height:var(--tap);border-radius:11px;
   background:linear-gradient(120deg,var(--gold),#ffb020 55%,#ff8a3d);
@@ -1472,7 +1619,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
 @media (max-width:360px){
   :root{--pad:14px;}
   .fortune-value{font-size:42px;}
-  .pool-amount .num{font-size:42px;}
+  .pool-amount .num{font-size:36px;} /* 修改：小屏进一步缩小数字 */
   .quick{gap:8px;}
   .q{padding:12px 10px;gap:9px;}
   .q-ico{width:32px;height:32px;flex:0 0 32px;font-size:15px;}
@@ -1498,6 +1645,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
     scroll-behavior:auto !important;
   }
   .ticker-track{animation:none;}
+  .pool-banner::before, .pool-banner::after{animation:none;}
 }
 </style>
 </head>
@@ -1529,7 +1677,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
       <span>H5kFA...6868</span>
     </button>
     <div class="cd">
-      <span>距离赛季结束</span>
+      <span>距离结束</span>
       <b id="cdText">12D 08:24:31</b>
     </div>
   </header>
@@ -1549,8 +1697,8 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
                  onerror="this.style.display='none';this.parentElement.textContent='財';">
           </div>
           <div class="hero-title">
-            <div class="brand" data-text="$财神到">$财神到</div>
-            <div class="brand-en">CAI SHEN DAO · FORTUNE TOKEN</div>
+            <div class="brand" data-text="$财神到">$财神DAO</div>
+            <div class="brand-en">CAISHENDAO · FORTUNE TOKEN</div>
             <div class="chain-tag"><i></i>SOLANA · LIVE</div>
           </div>
         </div>
@@ -1593,6 +1741,28 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
           <span class="pool-cur">USDC</span>
         </div>
         <div class="pool-sub">等值 $财神DAO · 押金全额退还</div>
+
+        <!-- 建议一：微型数据看板 -->
+        <div class="pool-stats-wrap">
+          <div class="pool-avatars">
+            <img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財'">
+            <img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財'">
+            <img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財'">
+            <span class="pool-avatar-more">+12k</span>
+          </div>
+          <div class="pool-data">
+            <div class="pool-data-item">
+              <span class="k">参与人次</span>
+              <span class="v">12,480</span>
+            </div>
+            <div class="pool-data-divider"></div>
+            <div class="pool-data-item">
+              <span class="k">今日已发</span>
+              <span class="v gold">2,104 <small>U</small></span>
+            </div>
+          </div>
+        </div>
+
         <div class="pool-cta">
           <button class="pool-btn primary" type="button"
                   data-toast="跳转报名 · 20 USDC 押金全额退还">立即报名 &rarr;</button>
@@ -1638,12 +1808,12 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
       <!-- 链上动态 -->
       <div class="ticker">
         <div class="ticker-track" id="ticker">
-          <span class="tk-item">⛓ <b>0x8f…2a1</b> 质押 <span class="hl g">50,000 枚</span> 触发绝对锁仓</span>
+          <span class="tk-item">⛓ <b>FBQ23...2YzA</b> 质押 <span class="hl g">50,000 枚</span> 触发绝对锁仓</span>
           <span class="tk-item">⚔ <b>钻石手联盟</b> 战队反超至 <span class="hl">#3</span></span>
-          <span class="tk-item">💎 <b>0x3c…9d7</b> 持仓满 15 天 · 乘数升至 <span class="hl g">1.5x</span></span>
+          <span class="tk-item">💎 <b>8QWWy...upr99</b> 持仓满 15 天 · 乘数升至 <span class="hl g">1.5x</span></span>
           <span class="tk-item">🌧 今晚 20:00 <span class="hl c">交易雨</span> 准时降落</span>
-          <span class="tk-item">🎁 <b>0xa1…7f4</b> 开出 <span class="hl g">1000 USDT</span> 超级大奖</span>
-          <span class="tk-item">⛓ <b>0xd2…8e6</b> 净买入 <span class="hl">12,400 USDT</span></span>
+          <span class="tk-item">🎁 <b>51inN...qGpA</b> 开出 <span class="hl g">1000 USDT</span> 超级大奖</span>
+          <span class="tk-item">⛓ <b>Ar5dV...EmiD</b> 净买入 <span class="hl">12,400 USDT</span></span>
         </div>
       </div>
 
@@ -1682,6 +1852,11 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             </div>
             <button class="task-claim-btn" type="button" data-claim data-reward="500">领取 +500</button>
           </div>
+          <!-- 充实底部 -->
+          <div class="task-footer">
+            <span>完成全部任务额外瓜分 10,000 PTS</span>
+            <div class="task-footer-btn">去赚积分 <span>›</span></div>
+          </div>
         </div>
       </section>
 
@@ -1694,23 +1869,36 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
         <div class="card rank">
           <div class="rank-row">
             <span class="rank-medal gold">1</span>
+            <div class="rank-avatar"><img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財';"></div>
             <span class="rank-addr">22455...Hrxi</span>
             <span class="rank-pts num">98,450<small>PTS</small></span>
           </div>
           <div class="rank-row">
             <span class="rank-medal silver">2</span>
+            <div class="rank-avatar"><img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財';"></div>
             <span class="rank-addr">51inN...qGpA</span>
             <span class="rank-pts num">87,230<small>PTS</small></span>
           </div>
           <div class="rank-row">
             <span class="rank-medal bronze">3</span>
+            <div class="rank-avatar"><img src="../images/caishen.png" onerror="this.style.display='none';this.parentElement.textContent='財';"></div>
             <span class="rank-addr">6D4Qs...dhF8</span>
             <span class="rank-pts num">76,540<small>PTS</small></span>
           </div>
+          <div class="rank-row">
+            <span class="rank-medal">4</span>
+            <div class="rank-avatar">財</div>
+            <span class="rank-addr">9xYw2...pLk3</span>
+            <span class="rank-pts num">65,120<small>PTS</small></span>
+          </div>
           <div class="rank-row me">
             <span class="rank-medal me">#1204</span>
+            <div class="rank-avatar">我</div>
             <span class="rank-addr"><em>我</em>H5kFA...6868</span>
             <span class="rank-pts num">28,450<small>PTS</small></span>
+          </div>
+          <div class="rank-footer" data-view="team">
+            查看完整 1,204 名排行 <span>›</span>
           </div>
         </div>
       </section>
@@ -1731,6 +1919,11 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
               钻石手联盟 <span class="rank-badge">#3</span>
             </div>
             <div class="team-summary-meta">有效队员 68/100 · 队长 0x7b…4f8</div>
+            <div class="team-summary-progress"><i style="width:68%"></i></div>
+          </div>
+          <div class="team-summary-right">
+            <span class="team-summary-score">1.28M</span>
+            <span class="team-summary-label">战队总分</span>
           </div>
           <span class="team-summary-arrow" aria-hidden="true">›</span>
         </button>
@@ -1964,7 +2157,6 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
           <div><span class="pill">当前余额 <b class="fortune-value-inline" data-points>28,450</b> PTS · 可抽 <b class="draw-count" data-draws>56</b> 次</span></div>
         </div>
 
-        <!-- 修复：去掉了手打的空格，使用标准字距和 Flex 居中 -->
         <button class="gacha-btn" id="gachaBtn" type="button">立即抽取 · 500 PTS</button>
       </section>
 
@@ -1980,21 +2172,30 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
               <span class="prob-tier">85%</span>
               <div class="prob-text">小额奖励<small>1 – 3 USDC</small></div>
             </div>
-            <span class="prob-pct">1 – 3 USDC</span>
+            <div class="prob-right">
+              <span class="prob-pct">1 – 3</span>
+              <div class="prob-bar"><i style="width:85%"></i></div>
+            </div>
           </div>
           <div class="prob-row">
             <div class="prob-rank">
               <span class="prob-tier mid">13%</span>
               <div class="prob-text">中额奖励<small>10 – 30 USDC</small></div>
             </div>
-            <span class="prob-pct">10 – 30 USDC</span>
+            <div class="prob-right">
+              <span class="prob-pct">10 – 30</span>
+              <div class="prob-bar"><i style="width:13%"></i></div>
+            </div>
           </div>
           <div class="prob-row">
             <div class="prob-rank">
               <span class="prob-tier big">2%</span>
               <div class="prob-text">超级大奖<small>100 – 1000 USDT</small></div>
             </div>
-            <span class="prob-pct big">100 – 1000</span>
+            <div class="prob-right">
+              <span class="prob-pct big">100 – 1000</span>
+              <div class="prob-bar"><i class="big" style="width:2%"></i></div>
+            </div>
           </div>
         </div>
       </section>
@@ -2008,21 +2209,21 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
         <div class="card">
           <div class="history-row">
             <div class="history-info">
-              <div class="history-title">小额奖励</div>
+              <div class="history-title">小额奖励 <span class="history-status">已发放</span></div>
               <div class="history-time">今天 14:22 · 消耗 500 PTS</div>
             </div>
             <span class="history-reward">+2 USDC</span>
           </div>
           <div class="history-row">
             <div class="history-info">
-              <div class="history-title">中额奖励</div>
+              <div class="history-title">中额奖励 <span class="history-status">已发放</span></div>
               <div class="history-time">昨天 20:08 · 消耗 500 PTS</div>
             </div>
             <span class="history-reward">+18 USDC</span>
           </div>
           <div class="history-row">
             <div class="history-info">
-              <div class="history-title">小额奖励</div>
+              <div class="history-title">小额奖励 <span class="history-status">已发放</span></div>
               <div class="history-time">昨天 09:15 · 消耗 500 PTS</div>
             </div>
             <span class="history-reward">+1 USDC</span>
@@ -2077,6 +2278,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
       <!-- 商品 -->
       <div class="shop-grid">
         <div class="shop-item" data-cat="rights">
+          <div class="shop-item-badge">限购 2 次</div>
           <div class="shop-item-icon gold">🎟</div>
           <div class="shop-item-name">10 USDC 抵扣券</div>
           <div class="shop-item-desc">可用于未来活动押金或手续费抵扣</div>
@@ -2084,6 +2286,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">3,000<small>PTS</small></div>
             <button class="shop-btn" type="button" data-price="3000">兑换</button>
           </div>
+          <div class="shop-stock">已兑 842 / 1000</div>
         </div>
 
         <div class="shop-item" data-cat="rights">
@@ -2094,9 +2297,11 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">500<small>PTS</small></div>
             <button class="shop-btn" type="button" data-price="500">兑换</button>
           </div>
+          <div class="shop-stock">不限量</div>
         </div>
 
         <div class="shop-item" data-cat="nft">
+          <div class="shop-item-badge">仅剩 12 份</div>
           <div class="shop-item-icon purple">🖼</div>
           <div class="shop-item-name">财神 NFT 头像</div>
           <div class="shop-item-desc">限量 500 份 · 可作社交头像</div>
@@ -2104,6 +2309,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">5,000<small>PTS</small></div>
             <button class="shop-btn" type="button" data-price="5000">兑换</button>
           </div>
+          <div class="shop-stock">已兑 488 / 500</div>
         </div>
 
         <div class="shop-item" data-cat="rights">
@@ -2114,6 +2320,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">1,200<small>PTS</small></div>
             <button class="shop-btn" type="button" data-price="1200">兑换</button>
           </div>
+          <div class="shop-stock">已兑 1.2k 次</div>
         </div>
 
         <div class="shop-item" data-cat="token">
@@ -2124,6 +2331,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">1,000<small>PTS</small></div>
             <button class="shop-btn" type="button" data-price="1000">兑换</button>
           </div>
+          <div class="shop-stock">已兑 32.4k 枚</div>
         </div>
 
         <div class="shop-item" data-cat="nft">
@@ -2134,6 +2342,7 @@ button.team-summary:hover{background:rgba(255,255,255,.06);}
             <div class="shop-price">8,000<small>PTS</small></div>
             <button class="shop-btn sold" type="button" disabled>已售罄</button>
           </div>
+          <div class="shop-stock">已兑 100 / 100</div>
         </div>
       </div>
 
