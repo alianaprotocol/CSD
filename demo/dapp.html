@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>财神DAO · DApp 入口</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('gof-theme');
+    if (t === 'dark' || t === 'light') {
+      document.documentElement.setAttribute('data-theme', t);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'dark' ? '#0a0e14' : '#ffffff');
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      var m2 = document.querySelector('meta[name="theme-color"]');
+      if (m2) m2.setAttribute('content', '#0a0e14');
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  :root{
+    color-scheme: light;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
+    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+
+    --cyber:#ff2d55; --cyber-d:#cc0e30;
+    --cyber-glow-soft:rgba(255,45,85,.18);
+    --cyber-glow-faint:rgba(255,45,85,.06);
+
+    --gold:#a8821c; --gold-d:#8a6a14; --gold-soft:rgba(168,130,28,.10);
+    --ok:#0e9f6e; --ok-soft:rgba(14,159,110,.10); --ok-line:rgba(14,159,110,.24);
+
+    --brand-1:#dc2626; --brand-2:#f59e0b;
+    --bar-bg:rgba(255,255,255,.92);
+    --hover-bg:rgba(20,24,29,.05);
+    --shadow-card:0 1px 2px rgba(20,24,29,.04), 0 8px 24px -16px rgba(20,24,29,.18);
+
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+
+      --cyber:#ff2d55; --cyber-d:#ff5a6a;
+      --cyber-glow-soft:rgba(255,45,85,.22);
+      --cyber-glow-faint:rgba(255,45,85,.08);
+
+      --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
+      --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --ok-line:rgba(52,211,153,.28);
+
+      --brand-1:#ff2d55; --brand-2:#ffb700;
+      --bar-bg:rgba(16,22,30,.92);
+      --hover-bg:rgba(230,236,240,.06);
+      --shadow-card:0 1px 2px rgba(0,0,0,.35);
+    }
+  }
+
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+
+    --cyber:#ff2d55; --cyber-d:#ff5a6a;
+    --cyber-glow-soft:rgba(255,45,85,.22);
+    --cyber-glow-faint:rgba(255,45,85,.08);
+
+    --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
+    --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --ok-line:rgba(52,211,153,.28);
+
+    --brand-1:#ff2d55; --brand-2:#ffb700;
+    --bar-bg:rgba(16,22,30,.92);
+    --hover-bg:rgba(230,236,240,.06);
+    --shadow-card:0 1px 2px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{ color-scheme: light; }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  :focus-visible{ outline:2px solid var(--cyber); outline-offset:2px; border-radius:6px; }
+
+  .app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    min-height:100dvh;
+    padding-bottom:calc(34px + env(safe-area-inset-bottom,0px));
+    position:relative;
+  }
+
+  /* ============ 顶栏 ============ */
+  .appbar{
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    background:var(--bar-bg);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+    transition:background-color .25s ease, border-color .25s ease;
+  }
+
+  .brand{ display:flex; align-items:center; gap:9px; min-width:0; flex:1; }
+  .brand-mark{
+    flex:none; width:34px; height:34px; border-radius:10px;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    color:#fff; font-size:16px; font-weight:900; line-height:1;
+    box-shadow:0 5px 16px -8px var(--brand-1);
+  }
+  .brand-text{ min-width:0; }
+  .brand-name{
+    font-size:14px; font-weight:700; letter-spacing:-.01em;
+    line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .brand-sub{
+    font-family:var(--mono); font-size:9px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); line-height:1.3;
+    white-space:nowrap;
+  }
+
+  .appbar-right{ display:flex; align-items:center; gap:6px; flex:none; }
+
+  .icon-btn{
+    flex:none; width:36px; height:36px;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:0; border:1px solid var(--line); border-radius:10px;
+    background:var(--card); color:var(--ink-3);
+    cursor:pointer;
+    transition:background-color .18s ease, border-color .18s ease,
+               color .18s ease, box-shadow .25s ease, transform .15s ease;
+  }
+  .icon-btn:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
+  }
+  .icon-btn:active{ transform:scale(.94); }
+  .icon-btn svg{ width:18px; height:18px; display:block; }
+
+  .theme-toggle .ico-sun{ display:none; }
+  .theme-toggle .ico-moon{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-sun{ display:block; }
+  .theme-toggle[data-icon="dark"] .ico-moon{ display:none; }
+
+  .wallet-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    height:32px; padding:0 10px 0 5px;
+    border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.01em;
+    cursor:pointer; white-space:nowrap;
+    transition:background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .25s ease;
+  }
+  .wallet-chip:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 10px -2px var(--cyber-glow-soft);
+  }
+  .wallet-chip:active{ transform:scale(.97); }
+  .wallet-dot{
+    width:18px; height:18px; border-radius:50%; flex:none;
+    background:linear-gradient(135deg,#9945FF,#14F195);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+  }
+
+  /* ============ 主体 ============ */
+  .app-main{
+    padding:14px 14px 0;
+    display:flex; flex-direction:column; gap:20px;
+  }
+
+  /* ============ Hero ============ */
+  .hero{
+    position:relative; overflow:hidden;
+    padding:20px 18px 18px;
+    border:1px solid var(--line); border-radius:18px;
+    background:
+      radial-gradient(120% 120% at 100% 0%, var(--cyber-glow-soft) 0%, transparent 58%),
+      var(--card);
+    box-shadow:var(--shadow-card);
+  }
+  .hero::after{
+    content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    opacity:.9;
+  }
+
+  .hero-eyebrow{
+    display:flex; align-items:center; gap:6px;
+    margin:0 0 10px;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); line-height:1;
+  }
+  .hero-eyebrow::before{
+    content:""; width:5px; height:5px; border-radius:50%; flex:none;
+    background:var(--cyber); box-shadow:0 0 8px var(--cyber);
+  }
+
+  .hero-title{
+    margin:0;
+    font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.32;
+    text-wrap:balance;
+  }
+  .hero-title em{
+    font-style:normal;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--brand-1);
+  }
+
+  .hero-desc{
+    margin:8px 0 0;
+    font-size:12.5px; line-height:1.75; color:var(--ink-3);
+    text-wrap:pretty;
+  }
+
+  .hero-line{
+    display:flex; align-items:center; gap:7px;
+    margin-top:14px; padding-top:12px;
+    border-top:1px dashed var(--line);
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.02em;
+    color:var(--muted); line-height:1.5;
+  }
+  .pulse-dot{
+    width:6px; height:6px; border-radius:50%; flex:none;
+    background:var(--ok); box-shadow:0 0 0 3px var(--ok-soft);
+    animation:pulse 2.4s cubic-bezier(.4,0,.6,1) infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+
+  /* ============ 区块头 ============ */
+  .block-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin:0 0 10px; padding:0 2px;
+  }
+  .block-head h2{
+    margin:0; font-size:14px; font-weight:700; letter-spacing:-.005em;
+    color:var(--ink); display:flex; align-items:center; gap:7px;
+  }
+  .block-head h2 svg{ width:15px; height:15px; color:var(--cyber); flex:none; }
+  .block-head .meta{
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted); white-space:nowrap;
+  }
+
+  /* ============ 生态卡片 ============ */
+  .eco-list{ display:flex; flex-direction:column; gap:12px; }
+
+  .eco-card{
+    position:relative; display:block; overflow:hidden;
+    padding:16px;
+    border:1px solid var(--line); border-radius:16px;
+    background:var(--card);
+    color:inherit; text-decoration:none;
+    box-shadow:var(--shadow-card);
+    transition:transform .2s cubic-bezier(.4,0,.2,1),
+               border-color .2s ease, box-shadow .25s ease;
+  }
+  .eco-card::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(110% 100% at 100% 0%, var(--acc-soft) 0%, transparent 62%);
+  }
+  .eco-card::after{
+    content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:var(--acc-grad); opacity:.9;
+  }
+  .eco-card:hover{
+    transform:translateY(-2px);
+    border-color:var(--acc-line);
+    box-shadow:0 12px 30px -20px var(--acc), 0 0 0 1px var(--acc-soft);
+  }
+  .eco-card:active{ transform:scale(.99); }
+
+  .eco-incense{
+    --acc:#ff2d55;
+    --acc-soft:rgba(255,45,85,.10);
+    --acc-line:rgba(255,45,85,.28);
+    --acc-grad:linear-gradient(90deg,#ff2d55 0%,#ff8a3d 100%);
+  }
+  .eco-treasure{
+    --acc:#e0a11b;
+    --acc-soft:rgba(224,161,27,.11);
+    --acc-line:rgba(224,161,27,.30);
+    --acc-grad:linear-gradient(90deg,#e0a11b 0%,#ffd25e 100%);
+  }
+  :root[data-theme="dark"] .eco-incense,
+  :root:not([data-theme="light"]) .eco-incense{
+    --acc:#ff5a6a;
+    --acc-soft:rgba(255,90,106,.12);
+    --acc-line:rgba(255,90,106,.30);
+  }
+  :root[data-theme="dark"] .eco-treasure,
+  :root:not([data-theme="light"]) .eco-treasure{
+    --acc:#e8c04a;
+    --acc-soft:rgba(232,192,74,.12);
+    --acc-line:rgba(232,192,74,.30);
+  }
+
+  .eco-top{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:12px;
+  }
+  .eco-icon{
+    width:40px; height:40px; border-radius:12px; flex:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--acc-soft); color:var(--acc);
+    border:1px solid var(--acc-line);
+  }
+  .eco-icon svg{ width:20px; height:20px; display:block; }
+
+  .badge-live{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 9px; border-radius:999px;
+    font-size:10px; font-weight:700; letter-spacing:.04em;
+    color:var(--ok); background:var(--ok-soft);
+    border:1px solid var(--ok-line);
+    white-space:nowrap; line-height:1.6;
+  }
+  .badge-live::before{
+    content:""; width:5px; height:5px; border-radius:50%;
+    background:currentColor; flex:none;
+  }
+
+  .eco-name{
+    margin:0; font-size:17px; font-weight:700; letter-spacing:-.01em;
+    line-height:1.35; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
+  }
+  .eco-en{
+    font-family:var(--mono); font-size:9.5px; font-weight:400;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+  }
+  .eco-desc{
+    margin:6px 0 0; font-size:12.5px; line-height:1.7;
+    color:var(--ink-3); text-wrap:pretty;
+  }
+
+  .eco-stats{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:1px; margin-top:14px;
+    background:var(--line-2);
+    border:1px solid var(--line-2); border-radius:10px;
+    overflow:hidden;
+  }
+  .eco-stat{
+    background:var(--card); padding:9px 6px; min-width:0; text-align:center;
+  }
+  .eco-stat .k{
+    display:block; font-size:9.5px; color:var(--muted);
+    letter-spacing:.02em; line-height:1.5; margin-bottom:2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .eco-stat .v{
+    display:block; font-family:var(--mono);
+    font-size:13px; font-weight:700; letter-spacing:-.02em;
+    color:var(--ink); line-height:1.4;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .eco-stat .v.acc{ color:var(--acc); }
+
+  .eco-cta{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-top:14px; padding-top:12px;
+    border-top:1px dashed var(--line);
+    font-size:13px; font-weight:700; letter-spacing:.01em;
+    color:var(--acc); line-height:1.5;
+  }
+  .eco-cta svg{
+    width:15px; height:15px; flex:none;
+    transition:transform .22s cubic-bezier(.4,0,.2,1);
+  }
+  .eco-card:hover .eco-cta svg{ transform:translateX(3px); }
+
+  /* ============ 即将开放 ============ */
+  .soon-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+  }
+  .soon-item{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:7px; padding:15px 6px;
+    border:1px dashed var(--line); border-radius:12px;
+    background:var(--card);
+    color:var(--muted); font-size:11.5px; font-weight:600;
+    line-height:1.4; text-align:center;
+    transition:border-color .2s ease, color .2s ease, background-color .2s ease;
+  }
+  .soon-item svg{ width:18px; height:18px; opacity:.65; }
+  .soon-item:hover{
+    border-color:var(--line); color:var(--ink-3);
+    background:var(--hover-bg);
+  }
+
+  /* ============ 页脚 ============ */
+  .foot{
+    padding-top:4px; margin-top:-4px;
+    border-top:1px solid var(--line-2); padding-top:16px;
+  }
+  .foot-links{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;
+  }
+  .foot-link{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:7px 12px;
+    border:1px solid var(--line); border-radius:999px;
+    background:var(--card); color:var(--ink-3);
+    font-size:11.5px; font-weight:600; text-decoration:none;
+    transition:all .18s ease;
+  }
+  .foot-link svg{ width:12px; height:12px; flex:none; opacity:.7; }
+  .foot-link:hover{
+    border-color:var(--cyber-glow-soft); color:var(--cyber);
+    background:var(--cyber-glow-faint);
+  }
+  .foot-note{
+    margin:0; font-size:11px; line-height:1.85; color:var(--muted);
+    text-wrap:pretty;
+  }
+  .foot-note b{ color:var(--ink-3); font-weight:600; }
+
+  /* ============ Toast ============ */
+  #toast{
+    position:fixed; top:70px; left:50%;
+    transform:translateX(-50%) translateY(-6px);
+    padding:9px 18px 9px 14px; border-radius:999px;
+    background:var(--ink); color:var(--card);
+    font-size:12px; font-weight:600; letter-spacing:.02em;
+    box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-soft);
+    opacity:0; pointer-events:none; white-space:nowrap;
+    transition:opacity .25s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
+    z-index:60; display:inline-flex; align-items:center; gap:7px;
+  }
+  #toast::before{
+    content:"✓"; display:inline-flex; align-items:center; justify-content:center;
+    width:15px; height:15px; border-radius:50%;
+    background:var(--cyber); color:#fff;
+    font-size:9px; font-weight:700; line-height:1; flex:none;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ============ 响应式 ============ */
+  @media (max-width:380px){
+    .app-main{ padding:12px 12px 0; gap:18px; }
+    .appbar{ padding:9px 12px; gap:8px; }
+    .brand-sub{ display:none; }
+    .brand-name{ font-size:13.5px; }
+    .wallet-chip{ height:30px; font-size:10.5px; padding:0 8px 0 5px; }
+    .wallet-dot{ width:16px; height:16px; }
+    .icon-btn{ width:34px; height:34px; }
+    .icon-btn svg{ width:17px; height:17px; }
+    .hero{ padding:17px 15px 16px; }
+    .hero-title{ font-size:20px; }
+    .eco-card{ padding:14px; }
+    .eco-name{ font-size:16px; }
+    .eco-stat .v{ font-size:12px; }
+    .soon-grid{ gap:6px; }
+    .soon-item{ padding:13px 4px; font-size:11px; }
+  }
+
+  @media (max-width:330px){
+    .brand-text{ display:none; }
+    .wallet-chip span:last-child{ display:none; }
+    .wallet-chip{ width:30px; height:30px; padding:0; justify-content:center; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      transition-duration:.001ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================= 顶栏 ================= -->
+  <header class="appbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">财</div>
+      <div class="brand-text">
+        <div class="brand-name">财神DAO</div>
+        <div class="brand-sub">DApp Entry</div>
+      </div>
+    </div>
+    <div class="appbar-right">
+      <button class="wallet-chip" type="button" onclick="copyWallet()" aria-label="复制钱包地址">
+        <span class="wallet-dot" aria-hidden="true"></span>
+        <span>7xKX...9mPq</span>
+      </button>
+      <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ================= Hero ================= -->
+    <section class="hero" aria-label="财神宇宙入口">
+      <p class="hero-eyebrow">Ecosystem Entry</p>
+      <h1 class="hero-title">从信仰到资产<br><em>从文化到娱乐</em></h1>
+      <p class="hero-desc">以 $财神DAO 为唯一核心资产，连接信仰、资产、文化、娱乐与治理。</p>
+      <div class="hero-line">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>2 个生态已上线 · Solana SPL</span>
+      </div>
+    </section>
+
+    <!-- ================= 生态入口 ================= -->
+    <section aria-label="生态入口">
+      <div class="block-head">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+          </svg>
+          生态入口
+        </h2>
+        <span class="meta">2 Live</span>
+      </div>
+
+      <div class="eco-list">
+
+        <!-- 燃香赐福 -->
+        <a class="eco-card eco-incense" href="incense.html">
+          <div class="eco-top">
+            <div class="eco-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+              </svg>
+            </div>
+            <span class="badge-live">已上线</span>
+          </div>
+
+          <h3 class="eco-name">燃香赐福 <span class="eco-en">Incense</span></h3>
+          <p class="eco-desc">燃香即销毁，打入黑洞永不回流；赐福按币本位每日释放，连续 365 天。</p>
+
+          <div class="eco-stats">
+            <div class="eco-stat">
+              <span class="k">燃烧总额度</span>
+              <span class="v">20M</span>
+            </div>
+            <div class="eco-stat">
+              <span class="k">每日释放</span>
+              <span class="v acc">0.688%</span>
+            </div>
+            <div class="eco-stat">
+              <span class="k">累计返还</span>
+              <span class="v acc">251.12%</span>
+            </div>
+          </div>
+
+          <div class="eco-cta">
+            <span>进入燃香赐福</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 聚宝盆 -->
+        <a class="eco-card eco-treasure" href="staking.html">
+          <div class="eco-top">
+            <div class="eco-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 9h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9z"></path>
+                <path d="M3 5h18v4H3z"></path>
+                <path d="M10 13h4"></path>
+              </svg>
+            </div>
+            <span class="badge-live">已上线</span>
+          </div>
+
+          <h3 class="eco-name">聚宝盆 <span class="eco-en">Staking</span></h3>
+          <p class="eco-desc">质押 $财神DAO，单宝 / 双宝两种组合，收益按日线性释放，本金到期原路返还。</p>
+
+          <div class="eco-stats">
+            <div class="eco-stat">
+              <span class="k">最高 APY</span>
+              <span class="v acc">200%</span>
+            </div>
+            <div class="eco-stat">
+              <span class="k">锁仓周期</span>
+              <span class="v">30–180 天</span>
+            </div>
+            <div class="eco-stat">
+              <span class="k">释放方式</span>
+              <span class="v">每日线性</span>
+            </div>
+          </div>
+
+          <div class="eco-cta">
+            <span>进入聚宝盆</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ================= 即将开放 ================= -->
+    <section aria-label="即将开放的生态">
+      <div class="block-head">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <polyline points="12 7 12 12 16 14"></polyline>
+          </svg>
+          即将开放
+        </h2>
+        <span class="meta">6 Planned</span>
+      </div>
+
+      <div class="soon-grid">
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+            <circle cx="9" cy="9" r="2"></circle>
+            <path d="m21 15-5-5L5 21"></path>
+          </svg>
+          <span>财神 NFT</span>
+        </div>
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>文化院</span>
+        </div>
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span>商城</span>
+        </div>
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+            <path d="M6 12h4"></path>
+            <path d="M8 10v4"></path>
+            <path d="M16 11h.01"></path>
+            <path d="M18 13h.01"></path>
+          </svg>
+          <span>小游戏</span>
+        </div>
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>财神 DAO</span>
+        </div>
+        <div class="soon-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <span>财神福报</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 页脚 ================= -->
+    <footer class="foot">
+      <div class="foot-links">
+        <a class="foot-link" href="ecosystem.html">
+          生态文档
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7"></path><path d="M7 7h10v10"></path>
+          </svg>
+        </a>
+        <a class="foot-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+          $财神DAO
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7"></path><path d="M7 7h10v10"></path>
+          </svg>
+        </a>
+      </div>
+      <p class="foot-note">
+        <b>风险提示：</b>数字资产价格波动剧烈，参与前请充分了解产品机制并评估自身风险承受能力。本页面不构成任何投资建议。
+      </p>
+    </footer>
+
+  </main>
+
+</div>
+
+<!-- ================= Toast ================= -->
+<div id="toast" role="status" aria-live="polite">已复制</div>
+
+<script>
+  (function () {
+    'use strict';
+
+    /* ========== 主题 ========== */
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+    var meta = document.querySelector('meta[name="theme-color"]');
+
+    function currentTheme() {
+      var a = root.getAttribute('data-theme');
+      if (a === 'dark' || a === 'light') return a;
+      return darkMQ.matches ? 'dark' : 'light';
+    }
+    function applyUI() {
+      var t = currentTheme();
+      if (btn) {
+        btn.setAttribute('data-icon', t);
+        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        btn.setAttribute('aria-label', label);
+        btn.title = label;
+      }
+      if (meta) meta.setAttribute('content', t === 'dark' ? '#0a0e14' : '#ffffff');
+    }
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('gof-theme', next); } catch (e) {}
+        applyUI();
+      });
+    }
+    if (darkMQ.addEventListener) {
+      darkMQ.addEventListener('change', function () {
+        if (!root.hasAttribute('data-theme')) applyUI();
+      });
+    } else if (darkMQ.addListener) {
+      darkMQ.addListener(function () {
+        if (!root.hasAttribute('data-theme')) applyUI();
+      });
+    }
+    applyUI();
+
+    /* ========== Toast ========== */
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+    function showToast(msg) {
+      if (!toast) return;
+      if (msg) toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1700);
+    }
+
+    /* ========== 钱包地址复制 ========== */
+    var WALLET = '7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o';
+
+    function fallbackCopy(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      try { document.execCommand('copy'); cb && cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    window.copyWallet = function () {
+      var done = function () { showToast('钱包地址已复制'); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(WALLET).then(done).catch(function () {
+          fallbackCopy(WALLET, done);
+        });
+      } else {
+        fallbackCopy(WALLET, done);
+      }
+    };
+  })();
+</script>
+
+</body>
+</html>
