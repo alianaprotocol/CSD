@@ -22,35 +22,47 @@
 })();
 </script>
 <style>
+  /* ==================== 设计令牌 ==================== */
   :root{
     color-scheme: light;
+
+    /* 色板 */
     --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
     --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
 
-    --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
-    --cyber-glow:rgba(255,45,85,.45);
-    --cyber-glow-soft:rgba(255,45,85,.18);
-    --cyber-glow-faint:rgba(255,45,85,.06);
+    --cyber:#e11d48; --cyber-d:#be123c; --cyber-l:#fb7185;
+    --cyber-glow:rgba(225,29,72,.42);
+    --cyber-glow-soft:rgba(225,29,72,.16);
+    --cyber-glow-faint:rgba(225,29,72,.06);
 
     --gold:#a8821c; --gold-d:#8a6a14; --gold-soft:rgba(168,130,28,.10);
     --ok:#0e9f6e; --ok-soft:rgba(14,159,110,.10); --ok-line:rgba(14,159,110,.24);
     --info:#3b82f6; --info-soft:rgba(59,130,246,.10);
-    --danger:#e02424; --danger-soft:rgba(224,36,36,.10);
+    --danger:#dc2626; --danger-soft:rgba(220,38,38,.09);
 
-    --brand-1:#dc2626; --brand-2:#f59e0b;
+    --brand-1:#e11d48; --brand-2:#f59e0b;
     --bar-bg:rgba(255,255,255,.92);
     --hover-bg:rgba(20,24,29,.05);
 
+    /* 字体 */
     --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 
+    /* 间距 */
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px;
+
+    /* 圆角 */
+    --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-full:999px;
+
+    /* 阴影 */
     --shadow-card:0 1px 2px rgba(20,24,29,.04), 0 8px 24px -16px rgba(20,24,29,.18);
+    --shadow-sheet:0 -8px 40px -10px rgba(0,0,0,.35);
   }
 
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --ink:#e8ecf2; --ink-2:#b4bcc6; --ink-3:#8b95a3; --muted:#7f8896;
       --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
 
       --cyber:#ff2d55; --cyber-d:#ff5a6a; --cyber-l:#ff8fa0;
@@ -67,12 +79,13 @@
       --bar-bg:rgba(16,22,30,.92);
       --hover-bg:rgba(230,236,240,.06);
       --shadow-card:0 1px 2px rgba(0,0,0,.35);
+      --shadow-sheet:0 -8px 40px -10px rgba(0,0,0,.5);
     }
   }
 
   :root[data-theme="dark"]{
     color-scheme: dark;
-    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --ink:#e8ecf2; --ink-2:#b4bcc6; --ink-3:#8b95a3; --muted:#7f8896;
     --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
 
     --cyber:#ff2d55; --cyber-d:#ff5a6a; --cyber-l:#ff8fa0;
@@ -89,11 +102,13 @@
     --bar-bg:rgba(16,22,30,.92);
     --hover-bg:rgba(230,236,240,.06);
     --shadow-card:0 1px 2px rgba(0,0,0,.35);
+    --shadow-sheet:0 -8px 40px -10px rgba(0,0,0,.5);
   }
   :root[data-theme="light"]{ color-scheme: light; }
 
+  /* ==================== 基础 ==================== */
   *,*::before,*::after{ box-sizing:border-box; }
-  html{ -webkit-text-size-adjust:100%; }
+  html{ -webkit-text-size-adjust:100%; scroll-padding-bottom:120px; }
 
   body{
     margin:0;
@@ -106,12 +121,18 @@
     -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
     transition:background-color .25s ease, color .25s ease;
+    overflow-x:hidden;
   }
   :focus-visible{ outline:2px solid var(--cyber); outline-offset:2px; border-radius:6px; }
 
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
   input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
 
   .app{
     max-width:480px;
@@ -122,7 +143,7 @@
     position:relative;
   }
 
-  /* ============ 顶栏 ============ */
+  /* ==================== 顶栏 ==================== */
   .appbar{
     position:sticky; top:0; z-index:30;
     display:flex; align-items:center; gap:8px;
@@ -167,7 +188,7 @@
   .wallet-chip{
     display:inline-flex; align-items:center; gap:6px;
     height:32px; padding:0 10px 0 5px;
-    border:1px solid var(--line); border-radius:999px;
+    border:1px solid var(--line); border-radius:var(--r-full);
     background:var(--card); color:var(--ink-3);
     font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.01em;
     cursor:pointer; white-space:nowrap;
@@ -185,7 +206,7 @@
     box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
   }
 
-  /* ============ 主体 ============ */
+  /* ==================== 主体 ==================== */
   .app-main{
     padding:14px 14px 0;
     display:flex; flex-direction:column; gap:18px;
@@ -206,7 +227,7 @@
   }
   .ghost-btn{
     padding:4px 10px;
-    border:1px solid var(--line); border-radius:999px;
+    border:1px solid var(--line); border-radius:var(--r-full);
     background:var(--card); color:var(--ink-3);
     font-family:inherit; font-size:11.5px; font-weight:600;
     cursor:pointer;
@@ -220,18 +241,18 @@
   .card{
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:14px;
+    border-radius:var(--r-lg);
     padding:16px;
     transition:background-color .25s ease, border-color .25s ease;
   }
 
-  /* ============ 活动状态条 ============ */
+  /* ==================== 活动状态条 ==================== */
   .status-strip{
     display:flex; align-items:center; gap:10px;
     padding:11px 12px;
     border:1px solid var(--ok-line);
     background:var(--ok-soft);
-    border-radius:12px;
+    border-radius:var(--r-md);
     transition:all .25s ease;
   }
   .status-strip.is-closed{
@@ -263,23 +284,23 @@
     flex:none;
     display:inline-flex; align-items:center; gap:3px;
     padding:4px 9px;
-    border:1px solid currentColor; border-radius:999px;
+    border:1px solid currentColor; border-radius:var(--r-full);
     background:transparent; color:var(--ok);
     font-family:inherit; font-size:10.5px; font-weight:700;
-    text-decoration:none; cursor:pointer; line-height:1.6;
+    cursor:pointer; line-height:1.6;
     opacity:.85; transition:opacity .18s ease;
   }
   .ss-action:hover{ opacity:1; }
   .is-closed .ss-action{ color:var(--ink-3); }
   .ss-action svg{ width:10px; height:10px; }
 
-  /* ============ 个人燃香额度卡 ============ */
+  /* ==================== 个人燃香额度卡 ==================== */
   .qp-card{
     position:relative; overflow:hidden;
     padding:16px;
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:var(--r-lg);
     box-shadow:var(--shadow-card);
     transition:border-color .25s ease, background-color .25s ease;
   }
@@ -313,7 +334,7 @@
     flex:none;
     display:inline-flex; align-items:center; gap:2px;
     padding:3px 8px;
-    border:1px solid var(--cyber-glow-soft); border-radius:999px;
+    border:1px solid var(--cyber-glow-soft); border-radius:var(--r-full);
     background:var(--cyber-glow-faint); color:var(--cyber);
     font-family:inherit; font-size:10.5px; font-weight:700;
     cursor:pointer; line-height:1.6;
@@ -332,6 +353,7 @@
     font-family:var(--mono);
     font-size:28px; font-weight:700; letter-spacing:-.03em; line-height:1.1;
     color:var(--cyber);
+    transition:color .3s ease;
   }
   .qp-unit{ font-size:12.5px; font-weight:500; color:var(--muted); white-space:nowrap; }
 
@@ -344,9 +366,8 @@
     display:block; height:100%; border-radius:4px;
     background:linear-gradient(90deg, var(--cyber) 0%, var(--gold) 100%);
     box-shadow:0 0 8px var(--cyber-glow-soft);
-    animation:qp-fill 1s cubic-bezier(.4,0,.2,1);
+    transition:width .8s cubic-bezier(.4,0,.2,1);
   }
-  @keyframes qp-fill{ from{ width:0; } }
 
   .qp-meta{
     display:flex; align-items:center; justify-content:space-between;
@@ -369,7 +390,6 @@
   .qp-expire.is-urgent{ color:var(--danger); }
   .qp-expire.is-urgent b{ color:var(--danger); }
 
-  /* 无额度状态 */
   .qp-card.is-empty{
     border-style:dashed;
   }
@@ -395,13 +415,13 @@
     text-wrap:pretty;
   }
 
-  /* ============ 待领取赐福 ============ */
+  /* ==================== 待领取赐福 ==================== */
   .reward-card{
     position:relative; overflow:hidden;
     padding:18px;
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:var(--r-lg);
     box-shadow:var(--shadow-card);
   }
   .reward-card::before{
@@ -451,18 +471,20 @@
   .reward-deadline svg{ width:11px; height:11px; flex:none; }
   .reward-deadline b{ font-family:var(--mono); font-weight:700; }
 
-  /* ============ 按钮 ============ */
+  /* ==================== 按钮 ==================== */
   .btn-primary{
+    position:relative;
     width:100%;
     display:inline-flex; align-items:center; justify-content:center; gap:7px;
     padding:14px 16px;
-    border:0; border-radius:12px;
+    border:0; border-radius:var(--r-md);
     background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
     color:#fff;
     font-family:inherit; font-size:15px; font-weight:700; letter-spacing:.02em;
     cursor:pointer;
     box-shadow:0 8px 20px -10px var(--brand-1), 0 2px 8px -4px rgba(0,0,0,.12);
     transition:transform .15s cubic-bezier(.4,0,.2,1), box-shadow .25s ease, filter .2s ease;
+    overflow:hidden;
   }
   .btn-primary svg{ width:16px; height:16px; flex:none; }
   .btn-primary:hover{ filter:brightness(1.05); }
@@ -476,12 +498,28 @@
     transform:none;
     filter:none;
   }
+  .btn-primary.is-loading{
+    color:transparent;
+    pointer-events:none;
+    filter:none;
+  }
+  .btn-primary.is-loading::after{
+    content:"";
+    position:absolute;
+    width:18px; height:18px;
+    border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .6s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 
   .btn-gold{
+    position:relative;
     width:100%;
     display:inline-flex; align-items:center; justify-content:center; gap:7px;
     padding:13px 16px;
-    border:0; border-radius:12px;
+    border:0; border-radius:var(--r-md);
     background:linear-gradient(135deg,#f59e0b 0%,#f97316 100%);
     color:#fff;
     font-family:inherit; font-size:14px; font-weight:700; letter-spacing:.02em;
@@ -497,7 +535,7 @@
     flex:1;
     display:inline-flex; align-items:center; justify-content:center; gap:6px;
     padding:13px 14px;
-    border:1px solid var(--line); border-radius:12px;
+    border:1px solid var(--line); border-radius:var(--r-md);
     background:var(--bg); color:var(--ink-2);
     font-family:inherit; font-size:13.5px; font-weight:600;
     text-decoration:none; cursor:pointer;
@@ -510,11 +548,11 @@
   }
   .btn-ghost:active{ transform:scale(.98); }
 
-  /* ============ 全周期额度进度 ============ */
+  /* ==================== 全周期额度进度 ==================== */
   .quota-card{
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:14px;
+    border-radius:var(--r-lg);
     padding:15px 16px;
   }
   .quota-top{
@@ -572,14 +610,14 @@
   .quota-note svg{ width:11px; height:11px; flex:none; margin-top:3px; opacity:.7; }
   .quota-note b{ font-family:var(--mono); color:var(--ink-2); font-weight:700; }
 
-  /* ============ 输入区 ============ */
+  /* ==================== 输入区 ==================== */
   .price-hint{
     display:flex; align-items:center; justify-content:space-between;
     gap:10px; flex-wrap:wrap;
     padding:7px 10px; margin-bottom:14px;
     background:var(--bg);
     border:1px solid var(--line-2);
-    border-radius:8px;
+    border-radius:var(--r-sm);
     font-size:11px; color:var(--muted);
     line-height:1.5;
   }
@@ -591,31 +629,21 @@
     gap:10px; margin-bottom:6px;
   }
   .input-label{ font-size:12px; font-weight:600; color:var(--ink-3); }
-
-  .max-btn{
-    padding:4px 9px;
-    border:1px solid var(--cyber-glow-soft); border-radius:6px;
-    background:var(--cyber-glow-faint); color:var(--cyber);
-    font-family:var(--mono); font-size:10.5px; font-weight:700;
-    letter-spacing:.02em; cursor:pointer;
-    transition:all .18s ease;
-    -webkit-tap-highlight-color:transparent;
+  .input-avail{
+    font-family:var(--mono); font-size:10.5px; color:var(--muted);
+    letter-spacing:.01em;
   }
-  .max-btn:hover{
-    background:var(--cyber-glow-soft);
-    box-shadow:0 0 10px -2px var(--cyber-glow);
-  }
-  .max-btn:active{ transform:scale(.95); }
-  .max-btn:disabled{
-    opacity:.4; cursor:not-allowed;
-    background:var(--hover-bg); color:var(--muted);
-    border-color:var(--line);
-  }
+  .input-avail b{ color:var(--ink-2); font-weight:700; }
 
   .input-row{
     display:flex; align-items:center; gap:8px;
     padding-bottom:11px;
     border-bottom:1px solid var(--line-2);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .input-row:focus-within{
+    border-bottom-color:var(--cyber);
+    box-shadow:0 1px 0 0 var(--cyber);
   }
   .input-row input{
     flex:1; min-width:0;
@@ -633,9 +661,47 @@
     display:inline-flex; align-items:center; gap:5px;
     padding:5px 9px;
     background:var(--bg);
-    border:1px solid var(--line); border-radius:8px;
+    border:1px solid var(--line); border-radius:var(--r-sm);
     font-family:var(--mono); font-size:11.5px; font-weight:700;
     color:var(--ink-2); letter-spacing:.02em;
+  }
+
+  .quick-amounts{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:6px;
+    margin-top:10px;
+  }
+  .quick-amounts button{
+    padding:8px 0;
+    border:1px solid var(--line);
+    border-radius:var(--r-sm);
+    background:var(--card);
+    color:var(--ink-3);
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.02em;
+    cursor:pointer;
+    transition:all .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .quick-amounts button:hover,
+  .quick-amounts button:active{
+    border-color:var(--cyber-glow-soft);
+    color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    box-shadow:0 0 10px -2px var(--cyber-glow-soft);
+  }
+  .quick-amounts button:active{ transform:scale(.96); }
+  .quick-amounts button:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    background:var(--hover-bg);
+    color:var(--muted);
+    border-color:var(--line);
+    box-shadow:none;
+    transform:none;
   }
 
   .warn-line{
@@ -646,7 +712,7 @@
   }
   .warn-line svg{ width:13px; height:13px; flex:none; }
 
-  /* ============ 预估 ============ */
+  /* ==================== 预估 ==================== */
   .est-row{
     display:grid; grid-template-columns:1fr 1fr; gap:12px;
     padding-top:12px; margin-top:12px;
@@ -664,6 +730,7 @@
     font-family:var(--mono); font-size:14px; font-weight:700;
     letter-spacing:-.01em; line-height:1.4;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    transition:color .2s ease;
   }
   .est-v.is-gold{ color:var(--gold); }
   .est-v.is-red{ color:var(--cyber); }
@@ -676,21 +743,34 @@
   }
   .est-sub b{ font-family:var(--mono); color:var(--ink-2); font-weight:700; }
 
-  /* ============ 我的燃香记录 ============ */
+  /* ==================== 我的燃香记录 ==================== */
   .positions{ display:grid; gap:10px; }
 
   .pos-card{
+    position:relative;
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:14px;
+    border-radius:var(--r-lg);
     padding:14px;
     cursor:pointer;
-    transition:border-color .2s ease, box-shadow .25s ease;
+    transition:border-color .2s ease, box-shadow .25s ease, transform .15s ease;
   }
   .pos-card:hover{
     border-color:var(--cyber-glow-soft);
     box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 8px 24px -18px var(--cyber-glow);
   }
+  .pos-card:active{ transform:scale(.99); }
+
+  .pos-chevron{
+    position:absolute;
+    right:12px; bottom:12px;
+    width:14px; height:14px;
+    color:var(--muted);
+    opacity:.5;
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .pos-card:hover .pos-chevron{ opacity:.9; transform:translateX(2px); }
 
   .pos-top{
     display:flex; align-items:flex-start; justify-content:space-between;
@@ -732,11 +812,13 @@
     display:block; height:100%; border-radius:3px;
     background:linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
     box-shadow:0 0 8px var(--cyber-glow);
+    transition:width .6s cubic-bezier(.4,0,.2,1);
   }
 
   .pos-grid{
     display:grid; grid-template-columns:1fr 1fr; gap:10px;
     padding-top:11px; border-top:1px solid var(--line-2);
+    padding-bottom:2px;
   }
   .pos-grid > div:last-child{ text-align:right; }
   .pos-k{
@@ -749,7 +831,31 @@
   }
   .pos-v.is-gold{ color:var(--gold); }
 
-  /* ============ 徽章 ============ */
+  .expand-btn{
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:5px;
+    margin-top:10px;
+    padding:9px 12px;
+    border:1px dashed var(--line);
+    border-radius:var(--r-md);
+    background:transparent;
+    color:var(--ink-3);
+    font-family:inherit; font-size:11.5px; font-weight:600;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  .expand-btn:hover{
+    border-color:var(--cyber-glow-soft);
+    color:var(--cyber);
+    background:var(--cyber-glow-faint);
+  }
+  .expand-btn svg{
+    width:12px; height:12px;
+    transition:transform .25s ease;
+  }
+  .expand-btn.is-open svg{ transform:rotate(180deg); }
+
+  /* ==================== 徽章 ==================== */
   .badge{
     display:inline-flex; align-items:center; gap:4px;
     padding:2px 7px; border-radius:4px;
@@ -767,7 +873,67 @@
   }
   @keyframes pulse-dot{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 
-  /* ============ 机制说明 ============ */
+  /* ==================== 折叠面板 ==================== */
+  .accordion{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-lg);
+    overflow:hidden;
+    scroll-margin-top:70px;
+    transition:border-color .2s ease;
+  }
+  .accordion-head{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    padding:15px 16px;
+    border:0; background:transparent;
+    color:var(--ink);
+    font-family:inherit; font-size:14px; font-weight:700;
+    letter-spacing:-.005em;
+    text-align:left;
+    cursor:pointer;
+    transition:background-color .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .accordion-head:hover{ background:var(--hover-bg); }
+  .accordion-title{
+    display:flex; align-items:center; gap:7px;
+    min-width:0;
+  }
+  .accordion-title svg{
+    width:15px; height:15px; flex:none;
+    color:var(--cyber);
+  }
+  .accordion-hint{
+    font-family:var(--mono); font-size:10px;
+    color:var(--muted); font-weight:500;
+    letter-spacing:.02em;
+  }
+  .accordion-chevron{
+    width:18px; height:18px; flex:none;
+    color:var(--muted);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .accordion.is-open .accordion-chevron{ transform:rotate(180deg); }
+  .accordion-body{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .35s cubic-bezier(.4,0,.2,1);
+  }
+  .accordion.is-open .accordion-body{ grid-template-rows:1fr; }
+  .accordion-inner{ overflow:hidden; }
+  .accordion-content{ padding:0 16px 16px; }
+
+  @supports not (grid-template-rows: 0fr){
+    .accordion-body{
+      max-height:0;
+      transition:max-height .35s ease;
+    }
+    .accordion.is-open .accordion-body{ max-height:2000px; }
+  }
+
+  /* ==================== 机制说明内容 ==================== */
   .rules{
     margin:0; padding:0; list-style:none;
     display:grid; gap:9px;
@@ -798,10 +964,11 @@
     border-radius:10px;
     padding:12px;
     margin:12px 0 0;
-    font-family:var(--mono); font-size:11.5px; line-height:2;
-    color:var(--ink-2); overflow-x:auto;
-    white-space:nowrap;
-    -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+    font-family:var(--mono); font-size:11px; line-height:1.9;
+    color:var(--ink-2);
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
   }
   .calc:hover{ border-left-color:var(--cyber); }
   .calc-label{
@@ -809,19 +976,24 @@
     display:block; margin-bottom:7px; font-weight:600;
     padding-bottom:7px; border-bottom:1px dashed var(--line);
   }
-  .calc-line{ color:var(--ink); display:block; }
-  .calc-line .op{ color:var(--muted); margin:0 4px; }
+  .calc-line{
+    color:var(--ink);
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    gap:2px 6px;
+    padding:2px 0;
+  }
+  .calc-line .op{ color:var(--muted); }
   .calc-line .n{ color:var(--ink-2); }
   .calc-line .r{ color:var(--cyber); font-weight:700; }
-  .calc-line .u{ color:var(--muted); font-size:10.5px; margin-left:2px; }
+  .calc-line .u{ color:var(--muted); font-size:10px; }
 
-  /* ============ 风险提示 ============ */
+  /* ==================== 风险提示 ==================== */
   .risk-intro{
     margin:0 0 10px; padding:11px 12px;
     border-left:3px solid var(--cyber);
     background:var(--cyber-glow-faint);
     font-size:11.5px; line-height:1.8; color:var(--ink-3);
-    border-radius:0 8px 8px 0;
+    border-radius:0 var(--r-sm) var(--r-sm) 0;
     text-wrap:pretty;
   }
   .risk-intro b{ color:var(--cyber-d); font-weight:700; }
@@ -829,7 +1001,7 @@
   .risk-item{
     counter-increment:risk; position:relative;
     padding:9px 11px 9px 34px;
-    border:1px solid var(--line); border-radius:8px;
+    border:1px solid var(--line); border-radius:var(--r-sm);
     background:var(--card); font-size:11.5px; line-height:1.75; color:var(--ink-3);
     text-wrap:pretty;
   }
@@ -841,7 +1013,7 @@
   }
   .risk-item b{ color:var(--ink-2); font-weight:600; }
 
-  /* ============ 底部固定操作栏 ============ */
+  /* ==================== 底部固定操作栏 ==================== */
   .actionbar{
     position:fixed; left:0; right:0; bottom:0; z-index:40;
     padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));
@@ -862,7 +1034,7 @@
   }
   .action-hint svg{ width:10px; height:10px; flex:none; opacity:.7; }
 
-  /* ============ 抽屉 ============ */
+  /* ==================== 抽屉 ==================== */
   .sheet-backdrop{
     position:fixed; inset:0; z-index:50;
     display:flex; align-items:flex-end; justify-content:center;
@@ -881,15 +1053,17 @@
   .sheet-panel{
     position:relative;
     width:100%; max-width:480px;
-    max-height:88vh;
+    max-height:90vh;
     background:var(--card);
-    border-radius:20px 20px 0 0;
+    border-radius:var(--r-xl) var(--r-xl) 0 0;
     overflow-y:auto; overscroll-behavior:contain;
     transform:translateY(100%);
     transition:transform .35s cubic-bezier(.32,.72,0,1);
-    box-shadow:0 -8px 40px -10px rgba(0,0,0,.35);
+    box-shadow:var(--shadow-sheet);
     -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
+  .sheet-panel::-webkit-scrollbar{ display:none; }
   .sheet-backdrop.active .sheet-panel{ transform:translateY(0); }
 
   .sheet-head{
@@ -897,7 +1071,7 @@
     background:var(--card);
     padding:10px 16px 12px;
     border-bottom:1px solid var(--line-2);
-    border-radius:20px 20px 0 0;
+    border-radius:var(--r-xl) var(--r-xl) 0 0;
   }
   .sheet-grab{
     width:36px; height:4px; border-radius:2px;
@@ -911,26 +1085,28 @@
     color:var(--ink); letter-spacing:-.01em;
   }
   .sheet-close{
-    flex:none; width:30px; height:30px;
+    flex:none; width:32px; height:32px;
     display:inline-flex; align-items:center; justify-content:center;
-    padding:0; border:0; border-radius:8px;
+    padding:0; border:0; border-radius:var(--r-sm);
     background:transparent; color:var(--muted);
     cursor:pointer;
-    transition:background-color .18s ease, color .18s ease;
+    transition:background-color .18s ease, color .18s ease, transform .15s ease;
   }
   .sheet-close:hover{ background:var(--hover-bg); color:var(--ink); }
-  .sheet-close svg{ width:17px; height:17px; }
+  .sheet-close:active{ transform:scale(.92); }
+  .sheet-close svg{ width:18px; height:18px; }
 
   .sheet-body{
     padding:16px;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
     display:flex; flex-direction:column; gap:16px;
   }
 
-  /* ============ 额度明细 ============ */
+  /* ==================== 额度明细 ==================== */
   .qd-summary{
     display:grid; grid-template-columns:repeat(3,1fr);
     gap:1px; background:var(--line-2);
-    border:1px solid var(--line-2); border-radius:12px;
+    border:1px solid var(--line-2); border-radius:var(--r-md);
     overflow:hidden;
   }
   .qd-sum-item{
@@ -957,7 +1133,7 @@
   }
   .batch-item.is-used{ opacity:.6; }
   .batch-idx{
-    flex:none; width:32px; height:32px; border-radius:8px;
+    flex:none; width:32px; height:32px; border-radius:var(--r-sm);
     display:inline-flex; align-items:center; justify-content:center;
     background:var(--cyber-glow-faint); color:var(--cyber);
     font-family:var(--mono); font-size:10.5px; font-weight:700;
@@ -979,9 +1155,7 @@
     font-family:var(--mono); font-size:10px; color:var(--muted);
     line-height:1.5; margin-top:2px;
   }
-  .batch-right{
-    flex:none; text-align:right;
-  }
+  .batch-right{ flex:none; text-align:right; }
   .batch-amt{
     font-family:var(--mono); font-size:12px; font-weight:700;
     color:var(--ink); line-height:1.4;
@@ -1012,7 +1186,7 @@
     background:var(--muted); opacity:.5;
   }
 
-  /* ============ 通用详情 ============ */
+  /* ==================== 通用详情 ==================== */
   .dt-head{
     display:flex; align-items:center; gap:12px;
     padding-bottom:14px;
@@ -1047,7 +1221,7 @@
   .dt-list{
     background:var(--bg);
     border:1px solid var(--line-2);
-    border-radius:12px;
+    border-radius:var(--r-md);
     padding:4px 12px;
   }
   .dt-row{
@@ -1071,18 +1245,19 @@
     color:var(--ink-3); word-break:break-all;
     margin:0 0 8px; padding:8px 9px;
     background:var(--card);
-    border:1px solid var(--line-2); border-radius:8px;
+    border:1px solid var(--line-2); border-radius:var(--r-sm);
   }
   .dt-copy{
     flex:none; display:inline-flex; align-items:center; gap:4px;
     padding:2px 8px;
-    border:1px solid var(--cyber-glow-soft); border-radius:999px;
+    border:1px solid var(--cyber-glow-soft); border-radius:var(--r-full);
     background:var(--cyber-glow-faint); color:var(--cyber);
     font-family:inherit; font-size:10.5px; font-weight:600;
     cursor:pointer; line-height:1.7;
     transition:all .18s ease;
   }
   .dt-copy:hover{ background:var(--cyber-glow-soft); }
+  .dt-copy:active{ transform:scale(.95); }
   .dt-copy svg{ width:11px; height:11px; }
 
   .dt-actions{
@@ -1093,13 +1268,13 @@
     padding:13px 14px; font-size:13.5px;
   }
 
-  /* ============ 燃烧确认 ============ */
+  /* ==================== 燃烧确认 ==================== */
   .burn-warn{
     display:flex; align-items:flex-start; gap:9px;
     padding:12px;
-    border:1px solid rgba(224,36,36,.28);
+    border:1px solid rgba(220,38,38,.24);
     background:var(--danger-soft);
-    border-radius:12px;
+    border-radius:var(--r-md);
     font-size:11.5px; line-height:1.75; color:var(--ink-2);
     text-wrap:pretty;
   }
@@ -1132,10 +1307,11 @@
     display:flex; align-items:flex-start; gap:9px;
     padding:12px;
     border:1px solid var(--line);
-    border-radius:12px;
+    border-radius:var(--r-md);
     background:var(--card);
     cursor:pointer;
     transition:border-color .18s ease, background-color .18s ease;
+    -webkit-tap-highlight-color:transparent;
   }
   .confirm-check:hover{ border-color:var(--cyber-glow-soft); }
   .confirm-check input{
@@ -1168,7 +1344,7 @@
   }
   .check-text b{ color:var(--ink); font-weight:700; }
 
-  /* ============ 领取说明 ============ */
+  /* ==================== 领取说明 ==================== */
   .claim-steps{
     display:flex; flex-direction:column; gap:0;
     margin:0; padding:0; list-style:none;
@@ -1197,12 +1373,12 @@
   .claim-steps li:last-child::after{ display:none; }
   .claim-steps b{ color:var(--ink-2); font-weight:600; }
 
-  /* ============ Toast ============ */
+  /* ==================== Toast ==================== */
   #copy-toast{
     position:fixed; top:70px; left:50%;
-    transform:translateX(-50%) translateY(-6px);
+    transform:translateX(-50%) translateY(-8px) scale(.94);
     padding:9px 18px 9px 14px;
-    border-radius:999px;
+    border-radius:var(--r-full);
     background:var(--ink); color:var(--card);
     font-size:12px; font-weight:600; letter-spacing:.02em;
     box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-soft);
@@ -1221,12 +1397,12 @@
   }
   #copy-toast.show{
     opacity:1;
-    transform:translateX(-50%) translateY(0);
+    transform:translateX(-50%) translateY(0) scale(1);
   }
 
   .hidden{ display:none !important; }
 
-  /* ============ 响应式 ============ */
+  /* ==================== 响应式 ==================== */
   @media (max-width:380px){
     .app-main{ padding:12px 12px 0; gap:16px; }
     .appbar{ padding:9px 12px; gap:6px; }
@@ -1241,17 +1417,20 @@
     .quota-card{ padding:14px; }
     .qv{ font-size:11px; }
     .qd-sum-v{ font-size:12px; }
+    .quick-amounts button{ font-size:10.5px; padding:7px 0; }
   }
 
   @media (max-width:340px){
     .appbar-title{ display:none; }
     .appbar-right{ margin-left:auto; }
     .qp-meta{ font-size:10.5px; }
+    .calc{ font-size:10.5px; }
   }
 
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{
       animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
       transition-duration:.001ms !important;
     }
   }
@@ -1302,12 +1481,12 @@
         <div class="ss-title" id="statusTitle">本场燃香进行中</div>
         <div class="ss-sub" id="statusSub">全周期剩余 3,240,000 枚 · 额满即止</div>
       </div>
-      <a class="ss-action" href="#rules">
+      <button class="ss-action" type="button" onclick="openRulesAccordion()">
         规则
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M9 18l6-6-6-6"></path>
         </svg>
-      </a>
+      </button>
     </div>
 
     <!-- ================= 个人燃香额度 ================= -->
@@ -1338,7 +1517,9 @@
             <span class="qp-unit">枚可用</span>
           </div>
 
-          <div class="qp-bar"><i id="qpBar" style="width:37.5%"></i></div>
+          <div class="qp-bar" role="progressbar" aria-label="可用额度占比" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62.5">
+            <i id="qpBar" style="width:62.5%"></i>
+          </div>
 
           <div class="qp-meta">
             <span>今日获得 <b id="qpTotal">8,000</b></span>
@@ -1426,7 +1607,9 @@
         <span class="quota-k">全周期燃烧进度</span>
         <span class="quota-pct">83.8%</span>
       </div>
-      <div class="quota-bar"><i style="width:83.8%"></i></div>
+      <div class="quota-bar" role="progressbar" aria-label="全周期燃烧进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="83.8">
+        <i style="width:83.8%"></i>
+      </div>
 
       <div class="quota-grid">
         <div>
@@ -1477,12 +1660,19 @@
 
         <div class="input-head">
           <span class="input-label">燃香数量</span>
-          <button class="max-btn" id="maxBtn" type="button" onclick="setMax()">MAX · 5,000</button>
+          <span class="input-avail" id="inputAvail">可用 <b>5,000</b></span>
         </div>
 
         <div class="input-row">
-          <input type="number" id="burn-input" inputmode="decimal" placeholder="0" aria-label="燃香数量" oninput="calculateBlessing()">
+          <input type="number" id="burn-input" inputmode="decimal" min="0" placeholder="0" aria-label="燃香数量" autocomplete="off" oninput="calculateBlessing()" onkeydown="handleInputKey(event)">
           <span class="input-suffix">财神DAO</span>
+        </div>
+
+        <div class="quick-amounts" id="quickAmounts">
+          <button type="button" onclick="setQuick(0.25)" aria-label="使用25%额度">25%</button>
+          <button type="button" onclick="setQuick(0.5)" aria-label="使用50%额度">50%</button>
+          <button type="button" onclick="setQuick(0.75)" aria-label="使用75%额度">75%</button>
+          <button type="button" onclick="setMax()" aria-label="使用最大额度">MAX</button>
         </div>
 
         <div id="min-warning" class="warn-line hidden">
@@ -1521,167 +1711,96 @@
           </svg>
           我的燃香记录
         </h3>
-        <span class="meta">共 3 笔</span>
+        <span class="meta" id="recordsCount">共 3 笔</span>
       </div>
 
-      <div class="positions">
+      <div class="positions" id="positionsList"></div>
 
-        <article class="pos-card" onclick="openDetail(0)" role="button" tabindex="0">
-          <div class="pos-top">
-            <div style="min-width:0;">
-              <div class="pos-name">
-                燃香 3,000 枚
-                <span class="badge badge-pending"><span class="dot-pulse"></span>待生效</span>
-              </div>
-              <p class="pos-meta">燃烧于 2026-10-20 · 9cB4...hJ6k</p>
-            </div>
-            <div class="pos-apy">
-              <div class="pos-apy-val">251.12%</div>
-              <div class="pos-apy-lbl">总返还</div>
-            </div>
-          </div>
-
-          <div class="pos-progress-head">
-            <span>T+1 起可领取</span>
-            <span>预计明日 00:00</span>
-          </div>
-          <div class="progress"><i style="width:0%"></i></div>
-
-          <div class="pos-grid">
-            <div>
-              <span class="pos-k">已领取</span>
-              <span class="pos-v">0.00 枚</span>
-              <span class="pos-k" style="margin-top:2px;">每日 20.64 枚</span>
-            </div>
-            <div>
-              <span class="pos-k">累计应得</span>
-              <span class="pos-v is-gold">7,533.60 枚</span>
-              <span class="pos-k" style="margin-top:2px;">待领 0.00 枚</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="pos-card" onclick="openDetail(1)" role="button" tabindex="0">
-          <div class="pos-top">
-            <div style="min-width:0;">
-              <div class="pos-name">
-                燃香 5,000 枚
-                <span class="badge badge-ok">释放中</span>
-              </div>
-              <p class="pos-meta">燃烧于 2026-09-20 · 3vL8...wX0y</p>
-            </div>
-            <div class="pos-apy">
-              <div class="pos-apy-val">251.12%</div>
-              <div class="pos-apy-lbl">总返还</div>
-            </div>
-          </div>
-
-          <div class="pos-progress-head">
-            <span>第 30 天 / 365</span>
-            <span>剩余 335 天</span>
-          </div>
-          <div class="progress"><i style="width:8.2%"></i></div>
-
-          <div class="pos-grid">
-            <div>
-              <span class="pos-k">已领取</span>
-              <span class="pos-v">1,032.00 枚</span>
-              <span class="pos-k" style="margin-top:2px;">每日 34.40 枚</span>
-            </div>
-            <div>
-              <span class="pos-k">累计应得</span>
-              <span class="pos-v is-gold">12,556.00 枚</span>
-              <span class="pos-k" style="margin-top:2px;">待领 34.40 枚</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="pos-card" onclick="openDetail(2)" role="button" tabindex="0">
-          <div class="pos-top">
-            <div style="min-width:0;">
-              <div class="pos-name">
-                燃香 10,000 枚
-                <span class="badge badge-ok">释放中</span>
-              </div>
-              <p class="pos-meta">燃烧于 2026-08-15 · 5KtP...R2vL</p>
-            </div>
-            <div class="pos-apy">
-              <div class="pos-apy-val">251.12%</div>
-              <div class="pos-apy-lbl">总返还</div>
-            </div>
-          </div>
-
-          <div class="pos-progress-head">
-            <span>第 66 天 / 365</span>
-            <span>剩余 299 天</span>
-          </div>
-          <div class="progress"><i style="width:18.1%"></i></div>
-
-          <div class="pos-grid">
-            <div>
-              <span class="pos-k">已领取</span>
-              <span class="pos-v">4,540.80 枚</span>
-              <span class="pos-k" style="margin-top:2px;">每日 68.80 枚</span>
-            </div>
-            <div>
-              <span class="pos-k">累计应得</span>
-              <span class="pos-v is-gold">25,112.00 枚</span>
-              <span class="pos-k" style="margin-top:2px;">待领 68.80 枚</span>
-            </div>
-          </div>
-        </article>
-
-      </div>
+      <button class="expand-btn" id="expandRecords" type="button" onclick="toggleRecords()">
+        <span>查看全部记录</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
     </section>
 
-    <!-- ================= 机制说明 ================= -->
-    <section class="card" id="rules" aria-label="机制与闭合验算">
-      <div class="block-head" style="padding:0;margin-bottom:10px;">
-        <h3>
+    <!-- ================= 机制说明（折叠） ================= -->
+    <section class="accordion" id="acc-rules" aria-label="机制说明">
+      <button class="accordion-head" type="button" onclick="toggleAcc('acc-rules')" aria-expanded="false" aria-controls="acc-rules-body">
+        <div class="accordion-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
             <line x1="9" y1="13" x2="15" y2="13"></line>
             <line x1="9" y1="17" x2="15" y2="17"></line>
           </svg>
-          机制说明
-        </h3>
-      </div>
+          <span>机制说明</span>
+          <span class="accordion-hint">8 条</span>
+        </div>
+        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
+      <div class="accordion-body" id="acc-rules-body">
+        <div class="accordion-inner">
+          <div class="accordion-content">
+            <ul class="rules">
+              <li><b>直播间限定：</b>燃香仅在财神直播间开放，<span class="is-red">个人燃香额度由后台按轮次发放</span>，用户只能在额度内燃香。</li>
+              <li><b>额度有效：</b>每笔额度自发放起 24 小时内有效，过期自动失效；额度<span class="is-red">不可转让、不可跨场累积</span>。</li>
+              <li><b>燃香即销毁：</b>燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<span class="is-red">永久退出流通</span>，不可撤回。</li>
+              <li><b>额度刚性：</b>全周期燃烧上限 20,000,000 枚固定，额满即止，<span class="is-red">不追加、不扩容</span>。</li>
+              <li><b>每日释放：</b>燃烧量的 <code>0.688%</code> / 天，连续 365 天，累计返还 251.12%。</li>
+              <li><b>币本位返还：</b>返还的是枚数，不随法币价格变化；价格涨跌只影响份额的法币价值。</li>
+              <li><b>领取入口：</b>赐福托管于 <code>lock.jup.ag</code>，T+1 起可领取，建议 24 个月内领取有效，逾期视为放弃。</li>
+              <li><b>可验证性：</b>每笔燃烧可在 <code>solscan.io</code> 验证，每日释放可逐笔核对，任何人无法篡改。</li>
+            </ul>
 
-      <ul class="rules">
-        <li><b>直播间限定：</b>燃香仅在财神直播间开放，<span class="is-red">个人燃香额度由后台按轮次发放</span>，用户只能在额度内燃香。</li>
-        <li><b>额度有效：</b>每笔额度自发放起 24 小时内有效，过期自动失效；额度<span class="is-red">不可转让、不可跨场累积</span>。</li>
-        <li><b>燃香即销毁：</b>燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<span class="is-red">永久退出流通</span>，不可撤回。</li>
-        <li><b>额度刚性：</b>全周期燃烧上限 20,000,000 枚固定，额满即止，<span class="is-red">不追加、不扩容</span>。</li>
-        <li><b>每日释放：</b>燃烧量的 <code>0.688%</code> / 天，连续 365 天，累计返还 251.12%。</li>
-        <li><b>币本位返还：</b>返还的是枚数，不随法币价格变化；价格涨跌只影响份额的法币价值。</li>
-        <li><b>领取入口：</b>赐福托管于 <code>lock.jup.ag</code>，T+1 起可领取，建议 24 个月内领取有效，逾期视为放弃。</li>
-        <li><b>可验证性：</b>每笔燃烧可在 <code>solscan.io</code> 验证，每日释放可逐笔核对，任何人无法篡改。</li>
-      </ul>
-
-      <div class="calc">
-        <span class="calc-label">返还池闭合验算</span>
-        <div class="calc-line">燃烧总额度 <span class="op">=</span> <span class="n">20,000,000</span><span class="u">枚</span></div>
-        <div class="calc-line">单枚返还倍数 <span class="op">=</span> <span class="n">0.688%</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">251.12%</span></div>
-        <div class="calc-line">返还池上限 <span class="op">=</span> <span class="n">20,000,000</span> <span class="op">×</span> <span class="n">251.12%</span> <span class="op">=</span> <span class="r">50,224,000</span><span class="u">枚</span></div>
-        <div class="calc-line">与代币分配「燃香赐福池」 <span class="op">=</span> <span class="r">完全一致</span></div>
+            <div class="calc">
+              <span class="calc-label">返还池闭合验算</span>
+              <div class="calc-line"><span>燃烧总额度</span><span class="op">=</span><span class="n">20,000,000</span><span class="u">枚</span></div>
+              <div class="calc-line"><span>单枚返还倍数</span><span class="op">=</span><span class="n">0.688%</span><span class="op">×</span><span class="n">365</span><span class="op">=</span><span class="r">251.12%</span></div>
+              <div class="calc-line"><span>返还池上限</span><span class="op">=</span><span class="n">20,000,000</span><span class="op">×</span><span class="n">251.12%</span><span class="op">=</span><span class="r">50,224,000</span><span class="u">枚</span></div>
+              <div class="calc-line"><span>与代币分配「燃香赐福池」</span><span class="op">=</span><span class="r">完全一致</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ================= 风险提示 ================= -->
-    <section class="card" aria-label="风险提示">
-      <div class="risk-intro">
-        <b>重要提示：</b>燃香是资产永久销毁行为，不可撤回、不可退款。请在操作前确认数量与后果。
+    <!-- ================= 风险提示（折叠） ================= -->
+    <section class="accordion" id="acc-risk" aria-label="风险提示">
+      <button class="accordion-head" type="button" onclick="toggleAcc('acc-risk')" aria-expanded="false" aria-controls="acc-risk-body">
+        <div class="accordion-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12" y2="17.01"></line>
+          </svg>
+          <span>风险提示</span>
+          <span class="accordion-hint">7 条</span>
+        </div>
+        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
+      <div class="accordion-body" id="acc-risk-body">
+        <div class="accordion-inner">
+          <div class="accordion-content">
+            <div class="risk-intro">
+              <b>重要提示：</b>燃香是资产永久销毁行为，不可撤回、不可退款。请在操作前确认数量与后果。
+            </div>
+            <ol class="risk-list">
+              <li class="risk-item"><b>不可撤回</b> —— 燃烧即打入黑洞地址，私钥不存在，无法找回、无法退还。</li>
+              <li class="risk-item"><b>额度不可转让</b> —— 个人燃香额度仅限本钱包使用，不可转让、不可跨场累积，过期自动失效。</li>
+              <li class="risk-item"><b>额度刚性</b> —— 总额度 20M 固定，额满即止，可能无法参与。</li>
+              <li class="risk-item"><b>开放时间不确定</b> —— 以直播间公告为准，不设固定场次。</li>
+              <li class="risk-item"><b>领取期限</b> —— 建议 24 个月内领取有效，逾期视为放弃。</li>
+              <li class="risk-item"><b>币本位不保本</b> —— 返还枚数固定，但法币价值随价格波动。</li>
+              <li class="risk-item"><b>非投资建议</b> —— 本页面不构成任何投资建议，请自行评估风险。</li>
+            </ol>
+          </div>
+        </div>
       </div>
-      <ol class="risk-list">
-        <li class="risk-item"><b>不可撤回</b> —— 燃烧即打入黑洞地址，私钥不存在，无法找回、无法退还。</li>
-        <li class="risk-item"><b>额度不可转让</b> —— 个人燃香额度仅限本钱包使用，不可转让、不可跨场累积，过期自动失效。</li>
-        <li class="risk-item"><b>额度刚性</b> —— 总额度 20M 固定，额满即止，可能无法参与。</li>
-        <li class="risk-item"><b>开放时间不确定</b> —— 以直播间公告为准，不设固定场次。</li>
-        <li class="risk-item"><b>领取期限</b> —— 建议 24 个月内领取有效，逾期视为放弃。</li>
-        <li class="risk-item"><b>币本位不保本</b> —— 返还枚数固定，但法币价值随价格波动。</li>
-        <li class="risk-item"><b>非投资建议</b> —— 本页面不构成任何投资建议，请自行评估风险。</li>
-      </ol>
     </section>
 
   </main>
@@ -1725,59 +1844,21 @@
       <div class="qd-summary">
         <div class="qd-sum-item">
           <span class="qd-sum-k">今日获得</span>
-          <span class="qd-sum-v">8,000 枚</span>
+          <span class="qd-sum-v" id="qdTotal">8,000 枚</span>
         </div>
         <div class="qd-sum-item">
           <span class="qd-sum-k">已使用</span>
-          <span class="qd-sum-v is-red">3,000 枚</span>
+          <span class="qd-sum-v is-red" id="qdUsed">3,000 枚</span>
         </div>
         <div class="qd-sum-item">
           <span class="qd-sum-k">可用</span>
-          <span class="qd-sum-v" style="color:var(--cyber);">5,000 枚</span>
+          <span class="qd-sum-v" style="color:var(--cyber);" id="qdAvail">5,000 枚</span>
         </div>
       </div>
 
       <div class="dt-section">
         <h4 class="dt-label">额度批次</h4>
-        <div class="batch-list">
-
-          <div class="batch-item is-used">
-            <div class="batch-idx">01</div>
-            <div class="batch-body">
-              <div class="batch-title">第 1 轮 <em>14:05 发放</em></div>
-              <div class="batch-sub">有效期至 10-21 14:05</div>
-            </div>
-            <div class="batch-right">
-              <div class="batch-amt">2,000 枚</div>
-              <div class="batch-status used">已用完</div>
-            </div>
-          </div>
-
-          <div class="batch-item">
-            <div class="batch-idx">02</div>
-            <div class="batch-body">
-              <div class="batch-title">第 2 轮 <em>14:32 发放</em></div>
-              <div class="batch-sub">有效期至 10-21 14:32</div>
-            </div>
-            <div class="batch-right">
-              <div class="batch-amt">3,000 枚</div>
-              <div class="batch-status warn">剩 2,000</div>
-            </div>
-          </div>
-
-          <div class="batch-item">
-            <div class="batch-idx">03</div>
-            <div class="batch-body">
-              <div class="batch-title">第 3 轮 <em>15:10 发放</em></div>
-              <div class="batch-sub">有效期至 10-21 15:10</div>
-            </div>
-            <div class="batch-right">
-              <div class="batch-amt">3,000 枚</div>
-              <div class="batch-status ok">未使用</div>
-            </div>
-          </div>
-
-        </div>
+        <div class="batch-list" id="batchList"></div>
       </div>
 
       <div class="dt-section">
@@ -1969,26 +2050,24 @@
 
 <script>
   /* ==================== 常量 ==================== */
-  const DAILY_RATE = 0.00688;         // 0.688% / 天
+  const DAILY_RATE = 0.00688;
   const TOTAL_DAYS = 365;
-  const MIN_BURN = 100;               // 最低燃香（示例）
-  const ADDRESS_LIMIT = 50000;        // 单地址限额（示例）
-  const TOTAL_QUOTA = 20000000;       // 全周期燃烧上限
-  const BURNED = 16760000;            // 已燃烧（示例）
+  const MIN_BURN = 100;
+  const ADDRESS_LIMIT = 50000;
+  const TOTAL_QUOTA = 20000000;
+  const BURNED = 16760000;
   const REMAINING_QUOTA = TOTAL_QUOTA - BURNED;
-  const ACTIVITY_OPEN = true;         // 本场是否开放
+  const ACTIVITY_OPEN = true;
 
-  const walletBalances = {
-    '财神DAO': 10000
-  };
+  const walletBalances = { '财神DAO': 10000 };
   const walletAddress = '7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o';
 
   /* ==================== 个人额度数据 ==================== */
   const personalQuota = {
-    total: 8000,      // 今日累计获得
-    used: 3000,       // 已使用
-    available: 5000,  // 可用
-    expireText: '10-21 14:32',  // 最早批次过期时间（展示用）
+    total: 8000,
+    used: 3000,
+    available: 5000,
+    expireText: '10-21 14:32',
     isUrgent: false,
     batches: [
       { idx: '01', round: '第 1 轮', amount: 2000, used: 2000, time: '14:05', expire: '10-21 14:05' },
@@ -1998,7 +2077,7 @@
   };
 
   /* ==================== 记录数据 ==================== */
-  const records = [
+  let records = [
     {
       burn: 3000,
       date: '2026-10-20 14:50:12',
@@ -2035,6 +2114,7 @@
   ];
 
   let burnAmount = 0;
+  let recordsExpanded = false;
 
   /* ==================== 工具 ==================== */
   function fmt(num, dec = 2) {
@@ -2059,29 +2139,25 @@
     document.body.removeChild(ta);
   }
 
+  function showToast(msg) {
+    const toast = document.getElementById('copy-toast');
+    toast.textContent = msg || '已复制';
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
   function copyText(text, msg) {
-    const done = () => {
-      const toast = document.getElementById('copy-toast');
-      toast.textContent = msg || '已复制';
-      toast.classList.add('show');
-      clearTimeout(toast._t);
-      toast._t = setTimeout(() => toast.classList.remove('show'), 1700);
-    };
-    if (!text) { done(); return; }
+    if (!text) { showToast(msg); return; }
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+      navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => fallbackCopy(text, () => showToast(msg)));
     } else {
-      fallbackCopy(text, done);
+      fallbackCopy(text, () => showToast(msg));
     }
   }
 
-  function copyWallet() {
-    copyText(walletAddress, '钱包地址已复制');
-  }
-
-  function copyHash(hash) {
-    copyText(hash, '交易签名已复制');
-  }
+  function copyWallet() { copyText(walletAddress, '钱包地址已复制'); }
+  function copyHash(hash) { copyText(hash, '交易签名已复制'); }
 
   /* ==================== 主题 ==================== */
   (function initTheme() {
@@ -2125,10 +2201,29 @@
     applyUI();
   })();
 
-  /* ==================== 额度 UI 初始化 ==================== */
+  /* ==================== 折叠面板 ==================== */
+  function toggleAcc(id) {
+    const acc = document.getElementById(id);
+    if (!acc) return;
+    const isOpen = acc.classList.toggle('is-open');
+    const head = acc.querySelector('.accordion-head');
+    if (head) head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function openRulesAccordion() {
+    const acc = document.getElementById('acc-rules');
+    if (!acc) return;
+    if (!acc.classList.contains('is-open')) toggleAcc('acc-rules');
+    setTimeout(() => {
+      acc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+
+  /* ==================== 额度 UI ==================== */
   function initQuotaUI() {
     const qpCard = document.getElementById('qpCard');
     const hasQuota = personalQuota.available > 0;
+    const burnInput = document.getElementById('burn-input');
 
     if (hasQuota) {
       document.getElementById('qpHasQuota').classList.remove('hidden');
@@ -2139,30 +2234,48 @@
       document.getElementById('qpTotal').textContent = fmt(personalQuota.total, 0);
       document.getElementById('qpUsed').textContent = fmt(personalQuota.used, 0);
 
-      const usedPct = personalQuota.total > 0
-        ? (personalQuota.used / personalQuota.total) * 100
+      const availPct = personalQuota.total > 0
+        ? (personalQuota.available / personalQuota.total) * 100
         : 0;
-      document.getElementById('qpBar').style.width = usedPct.toFixed(1) + '%';
+      document.getElementById('qpBar').style.width = availPct.toFixed(1) + '%';
+
+      const barEl = document.querySelector('.qp-bar');
+      if (barEl) barEl.setAttribute('aria-valuenow', availPct.toFixed(1));
 
       document.getElementById('qpExpire').querySelector('span').innerHTML =
         '最早批次将于 <b>' + personalQuota.expireText + '</b> 过期';
       document.getElementById('qpExpire').classList.toggle('is-urgent', personalQuota.isUrgent);
 
-      /* 输入区提示 */
       document.getElementById('hintQuota').textContent = fmt(personalQuota.available, 0);
-      document.getElementById('maxBtn').textContent = 'MAX · ' + fmt(personalQuota.available, 0);
-      document.getElementById('maxBtn').disabled = false;
+      document.getElementById('inputAvail').innerHTML = '可用 <b>' + fmt(personalQuota.available, 0) + '</b>';
+
+      if (burnInput) burnInput.disabled = false;
+
+      const qa = document.getElementById('quickAmounts');
+      if (qa) qa.querySelectorAll('button').forEach(b => b.disabled = false);
     } else {
       document.getElementById('qpHasQuota').classList.add('hidden');
       document.getElementById('qpEmpty').classList.remove('hidden');
       qpCard.classList.add('is-empty');
 
       document.getElementById('hintQuota').textContent = '0';
-      document.getElementById('maxBtn').textContent = 'MAX · 0';
-      document.getElementById('maxBtn').disabled = true;
+      document.getElementById('inputAvail').innerHTML = '可用 <b>0</b>';
+
+      if (burnInput) {
+        burnInput.disabled = true;
+        burnInput.value = '';
+      }
+
+      const qa = document.getElementById('quickAmounts');
+      if (qa) qa.querySelectorAll('button').forEach(b => b.disabled = true);
     }
 
-    /* 活动状态条 */
+    /* 额度明细抽屉数据 */
+    document.getElementById('qdTotal').textContent = fmt(personalQuota.total, 0) + ' 枚';
+    document.getElementById('qdUsed').textContent = fmt(personalQuota.used, 0) + ' 枚';
+    document.getElementById('qdAvail').textContent = fmt(personalQuota.available, 0) + ' 枚';
+
+    /* 状态条 */
     const strip = document.getElementById('statusStrip');
     if (!ACTIVITY_OPEN) {
       strip.classList.add('is-closed');
@@ -2200,7 +2313,6 @@
       netEl.textContent = '0.00';
     }
 
-    /* 状态判定（额度优先） */
     let btnText = '立即燃香';
     let disabled = false;
     let warnMsg = '';
@@ -2213,12 +2325,10 @@
       btnText = '暂未获得燃香额度';
       disabled = true;
       warnEl.classList.add('hidden');
-      inputEl.disabled = true;
     } else if (raw <= 0) {
       btnText = '请输入燃香数量';
       disabled = true;
       warnEl.classList.add('hidden');
-      inputEl.disabled = false;
     } else if (raw < MIN_BURN) {
       btnText = '未达最低燃香量';
       disabled = true;
@@ -2247,6 +2357,26 @@
     burnBtn.textContent = btnText;
   }
 
+  function handleInputKey(e) {
+    if (e.key === 'Enter') {
+      const btn = document.getElementById('burn-btn');
+      if (btn && !btn.disabled) {
+        e.preventDefault();
+        btn.blur();
+        openConfirm();
+      }
+    }
+  }
+
+  function setQuick(pct) {
+    const available = personalQuota.available;
+    if (available <= 0) return;
+    const max = Math.min(available, walletBalances['财神DAO']);
+    const val = Math.floor(max * pct);
+    document.getElementById('burn-input').value = val;
+    calculateBlessing();
+  }
+
   function setMax() {
     const available = personalQuota.available;
     if (available <= 0) return;
@@ -2255,20 +2385,20 @@
     calculateBlessing();
   }
 
-  /* ==================== 额度明细抽屉 ==================== */
+  /* ==================== 额度明细 ==================== */
   function openQuotaDetail() {
     renderQuotaBatches();
     document.getElementById('quota-sheet').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   }
 
   function closeQuotaDetail() {
     document.getElementById('quota-sheet').classList.remove('active');
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 
   function renderQuotaBatches() {
-    const list = document.querySelector('.batch-list');
+    const list = document.getElementById('batchList');
     if (!list) return;
 
     list.innerHTML = personalQuota.batches.map(b => {
@@ -2300,6 +2430,25 @@
     }).join('');
   }
 
+  /* ==================== 滚动锁定 ==================== */
+  let scrollLockY = 0;
+  function lockScroll() {
+    scrollLockY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = -scrollLockY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollLockY);
+  }
+
   /* ==================== 燃烧确认 ==================== */
   function openConfirm() {
     if (burnAmount <= 0) return;
@@ -2324,14 +2473,15 @@
     btn.textContent = '确认燃烧 ' + fmt(burnAmount, 0) + ' 枚';
     btn.disabled = true;
     btn.classList.add('btn-disabled');
+    btn.classList.remove('is-loading');
 
     document.getElementById('confirm-sheet').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   }
 
   function closeConfirm() {
     document.getElementById('confirm-sheet').classList.remove('active');
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 
   function toggleConfirmBtn() {
@@ -2342,23 +2492,155 @@
   }
 
   function doBurn() {
-    closeConfirm();
-    copyText('', '演示环境 · 将唤起钱包签名');
+    const btn = document.getElementById('confirm-burn-btn');
+    if (btn.classList.contains('is-loading')) return;
+
+    const amount = burnAmount;
+    btn.classList.add('is-loading');
+    btn.disabled = true;
+
+    setTimeout(() => {
+      /* 更新额度 */
+      personalQuota.used += amount;
+      personalQuota.available = Math.max(0, personalQuota.available - amount);
+      personalQuota.total = Math.max(personalQuota.total, personalQuota.used);
+
+      /* 先进先出扣减批次 */
+      let remain = amount;
+      for (const b of personalQuota.batches) {
+        const bLeft = b.amount - b.used;
+        if (bLeft <= 0) continue;
+        const take = Math.min(bLeft, remain);
+        b.used += take;
+        remain -= take;
+        if (remain <= 0) break;
+      }
+
+      /* 新增记录 */
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const dateStr = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) +
+        ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+
+      const demoTx = 'demo' + Date.now() + 'x7KpQ3vL8mN2wX4yZ6cB9hJ1kM5sD0gA7eQ3uI8oP2tR6vL4mN9wX1yZ5cB8hJ0kM3sD7gA2eQ6uI9oP';
+
+      records.unshift({
+        burn: amount,
+        date: dateStr,
+        days: 0,
+        claimed: 0,
+        pending: 0,
+        status: 'pending',
+        txHash: demoTx,
+        shortHash: demoTx.slice(0, 4) + '...' + demoTx.slice(-4),
+        deadline: (now.getFullYear() + 2) + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate())
+      });
+
+      /* 关闭抽屉 */
+      closeConfirm();
+
+      /* 刷新 UI */
+      initQuotaUI();
+      renderRecords();
+      document.getElementById('burn-input').value = '';
+      calculateBlessing();
+
+      setTimeout(() => showToast('燃香成功 · 已上链'), 200);
+    }, 1200);
   }
 
-  /* ==================== 领取抽屉 ==================== */
+  /* ==================== 领取 ==================== */
   function openClaim() {
     document.getElementById('claim-sheet').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   }
   function closeClaim() {
     document.getElementById('claim-sheet').classList.remove('active');
-    document.body.style.overflow = '';
+    unlockScroll();
+  }
+
+  /* ==================== 记录渲染 ==================== */
+  function renderRecords() {
+    const list = document.getElementById('positionsList');
+    if (!list) return;
+
+    const countEl = document.getElementById('recordsCount');
+    if (countEl) countEl.textContent = '共 ' + records.length + ' 笔';
+
+    list.innerHTML = records.map((r, i) => {
+      const daily = r.burn * DAILY_RATE;
+      const total = daily * TOTAL_DAYS;
+      let progress = (r.days / TOTAL_DAYS) * 100;
+
+      let badge, progressHead;
+      if (r.status === 'pending') {
+        badge = '<span class="badge badge-pending"><span class="dot-pulse"></span>待生效</span>';
+        progressHead = '<span>T+1 起可领取</span><span>预计明日 00:00</span>';
+        progress = 0;
+      } else {
+        badge = '<span class="badge badge-ok">释放中</span>';
+        progressHead = '<span>第 ' + r.days + ' 天 / 365</span><span>剩余 ' + (TOTAL_DAYS - r.days) + ' 天</span>';
+      }
+
+      const hiddenClass = (!recordsExpanded && i >= 2) ? ' hidden' : '';
+
+      return (
+        '<article class="pos-card' + hiddenClass + '" onclick="openDetail(' + i + ')" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openDetail(' + i + ')}">' +
+          '<div class="pos-top">' +
+            '<div style="min-width:0;">' +
+              '<div class="pos-name">燃香 ' + fmt(r.burn, 0) + ' 枚 ' + badge + '</div>' +
+              '<p class="pos-meta">燃烧于 ' + r.date.slice(0, 10) + ' · ' + r.shortHash + '</p>' +
+            '</div>' +
+            '<div class="pos-apy">' +
+              '<div class="pos-apy-val">251.12%</div>' +
+              '<div class="pos-apy-lbl">总返还</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pos-progress-head">' + progressHead + '</div>' +
+          '<div class="progress"><i style="width:' + progress.toFixed(1) + '%"></i></div>' +
+          '<div class="pos-grid">' +
+            '<div>' +
+              '<span class="pos-k">已领取</span>' +
+              '<span class="pos-v">' + fmt(r.claimed) + ' 枚</span>' +
+              '<span class="pos-k" style="margin-top:2px;">每日 ' + fmt(daily) + ' 枚</span>' +
+            '</div>' +
+            '<div>' +
+              '<span class="pos-k">累计应得</span>' +
+              '<span class="pos-v is-gold">' + fmt(total) + ' 枚</span>' +
+              '<span class="pos-k" style="margin-top:2px;">待领 ' + fmt(r.pending) + ' 枚</span>' +
+            '</div>' +
+          '</div>' +
+          '<svg class="pos-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="M9 18l6-6-6-6"></path>' +
+          '</svg>' +
+        '</article>'
+      );
+    }).join('');
+
+    /* 展开按钮 */
+    const expandBtn = document.getElementById('expandRecords');
+    if (expandBtn) {
+      if (records.length <= 2) {
+        expandBtn.style.display = 'none';
+      } else {
+        expandBtn.style.display = '';
+        expandBtn.classList.toggle('is-open', recordsExpanded);
+        expandBtn.querySelector('span').textContent = recordsExpanded
+          ? '收起记录'
+          : '查看全部 ' + records.length + ' 条记录';
+      }
+    }
+  }
+
+  function toggleRecords() {
+    recordsExpanded = !recordsExpanded;
+    renderRecords();
   }
 
   /* ==================== 记录详情 ==================== */
   function openDetail(index) {
     const r = records[index];
+    if (!r) return;
     const content = document.getElementById('detail-content');
 
     const daily = r.burn * DAILY_RATE;
@@ -2426,12 +2708,12 @@
       '</div>';
 
     document.getElementById('detail-sheet').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   }
 
   function closeDetail() {
     document.getElementById('detail-sheet').classList.remove('active');
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 
   /* ==================== 快捷键 ==================== */
@@ -2446,6 +2728,7 @@
 
   /* ==================== 初始化 ==================== */
   initQuotaUI();
+  renderRecords();
   calculateBlessing();
 </script>
 
