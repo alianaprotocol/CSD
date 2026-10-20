@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
 <title>财神DAO · DApp</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 <script>
@@ -24,66 +25,77 @@
 <style>
   :root{
     color-scheme: light;
-    --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
+    --ink:#14181d; --ink-2:#2f3841; --ink-3:#525c68; --muted:#6b7480;
     --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
 
     --cyber:#ff2d55; --cyber-d:#cc0e30;
-    --cyber-glow-soft:rgba(255,45,85,.18);
+    --cyber-glow-soft:rgba(255,45,85,.16);
     --cyber-glow-faint:rgba(255,45,85,.06);
 
     --gold:#a8821c; --gold-d:#8a6a14; --gold-soft:rgba(168,130,28,.10);
     --ok:#0e9f6e; --ok-soft:rgba(14,159,110,.10); --ok-line:rgba(14,159,110,.24);
 
     --brand-1:#dc2626; --brand-2:#f59e0b;
-    --bar-bg:rgba(255,255,255,.92);
+    --bar-bg:rgba(255,255,255,.86);
     --hover-bg:rgba(20,24,29,.05);
     --shadow-card:0 1px 2px rgba(20,24,29,.04), 0 8px 24px -16px rgba(20,24,29,.18);
+    --shadow-float:0 14px 34px -22px rgba(20,24,29,.5);
+    --ring:0 0 0 3px var(--cyber-glow-faint);
 
     --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+    --ease-out:cubic-bezier(.22,1,.36,1);
+    --ease-spring:cubic-bezier(.34,1.4,.64,1);
   }
 
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+      --ink:#e8ecf2; --ink-2:#b4bcc6; --ink-3:#8d97a4; --muted:#7e8794;
       --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
 
       --cyber:#ff2d55; --cyber-d:#ff5a6a;
-      --cyber-glow-soft:rgba(255,45,85,.22);
+      --cyber-glow-soft:rgba(255,45,85,.20);
       --cyber-glow-faint:rgba(255,45,85,.08);
 
       --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
       --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --ok-line:rgba(52,211,153,.28);
 
       --brand-1:#ff2d55; --brand-2:#ffb700;
-      --bar-bg:rgba(16,22,30,.92);
+      --bar-bg:rgba(10,14,20,.82);
       --hover-bg:rgba(230,236,240,.06);
       --shadow-card:0 1px 2px rgba(0,0,0,.35);
+      --shadow-float:0 16px 40px -20px rgba(0,0,0,.75);
     }
   }
 
   :root[data-theme="dark"]{
     color-scheme: dark;
-    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
+    --ink:#e8ecf2; --ink-2:#b4bcc6; --ink-3:#8d97a4; --muted:#7e8794;
     --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
 
     --cyber:#ff2d55; --cyber-d:#ff5a6a;
-    --cyber-glow-soft:rgba(255,45,85,.22);
+    --cyber-glow-soft:rgba(255,45,85,.20);
     --cyber-glow-faint:rgba(255,45,85,.08);
 
     --gold:#d4a82a; --gold-d:#e8c04a; --gold-soft:rgba(212,168,42,.12);
     --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --ok-line:rgba(52,211,153,.28);
 
     --brand-1:#ff2d55; --brand-2:#ffb700;
-    --bar-bg:rgba(16,22,30,.92);
+    --bar-bg:rgba(10,14,20,.82);
     --hover-bg:rgba(230,236,240,.06);
     --shadow-card:0 1px 2px rgba(0,0,0,.35);
+    --shadow-float:0 16px 40px -20px rgba(0,0,0,.75);
   }
   :root[data-theme="light"]{ color-scheme: light; }
 
   *,*::before,*::after{ box-sizing:border-box; }
-  html{ -webkit-text-size-adjust:100%; }
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    scroll-behavior:smooth;
+  }
 
   body{
     margin:0;
@@ -95,16 +107,26 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
-    transition:background-color .25s ease, color .25s ease;
+    overscroll-behavior-x:none;
+    transition:background-color .3s ease, color .3s ease;
   }
-  :focus-visible{ outline:2px solid var(--cyber); outline-offset:2px; border-radius:6px; }
+
+  ::selection{ background:var(--cyber-glow-soft); color:var(--ink); }
+
+  a, button{ touch-action:manipulation; }
+
+  :focus-visible{
+    outline:2px solid var(--cyber);
+    outline-offset:2px;
+    border-radius:8px;
+  }
 
   .app{
     max-width:480px;
     margin:0 auto;
     min-height:100vh;
     min-height:100dvh;
-    padding-bottom:calc(34px + env(safe-area-inset-bottom,0px));
+    padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));
     position:relative;
   }
 
@@ -114,10 +136,14 @@
     display:flex; align-items:center; gap:10px;
     padding:10px 14px;
     background:var(--bar-bg);
-    backdrop-filter:saturate(180%) blur(14px);
-    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    backdrop-filter:saturate(180%) blur(16px);
+    -webkit-backdrop-filter:saturate(180%) blur(16px);
     border-bottom:1px solid var(--line-2);
-    transition:background-color .25s ease, border-color .25s ease;
+    transition:background-color .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .appbar.is-scrolled{
+    border-bottom-color:transparent;
+    box-shadow:0 1px 0 var(--line-2), 0 10px 26px -22px rgba(20,24,29,.8);
   }
 
   .brand{ display:flex; align-items:center; gap:9px; min-width:0; flex:1; }
@@ -126,7 +152,8 @@
     display:inline-flex; align-items:center; justify-content:center;
     background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
     color:#fff; font-size:16px; font-weight:900; line-height:1;
-    box-shadow:0 5px 16px -8px var(--brand-1);
+    box-shadow:0 5px 16px -8px var(--brand-1), inset 0 1px 0 rgba(255,255,255,.24);
+    user-select:none;
   }
   .brand-text{ min-width:0; }
   .brand-name{
@@ -141,22 +168,20 @@
 
   .appbar-right{ display:flex; align-items:center; gap:6px; flex:none; }
 
+  .icon-btn,
+  .wallet-chip{ min-height:40px; }
+
   .icon-btn{
-    flex:none; width:36px; height:36px;
+    flex:none; width:40px;
     display:inline-flex; align-items:center; justify-content:center;
-    padding:0; border:1px solid var(--line); border-radius:10px;
+    padding:0; border:1px solid var(--line); border-radius:11px;
     background:var(--card); color:var(--ink-3);
     cursor:pointer;
     transition:background-color .18s ease, border-color .18s ease,
-               color .18s ease, box-shadow .25s ease, transform .15s ease;
+               color .18s ease, box-shadow .25s ease, transform .12s ease;
   }
-  .icon-btn:hover{
-    border-color:var(--cyber-glow-soft); color:var(--cyber);
-    background:var(--cyber-glow-faint);
-    box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
-  }
-  .icon-btn:active{ transform:scale(.94); }
   .icon-btn svg{ width:18px; height:18px; display:block; }
+  .icon-btn:active{ transform:scale(.92); }
 
   .theme-toggle .ico-sun{ display:none; }
   .theme-toggle .ico-moon{ display:block; }
@@ -164,30 +189,43 @@
   .theme-toggle[data-icon="dark"] .ico-moon{ display:none; }
 
   .wallet-chip{
-    display:inline-flex; align-items:center; gap:6px;
-    height:32px; padding:0 10px 0 5px;
+    display:inline-flex; align-items:center; gap:7px;
+    padding:0 12px 0 6px;
     border:1px solid var(--line); border-radius:999px;
-    background:var(--card); color:var(--ink-3);
-    font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.01em;
+    background:var(--card); color:var(--ink-2);
+    font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.01em;
     cursor:pointer; white-space:nowrap;
-    transition:background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .25s ease;
+    transition:background-color .18s ease, border-color .18s ease,
+               color .18s ease, box-shadow .25s ease, transform .12s ease;
   }
-  .wallet-chip:hover{
-    border-color:var(--cyber-glow-soft); color:var(--cyber);
-    background:var(--cyber-glow-faint);
-    box-shadow:0 0 10px -2px var(--cyber-glow-soft);
-  }
-  .wallet-chip:active{ transform:scale(.97); }
+  .wallet-chip:active{ transform:scale(.96); }
   .wallet-dot{
     width:18px; height:18px; border-radius:50%; flex:none;
     background:linear-gradient(135deg,#9945FF,#14F195);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);
+  }
+  .wallet-copy{
+    width:12px; height:12px; flex:none; opacity:.5;
+    transition:opacity .18s ease;
   }
 
   /* ============ 主体 ============ */
   .app-main{
-    padding:14px 14px 0;
-    display:flex; flex-direction:column; gap:20px;
+    padding:16px 14px 0;
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .app-main > *{
+    animation:rise .6s var(--ease-out) both;
+  }
+  .app-main > *:nth-child(1){ animation-delay:.02s; }
+  .app-main > *:nth-child(2){ animation-delay:.09s; }
+  .app-main > *:nth-child(3){ animation-delay:.16s; }
+  .app-main > *:nth-child(4){ animation-delay:.23s; }
+  .app-main > *:nth-child(5){ animation-delay:.30s; }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(12px); }
+    to{ opacity:1; transform:translateY(0); }
   }
 
   /* ============ Hero ============ */
@@ -219,7 +257,8 @@
 
   .hero-title{
     margin:0;
-    font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.32;
+    font-size:clamp(21px, 5.4vw, 24px);
+    font-weight:700; letter-spacing:-.02em; line-height:1.34;
     text-wrap:balance;
   }
   .hero-title em{
@@ -231,14 +270,14 @@
   }
 
   .hero-desc{
-    margin:8px 0 0;
-    font-size:12.5px; line-height:1.75; color:var(--ink-3);
+    margin:9px 0 0;
+    font-size:13px; line-height:1.75; color:var(--ink-3);
     text-wrap:pretty;
   }
 
   .hero-line{
-    display:flex; align-items:center; gap:7px;
-    margin-top:14px; padding-top:12px;
+    display:flex; align-items:center; gap:8px;
+    margin-top:15px; padding-top:13px;
     border-top:1px dashed var(--line);
     font-family:var(--mono); font-size:10.5px; letter-spacing:.02em;
     color:var(--muted); line-height:1.5;
@@ -264,27 +303,40 @@
     text-decoration:none;
     color:inherit;
     -webkit-tap-highlight-color:transparent;
-    transition:transform .22s cubic-bezier(.4,0,.2,1),
+    transition:transform .22s var(--ease-out),
                border-color .22s ease, box-shadow .28s ease;
+    will-change:transform;
   }
-  .banner:hover{
-    transform:translateY(-2px);
-    border-color:var(--cyber-glow-soft);
-    box-shadow:0 14px 34px -22px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-faint);
-  }
-  .banner:active{ transform:scale(.99); }
+  .banner:active{ transform:scale(.985); }
 
+  .banner-media{
+    position:relative;
+    aspect-ratio:5 / 2;
+    overflow:hidden;
+    background:
+      linear-gradient(135deg, var(--cyber-glow-faint), transparent 60%),
+      var(--line-2);
+  }
+  .banner-media.is-fallback::after{
+    content:"财神DAO · 交易狂欢季";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; letter-spacing:.06em;
+    color:var(--muted);
+  }
   .banner-img{
     display:block;
-    width:100%;
-    height:auto;
-    transition:transform .45s cubic-bezier(.4,0,.2,1);
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:0;
+    transform:scale(1.02);
+    transition:opacity .55s ease, transform .6s var(--ease-out);
   }
-  .banner:hover .banner-img{ transform:scale(1.035); }
+  .banner-img.is-loaded{ opacity:1; transform:scale(1); }
 
   .banner-tag{
-    position:absolute; left:10px; top:10px;
-    padding:3px 9px; border-radius:999px;
+    position:absolute; left:11px; top:11px; z-index:2;
+    padding:4px 10px; border-radius:999px;
     font-size:10px; font-weight:700; letter-spacing:.06em;
     color:#fff; line-height:1.6;
     background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
@@ -292,10 +344,42 @@
     pointer-events:none;
   }
 
+  .banner-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    padding:11px 14px;
+    border-top:1px solid var(--line-2);
+    background:var(--card);
+  }
+  .banner-copy{
+    display:flex; flex-direction:column; gap:2px;
+    min-width:0;
+  }
+  .banner-title{
+    font-size:13.5px; font-weight:700; letter-spacing:-.005em;
+    line-height:1.35; color:var(--ink);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .banner-sub{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.08em;
+    color:var(--muted); line-height:1.4;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .banner-arrow{
+    flex:none; width:32px; height:32px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--cyber-glow-soft);
+    color:var(--cyber);
+    background:var(--cyber-glow-faint);
+    transition:transform .22s var(--ease-out), background-color .18s ease;
+  }
+  .banner-arrow svg{ width:15px; height:15px; display:block; }
+  .banner:active .banner-arrow{ transform:translateX(2px); }
+
   /* ============ 区块头 ============ */
   .block-head{
     display:flex; align-items:center; justify-content:space-between;
-    gap:10px; margin:0 0 10px; padding:0 2px;
+    gap:10px; margin:0 0 11px; padding:0 2px;
   }
   .block-head h2{
     margin:0; font-size:14px; font-weight:700; letter-spacing:-.005em;
@@ -317,8 +401,9 @@
     background:var(--card);
     color:inherit; text-decoration:none;
     box-shadow:var(--shadow-card);
-    transition:transform .2s cubic-bezier(.4,0,.2,1),
+    transition:transform .2s var(--ease-out),
                border-color .2s ease, box-shadow .25s ease;
+    will-change:transform;
   }
   .eco-card::before{
     content:""; position:absolute; inset:0; pointer-events:none;
@@ -328,12 +413,7 @@
     content:""; position:absolute; top:0; left:0; right:0; height:2px;
     background:var(--acc-grad); opacity:.9;
   }
-  .eco-card:hover{
-    transform:translateY(-2px);
-    border-color:var(--acc-line);
-    box-shadow:0 12px 30px -20px var(--acc), 0 0 0 1px var(--acc-soft);
-  }
-  .eco-card:active{ transform:scale(.99); }
+  .eco-card:active{ transform:scale(.988); }
 
   .eco-incense{
     --acc:#ff2d55;
@@ -386,7 +466,9 @@
   }
 
   .eco-name{
-    margin:0; font-size:17px; font-weight:700; letter-spacing:-.01em;
+    margin:0;
+    font-size:clamp(16px, 4.4vw, 18px);
+    font-weight:700; letter-spacing:-.01em;
     line-height:1.35; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
   }
   .eco-en{
@@ -394,7 +476,7 @@
     letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
   }
   .eco-desc{
-    margin:6px 0 0; font-size:12.5px; line-height:1.7;
+    margin:7px 0 0; font-size:12.5px; line-height:1.7;
     color:var(--ink-3); text-wrap:pretty;
   }
 
@@ -402,20 +484,24 @@
     display:grid; grid-template-columns:repeat(3,1fr);
     gap:1px; margin-top:14px;
     background:var(--line-2);
-    border:1px solid var(--line-2); border-radius:10px;
+    border:1px solid var(--line-2); border-radius:11px;
     overflow:hidden;
   }
   .eco-stat{
-    background:var(--card); padding:9px 6px; min-width:0; text-align:center;
+    background:var(--card); padding:10px 6px; min-width:0; text-align:center;
   }
   .eco-stat .k{
-    display:block; font-size:9.5px; color:var(--muted);
+    display:block;
+    font-size:clamp(9px, 2.6vw, 10px);
+    color:var(--muted);
     letter-spacing:.02em; line-height:1.5; margin-bottom:2px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .eco-stat .v{
     display:block; font-family:var(--mono);
-    font-size:13px; font-weight:700; letter-spacing:-.02em;
+    font-size:clamp(11px, 3.2vw, 13px);
+    font-weight:700; letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
     color:var(--ink); line-height:1.4;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
@@ -423,16 +509,16 @@
 
   .eco-cta{
     display:flex; align-items:center; justify-content:space-between;
-    gap:10px; margin-top:14px; padding-top:12px;
+    gap:10px; margin-top:14px; padding-top:13px;
     border-top:1px dashed var(--line);
     font-size:13px; font-weight:700; letter-spacing:.01em;
     color:var(--acc); line-height:1.5;
   }
   .eco-cta svg{
     width:15px; height:15px; flex:none;
-    transition:transform .22s cubic-bezier(.4,0,.2,1);
+    transition:transform .22s var(--ease-out);
   }
-  .eco-card:hover .eco-cta svg{ transform:translateX(3px); }
+  .eco-card:active .eco-cta svg{ transform:translateX(3px); }
 
   /* ============ 即将开放 ============ */
   .soon-grid{
@@ -440,40 +526,42 @@
   }
   .soon-item{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:7px; padding:15px 6px;
-    border:1px dashed var(--line); border-radius:12px;
+    gap:7px; padding:16px 6px;
+    border:1px dashed var(--line); border-radius:13px;
     background:var(--card);
     color:var(--muted); font-size:11.5px; font-weight:600;
     line-height:1.4; text-align:center;
-    transition:border-color .2s ease, color .2s ease, background-color .2s ease;
+    transition:border-color .2s ease, color .2s ease,
+               background-color .2s ease, transform .15s ease;
+    user-select:none;
   }
   .soon-item svg{ width:18px; height:18px; opacity:.65; }
-  .soon-item:hover{
+  .soon-item:active{
+    transform:scale(.97);
     border-color:var(--line); color:var(--ink-3);
     background:var(--hover-bg);
   }
 
   /* ============ 页脚 ============ */
   .foot{
-    padding-top:4px; margin-top:-4px;
-    border-top:1px solid var(--line-2); padding-top:16px;
+    margin-top:-2px;
+    padding-top:16px;
+    border-top:1px solid var(--line-2);
   }
   .foot-links{
-    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:13px;
   }
   .foot-link{
     display:inline-flex; align-items:center; gap:5px;
-    padding:7px 12px;
+    min-height:36px; padding:7px 13px;
     border:1px solid var(--line); border-radius:999px;
     background:var(--card); color:var(--ink-3);
     font-size:11.5px; font-weight:600; text-decoration:none;
-    transition:all .18s ease;
+    transition:background-color .18s ease, border-color .18s ease,
+               color .18s ease, transform .12s ease;
   }
   .foot-link svg{ width:12px; height:12px; flex:none; opacity:.7; }
-  .foot-link:hover{
-    border-color:var(--cyber-glow-soft); color:var(--cyber);
-    background:var(--cyber-glow-faint);
-  }
+  .foot-link:active{ transform:scale(.96); }
   .foot-note{
     margin:0; font-size:11px; line-height:1.85; color:var(--muted);
     text-wrap:pretty;
@@ -482,54 +570,105 @@
 
   /* ============ Toast ============ */
   #toast{
-    position:fixed; top:70px; left:50%;
-    transform:translateX(-50%) translateY(-6px);
-    padding:9px 18px 9px 14px; border-radius:999px;
-    background:var(--ink); color:var(--card);
-    font-size:12px; font-weight:600; letter-spacing:.02em;
-    box-shadow:0 12px 30px -10px rgba(20,24,29,.45), 0 0 0 1px var(--cyber-glow-soft);
+    position:fixed;
+    left:50%;
+    bottom:calc(26px + env(safe-area-inset-bottom,0px));
+    transform:translateX(-50%) translateY(14px) scale(.94);
+    padding:10px 18px 10px 13px; border-radius:999px;
+    background:var(--ink); color:var(--bg);
+    font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    box-shadow:var(--shadow-float), 0 0 0 1px var(--cyber-glow-soft);
     opacity:0; pointer-events:none; white-space:nowrap;
-    transition:opacity .25s ease, transform .28s cubic-bezier(.34,1.4,.64,1);
-    z-index:60; display:inline-flex; align-items:center; gap:7px;
+    transition:opacity .24s ease, transform .3s var(--ease-spring);
+    z-index:60; display:inline-flex; align-items:center; gap:8px;
   }
   #toast::before{
     content:"✓"; display:inline-flex; align-items:center; justify-content:center;
-    width:15px; height:15px; border-radius:50%;
+    width:16px; height:16px; border-radius:50%;
     background:var(--cyber); color:#fff;
     font-size:9px; font-weight:700; line-height:1; flex:none;
   }
-  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+
+  /* ============ 指针设备增强 ============ */
+  @media (hover:hover) and (pointer:fine){
+    .icon-btn:hover{
+      border-color:var(--cyber-glow-soft); color:var(--cyber);
+      background:var(--cyber-glow-faint);
+      box-shadow:var(--ring), 0 0 12px -2px var(--cyber-glow-soft);
+    }
+    .wallet-chip:hover{
+      border-color:var(--cyber-glow-soft); color:var(--cyber);
+      background:var(--cyber-glow-faint);
+      box-shadow:0 0 10px -2px var(--cyber-glow-soft);
+    }
+    .wallet-chip:hover .wallet-copy{ opacity:1; }
+
+    .banner:hover{
+      transform:translateY(-2px);
+      border-color:var(--cyber-glow-soft);
+      box-shadow:var(--shadow-float), 0 0 0 1px var(--cyber-glow-faint);
+    }
+    .banner:hover .banner-img{ transform:scale(1.035); }
+    .banner:hover .banner-img.is-loaded{ transform:scale(1.035); }
+    .banner:hover .banner-arrow{
+      transform:translateX(2px);
+      background:var(--cyber-glow-soft);
+    }
+
+    .eco-card:hover{
+      transform:translateY(-2px);
+      border-color:var(--acc-line);
+      box-shadow:0 12px 30px -20px var(--acc), 0 0 0 1px var(--acc-soft);
+    }
+    .eco-card:hover .eco-cta svg{ transform:translateX(3px); }
+
+    .soon-item:hover{
+      border-color:var(--line); color:var(--ink-3);
+      background:var(--hover-bg);
+    }
+    .foot-link:hover{
+      border-color:var(--cyber-glow-soft); color:var(--cyber);
+      background:var(--cyber-glow-faint);
+    }
+  }
 
   /* ============ 响应式 ============ */
   @media (max-width:380px){
-    .app-main{ padding:12px 12px 0; gap:18px; }
+    .app-main{ padding:14px 12px 0; gap:20px; }
     .appbar{ padding:9px 12px; gap:8px; }
     .brand-sub{ display:none; }
     .brand-name{ font-size:13.5px; }
-    .wallet-chip{ height:30px; font-size:10.5px; padding:0 8px 0 5px; }
+    .wallet-chip{ font-size:10.5px; padding:0 10px 0 5px; }
     .wallet-dot{ width:16px; height:16px; }
-    .icon-btn{ width:34px; height:34px; }
-    .icon-btn svg{ width:17px; height:17px; }
+    .icon-btn{ width:40px; }
     .hero{ padding:17px 15px 16px; }
-    .hero-title{ font-size:20px; }
     .eco-card{ padding:14px; }
-    .eco-name{ font-size:16px; }
-    .eco-stat .v{ font-size:12px; }
+    .banner-foot{ padding:10px 12px; }
+    .banner-title{ font-size:13px; }
+    .banner-sub{ font-size:9px; }
+    .banner-arrow{ width:30px; height:30px; }
     .soon-grid{ gap:6px; }
-    .soon-item{ padding:13px 4px; font-size:11px; }
+    .soon-item{ padding:14px 4px; font-size:11px; }
   }
 
   @media (max-width:330px){
     .brand-text{ display:none; }
-    .wallet-chip span:last-child{ display:none; }
-    .wallet-chip{ width:30px; height:30px; padding:0; justify-content:center; }
+    .wallet-chip .wallet-addr{ display:none; }
+    .wallet-chip{ width:40px; padding:0; justify-content:center; }
+    .wallet-copy{ display:none; }
+    .banner-sub{ display:none; }
   }
 
+  /* ============ 降低动效 ============ */
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{
       animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
       transition-duration:.001ms !important;
+      scroll-behavior:auto !important;
     }
+    .app-main > *{ opacity:1 !important; transform:none !important; }
   }
 </style>
 </head>
@@ -538,18 +677,22 @@
 <div class="app">
 
   <!-- ================= 顶栏 ================= -->
-  <header class="appbar">
+  <header class="appbar" id="appbar">
     <div class="brand">
       <div class="brand-mark" aria-hidden="true">财</div>
       <div class="brand-text">
         <div class="brand-name">财神DAO</div>
-        <div class="brand-sub">DApp Entry</div>
+        <div class="brand-sub">Power Of Fortune</div>
       </div>
     </div>
     <div class="appbar-right">
-      <button class="wallet-chip" type="button" onclick="copyWallet()" aria-label="复制钱包地址">
+      <button class="wallet-chip" type="button" onclick="copyWallet()" aria-label="复制钱包地址 7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o">
         <span class="wallet-dot" aria-hidden="true"></span>
-        <span>7xKX...9mPq</span>
+        <span class="wallet-addr">7xKX...9mPq</span>
+        <svg class="wallet-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+          <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+        </svg>
       </button>
       <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
         <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -574,7 +717,7 @@
 
     <!-- ================= Hero ================= -->
     <section class="hero" aria-label="财神宇宙入口">
-      <p class="hero-eyebrow">Ecosystem Entry</p>
+      <p class="hero-eyebrow">Ecosystem Entrance</p>
       <h1 class="hero-title">从信仰到资产<br><em>从文化到娱乐</em></h1>
       <p class="hero-desc">以 $财神DAO 为唯一核心资产，连接信仰、资产、文化、娱乐与治理。</p>
       <div class="hero-line">
@@ -587,14 +730,27 @@
     <section aria-label="活动与公告">
       <div class="banner-list">
 
-        <!-- Banner 1：改 href 与 src 即可 -->
+        <!-- 改 href 与 src 即可 -->
         <a class="banner" href="https://caishendao.world/demo/trade_season" target="_self">
-          <img class="banner-img"
-               src="../images/banner_season.webp"
-               alt="财神DAO 交易狂欢季"
-               width="1000" height="400"
-               loading="lazy" decoding="async">
-          <span class="banner-tag">特别活动</span>
+          <div class="banner-media">
+            <img class="banner-img"
+                 src="../images/banner_season.webp"
+                 alt="财神DAO 交易狂欢季"
+                 width="1000" height="400"
+                 loading="lazy" decoding="async">
+            <span class="banner-tag">特别活动</span>
+          </div>
+          <div class="banner-foot">
+            <div class="banner-copy">
+              <span class="banner-title">财神DAO 交易狂欢季</span>
+              <span class="banner-sub">限时活动 · 点击查看</span>
+            </div>
+            <span class="banner-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>
+              </svg>
+            </span>
+          </div>
         </a>
 
       </div>
@@ -677,7 +833,7 @@
             </div>
             <div class="eco-stat">
               <span class="k">锁仓周期</span>
-              <span class="v">30–180 天</span>
+              <span class="v">30–180天</span>
             </div>
             <div class="eco-stat">
               <span class="k">释放方式</span>
@@ -833,6 +989,21 @@
     }
     applyUI();
 
+    /* ========== 顶栏滚动阴影 ========== */
+    var appbar = document.getElementById('appbar');
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.pageYOffset || document.documentElement.scrollTop;
+        if (appbar) appbar.classList.toggle('is-scrolled', y > 4);
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
     /* ========== Toast ========== */
     var toast = document.getElementById('toast');
     var toastTimer = null;
@@ -841,8 +1012,24 @@
       if (msg) toast.textContent = msg;
       toast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1700);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
     }
+
+    /* ========== Banner 图片加载态 ========== */
+    var imgs = document.querySelectorAll('.banner-img');
+    Array.prototype.forEach.call(imgs, function (img) {
+      function ok() { img.classList.add('is-loaded'); }
+      function fail() {
+        img.style.display = 'none';
+        var media = img.closest('.banner-media');
+        if (media) media.classList.add('is-fallback');
+      }
+      if (img.complete && img.naturalWidth > 0) { ok(); }
+      else {
+        img.addEventListener('load', ok, { once: true });
+        img.addEventListener('error', fail, { once: true });
+      }
+    });
 
     /* ========== 钱包地址复制 ========== */
     var WALLET = '7xKX9mPqR3vL5tY8wZ2cN4bF6hJ1kM7sD9gA3eQ5uI0o';
@@ -861,8 +1048,14 @@
       document.body.removeChild(ta);
     }
 
+    function vibrate() {
+      try {
+        if (navigator.vibrate) navigator.vibrate(8);
+      } catch (e) {}
+    }
+
     window.copyWallet = function () {
-      var done = function () { showToast('钱包地址已复制'); };
+      var done = function () { showToast('钱包地址已复制'); vibrate(); };
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(WALLET).then(done).catch(function () {
           fallbackCopy(WALLET, done);
