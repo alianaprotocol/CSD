@@ -1,0 +1,2845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060309">
+<title>$财神DAO · 交易狂欢季</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E6%97%BA%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   $财神到 CYBER-RED DESIGN SYSTEM · SPA EDITION (UI/UX Polished)
+   ============================================================ */
+:root{
+  --bg:#060309;
+  --red:#ff1f3d;
+  --red-dim:rgba(255,31,61,.55);
+  --red-soft:rgba(255,31,61,.1);
+  --red-line:rgba(255,31,61,.28);
+  --gold:#ffd23f;
+  --gold-deep:#e8a010;
+  --gold-dim:rgba(255,210,63,.5);
+  --gold-soft:rgba(255,210,63,.1);
+  --gold-line:rgba(255,210,63,.28);
+  --sol-purple:#9945FF;
+  --sol-green:#14F195;
+  --cyan:#00f0ff;
+  --pink:#ff2ea6;
+  --txt:#f7f1f7;
+  --dim:#8f8299;
+  --dim2:#5f5668;
+  --card:rgba(255,255,255,.038);
+  --brd:rgba(255,255,255,.075);
+  --brd-hi:rgba(255,255,255,.14);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --pad:16px;
+  --r-lg:22px;
+  --r-md:16px;
+  --r-sm:12px;
+  --r-xs:8px;
+  --tap:44px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scrollbar-gutter:stable;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  color:var(--txt);background:var(--bg);overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-size:14px;line-height:1.6;
+}
+:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;
+  box-shadow:0 0 0 4px rgba(255,210,63,.15);
+}
+/* 修复：按钮默认左对齐导致的居中失效问题，改用 flex 居中控制 */
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;}
+img,svg{max-width:100%;display:block;}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
+.mono{font-family:var(--mono);}
+
+/* 无障碍跳过链接 */
+.skip-link{
+  position:fixed;top:-100px;left:16px;z-index:999;
+  padding:10px 16px;border-radius:8px;
+  background:var(--gold);color:#1a0500;font-weight:800;font-size:13px;
+  transition:top .2s;
+}
+.skip-link:focus{top:calc(12px + env(safe-area-inset-top));}
+
+/* ============================================================
+   背景装饰层
+   ============================================================ */
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.bg-fx .glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;}
+.bg-fx .g1{width:340px;height:340px;top:-130px;left:-90px;background:radial-gradient(circle,rgba(255,31,61,.5),transparent 70%);}
+.bg-fx .g2{width:300px;height:300px;top:120px;right:-120px;background:radial-gradient(circle,rgba(153,69,255,.28),transparent 70%);}
+.bg-fx .g3{width:400px;height:400px;bottom:-140px;left:-80px;background:radial-gradient(circle,rgba(20,241,149,.14),transparent 70%);}
+.bg-fx .grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,31,61,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,31,61,.075) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 15%,transparent 72%);
+          mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 15%,transparent 72%);
+}
+.bg-fx .scan{
+  position:absolute;inset:0;opacity:.28;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0px,rgba(0,0,0,.55) 1px,transparent 1px,transparent 3px);
+  mix-blend-mode:multiply;
+}
+.bg-fx .topline{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--sol-purple),var(--red),transparent);
+  box-shadow:0 0 18px var(--red);opacity:.85;
+}
+
+/* ============================================================
+   应用容器 & 视图切换
+   ============================================================ */
+.app{
+  position:relative;z-index:1;max-width:430px;margin:0 auto;
+  min-height:100vh;
+  padding-bottom:calc(96px + env(safe-area-inset-bottom));
+}
+.views{position:relative;}
+.view{display:none;}
+.view.active{
+  display:block;
+  animation:viewIn .34s cubic-bezier(.22,1,.36,1);
+}
+@keyframes viewIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:none;}
+}
+
+/* ============================================================
+   顶部状态栏
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:calc(11px + env(safe-area-inset-top)) 16px 12px;
+  background:linear-gradient(180deg,rgba(6,3,9,.97) 45%,rgba(6,3,9,.6) 80%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.wallet{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 11px;border-radius:10px;
+  background:rgba(153,69,255,.08);
+  border:1px solid rgba(153,69,255,.3);
+  font-family:var(--mono);font-size:11px;color:#d4b9ff;
+  letter-spacing:.3px;position:relative;overflow:hidden;
+  min-height:36px;
+  transition:background .2s,border-color .2s;
+}
+.wallet:hover,.wallet:active{background:rgba(153,69,255,.14);border-color:rgba(153,69,255,.5);}
+.wallet::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(153,69,255,.22),transparent);
+  transform:translateX(-100%);animation:sweep 3.6s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sweep{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.wallet .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--sol-green);
+  box-shadow:0 0 8px var(--sol-green);animation:blink 1.4s ease-in-out infinite;flex:none;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.wallet .net{
+  font-size:9px;letter-spacing:.8px;color:var(--sol-green);
+  padding:1px 5px;border-radius:3px;
+  background:rgba(20,241,149,.1);border:1px solid rgba(20,241,149,.22);
+}
+.cd{
+  display:flex;align-items:center;gap:6px;
+  font-size:10.5px;color:var(--dim);letter-spacing:.3px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);
+  padding:7px 11px;border-radius:10px;min-height:36px;
+}
+.cd b{color:var(--gold);font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.4px;}
+
+/* 返回Dapp按钮（纯图标） */
+.back-dapp{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);
+  color:var(--dim);text-decoration:none;
+  transition:background .2s,color .2s,border-color .2s;
+  flex:none;
+}
+.back-dapp:hover{background:rgba(255,255,255,.1);color:var(--txt);border-color:var(--brd-hi);}
+.back-dapp:active{transform:scale(.92);}
+.back-dapp svg{
+  width:16px;height:16px;stroke:currentColor;fill:none;
+  stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ============================================================
+   页面头部（二级页面）
+   ============================================================ */
+.page-head{
+  position:relative;
+  padding:18px var(--pad) 12px;
+}
+.page-head::before{
+  content:"";display:block;
+  width:32px;height:3px;border-radius:2px;
+  background:var(--gold);
+  box-shadow:0 0 12px var(--gold);
+  margin-bottom:12px;
+}
+.page-head.red::before{background:var(--red);box-shadow:0 0 12px var(--red);}
+.page-head.purple::before{background:var(--sol-purple);box-shadow:0 0 12px var(--sol-purple);}
+.page-head.gold::before{background:var(--gold);box-shadow:0 0 12px var(--gold);}
+.page-head.cyan::before{background:var(--cyan);box-shadow:0 0 12px var(--cyan);}
+.page-head.green::before{background:var(--sol-green);box-shadow:0 0 12px var(--sol-green);}
+.page-title{
+  margin:0;font-size:26px;font-weight:900;letter-spacing:-.02em;line-height:1.1;
+  background:linear-gradient(100deg,#fff 0%,#ffd9a0 40%,#ffd23f 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(255,210,63,.28));
+}
+.page-sub{
+  margin-top:6px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--dim2);
+}
+
+/* ============================================================
+   通用区块
+   ============================================================ */
+.sec{padding:16px var(--pad) 0;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px;gap:8px;}
+.sec-head h2{margin:0;font-size:14.5px;font-weight:800;letter-spacing:.4px;display:flex;align-items:center;gap:8px;}
+.sec-head h2::before{content:"";width:3px;height:14px;border-radius:2px;background:linear-gradient(180deg,var(--red),rgba(255,31,61,.2));box-shadow:0 0 10px var(--red);}
+.sec-more{
+  font-family:var(--mono);font-size:10.5px;color:var(--dim);cursor:pointer;letter-spacing:.3px;
+  padding:4px 6px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap;
+  min-height:26px;display:inline-flex;align-items:center;
+}
+.sec-more:hover{color:var(--gold);background:var(--gold-soft);}
+.card{background:var(--card);border:1px solid var(--brd);border-radius:var(--r-md);overflow:hidden;position:relative;}
+
+/* ============================================================
+   HERO（首页）
+   ============================================================ */
+.hero{
+  position:relative;margin:6px var(--pad) 0;
+  padding:22px 18px 20px;border-radius:var(--r-lg);overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%,rgba(255,31,61,.2),transparent 58%),
+    radial-gradient(90% 80% at 0% 100%,rgba(153,69,255,.1),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.015));
+  border:1px solid rgba(255,31,61,.22);
+  box-shadow:0 0 0 1px rgba(255,31,61,.06),0 26px 60px -26px rgba(255,31,61,.65),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.hero::before{
+  content:"財";position:absolute;right:-16px;top:-46px;
+  font-size:190px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(255,31,61,.055);pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;top:0;right:0;
+  width:0;height:0;border-style:solid;
+  border-width:0 46px 46px 0;
+  border-color:transparent rgba(255,31,61,.16) transparent transparent;
+}
+.hero-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.token{
+  position:relative;width:64px;height:64px;flex:0 0 64px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 34% 28%,#fff1a8,#ffd23f 36%,#e8a010 68%,#8a5c00 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,210,63,.28),
+    0 0 26px rgba(255,210,63,.6),
+    inset 0 -4px 10px rgba(0,0,0,.4);
+  font-family:"STKaiti","KaiTi",serif;
+  font-size:28px;font-weight:900;color:#2a0a00;
+}
+.token img{width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scale(1.15);}
+.token::before{
+  content:"";position:absolute;inset:-11px;border-radius:50%;
+  border:1px solid rgba(153,69,255,.4);
+  border-top-color:rgba(153,69,255,.9);
+  animation:spin 5s linear infinite;pointer-events:none;
+}
+.token::after{
+  content:"";position:absolute;inset:-6px;border-radius:50%;
+  border:1.5px dashed rgba(255,31,61,.55);
+  animation:spin 14s linear infinite reverse;pointer-events:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-title{min-width:0;}
+.brand{
+  font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1.1;
+  background:linear-gradient(100deg,#fff 0%,#ffd9a0 30%,#ffd23f 55%,#ff8a5c 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(255,210,63,.35));
+  position:relative;display:inline-block;
+}
+.brand::before,.brand::after{
+  content:attr(data-text);position:absolute;left:0;top:0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  width:100%;overflow:hidden;
+}
+.brand::before{background:linear-gradient(#ff1f3d,#ff1f3d);animation:glitchA 3.4s steps(1) infinite;}
+.brand::after{background:linear-gradient(#14F195,#14F195);animation:glitchB 3.4s steps(1) infinite;}
+@keyframes glitchA{
+  0%,86%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}
+  88%{clip-path:inset(14% 0 78% 0);transform:translate(-2px,1px)}
+  91%{clip-path:inset(58% 0 34% 0);transform:translate(2px,-1px)}
+  94%{clip-path:inset(30% 0 62% 0);transform:translate(-1px,0)}
+}
+@keyframes glitchB{
+  0%,86%,100%{clip-path:inset(100% 0 0 0);transform:translate(0)}
+  89%{clip-path:inset(66% 0 26% 0);transform:translate(2px,-1px)}
+  92%{clip-path:inset(20% 0 72% 0);transform:translate(-2px,1px)}
+  95%{clip-path:inset(44% 0 48% 0);transform:translate(1px,0)}
+}
+.brand-en{
+  font-family:var(--mono);font-size:9px;letter-spacing:2.4px;
+  color:var(--dim);margin-top:5px;text-transform:uppercase;
+}
+.chain-tag{
+  display:inline-flex;align-items:center;gap:4px;margin-top:7px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;
+  color:var(--sol-green);background:rgba(20,241,149,.08);
+  border:1px solid rgba(20,241,149,.3);
+  padding:2.5px 7px;border-radius:5px;
+}
+.chain-tag i{width:4px;height:4px;border-radius:50%;background:var(--sol-green);box-shadow:0 0 6px var(--sol-green);}
+.fortune-label{
+  display:flex;align-items:center;gap:7px;
+  font-size:11.5px;color:var(--dim);letter-spacing:.4px;margin-bottom:6px;
+}
+.fortune-label em{
+  font-style:normal;font-family:var(--mono);font-size:9px;
+  color:var(--red);border:1px solid var(--red-line);
+  background:var(--red-soft);padding:1.5px 5px;border-radius:4px;letter-spacing:.8px;
+}
+.fortune-value{
+  font-size:48px;font-weight:900;line-height:1;letter-spacing:-2.5px;
+  font-family:var(--mono);
+  background:linear-gradient(178deg,#ffffff 8%,#ffd9a0 40%,#ffd23f 88%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 20px rgba(255,210,63,.42));
+}
+.fortune-unit{font-size:14px;font-weight:700;color:var(--gold-dim);margin-left:6px;letter-spacing:0;}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.tag{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;
+  padding:5px 10px;border-radius:7px;letter-spacing:.3px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);color:var(--dim);
+}
+.tag.red{color:#ff9aa8;background:var(--red-soft);border-color:var(--red-line);}
+.tag.gold{color:var(--gold);background:var(--gold-soft);border-color:var(--gold-line);}
+.tier{margin-top:18px;padding-top:15px;border-top:1px dashed rgba(255,31,61,.22);}
+.tier-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px;gap:8px;}
+.tier-name{font-size:13px;font-weight:800;letter-spacing:.4px;color:var(--gold);text-shadow:0 0 14px rgba(255,210,63,.5);}
+.tier-gap{font-size:10.5px;color:var(--dim);font-family:var(--mono);}
+.tier-gap b{color:var(--gold);}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;position:relative;}
+.bar i{
+  display:block;height:100%;border-radius:99px;position:relative;
+  background:linear-gradient(90deg,#e8a010,var(--gold),#fff3b0);
+  box-shadow:0 0 14px rgba(255,210,63,.75);
+  animation:grow 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+.bar i::after{
+  content:"";position:absolute;top:0;right:0;bottom:0;width:34px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));
+  animation:flow 1.9s ease-in-out infinite;
+}
+@keyframes flow{0%{transform:translateX(-30px);opacity:0}50%{opacity:1}100%{transform:translateX(0);opacity:0}}
+@keyframes grow{from{width:0 !important}}
+.tier-marks{display:flex;justify-content:space-between;margin-top:7px;font-family:var(--mono);font-size:9.5px;color:var(--dim2);}
+
+/* ============================================================
+   奖池横幅
+   ============================================================ */
+.pool-banner{
+  position:relative;margin:12px var(--pad) 0;padding:20px 18px 18px;
+  border-radius:var(--r-lg);overflow:hidden;text-align:center;
+  background:
+    radial-gradient(120% 100% at 50% -20%,rgba(255,31,61,.2),transparent 65%),
+    radial-gradient(90% 70% at 100% 100%,rgba(153,69,255,.16),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  border:1px solid rgba(255,210,63,.3);
+  box-shadow:0 0 0 1px rgba(255,210,63,.08),0 26px 60px -30px rgba(255,31,61,.7),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.pool-glow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:260px;height:180px;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,210,63,.25),transparent 65%);
+  filter:blur(30px);
+}
+.pool-banner > *{position:relative;z-index:1;}
+.pool-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+  padding:3px 9px;border-radius:99px;
+  background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.25);
+}
+.pool-dot{
+  width:4px;height:4px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 6px var(--gold);animation:blink 1.6s ease-in-out infinite;
+}
+.pool-title{
+  margin:0 0 10px;font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.3px;
+}
+.pool-amount{display:flex;align-items:baseline;justify-content:center;gap:5px;line-height:1;}
+.pool-amount .num{
+  font-family:var(--mono);font-size:48px;font-weight:900;letter-spacing:-2.5px;
+  background:linear-gradient(135deg,var(--gold) 0%,#fff3b0 45%,var(--red) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 22px rgba(255,210,63,.5));
+}
+.pool-cur{
+  font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:.1em;
+  color:var(--gold);margin-bottom:6px;
+}
+.pool-sub{font-size:11px;color:var(--dim);letter-spacing:.2px;margin-top:8px;}
+.pool-cta{display:flex;gap:8px;margin-top:16px;}
+
+/* 修复：按钮文字居中、Flex布局 */
+.pool-btn{
+  flex:1;min-height:var(--tap);padding:0 16px;border-radius:12px;
+  font-size:13px;font-weight:800;letter-spacing:.4px;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+}
+.pool-btn.primary{
+  background:linear-gradient(120deg,var(--gold),#ffb020 55%,#ff8a3d);
+  color:#1a0500;
+  box-shadow:0 12px 26px -12px rgba(255,210,63,.95),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.pool-btn.primary:active{transform:scale(.97);}
+.pool-btn.ghost{
+  flex:0 0 auto;background:rgba(255,255,255,.04);color:var(--txt);
+  border:1px solid var(--brd-hi);padding:0 20px;
+}
+.pool-btn.ghost:active{background:rgba(255,255,255,.08);}
+
+/* ============================================================
+   快捷操作
+   ============================================================ */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px var(--pad) 0;}
+.q{
+  position:relative;display:flex;align-items:center;gap:11px;
+  padding:14px 12px;border-radius:var(--r-md);cursor:pointer;
+  background:var(--card);border:1px solid var(--brd);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),border-color .2s,background .2s;
+  overflow:hidden;min-height:var(--tap);width:100%;
+}
+.q:hover{background:rgba(255,255,255,.06);border-color:var(--brd-hi);}
+.q:active{transform:scale(.955);}
+.q::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,31,61,.5),transparent);opacity:0;transition:opacity .2s;pointer-events:none;}
+.q:hover::before,.q:active::before{opacity:1;}
+.q-ico{width:36px;height:36px;flex:0 0 36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;}
+.q-t{font-size:13px;font-weight:700;letter-spacing:.2px;text-align:left;}
+.q-d{font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-top:3px;letter-spacing:.2px;text-align:left;}
+.q-badge{position:absolute;top:8px;right:9px;font-family:var(--mono);font-size:8.5px;font-weight:800;padding:2.5px 6px;border-radius:5px;letter-spacing:.4px;}
+.i-red{background:var(--red-soft);color:var(--red);border:1px solid var(--red-line);}
+.i-gold{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line);}
+.i-sol{background:rgba(153,69,255,.1);color:var(--sol-purple);border:1px solid rgba(153,69,255,.3);}
+.i-green{background:rgba(20,241,149,.08);color:var(--sol-green);border:1px solid rgba(20,241,149,.28);}
+.i-pink{background:rgba(255,46,166,.1);color:var(--pink);border:1px solid rgba(255,46,166,.3);}
+.q.glow{
+  background:linear-gradient(125deg,rgba(255,210,63,.13),rgba(255,31,61,.05));
+  border-color:rgba(255,210,63,.35);
+  box-shadow:0 0 22px -6px rgba(255,210,63,.4);
+}
+.q.glow:hover{box-shadow:0 0 32px -6px rgba(255,210,63,.6);}
+
+/* ============================================================
+   任务列表
+   ============================================================ */
+.task{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid rgba(255,255,255,.05);min-height:var(--tap);}
+.task:last-child{border-bottom:0;}
+.tk-check{
+  width:20px;height:20px;flex:0 0 20px;border-radius:6px;
+  border:1.5px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent;transition:all .2s;
+}
+.task.done .tk-check{background:linear-gradient(135deg,var(--red),#ff5570);border-color:transparent;color:#fff;font-weight:900;box-shadow:0 0 14px rgba(255,31,61,.6);}
+.task.claim .tk-check{border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold);}
+.tk-body{flex:1;min-width:0;}
+.tk-t{font-size:12.5px;font-weight:650;letter-spacing:.2px;}
+.task.done .tk-t{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(143,130,153,.45);}
+.tk-d{font-family:var(--mono);font-size:9.5px;color:var(--dim2);margin-top:3px;letter-spacing:.2px;}
+.tk-pts{font-family:var(--mono);font-size:12px;font-weight:800;color:var(--red);white-space:nowrap;letter-spacing:.3px;}
+.tk-pts.gold{color:var(--gold);}
+.tk-pts.dim{color:var(--dim2);font-weight:600;}
+.task.claim .tk-pts{color:var(--gold);}
+
+/* 修复：领取按钮居中 */
+.task-claim-btn{
+  font-family:var(--mono);font-size:10px;font-weight:800;
+  padding:6px 11px;border-radius:6px;letter-spacing:.4px;
+  background:linear-gradient(120deg,var(--gold),#ffb020);
+  color:#1a0500;min-height:30px;
+  display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px -8px rgba(255,210,63,.9);
+  transition:transform .15s,background .2s,color .2s,box-shadow .2s;
+  white-space:nowrap;
+}
+.task-claim-btn:hover{box-shadow:0 8px 22px -8px rgba(255,210,63,1);}
+.task-claim-btn:active{transform:scale(.96);}
+.task-claim-btn.claimed{
+  background:rgba(255,255,255,.05) !important;
+  color:var(--dim2) !important;
+  box-shadow:none !important;
+  cursor:default;
+}
+.task-progress{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 15px;border-bottom:1px solid rgba(255,255,255,.05);
+  background:linear-gradient(90deg,rgba(255,210,63,.05),transparent);
+}
+.task-progress-text{font-size:11px;color:var(--dim);letter-spacing:.2px;}
+.task-progress-text b{color:var(--gold);font-family:var(--mono);font-weight:700;}
+.task-progress-bar{
+  flex:1;max-width:110px;height:4px;border-radius:99px;background:rgba(255,255,255,.06);
+  overflow:hidden;
+}
+.task-progress-bar i{
+  display:block;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--gold),#fff3b0);
+  box-shadow:0 0 8px rgba(255,210,63,.6);
+  transition:width .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* ============================================================
+   链上动态 ticker
+   ============================================================ */
+.ticker{
+  margin:16px var(--pad) 0;padding:11px 0;border-radius:12px;
+  background:rgba(153,69,255,.045);
+  border:1px solid rgba(153,69,255,.16);
+  overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.ticker-track{display:flex;gap:28px;white-space:nowrap;width:max-content;animation:slide 46s linear infinite;}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk-item{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.tk-item b{color:#d9d0dd;font-weight:600;font-family:var(--mono);font-size:10.5px;}
+.tk-item .hl{color:var(--red);font-weight:700;font-family:var(--mono);}
+.tk-item .hl.g{color:var(--gold);}
+.tk-item .hl.c{color:var(--sol-green);}
+
+/* ============================================================
+   排行榜
+   ============================================================ */
+.rank{padding:0;}
+.rank-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 15px;border-bottom:1px solid rgba(255,255,255,.05);
+  min-height:var(--tap);
+  transition:background .2s;
+}
+.rank-row:hover{background:rgba(255,255,255,.02);}
+.rank-row:last-child{border-bottom:0;}
+.rank-row.me{
+  background:linear-gradient(90deg,rgba(255,210,63,.1),rgba(255,31,61,.03));
+  border-top:1px solid rgba(255,210,63,.22);
+  border-bottom:0;
+}
+
+/* 修复：奖牌/名次标签自适应宽度，解决 #1204 挤压问题 */
+.rank-medal{
+  flex:none;min-width:26px;height:26px;padding:0 6px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:900;
+  background:rgba(255,255,255,.06);color:var(--dim);letter-spacing:-.02em;
+}
+.rank-medal.gold{background:linear-gradient(135deg,#ffd76e,#ff8a3d);color:#2a0a00;box-shadow:0 0 14px rgba(255,210,63,.55);}
+.rank-medal.silver{background:linear-gradient(135deg,#e0e0e0,#a8a8a8);color:#1a1a1a;box-shadow:0 0 12px rgba(224,224,224,.4);}
+.rank-medal.bronze{background:linear-gradient(135deg,#d68a5c,#a5602e);color:#1a0500;box-shadow:0 0 12px rgba(214,138,92,.4);}
+.rank-medal.me{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line);font-size:10px;}
+
+.rank-addr{
+  flex:1;font-family:var(--mono);font-size:11.5px;color:var(--txt);letter-spacing:.2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.rank-row.me .rank-addr{color:var(--gold);font-weight:700;}
+.rank-addr em{
+  font-style:normal;font-family:inherit;font-size:9px;
+  background:var(--gold);color:#1a0500;padding:1px 5px;border-radius:3px;
+  font-weight:900;letter-spacing:.4px;margin-right:6px;
+}
+.rank-pts{font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--gold);white-space:nowrap;letter-spacing:-.02em;}
+.rank-pts small{font-size:9px;color:var(--dim);font-weight:600;margin-left:2px;letter-spacing:.3px;}
+
+/* ============================================================
+   战队摘要卡（首页）
+   ============================================================ */
+.team-summary{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 15px;
+  transition:background .2s;
+}
+button.team-summary:hover{background:rgba(255,255,255,.06);}
+.team-summary-av{
+  width:44px;height:44px;flex:0 0 44px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:21px;font-weight:900;color:#2a0a00;
+  background:radial-gradient(circle at 32% 26%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  box-shadow:0 0 0 1px rgba(255,210,63,.35),0 8px 22px -8px rgba(255,210,63,.9);
+  overflow:hidden;position:relative;
+}
+.team-summary-av img{width:100%;height:100%;object-fit:cover;border-radius:13px;transform:scale(1.15);}
+.team-summary-body{flex:1;min-width:0;text-align:left;}
+.team-summary-name{
+  font-size:13.5px;font-weight:800;letter-spacing:.2px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.team-summary-meta{
+  font-family:var(--mono);font-size:9.5px;color:var(--dim2);
+  margin-top:4px;letter-spacing:.2px;
+}
+.team-summary-arrow{
+  color:var(--dim2);font-size:16px;flex:none;transition:transform .2s,color .2s;
+}
+.team-summary:hover .team-summary-arrow,.team-summary:active .team-summary-arrow{transform:translateX(3px);color:var(--gold);}
+.rank-badge{
+  font-family:var(--mono);font-size:9.5px;font-weight:900;
+  padding:2.5px 7px;border-radius:5px;letter-spacing:.5px;
+  background:linear-gradient(135deg,#ffd76e,#ff8a3d);color:#2a0a00;
+  box-shadow:0 0 14px rgba(255,210,63,.55);
+}
+
+/* ============================================================
+   战队主卡片（战队页）
+   ============================================================ */
+.team-hero{
+  margin:0 var(--pad);padding:22px 20px;
+  border-radius:var(--r-lg);position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%,rgba(153,69,255,.18),transparent 60%),
+    radial-gradient(90% 80% at 0% 100%,rgba(255,31,61,.12),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  border:1px solid rgba(153,69,255,.28);
+  box-shadow:0 0 0 1px rgba(153,69,255,.08),0 26px 60px -30px rgba(153,69,255,.6),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.team-hero::after{
+  content:"戰";position:absolute;right:-20px;bottom:-58px;
+  font-size:180px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(153,69,255,.07);pointer-events:none;
+}
+.team-hero-head{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.team-hero-av{
+  width:60px;height:60px;flex:0 0 60px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:28px;font-weight:900;color:#2a0a00;
+  background:radial-gradient(circle at 32% 26%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  box-shadow:0 0 0 2px rgba(255,210,63,.35),0 8px 22px -6px rgba(255,210,63,.9);
+  position:relative;overflow:hidden;
+}
+.team-hero-av img{width:100%;height:100%;object-fit:cover;border-radius:16px;transform:scale(1.15);}
+.team-hero-av::after{
+  content:"";position:absolute;inset:-4px;border-radius:20px;
+  border:1px solid rgba(255,210,63,.55);
+  animation:spin 10s linear infinite;
+  border-bottom-color:transparent;border-right-color:transparent;
+  pointer-events:none;
+}
+.team-hero-info{flex:1;min-width:0;text-align:left;}
+.team-hero-name{
+  font-size:18px;font-weight:900;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  line-height:1.2;
+}
+.team-hero-meta{
+  font-family:var(--mono);font-size:10px;color:var(--dim2);
+  margin-top:6px;letter-spacing:.2px;line-height:1.5;
+}
+.team-hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;
+  margin-top:18px;position:relative;z-index:1;
+}
+.team-hero-stat{
+  background:rgba(10,6,16,.5);
+  padding:12px 8px;text-align:center;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.team-hero-stat .k{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim2);margin-bottom:5px;line-height:1.2;
+}
+.team-hero-stat .v{
+  font-family:var(--mono);font-size:16px;font-weight:800;
+  color:var(--txt);letter-spacing:-.02em;line-height:1.2;
+}
+.team-hero-stat .v.gold{color:var(--gold);}
+.team-hero-stat .v.green{color:var(--sol-green);}
+
+.score-block{margin-top:16px;position:relative;z-index:1;}
+.score-block-title{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim2);margin-bottom:9px;
+}
+.score-bar{display:flex;height:8px;border-radius:99px;overflow:hidden;gap:2px;background:rgba(255,255,255,.05);}
+.score-bar i{display:block;height:100%;position:relative;}
+.s1{background:linear-gradient(90deg,#ff1f3d,#ff6b80);box-shadow:0 0 10px rgba(255,31,61,.6);}
+.s2{background:linear-gradient(90deg,#e8a010,#ffd23f);box-shadow:0 0 10px rgba(255,210,63,.6);}
+.s3{background:linear-gradient(90deg,#9945FF,#14F195);box-shadow:0 0 10px rgba(153,69,255,.6);}
+.score-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+.score-legend span{
+  font-family:var(--mono);font-size:9.5px;color:var(--dim);
+  display:flex;align-items:center;gap:5px;letter-spacing:.2px;
+}
+.dot{width:6px;height:6px;border-radius:2px;display:inline-block;}
+.d1{background:var(--red);box-shadow:0 0 6px var(--red);}
+.d2{background:var(--gold);box-shadow:0 0 6px var(--gold);}
+.d3{background:var(--sol-purple);box-shadow:0 0 6px var(--sol-purple);}
+
+/* 主按钮 */
+.btn-primary{
+  width:100%;min-height:var(--tap);border-radius:13px;
+  font-size:13.5px;font-weight:800;letter-spacing:.5px;color:#1a0500;
+  background:linear-gradient(120deg,#ffd23f,#ffb020 55%,#ff8a3d);
+  box-shadow:0 12px 28px -12px rgba(255,210,63,.95),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.btn-primary:hover{filter:brightness(1.05);}
+.btn-primary:active{transform:scale(.97);}
+.btn-primary::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  animation:shine 2.6s ease-in-out infinite;pointer-events:none;
+}
+@keyframes shine{0%{left:-60%}55%,100%{left:130%}}
+
+.btn-ghost{
+  width:100%;min-height:var(--tap);border-radius:13px;
+  font-size:13px;font-weight:700;letter-spacing:.3px;color:var(--txt);
+  background:rgba(255,255,255,.04);border:1px solid var(--brd-hi);
+  transition:background .2s,border-color .2s,transform .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.07);}
+.btn-ghost:active{background:rgba(255,255,255,.08);transform:scale(.98);}
+
+/* ============================================================
+   队员贡献榜
+   ============================================================ */
+.member-row{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 15px;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.member-row:last-child{border-bottom:0;}
+.member-row.is-me{background:linear-gradient(90deg,rgba(255,210,63,.08),transparent);}
+.member-av{
+  width:32px;height:32px;flex:0 0 32px;border-radius:10px;
+  background:radial-gradient(circle at 32% 26%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:14px;font-weight:900;color:#2a0a00;
+  overflow:hidden;
+}
+.member-av img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.member-info{flex:1;min-width:0;text-align:left;}
+.member-name{
+  font-family:var(--mono);font-size:11.5px;color:var(--txt);
+  letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.member-tag{
+  font-size:9px;padding:1px 5px;border-radius:3px;margin-left:6px;
+  background:var(--gold-soft);color:var(--gold);
+  border:1px solid var(--gold-line);font-weight:700;letter-spacing:.3px;
+}
+.member-tag.red{background:var(--red-soft);color:var(--red);border-color:var(--red-line);}
+.member-bar{
+  margin-top:5px;height:3px;border-radius:99px;background:rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.member-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),#fff3b0);}
+.member-pts{
+  font-family:var(--mono);font-size:12px;font-weight:800;color:var(--gold);
+  white-space:nowrap;letter-spacing:-.02em;
+}
+
+/* ============================================================
+   盲盒页
+   ============================================================ */
+.gacha-stage{
+  margin:0 var(--pad);padding:34px 20px 26px;
+  border-radius:var(--r-lg);position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 50% -10%,rgba(255,210,63,.22),transparent 60%),
+    radial-gradient(90% 70% at 50% 110%,rgba(255,31,61,.14),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+  border:1px solid rgba(255,210,63,.28);
+  box-shadow:0 0 0 1px rgba(255,210,63,.08),0 26px 60px -30px rgba(255,210,63,.55),inset 0 1px 0 rgba(255,255,255,.06);
+  text-align:center;
+}
+.gacha-stage::before{
+  content:"財";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-size:230px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(255,210,63,.03);pointer-events:none;
+}
+.gacha-stage > *{position:relative;z-index:1;}
+
+.gacha-top{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);
+  padding:4px 10px;border-radius:99px;
+  background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.28);
+  margin-bottom:20px;
+}
+.gacha-top .dot-gold{
+  width:4px;height:4px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 6px var(--gold);animation:blink 1.4s ease-in-out infinite;
+}
+
+.gacha-stage-inner{
+  position:relative;display:inline-block;
+  padding:18px;
+}
+.gacha-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1.5px dashed rgba(255,210,63,.4);
+  animation:spin 16s linear infinite;
+  pointer-events:none;
+}
+.gacha-ring-2{
+  position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(255,31,61,.28);
+  border-top-color:rgba(255,31,61,.9);
+  border-right-color:rgba(255,31,61,.6);
+  animation:spin 8s linear infinite reverse;
+  pointer-events:none;
+}
+.gacha-box{
+  position:relative;
+  width:130px;height:130px;border-radius:24px;
+  background:
+    linear-gradient(135deg,#fff1a8 0%,#ffd23f 32%,#e8a010 60%,#8a5c00 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,210,63,.35),
+    0 0 60px rgba(255,210,63,.55),
+    0 20px 44px -14px rgba(255,210,63,.8),
+    inset 0 -8px 20px rgba(0,0,0,.4),
+    inset 0 2px 0 rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;
+  font-size:52px;font-weight:900;color:#2a0a00;
+  text-shadow:0 2px 8px rgba(255,255,255,.4);
+  transition:transform .3s;
+}
+.gacha-box::before{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:20px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(255,31,61,.95),rgba(180,8,36,.95));
+  box-shadow:0 0 14px rgba(255,31,61,.6),inset 0 0 0 1px rgba(255,255,255,.2);
+  pointer-events:none;
+}
+.gacha-box::after{
+  content:"";position:absolute;top:50%;left:0;right:0;height:20px;
+  transform:translateY(-50%);
+  background:linear-gradient(90deg,rgba(255,31,61,.95),rgba(180,8,36,.95));
+  box-shadow:0 0 14px rgba(255,31,61,.6),inset 0 0 0 1px rgba(255,255,255,.2);
+  pointer-events:none;
+}
+.gacha-box span{
+  position:relative;z-index:2;
+  background:radial-gradient(circle at 34% 28%,#fff1a8,#ffd23f 46%,#e8a010 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));
+  -webkit-text-stroke:1px rgba(255,255,255,.35);
+}
+.gacha-box.shake{animation:shake .7s ease;}
+@keyframes shake{
+  0%,100%{transform:rotate(0) scale(1);}
+  15%{transform:rotate(-7deg) scale(1.05);}
+  30%{transform:rotate(7deg) scale(1.05);}
+  45%{transform:rotate(-5deg) scale(1.03);}
+  60%{transform:rotate(5deg) scale(1.03);}
+  80%{transform:rotate(-2deg) scale(1.01);}
+}
+
+.gacha-cost{
+  margin-top:22px;
+  font-family:var(--mono);font-size:11px;
+  color:var(--dim);letter-spacing:.2px;
+}
+.gacha-cost b{color:var(--gold);font-size:14px;font-weight:800;}
+.gacha-cost .pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:99px;
+  background:rgba(255,255,255,.05);border:1px solid var(--brd);
+  margin-top:6px;
+}
+
+/* 修复：抽奖按钮文字居中、字间距正常 */
+.gacha-btn{
+  width:100%;margin-top:18px;min-height:52px;border-radius:14px;
+  font-size:14px;font-weight:900;letter-spacing:1px;color:#1a0500;
+  background:linear-gradient(120deg,#ffd23f,#ffb020 55%,#ff8a3d);
+  box-shadow:0 14px 32px -12px rgba(255,210,63,1),inset 0 1px 0 rgba(255,255,255,.55);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),opacity .2s;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.gacha-btn:hover{filter:brightness(1.05);}
+.gacha-btn:active{transform:scale(.97);}
+.gacha-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.gacha-btn::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);
+  animation:shine 2.4s ease-in-out infinite;pointer-events:none;
+}
+.gacha-btn:disabled::after{display:none;}
+
+/* 概率表 */
+.prob-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 15px;border-bottom:1px solid rgba(255,255,255,.05);gap:10px;
+}
+.prob-row:last-child{border-bottom:0;}
+.prob-rank{
+  display:flex;align-items:center;gap:9px;min-width:0;
+}
+.prob-tier{
+  flex:none;font-family:var(--mono);font-size:10px;font-weight:800;
+  padding:3px 7px;border-radius:5px;letter-spacing:.4px;
+  background:rgba(255,255,255,.05);color:var(--dim);
+  border:1px solid var(--brd);
+}
+.prob-tier.big{background:var(--red-soft);color:var(--red);border-color:var(--red-line);}
+.prob-tier.mid{background:var(--gold-soft);color:var(--gold);border-color:var(--gold-line);}
+.prob-text{font-size:12px;color:var(--txt);font-weight:600;}
+.prob-text small{font-family:var(--mono);font-size:10px;color:var(--dim);margin-left:4px;font-weight:400;}
+.prob-pct{
+  font-family:var(--mono);font-size:12.5px;font-weight:800;
+  color:var(--gold);white-space:nowrap;letter-spacing:-.02em;
+}
+.prob-pct.big{color:var(--red);}
+
+/* 记录 */
+.history-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 15px;border-bottom:1px solid rgba(255,255,255,.05);gap:10px;
+}
+.history-row:last-child{border-bottom:0;}
+.history-info{min-width:0;flex:1;text-align:left;}
+.history-title{font-size:12px;color:var(--txt);font-weight:600;}
+.history-time{
+  font-family:var(--mono);font-size:9.5px;color:var(--dim2);
+  margin-top:3px;letter-spacing:.2px;
+}
+.history-reward{
+  font-family:var(--mono);font-size:12px;font-weight:800;
+  color:var(--gold);white-space:nowrap;
+}
+.history-reward.big{color:var(--red);}
+
+/* ============================================================
+   商城页
+   ============================================================ */
+.shop-balance{
+  margin:0 var(--pad);padding:20px 20px;
+  border-radius:var(--r-lg);position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%,rgba(0,240,255,.14),transparent 60%),
+    radial-gradient(90% 80% at 0% 100%,rgba(255,210,63,.12),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  border:1px solid rgba(0,240,255,.22);
+  box-shadow:0 0 0 1px rgba(0,240,255,.06),0 26px 60px -30px rgba(0,240,255,.5),inset 0 1px 0 rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:16px;
+}
+.shop-balance::after{
+  content:"商";position:absolute;right:-16px;bottom:-46px;
+  font-size:150px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(0,240,255,.05);pointer-events:none;
+}
+.shop-balance > *{position:relative;z-index:1;}
+.balance-main{flex:1;min-width:0;text-align:left;}
+.balance-label{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+}
+.balance-value{
+  font-family:var(--mono);font-size:34px;font-weight:900;
+  letter-spacing:-1.5px;line-height:1;
+  background:linear-gradient(135deg,#fff 0%,#ffd9a0 40%,#ffd23f 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 14px rgba(255,210,63,.4));
+}
+.balance-value small{font-size:12px;color:var(--gold-dim);font-weight:700;margin-left:4px;}
+.balance-sub{
+  font-family:var(--mono);font-size:9.5px;color:var(--dim2);
+  margin-top:6px;letter-spacing:.2px;
+}
+
+/* 修复：记录按钮居中 */
+.balance-cta{
+  flex:none;
+  font-family:var(--mono);font-size:10px;font-weight:800;
+  padding:9px 14px;border-radius:10px;letter-spacing:.4px;
+  background:linear-gradient(120deg,var(--cyan),#00b8d4);
+  color:#00161c;
+  box-shadow:0 8px 22px -10px rgba(0,240,255,.9);
+  min-height:36px;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:transform .15s;
+}
+.balance-cta:active{transform:scale(.95);}
+
+.cat-chips{
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+  padding:16px var(--pad) 4px;margin:0;
+  -webkit-overflow-scrolling:touch;
+}
+.cat-chips::-webkit-scrollbar{display:none;}
+.cat-chip{
+  flex:none;font-size:11.5px;font-weight:600;letter-spacing:.2px;
+  padding:7px 14px;border-radius:99px;
+  background:rgba(255,255,255,.04);color:var(--dim);
+  border:1px solid var(--brd);cursor:pointer;
+  transition:all .2s;white-space:nowrap;min-height:34px;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.cat-chip:hover{background:rgba(255,255,255,.07);color:var(--txt);}
+.cat-chip.active{
+  background:linear-gradient(120deg,rgba(0,240,255,.18),rgba(0,240,255,.06));
+  color:var(--cyan);border-color:rgba(0,240,255,.5);
+  box-shadow:0 0 14px -4px rgba(0,240,255,.6);
+}
+
+.shop-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  padding:14px var(--pad) 0;
+}
+.shop-item{
+  background:var(--card);border:1px solid var(--brd);
+  border-radius:var(--r-md);padding:14px 12px 12px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:transform .16s,border-color .2s,background .2s;
+  position:relative;overflow:hidden;
+  text-align:left;
+}
+.shop-item:hover{border-color:var(--brd-hi);background:rgba(255,255,255,.05);}
+.shop-item:active{transform:scale(.97);}
+.shop-item::before{
+  content:"";position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,240,255,.4),transparent);
+  opacity:.6;
+}
+.shop-item-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  background:linear-gradient(135deg,rgba(0,240,255,.14),rgba(0,240,255,.04));
+  border:1px solid rgba(0,240,255,.28);
+}
+.shop-item-icon.gold{background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,210,63,.04));border-color:var(--gold-line);}
+.shop-item-icon.pink{background:linear-gradient(135deg,rgba(255,46,166,.14),rgba(255,46,166,.04));border-color:rgba(255,46,166,.28);}
+.shop-item-icon.purple{background:linear-gradient(135deg,rgba(153,69,255,.16),rgba(153,69,255,.04));border-color:rgba(153,69,255,.3);}
+.shop-item-name{
+  font-size:12.5px;font-weight:700;letter-spacing:.1px;line-height:1.35;
+  color:var(--txt);
+}
+.shop-item-desc{
+  font-size:10.5px;color:var(--dim);line-height:1.5;flex:1;
+  min-height:30px;
+}
+.shop-item-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:6px;
+}
+.shop-price{
+  font-family:var(--mono);font-size:12px;font-weight:800;
+  color:var(--gold);letter-spacing:-.02em;
+}
+.shop-price small{font-size:9px;color:var(--dim);font-weight:600;margin-left:2px;}
+
+/* 修复：兑换按钮居中 */
+.shop-btn{
+  font-family:var(--mono);font-size:10px;font-weight:800;
+  padding:6px 10px;border-radius:7px;letter-spacing:.4px;
+  background:linear-gradient(120deg,var(--cyan),#00b8d4);
+  color:#00161c;min-height:28px;
+  display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px -10px rgba(0,240,255,.9);
+  transition:transform .15s,opacity .2s,background .2s;
+}
+.shop-btn:hover{filter:brightness(1.08);}
+.shop-btn:active{transform:scale(.95);}
+.shop-btn:disabled,.shop-btn.sold{background:rgba(255,255,255,.05);color:var(--dim2);box-shadow:none;cursor:not-allowed;filter:none;}
+
+/* ============================================================
+   我的页
+   ============================================================ */
+.profile-card{
+  margin:0 var(--pad);padding:20px;
+  border-radius:var(--r-lg);position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%,rgba(153,69,255,.18),transparent 60%),
+    radial-gradient(90% 80% at 0% 100%,rgba(255,31,61,.12),transparent 60%),
+    linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  border:1px solid rgba(153,69,255,.28);
+  box-shadow:0 0 0 1px rgba(153,69,255,.08),0 26px 60px -30px rgba(153,69,255,.6),inset 0 1px 0 rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:14px;
+}
+.profile-card::after{
+  content:"我";position:absolute;right:-18px;bottom:-58px;
+  font-size:170px;font-weight:900;line-height:1;
+  font-family:"STKaiti","KaiTi",serif;
+  color:rgba(153,69,255,.06);pointer-events:none;
+}
+.profile-card > *{position:relative;z-index:1;}
+.profile-av{
+  width:64px;height:64px;flex:0 0 64px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;font-size:30px;font-weight:900;color:#2a0a00;
+  background:radial-gradient(circle at 34% 28%,#fff1a8,#ffd23f 40%,#e8a010 100%);
+  box-shadow:0 0 0 2px rgba(255,210,63,.35),0 10px 26px -8px rgba(255,210,63,.9);
+  position:relative;overflow:hidden;
+}
+.profile-av img{width:100%;height:100%;object-fit:cover;border-radius:18px;transform:scale(1.15);}
+.profile-av::after{
+  content:"";position:absolute;inset:-4px;border-radius:22px;
+  border:1px solid rgba(255,31,61,.4);
+  animation:spin 12s linear infinite;
+  border-bottom-color:transparent;border-right-color:transparent;
+  pointer-events:none;
+}
+.profile-info{flex:1;min-width:0;text-align:left;}
+.profile-name{
+  font-family:var(--mono);font-size:14px;font-weight:800;
+  color:var(--txt);letter-spacing:.2px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.copy-mini{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:5px;
+  background:rgba(255,255,255,.06);border:1px solid var(--brd);
+  color:var(--dim);transition:all .2s;flex:none;
+}
+.copy-mini:hover{background:rgba(255,255,255,.1);color:var(--txt);}
+.copy-mini:active,.copy-mini.copied{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold);}
+.copy-mini svg{width:10px;height:10px;}
+.profile-tags{
+  display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;
+}
+.profile-tag{
+  font-family:var(--mono);font-size:9.5px;font-weight:700;
+  padding:3px 8px;border-radius:5px;letter-spacing:.3px;
+}
+.profile-tag.lv{background:linear-gradient(135deg,#ffd76e,#ff8a3d);color:#2a0a00;box-shadow:0 0 12px rgba(255,210,63,.5);}
+.profile-tag.rank{background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--brd);}
+
+.stat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--brd);border:1px solid var(--brd);border-radius:var(--r-md);
+  overflow:hidden;
+}
+.stat-cell{
+  background:var(--card);padding:14px 8px;text-align:center;
+}
+.stat-k{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim2);margin-bottom:5px;line-height:1.2;
+}
+.stat-v{
+  font-family:var(--mono);font-size:16px;font-weight:800;
+  color:var(--txt);letter-spacing:-.02em;line-height:1.2;
+}
+.stat-v.gold{color:var(--gold);}
+.stat-v.green{color:var(--sol-green);}
+.stat-v.cyan{color:var(--cyan);}
+.stat-s{font-size:9.5px;color:var(--dim);margin-top:4px;line-height:1.3;}
+.stat-s b{color:var(--gold);font-weight:700;}
+
+/* 签到 */
+.checkin{padding:16px 15px;}
+.checkin-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;gap:8px;flex-wrap:wrap;
+}
+.checkin-streak{font-size:11.5px;color:var(--dim);letter-spacing:.2px;}
+.checkin-streak b{color:var(--gold);font-family:var(--mono);font-weight:800;font-size:13px;}
+.checkin-streak.reward{color:var(--gold);font-weight:700;font-family:var(--mono);font-size:11px;}
+.checkin-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;
+}
+.day{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:9px 4px;border-radius:9px;
+  background:rgba(255,255,255,.03);border:1px solid var(--brd);
+  min-height:56px;
+}
+.day span{font-family:var(--mono);font-size:9px;color:var(--dim2);letter-spacing:.4px;line-height:1;font-weight:600;}
+.day b{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--dim);line-height:1;}
+.day.done{background:rgba(20,241,149,.08);border-color:rgba(20,241,149,.28);}
+.day.done span{color:rgba(20,241,149,.7);}
+.day.done b{color:var(--sol-green);}
+.day.today{background:linear-gradient(135deg,rgba(255,210,63,.14),rgba(255,31,61,.06));border-color:rgba(255,210,63,.45);box-shadow:0 0 14px -4px rgba(255,210,63,.6);}
+.day.today span{color:var(--gold);}
+.day.today b{color:var(--gold);}
+.day.locked{opacity:.7;}
+
+/* 修复：签到按钮居中 */
+.checkin-btn{
+  width:100%;min-height:var(--tap);border-radius:11px;
+  background:linear-gradient(120deg,var(--gold),#ffb020 55%,#ff8a3d);
+  color:#1a0500;font-size:13px;font-weight:800;letter-spacing:.5px;
+  box-shadow:0 12px 26px -12px rgba(255,210,63,.95),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1);
+  display:flex;align-items:center;justify-content:center;
+}
+.checkin-btn:active{transform:scale(.97);}
+.checkin-btn:disabled{background:rgba(255,255,255,.05);color:var(--dim2);box-shadow:none;cursor:not-allowed;}
+
+/* 设置列表 */
+.setting-list{
+  background:var(--card);border:1px solid var(--brd);border-radius:var(--r-md);
+  overflow:hidden;
+}
+.setting-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 15px;border-bottom:1px solid rgba(255,255,255,.05);
+  min-height:var(--tap);width:100%;
+  transition:background .15s;
+}
+.setting-row:last-child{border-bottom:0;}
+.setting-row:hover{background:rgba(255,255,255,.03);}
+.setting-row:active{background:rgba(255,255,255,.05);}
+.setting-ico{
+  width:32px;height:32px;flex:0 0 32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+}
+.setting-body{flex:1;min-width:0;text-align:left;}
+.setting-title{font-size:13px;font-weight:600;color:var(--txt);}
+.setting-desc{
+  font-family:var(--mono);font-size:9.5px;color:var(--dim2);
+  margin-top:2px;letter-spacing:.2px;
+}
+.setting-value{
+  font-family:var(--mono);font-size:11px;color:var(--dim);
+  max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  text-align:right;
+}
+.setting-arrow{color:var(--dim2);font-size:14px;flex:none;}
+
+/* 风险提示 */
+.risk-box{
+  padding:16px 18px;border-radius:var(--r-md);
+  background:linear-gradient(135deg,rgba(255,31,61,.06),transparent 70%);
+  border:1px solid rgba(255,31,61,.18);
+  border-left:3px solid var(--red);
+  text-align:left;
+}
+.risk-title{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--red);
+  margin-bottom:10px;
+}
+.risk-title svg{width:13px;height:13px;flex:none;}
+.risk-body{font-size:12.5px;line-height:1.85;color:var(--dim);}
+.risk-body b{color:#ff9aa8;font-weight:700;}
+
+/* ============================================================
+   底部导航
+   ============================================================ */
+.tabbar{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:70;
+  width:100%;max-width:430px;
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding:9px 6px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(8,4,11,.92);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-top:1px solid rgba(153,69,255,.2);
+}
+.tabbar::before{
+  content:"";position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),var(--sol-purple),transparent);
+  opacity:.7;
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:9.5px;color:var(--dim2);cursor:pointer;
+  padding:4px 0;min-height:var(--tap);
+  transition:color .18s;letter-spacing:.3px;
+  position:relative;
+}
+.tab:hover{color:var(--dim);}
+.tab svg{
+  width:21px;height:21px;stroke:currentColor;fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  transition:filter .2s;
+}
+.tab.active{color:var(--red);}
+.tab.active svg{filter:drop-shadow(0 0 9px rgba(255,31,61,.9));}
+.tab.active span{color:var(--red);font-weight:700;}
+.tab.active::before{
+  content:"";position:absolute;top:0;left:50%;
+  transform:translateX(-50%);
+  width:24px;height:2px;border-radius:2px;
+  background:var(--red);
+  box-shadow:0 0 10px var(--red);
+}
+
+/* ============================================================
+   返回顶部
+   ============================================================ */
+.back-top{
+  position:fixed;right:16px;
+  bottom:calc(86px + env(safe-area-inset-bottom));
+  z-index:65;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:rgba(12,6,18,.9);
+  border:1px solid var(--brd-hi);
+  color:var(--dim);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .25s,transform .25s,color .2s,border-color .2s,box-shadow .25s;
+}
+.back-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.back-top:hover,.back-top:active{color:var(--gold);border-color:var(--gold-line);box-shadow:0 0 14px -2px rgba(255,210,63,.5);}
+.back-top svg{width:17px;height:17px;}
+
+/* ============================================================
+   Toast
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:calc(126px + env(safe-area-inset-bottom));
+  transform:translate(-50%,16px);
+  z-index:99;padding:11px 18px;border-radius:11px;
+  font-size:12.5px;font-weight:700;color:#fff;
+  background:linear-gradient(120deg,rgba(255,31,61,.96),rgba(200,10,40,.96));
+  border:1px solid rgba(255,120,140,.5);
+  box-shadow:0 16px 40px -10px rgba(255,31,61,.9),0 0 0 1px rgba(255,31,61,.2);
+  opacity:0;pointer-events:none;
+  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;max-width:88vw;overflow:hidden;text-overflow:ellipsis;
+  display:flex;align-items:center;gap:8px;
+}
+.toast::before{
+  content:"✓";display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;border-radius:50%;
+  background:rgba(255,255,255,.22);color:#fff;font-size:10px;font-weight:700;
+  flex:none;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+.toast.warn{
+  background:linear-gradient(120deg,rgba(255,160,32,.96),rgba(200,110,10,.96));
+  border-color:rgba(255,200,120,.5);
+  box-shadow:0 16px 40px -10px rgba(255,160,32,.9),0 0 0 1px rgba(255,160,32,.2);
+}
+.toast.warn::before{content:"!";background:rgba(255,255,255,.25);}
+.toast.success{
+  background:linear-gradient(120deg,rgba(20,241,149,.96),rgba(8,180,110,.96));
+  border-color:rgba(120,255,200,.5);
+  box-shadow:0 16px 40px -10px rgba(20,241,149,.9),0 0 0 1px rgba(20,241,149,.2);
+  color:#001810;
+}
+.toast.success::before{color:#001810;background:rgba(0,0,0,.15);}
+
+/* ============================================================
+   抽奖结果模态框
+   ============================================================ */
+.result-modal{
+  position:fixed;inset:0;z-index:200;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.result-modal.show{display:flex;}
+.result-backdrop{
+  position:absolute;inset:0;
+  background:rgba(6,3,9,.85);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.result-card{
+  position:relative;
+  width:100%;max-width:320px;
+  padding:34px 24px 22px;
+  border-radius:24px;
+  background:
+    radial-gradient(120% 100% at 50% 0%,rgba(255,210,63,.28),transparent 60%),
+    linear-gradient(160deg,rgba(30,20,40,.98),rgba(15,8,20,.99));
+  border:1px solid rgba(255,210,63,.4);
+  box-shadow:
+    0 0 0 1px rgba(255,210,63,.15),
+    0 30px 80px -20px rgba(255,210,63,.55),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  text-align:center;
+  animation:popIn .45s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.85) translateY(20px);}
+  to{opacity:1;transform:none;}
+}
+.result-glow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:280px;height:200px;
+  background:radial-gradient(circle,rgba(255,210,63,.55),transparent 65%);
+  filter:blur(40px);pointer-events:none;
+}
+.result-ribbon{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;
+  padding:5px 16px;border-radius:0 0 9px 9px;
+  background:linear-gradient(120deg,var(--gold),#ffb020);
+  color:#1a0500;font-weight:800;
+  box-shadow:0 4px 14px -4px rgba(255,210,63,.7);
+}
+.result-icon{
+  width:84px;height:84px;margin:14px auto 14px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"STKaiti","KaiTi",serif;
+  font-size:42px;font-weight:900;color:#2a0a00;
+  background:radial-gradient(circle at 34% 28%,#fff1a8,#ffd23f 36%,#e8a010 68%,#8a5c00 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,210,63,.4),
+    0 0 44px rgba(255,210,63,.75),
+    inset 0 -4px 12px rgba(0,0,0,.4);
+  position:relative;z-index:1;
+}
+.result-title{
+  margin:0;font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.4px;
+  position:relative;z-index:1;
+}
+.result-tier{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--gold);margin-top:6px;font-weight:800;
+  position:relative;z-index:1;
+}
+.result-amount{
+  margin:14px 0 8px;
+  font-family:var(--mono);font-size:54px;font-weight:900;
+  letter-spacing:-2px;line-height:1;
+  background:linear-gradient(178deg,#fff 8%,#ffd9a0 40%,#ffd23f 88%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 24px rgba(255,210,63,.55));
+  position:relative;z-index:1;
+}
+.result-amount small{
+  font-size:14px;color:var(--gold-dim);font-weight:700;
+  margin-left:6px;letter-spacing:0;
+  -webkit-text-fill-color:var(--gold-dim);
+}
+.result-desc{
+  font-size:11px;color:var(--dim);margin:6px 0 20px;line-height:1.6;
+  position:relative;z-index:1;
+}
+.result-btn{
+  width:100%;min-height:48px;border-radius:13px;
+  font-size:14px;font-weight:900;letter-spacing:.6px;color:#1a0500;
+  background:linear-gradient(120deg,#ffd23f,#ffb020 55%,#ff8a3d);
+  box-shadow:0 12px 28px -12px rgba(255,210,63,.95),inset 0 1px 0 rgba(255,255,255,.5);
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s;
+}
+.result-btn:hover{filter:brightness(1.05);}
+.result-btn:active{transform:scale(.97);}
+.result-close{
+  position:absolute;top:12px;right:12px;z-index:2;
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.06);color:var(--dim);
+  font-size:16px;line-height:1;
+  transition:all .2s;
+}
+.result-close:hover{background:rgba(255,255,255,.14);color:var(--txt);}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width:360px){
+  :root{--pad:14px;}
+  .fortune-value{font-size:42px;}
+  .pool-amount .num{font-size:42px;}
+  .quick{gap:8px;}
+  .q{padding:12px 10px;gap:9px;}
+  .q-ico{width:32px;height:32px;flex:0 0 32px;font-size:15px;}
+  .q-t{font-size:12px;}
+  .q-d{font-size:9px;}
+  .checkin-grid{gap:4px;}
+  .day{padding:8px 2px;min-height:50px;}
+  .shop-grid{gap:8px;}
+  .shop-item{padding:12px 10px 10px;}
+  .team-hero-name{font-size:16px;}
+  .page-title{font-size:23px;}
+  .result-amount{font-size:46px;}
+}
+@media (min-width:500px){
+  .app{max-width:460px;}
+  .tabbar{max-width:460px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .ticker-track{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<a href="#view-home" class="skip-link">跳到主内容</a>
+
+<!-- 背景特效层 -->
+<div class="bg-fx" aria-hidden="true">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+  <div class="grid"></div>
+  <div class="scan"></div>
+  <div class="topline"></div>
+</div>
+
+<div class="app">
+
+  <!-- ========== 顶部状态栏（全局） ========== -->
+  <header class="topbar">
+    <!-- 纯图标返回按钮 -->
+    <a href="https://caishendao.world/demo/dapp" class="back-dapp" aria-label="返回 Dapp">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+
+    <button class="wallet" type="button" data-toast="已连接 Phantom · Solana 链">
+      <span class="dot"></span>
+      <span>H5kFA...6868</span>
+    </button>
+    <div class="cd">
+      <span>距离赛季结束</span>
+      <b id="cdText">12D 08:24:31</b>
+    </div>
+  </header>
+
+  <main class="views">
+
+    <!-- ========================================================
+         首页 HOME
+         ======================================================== -->
+    <section class="view active" id="view-home" role="tabpanel" aria-labelledby="tab-home">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-head">
+          <div class="token">
+            <img src="../images/caishen.png" alt="财神Logo"
+                 onerror="this.style.display='none';this.parentElement.textContent='財';">
+          </div>
+          <div class="hero-title">
+            <div class="brand" data-text="$财神到">$财神到</div>
+            <div class="brand-en">CAI SHEN DAO · FORTUNE TOKEN</div>
+            <div class="chain-tag"><i></i>SOLANA · LIVE</div>
+          </div>
+        </div>
+
+        <div class="fortune-label">
+          我的财气值 <em>FORTUNE PTS</em>
+        </div>
+        <div>
+          <span class="fortune-value num" data-count="28450">0</span>
+          <span class="fortune-unit">PTS</span>
+        </div>
+
+        <div class="hero-meta">
+          <span class="tag red">排名 #1,204</span>
+          <span class="tag gold">今日 +2,340</span>
+          <span class="tag">持仓乘数 1.5x</span>
+        </div>
+
+        <div class="tier">
+          <div class="tier-row">
+            <span class="tier-name">黄金交易者</span>
+            <span class="tier-gap">距王者还差 <b>71,550</b></span>
+          </div>
+          <div class="bar"><i style="width:28.5%"></i></div>
+          <div class="tier-marks">
+            <span>20,000</span><span>50,000</span><span>100,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 奖池横幅 -->
+      <section class="pool-banner">
+        <div class="pool-glow" aria-hidden="true"></div>
+        <div class="pool-eyebrow">
+          <span class="pool-dot"></span>FORTUNE SEASON · 28 天
+        </div>
+        <h2 class="pool-title">交易狂欢季 · 总奖池</h2>
+        <div class="pool-amount">
+          <span class="num" data-count="68888">0</span>
+          <span class="pool-cur">USDC</span>
+        </div>
+        <div class="pool-sub">等值 $财神DAO · 押金全额退还</div>
+        <div class="pool-cta">
+          <button class="pool-btn primary" type="button"
+                  data-toast="跳转报名 · 20 USDC 押金全额退还">立即报名 &rarr;</button>
+          <button class="pool-btn ghost" type="button"
+                  data-view="team">战队</button>
+        </div>
+      </section>
+
+      <!-- 快捷操作 -->
+      <section class="quick">
+        <button class="q" type="button" data-toast="净买入 100U = 120 财气值（权重 1.2）">
+          <div class="q-ico i-red">↑</div>
+          <div>
+            <div class="q-t">净买入</div>
+            <div class="q-d">100U → 120 PTS</div>
+          </div>
+        </button>
+        <button class="q glow" type="button" data-toast="前 7 天质押享 1.5x 加速 · 1000 枚 = 100 PTS/日">
+          <span class="q-badge i-gold">1.5x</span>
+          <div class="q-ico i-gold">🔒</div>
+          <div>
+            <div class="q-t">质押锁仓</div>
+            <div class="q-d">1000 → 100 PTS/日</div>
+          </div>
+        </button>
+        <button class="q" type="button" data-view="team">
+          <div class="q-ico i-sol">⚔</div>
+          <div>
+            <div class="q-t">我的战队</div>
+            <div class="q-d">RANK #3</div>
+          </div>
+        </button>
+        <button class="q" type="button" data-view="gacha">
+          <span class="q-badge i-pink">1% 大奖</span>
+          <div class="q-ico i-pink">🎁</div>
+          <div>
+            <div class="q-t">财神盲盒</div>
+            <div class="q-d">500 PTS / 次</div>
+          </div>
+        </button>
+      </section>
+
+      <!-- 链上动态 -->
+      <div class="ticker">
+        <div class="ticker-track" id="ticker">
+          <span class="tk-item">⛓ <b>0x8f…2a1</b> 质押 <span class="hl g">50,000 枚</span> 触发绝对锁仓</span>
+          <span class="tk-item">⚔ <b>钻石手联盟</b> 战队反超至 <span class="hl">#3</span></span>
+          <span class="tk-item">💎 <b>0x3c…9d7</b> 持仓满 15 天 · 乘数升至 <span class="hl g">1.5x</span></span>
+          <span class="tk-item">🌧 今晚 20:00 <span class="hl c">交易雨</span> 准时降落</span>
+          <span class="tk-item">🎁 <b>0xa1…7f4</b> 开出 <span class="hl g">1000 USDT</span> 超级大奖</span>
+          <span class="tk-item">⛓ <b>0xd2…8e6</b> 净买入 <span class="hl">12,400 USDT</span></span>
+        </div>
+      </div>
+
+      <!-- 今日任务（精简） -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>今日任务</h2>
+          <button class="sec-more" type="button" data-view="me">全部 ›</button>
+        </div>
+        <div class="card">
+          <div class="task-progress">
+            <span class="task-progress-text">今日完成 <b>2/4</b> · 额外 <b>+500</b> PTS</span>
+            <div class="task-progress-bar"><i style="width:50%"></i></div>
+          </div>
+          <div class="task done">
+            <div class="tk-check">✓</div>
+            <div class="tk-body">
+              <div class="tk-t">完成 1 笔净买入</div>
+              <div class="tk-d">100 USDT = 120 PTS</div>
+            </div>
+            <div class="tk-pts num">+240</div>
+          </div>
+          <div class="task done">
+            <div class="tk-check">✓</div>
+            <div class="tk-body">
+              <div class="tk-t">持仓快照已记录</div>
+              <div class="tk-d">UTC 00:00 · 连续第 16 天</div>
+            </div>
+            <div class="tk-pts num">+200</div>
+          </div>
+          <div class="task claim">
+            <div class="tk-check">✓</div>
+            <div class="tk-body">
+              <div class="tk-t">邀请 1 位有效队员</div>
+              <div class="tk-d">需 PTS &gt; 500 且持仓/质押中</div>
+            </div>
+            <button class="task-claim-btn" type="button" data-claim data-reward="500">领取 +500</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 财富榜（精简） -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>财富榜</h2>
+          <button class="sec-more" type="button" data-view="team">完整榜单 ›</button>
+        </div>
+        <div class="card rank">
+          <div class="rank-row">
+            <span class="rank-medal gold">1</span>
+            <span class="rank-addr">22455...Hrxi</span>
+            <span class="rank-pts num">98,450<small>PTS</small></span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal silver">2</span>
+            <span class="rank-addr">51inN...qGpA</span>
+            <span class="rank-pts num">87,230<small>PTS</small></span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal bronze">3</span>
+            <span class="rank-addr">6D4Qs...dhF8</span>
+            <span class="rank-pts num">76,540<small>PTS</small></span>
+          </div>
+          <div class="rank-row me">
+            <span class="rank-medal me">#1204</span>
+            <span class="rank-addr"><em>我</em>H5kFA...6868</span>
+            <span class="rank-pts num">28,450<small>PTS</small></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 我的战队（摘要） -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>我的战队</h2>
+          <button class="sec-more" type="button" data-view="team">进入战队 ›</button>
+        </div>
+        <button class="card team-summary" type="button" data-view="team" style="width:100%;">
+          <div class="team-summary-av">
+            <img src="../images/antfun.png" alt=""
+                 onerror="this.style.display='none';this.parentElement.textContent='財';">
+          </div>
+          <div class="team-summary-body">
+            <div class="team-summary-name">
+              钻石手联盟 <span class="rank-badge">#3</span>
+            </div>
+            <div class="team-summary-meta">有效队员 68/100 · 队长 0x7b…4f8</div>
+          </div>
+          <span class="team-summary-arrow" aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <div style="height:12px;"></div>
+    </section>
+
+    <!-- ========================================================
+         战队 TEAM
+         ======================================================== -->
+    <section class="view" id="view-team" role="tabpanel" aria-labelledby="tab-team">
+
+      <div class="page-head purple">
+        <h1 class="page-title">我的战队</h1>
+        <div class="page-sub">SQUAD · 组队冲榜 · 队长分红</div>
+      </div>
+
+      <!-- 战队主卡 -->
+      <section class="team-hero">
+        <div class="team-hero-head">
+          <div class="team-hero-av">
+            <img src="../images/antfun.png" alt=""
+                 onerror="this.style.display='none';this.parentElement.textContent='財';">
+          </div>
+          <div class="team-hero-info">
+            <div class="team-hero-name">
+              钻石手联盟 <span class="rank-badge">#3</span>
+            </div>
+            <div class="team-hero-meta">队长 0x7b…4f8 · 建队 42 天</div>
+          </div>
+        </div>
+
+        <div class="team-hero-stats">
+          <div class="team-hero-stat">
+            <div class="k">有效队员</div>
+            <div class="v gold">68<small style="font-size:10px;color:var(--dim2);">/100</small></div>
+          </div>
+          <div class="team-hero-stat">
+            <div class="k">战队总分</div>
+            <div class="v">1.28M</div>
+          </div>
+          <div class="team-hero-stat">
+            <div class="k">新增持币</div>
+            <div class="v green">+142</div>
+          </div>
+        </div>
+
+        <div class="score-block">
+          <div class="score-block-title">
+            <span>得分构成</span>
+            <span>1.28M PTS</span>
+          </div>
+          <div class="score-bar">
+            <i class="s1" style="width:40%"></i>
+            <i class="s2" style="width:40%"></i>
+            <i class="s3" style="width:20%"></i>
+          </div>
+          <div class="score-legend">
+            <span><i class="dot d1"></i>交易 40%</span>
+            <span><i class="dot d2"></i>质押 40%</span>
+            <span><i class="dot d3"></i>活跃 20%</span>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;position:relative;z-index:1;">
+          <button class="btn-primary" type="button"
+                  data-toast="邀请链接已复制 · 分享给好友一起冲榜">
+            邀请队员 · 冲榜分红
+          </button>
+        </div>
+      </section>
+
+      <!-- 战队排行榜 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>战队排行榜</h2>
+          <span class="sec-more" data-toast="仅展示 Top 8">Top 8</span>
+        </div>
+        <div class="card rank">
+          <div class="rank-row">
+            <span class="rank-medal gold">1</span>
+            <span class="rank-addr">鲸鱼总部 <em>队长 0x2c…8e1</em></span>
+            <span class="rank-pts num">2.14M</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal silver">2</span>
+            <span class="rank-addr">Solana 信仰者</span>
+            <span class="rank-pts num">1.87M</span>
+          </div>
+          <div class="rank-row me">
+            <span class="rank-medal me">#3</span>
+            <span class="rank-addr"><em>我</em>钻石手联盟</span>
+            <span class="rank-pts num">1.28M</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal">4</span>
+            <span class="rank-addr">财神铁军</span>
+            <span class="rank-pts num">1.09M</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal">5</span>
+            <span class="rank-addr">金色传说</span>
+            <span class="rank-pts num">986K</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal">6</span>
+            <span class="rank-addr">早期玩家联盟</span>
+            <span class="rank-pts num">912K</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal">7</span>
+            <span class="rank-addr">钻石手套</span>
+            <span class="rank-pts num">874K</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-medal">8</span>
+            <span class="rank-addr">龙头俱乐部</span>
+            <span class="rank-pts num">821K</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 队员贡献榜 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>队员贡献榜</h2>
+          <button class="sec-more" type="button" data-toast="查看全部 68 名队员">全部 ›</button>
+        </div>
+        <div class="card">
+          <div class="member-row is-me">
+            <div class="member-av">財</div>
+            <div class="member-info">
+              <div class="member-name">H5kFA...6868<span class="member-tag">队长 · 我</span></div>
+              <div class="member-bar"><i style="width:100%"></i></div>
+            </div>
+            <span class="member-pts">286K</span>
+          </div>
+          <div class="member-row">
+            <div class="member-av">財</div>
+            <div class="member-info">
+              <div class="member-name">22455...Hrxi</div>
+              <div class="member-bar"><i style="width:82%"></i></div>
+            </div>
+            <span class="member-pts">234K</span>
+          </div>
+          <div class="member-row">
+            <div class="member-av">財</div>
+            <div class="member-info">
+              <div class="member-name">51inN...qGpA</div>
+              <div class="member-bar"><i style="width:67%"></i></div>
+            </div>
+            <span class="member-pts">192K</span>
+          </div>
+          <div class="member-row">
+            <div class="member-av">財</div>
+            <div class="member-info">
+              <div class="member-name">6D4Qs...dhF8</div>
+              <div class="member-bar"><i style="width:54%"></i></div>
+            </div>
+            <span class="member-pts">155K</span>
+          </div>
+          <div class="member-row">
+            <div class="member-av">財</div>
+            <div class="member-info">
+              <div class="member-name">FBQ23...3YzA</div>
+              <div class="member-bar"><i style="width:41%"></i></div>
+            </div>
+            <span class="member-pts">118K</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 规则 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>战队规则</h2>
+        </div>
+        <div class="card" style="padding:16px 15px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:4px;">队长押金</div>
+              <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--gold);">50 USDC</div>
+            </div>
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:4px;">每队人数上限</div>
+              <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--txt);">100 人</div>
+            </div>
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:4px;">有效队员门槛</div>
+              <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--red);">≥ 500 PTS</div>
+            </div>
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:4px;">战队加成</div>
+              <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--sol-green);">+1.1×</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--brd);font-size:12px;color:var(--dim);line-height:1.75;text-align:left;">
+            <b style="color:var(--txt);">队长独享 30% 奖池分成</b>，队员按积分比例瓜分 70%。全员额外享受 1.1× 积分加成。所有奖励活动结束后 7 天内自动空投。
+          </div>
+        </div>
+      </section>
+
+      <div style="height:12px;"></div>
+    </section>
+
+    <!-- ========================================================
+         盲盒 GACHA
+         ======================================================== -->
+    <section class="view" id="view-gacha" role="tabpanel" aria-labelledby="tab-gacha">
+
+      <div class="page-head gold">
+        <h1 class="page-title">财神盲盒</h1>
+        <div class="page-sub">FORTUNE BOX · 100% 中奖</div>
+      </div>
+
+      <!-- 盲盒舞台 -->
+      <section class="gacha-stage">
+        <div class="gacha-top">
+          <span class="dot-gold"></span>SUPER PRIZE · 1000 USDT
+        </div>
+
+        <div class="gacha-stage-inner">
+          <div class="gacha-ring" aria-hidden="true"></div>
+          <div class="gacha-ring-2" aria-hidden="true"></div>
+          <div class="gacha-box" id="gachaBox"><span>財</span></div>
+        </div>
+
+        <div class="gacha-cost">
+          单次抽取 <b>500</b> PTS · 100% 中奖
+          <div><span class="pill">当前余额 <b class="fortune-value-inline" data-points>28,450</b> PTS · 可抽 <b class="draw-count" data-draws>56</b> 次</span></div>
+        </div>
+
+        <!-- 修复：去掉了手打的空格，使用标准字距和 Flex 居中 -->
+        <button class="gacha-btn" id="gachaBtn" type="button">立即抽取 · 500 PTS</button>
+      </section>
+
+      <!-- 概率表 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>奖励概率</h2>
+          <span class="sec-more" data-toast="使用链下可验证随机数 · 每日公示种子哈希">公平说明</span>
+        </div>
+        <div class="card">
+          <div class="prob-row">
+            <div class="prob-rank">
+              <span class="prob-tier">85%</span>
+              <div class="prob-text">小额奖励<small>1 – 3 USDC</small></div>
+            </div>
+            <span class="prob-pct">1 – 3 USDC</span>
+          </div>
+          <div class="prob-row">
+            <div class="prob-rank">
+              <span class="prob-tier mid">13%</span>
+              <div class="prob-text">中额奖励<small>10 – 30 USDC</small></div>
+            </div>
+            <span class="prob-pct">10 – 30 USDC</span>
+          </div>
+          <div class="prob-row">
+            <div class="prob-rank">
+              <span class="prob-tier big">2%</span>
+              <div class="prob-text">超级大奖<small>100 – 1000 USDT</small></div>
+            </div>
+            <span class="prob-pct big">100 – 1000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 我的记录 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>我的抽取记录</h2>
+          <span class="sec-more" data-toast="查看完整记录">全部 ›</span>
+        </div>
+        <div class="card">
+          <div class="history-row">
+            <div class="history-info">
+              <div class="history-title">小额奖励</div>
+              <div class="history-time">今天 14:22 · 消耗 500 PTS</div>
+            </div>
+            <span class="history-reward">+2 USDC</span>
+          </div>
+          <div class="history-row">
+            <div class="history-info">
+              <div class="history-title">中额奖励</div>
+              <div class="history-time">昨天 20:08 · 消耗 500 PTS</div>
+            </div>
+            <span class="history-reward">+18 USDC</span>
+          </div>
+          <div class="history-row">
+            <div class="history-info">
+              <div class="history-title">小额奖励</div>
+              <div class="history-time">昨天 09:15 · 消耗 500 PTS</div>
+            </div>
+            <span class="history-reward">+1 USDC</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 说明 -->
+      <section class="sec">
+        <div class="card" style="padding:14px 15px;text-align:left;">
+          <div style="font-size:12px;line-height:1.8;color:var(--dim);">
+            <b style="color:var(--txt);">保底机制：</b>连续 10 次未中奖，可获 1 USDC 安慰奖。<br>
+            <b style="color:var(--txt);">发放时间：</b>中奖奖励在活动结束后 7 天内随主奖池一并发放。<br>
+            <b style="color:var(--txt);">段位锁定：</b>宝盒消耗只影响最终积分（王者榜排名），不影响已锁定段位。
+          </div>
+        </div>
+      </section>
+
+      <div style="height:12px;"></div>
+    </section>
+
+    <!-- ========================================================
+         商城 SHOP
+         ======================================================== -->
+    <section class="view" id="view-shop" role="tabpanel" aria-labelledby="tab-shop">
+
+      <div class="page-head cyan">
+        <h1 class="page-title">积分商城</h1>
+        <div class="page-sub">POINTS SHOP · 财气值兑换</div>
+      </div>
+
+      <!-- 余额 -->
+      <section class="shop-balance">
+        <div class="balance-main">
+          <div class="balance-label">AVAILABLE BALANCE</div>
+          <div class="balance-value">
+            <span class="num" data-count="28450">0</span><small>PTS</small>
+          </div>
+          <div class="balance-sub" data-balance-sub>≈ 56 次盲盒 · 或 5 张抵扣券</div>
+        </div>
+        <button class="balance-cta" type="button" data-toast="查看兑换记录">记录</button>
+      </section>
+
+      <!-- 分类 -->
+      <div class="cat-chips" role="tablist" aria-label="商品分类">
+        <button class="cat-chip active" type="button" data-cat="all" role="tab" aria-selected="true">全部</button>
+        <button class="cat-chip" type="button" data-cat="token" role="tab" aria-selected="false">代币</button>
+        <button class="cat-chip" type="button" data-cat="rights" role="tab" aria-selected="false">权益</button>
+        <button class="cat-chip" type="button" data-cat="nft" role="tab" aria-selected="false">NFT</button>
+      </div>
+
+      <!-- 商品 -->
+      <div class="shop-grid">
+        <div class="shop-item" data-cat="rights">
+          <div class="shop-item-icon gold">🎟</div>
+          <div class="shop-item-name">10 USDC 抵扣券</div>
+          <div class="shop-item-desc">可用于未来活动押金或手续费抵扣</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">3,000<small>PTS</small></div>
+            <button class="shop-btn" type="button" data-price="3000">兑换</button>
+          </div>
+        </div>
+
+        <div class="shop-item" data-cat="rights">
+          <div class="shop-item-icon">🎁</div>
+          <div class="shop-item-name">盲盒券 × 1</div>
+          <div class="shop-item-desc">可免费抽取一次财神盲盒</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">500<small>PTS</small></div>
+            <button class="shop-btn" type="button" data-price="500">兑换</button>
+          </div>
+        </div>
+
+        <div class="shop-item" data-cat="nft">
+          <div class="shop-item-icon purple">🖼</div>
+          <div class="shop-item-name">财神 NFT 头像</div>
+          <div class="shop-item-desc">限量 500 份 · 可作社交头像</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">5,000<small>PTS</small></div>
+            <button class="shop-btn" type="button" data-price="5000">兑换</button>
+          </div>
+        </div>
+
+        <div class="shop-item" data-cat="rights">
+          <div class="shop-item-icon pink">⚡</div>
+          <div class="shop-item-name">手续费 5 折卡</div>
+          <div class="shop-item-desc">30 天内交易手续费减半</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">1,200<small>PTS</small></div>
+            <button class="shop-btn" type="button" data-price="1200">兑换</button>
+          </div>
+        </div>
+
+        <div class="shop-item" data-cat="token">
+          <div class="shop-item-icon gold">💰</div>
+          <div class="shop-item-name">$财神到 代币</div>
+          <div class="shop-item-desc">1,000 PTS = 100 枚 $财神DAO</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">1,000<small>PTS</small></div>
+            <button class="shop-btn" type="button" data-price="1000">兑换</button>
+          </div>
+        </div>
+
+        <div class="shop-item" data-cat="nft">
+          <div class="shop-item-icon purple">🏅</div>
+          <div class="shop-item-name">创世勋章</div>
+          <div class="shop-item-desc">永久收藏 · 链上记录 · 数量有限</div>
+          <div class="shop-item-foot">
+            <div class="shop-price">8,000<small>PTS</small></div>
+            <button class="shop-btn sold" type="button" disabled>已售罄</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 说明 -->
+      <section class="sec">
+        <div class="card" style="padding:14px 15px;text-align:left;">
+          <div style="font-size:12px;line-height:1.8;color:var(--dim);">
+            <b style="color:var(--txt);">兑换规则：</b>所有商品兑换后立即扣减 PTS，不可撤销。实物类与代币类奖励在 7 天内发放。<br>
+            <b style="color:var(--txt);">消耗说明：</b>商城消耗只影响最终积分（王者榜排名），不影响已锁定段位。
+          </div>
+        </div>
+      </section>
+
+      <div style="height:12px;"></div>
+    </section>
+
+    <!-- ========================================================
+         我的 ME
+         ======================================================== -->
+    <section class="view" id="view-me" role="tabpanel" aria-labelledby="tab-me">
+
+      <div class="page-head green">
+        <h1 class="page-title">我的</h1>
+        <div class="page-sub">PROFILE · 账户与设置</div>
+      </div>
+
+      <!-- 个人卡 -->
+      <section class="profile-card">
+        <div class="profile-av">
+          <img src="../images/caishen.png" alt=""
+               onerror="this.style.display='none';this.parentElement.textContent='財';">
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">
+            H5kFA...6868
+            <button class="copy-mini" type="button"
+                    data-addr="0x7b2d9a4f8c"
+                    data-copy="wallet" aria-label="复制钱包地址">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="12" height="12" rx="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+          <div class="profile-tags">
+            <span class="profile-tag lv">LV.3 黄金交易者</span>
+            <span class="profile-tag rank">排名 #1,204</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 数据概览 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>账户概览</h2>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <div class="stat-k">财气值</div>
+            <div class="stat-v gold" data-points-short>28.4K</div>
+            <div class="stat-s">今日 <b>+2,340</b></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-k">持仓乘数</div>
+            <div class="stat-v">1.5×</div>
+            <div class="stat-s">连持 16 天</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-k">押金状态</div>
+            <div class="stat-v green">已锁定</div>
+            <div class="stat-s">$68 · 全额退</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 我的持仓 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>我的持仓</h2>
+          <span class="sec-more" data-toast="快照 UTC 00:00 · 随机 3–5 次">详情 ›</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <div class="stat-k">持仓</div>
+            <div class="stat-v">128,450</div>
+            <div class="stat-s">≈ 2,103 USDC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-k">日均持仓</div>
+            <div class="stat-v gold">420.6</div>
+            <div class="stat-s">乘数 <b>1.2×</b></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-k">累计净买入</div>
+            <div class="stat-v cyan">3,240</div>
+            <div class="stat-s">USDC</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 连续签到 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>连续签到</h2>
+          <span class="sec-more" data-toast="中断一天即重新计数">规则 ›</span>
+        </div>
+        <div class="card checkin">
+          <div class="checkin-head">
+            <span class="checkin-streak">已连签 <b>5</b> 天</span>
+            <span class="checkin-streak reward">D7 +200 PTS</span>
+          </div>
+          <div class="checkin-grid">
+            <div class="day done"><span>D1</span><b>✓</b></div>
+            <div class="day done"><span>D2</span><b>✓</b></div>
+            <div class="day done"><span>D3</span><b>✓</b></div>
+            <div class="day done"><span>D4</span><b>✓</b></div>
+            <div class="day done"><span>D5</span><b>✓</b></div>
+            <div class="day today"><span>D6</span><b>+50</b></div>
+            <div class="day locked"><span>D7</span><b>+200</b></div>
+          </div>
+          <button class="checkin-btn" id="checkinBtn" type="button">今日签到 +50 财气值</button>
+        </div>
+      </section>
+
+      <!-- 设置列表 -->
+      <section class="sec">
+        <div class="sec-head">
+          <h2>账户与设置</h2>
+        </div>
+        <div class="setting-list">
+          <button class="setting-row" type="button" id="copyCa"
+                  data-addr="68PUv5chFPRKmh82VLM78WSHumhVVntkJuWZSBhA6868">
+            <div class="setting-ico i-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <rect x="9" y="9" width="12" height="12" rx="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </div>
+            <div class="setting-body">
+              <div class="setting-title">合约地址</div>
+              <div class="setting-desc">点击复制 · Solana SPL</div>
+            </div>
+            <span class="setting-value" id="caValue">68PUv5...A6868</span>
+          </button>
+
+          <button class="setting-row" type="button" data-toast="奖池地址 · 押金锁定 · 销毁记录 · 随机数种子">
+            <div class="setting-ico i-sol">🔍</div>
+            <div class="setting-body">
+              <div class="setting-title">透明度</div>
+              <div class="setting-desc">链上公示 · 可查可复算</div>
+            </div>
+            <span class="setting-arrow" aria-hidden="true">›</span>
+          </button>
+
+          <button class="setting-row" type="button" data-toast="查看活动完整规则">
+            <div class="setting-ico i-red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <path d="m10.29 3.86 9.19 15.14a2 2 0 0 1-1.71 3H3.23a2 2 0 0 1-1.71-3l9.19-15.14a1 1 0 0 1 1.71 0Z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div class="setting-body">
+              <div class="setting-title">风险提示</div>
+              <div class="setting-desc">加密资产 · 波动剧烈</div>
+            </div>
+            <span class="setting-arrow" aria-hidden="true">›</span>
+          </button>
+
+          <button class="setting-row" type="button" data-toast="版本 v2.0 · 官方活动页">
+            <div class="setting-ico i-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+              </svg>
+            </div>
+            <div class="setting-body">
+              <div class="setting-title">关于</div>
+              <div class="setting-desc">版本 v2.0 · 官方</div>
+            </div>
+            <span class="setting-arrow" aria-hidden="true">›</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 风险提示 -->
+      <section class="sec">
+        <div class="risk-box">
+          <div class="risk-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m10.29 3.86 9.19 15.14a2 2 0 0 1-1.71 3H3.23a2 2 0 0 1-1.71-3l9.19-15.14a1 1 0 0 1 1.71 0Z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            风险提示
+          </div>
+          <div class="risk-body">
+            加密资产风险极高，代币价格波动剧烈。<b>所有 USDC 等值奖励仅作展示参考</b>，最终以链上实际发放数量为准。押金退还的是报名时锁定的<b>原始代币数量</b>，币价涨跌不影响退还数量。请遵守当地法律法规，理性参与。
+          </div>
+        </div>
+      </section>
+
+      <!-- 页脚 -->
+      <section class="sec">
+        <div style="padding-top:8px;border-top:1px solid var(--brd);font-size:10.5px;color:var(--dim2);line-height:1.9;text-align:center;">
+          本页面内容仅用于活动说明，不构成任何投资建议或收益承诺。<br>
+          所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。
+        </div>
+      </section>
+
+      <div style="height:12px;"></div>
+    </section>
+
+  </main>
+
+  <!-- ========== 底部导航 ========== -->
+  <nav class="tabbar" role="tablist" aria-label="主导航">
+    <button class="tab active" id="tab-home" data-view="home" role="tab" aria-selected="true" aria-label="首页">
+      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H15v-6H9v6H3z"/></svg>
+      <span>首页</span>
+    </button>
+    <button class="tab" id="tab-team" data-view="team" role="tab" aria-selected="false" aria-label="战队">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2"/><path d="M16.5 5.4a3.2 3.2 0 0 1 0 6.2M18 13.9c2.2.6 3.5 2.5 3.5 5"/></svg>
+      <span>战队</span>
+    </button>
+    <button class="tab" id="tab-gacha" data-view="gacha" role="tab" aria-selected="false" aria-label="盲盒">
+      <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 3.5 8 4.2 8.5 9 12 9zM12 9s1.5-5.5 4-4.8S15.5 9 12 9z"/></svg>
+      <span>盲盒</span>
+    </button>
+    <button class="tab" id="tab-shop" data-view="shop" role="tab" aria-selected="false" aria-label="商城">
+      <svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12.2a1.6 1.6 0 0 1-1.6 1.4H6.8a1.6 1.6 0 0 1-1.6-1.4z"/><path d="M8.5 8V6.2a3.5 3.5 0 1 1 7 0V8"/></svg>
+      <span>商城</span>
+    </button>
+    <button class="tab" id="tab-me" data-view="me" role="tab" aria-selected="false" aria-label="我的">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 21c0-4 3.4-7 7.5-7s7.5 3 7.5 7"/></svg>
+      <span>我的</span>
+    </button>
+  </nav>
+
+  <!-- 返回顶部 -->
+  <button class="back-top" id="backTop" type="button" aria-label="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 抽奖结果模态框 -->
+  <div class="result-modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-hidden="true">
+    <div class="result-backdrop" data-close-result></div>
+    <div class="result-card">
+      <div class="result-glow" aria-hidden="true"></div>
+      <div class="result-ribbon">CONGRATULATIONS</div>
+      <button class="result-close" id="resultClose" type="button" aria-label="关闭">×</button>
+      <div class="result-icon" id="resultIcon" aria-hidden="true">財</div>
+      <h3 class="result-title" id="resultTitle">恭喜中奖</h3>
+      <div class="result-tier" id="resultTier">小额奖励</div>
+      <div class="result-amount"><span id="resultAmount">2</span><small>USDC</small></div>
+      <div class="result-desc">活动结束后 7 天内自动发放至钱包</div>
+      <button class="result-btn" id="resultBtn" type="button">再 抽 一 次</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ============================================================
+     0. 全局状态
+     ============================================================ */
+  var userPoints = 28450;
+
+  /* ============================================================
+     1. 数字滚动
+     ============================================================ */
+  function countUp(el, target, dur){
+    if (!el) return;
+    var t0 = performance.now();
+    function ease(t){ return 1 - Math.pow(1 - t, 3); }
+    function frame(now){
+      var p = Math.min((now - t0) / dur, 1);
+      el.textContent = Math.floor(ease(p) * target).toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  function animateCounts(root){
+    if (!root) return;
+    root.querySelectorAll('[data-count]').forEach(function(el){
+      if (el.dataset.counted === '1') return;
+      el.dataset.counted = '1';
+      var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      countUp(el, target, 1200);
+    });
+  }
+
+  /* ============================================================
+     2. 倒计时
+     ============================================================ */
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  var remain = ((12 * 24 + 8) * 3600 + 24 * 60 + 31) * 1000;
+  var cdEl = document.getElementById('cdText');
+  function renderCd(){
+    if (!cdEl) return;
+    var s = Math.max(0, Math.floor(remain / 1000));
+    var d = Math.floor(s / 86400);
+    var h = Math.floor((s % 86400) / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var ss = s % 60;
+    cdEl.textContent = d + '天 ' + pad(h) + ':' + pad(m) + ':' + pad(ss);
+  }
+
+  /* ============================================================
+     3. Toast
+     ============================================================ */
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg, type){
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.remove('warn', 'success');
+    if (type === 'warn') toastEl.classList.add('warn');
+    else if (type === 'success') toastEl.classList.add('success');
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      toastEl.classList.remove('show');
+    }, 2000);
+  }
+
+  /* ============================================================
+     4. 余额更新
+     ============================================================ */
+  function updateBalanceUI(){
+    // 首页 Hero + 商城余额（data-count 动画后由 textContent 控制）
+    var hero = document.querySelector('.fortune-value');
+    if (hero) hero.textContent = userPoints.toLocaleString('en-US');
+    var shop = document.querySelector('.balance-value .num');
+    if (shop) shop.textContent = userPoints.toLocaleString('en-US');
+
+    // 盲盒页余额
+    document.querySelectorAll('[data-points]').forEach(function(el){
+      el.textContent = userPoints.toLocaleString('en-US');
+    });
+    document.querySelectorAll('[data-draws]').forEach(function(el){
+      el.textContent = Math.floor(userPoints / 500);
+    });
+    // 我的页短数字
+    document.querySelectorAll('[data-points-short]').forEach(function(el){
+      if (userPoints >= 1000) el.textContent = (userPoints / 1000).toFixed(1) + 'K';
+      else el.textContent = userPoints;
+    });
+    // 商城副标题
+    document.querySelectorAll('[data-balance-sub]').forEach(function(el){
+      var draws = Math.floor(userPoints / 500);
+      var coupons = Math.floor(userPoints / 5000);
+      el.textContent = '≈ ' + draws + ' 次盲盒 · 或 ' + (coupons || 0) + ' 张抵扣券';
+    });
+    // 可抽次数
+    var drawCount = document.querySelector('.draw-count');
+    if (drawCount) drawCount.textContent = Math.floor(userPoints / 500);
+  }
+
+  function spendPoints(n){
+    if (userPoints < n){
+      showToast('余额不足 · 还差 ' + (n - userPoints).toLocaleString('en-US') + ' PTS', 'warn');
+      return false;
+    }
+    userPoints -= n;
+    updateBalanceUI();
+    return true;
+  }
+
+  function addPoints(n){
+    userPoints += n;
+    updateBalanceUI();
+  }
+
+  /* ============================================================
+     5. 视图切换
+     ============================================================ */
+  var views = document.querySelectorAll('.view');
+  var tabs = document.querySelectorAll('.tab');
+
+  function showView(name){
+    var target = document.getElementById('view-' + name);
+    if (!target) return;
+
+    var changed = false;
+    views.forEach(function(v){
+      var isTarget = v.id === 'view-' + name;
+      if (isTarget && !v.classList.contains('active')) changed = true;
+      v.classList.toggle('active', isTarget);
+    });
+
+    tabs.forEach(function(t){
+      var on = t.dataset.view === name;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    // 立即滚动到顶（临时关闭 smooth，避免长距离滚动动画）
+    if (changed){
+      var html = document.documentElement;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      html.style.scrollBehavior = prev;
+
+      // 重新触发视图入场动画
+      target.style.animation = 'none';
+      void target.offsetWidth;
+      target.style.animation = '';
+
+      // 触发目标视图的数字动画
+      setTimeout(function(){ animateCounts(target); }, 80);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){ showView(tab.dataset.view); });
+  });
+
+  document.querySelectorAll('[data-view]').forEach(function(el){
+    if (el.classList.contains('tab')) return;
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      showView(el.dataset.view);
+    });
+  });
+
+  /* ============================================================
+     6. data-toast 通用绑定（data-view 优先）
+     ============================================================ */
+  document.querySelectorAll('[data-toast]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if (el.hasAttribute('data-view')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      showToast(el.getAttribute('data-toast'));
+    });
+  });
+
+  /* ============================================================
+     7. 签到
+     ============================================================ */
+  var checkinBtn = document.getElementById('checkinBtn');
+  if (checkinBtn){
+    checkinBtn.addEventListener('click', function(){
+      if (checkinBtn.disabled) return;
+      checkinBtn.disabled = true;
+      checkinBtn.textContent = '已签到 · 明日再领 +200';
+      addPoints(50);
+      showToast('签到成功 · +50 财气值', 'success');
+
+      var today = document.querySelector('.day.today');
+      if (today){
+        today.classList.remove('today');
+        today.classList.add('done');
+        var b = today.querySelector('b');
+        if (b) b.textContent = '✓';
+      }
+      var next = document.querySelector('.day.locked');
+      if (next) {
+        next.classList.remove('locked');
+        next.classList.add('today');
+        var nb = next.querySelector('b');
+        if (nb) nb.textContent = '+200';
+      }
+      var streakNum = document.querySelector('.checkin-streak b');
+      if (streakNum) streakNum.textContent = '6';
+    });
+  }
+
+  /* ============================================================
+     8. 复制功能
+     ============================================================ */
+  function fallbackCopy(text, cb){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    try { document.execCommand('copy'); cb && cb(); } catch(e){}
+    document.body.removeChild(ta);
+  }
+  function copyText(text, cb){
+    if (navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(cb).catch(function(){ fallbackCopy(text, cb); });
+    } else {
+      fallbackCopy(text, cb);
+    }
+  }
+
+  var copyCa = document.getElementById('copyCa');
+  var caValue = document.getElementById('caValue');
+  if (copyCa){
+    copyCa.addEventListener('click', function(){
+      copyText(copyCa.getAttribute('data-addr'), function(){
+        showToast('合约地址已复制', 'success');
+        if (caValue) caValue.textContent = '已复制 ✓';
+        setTimeout(function(){
+          if (caValue) caValue.textContent = '68PUv5...A6868';
+        }, 1500);
+      });
+    });
+  }
+
+  document.querySelectorAll('[data-copy="wallet"]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      copyText(btn.getAttribute('data-addr'), function(){
+        btn.classList.add('copied');
+        showToast('钱包地址已复制', 'success');
+        setTimeout(function(){ btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+
+  /* ============================================================
+     9. 无缝滚动
+     ============================================================ */
+  (function(){
+    var track = document.getElementById('ticker');
+    if (!track) return;
+    track.innerHTML += track.innerHTML;
+  })();
+
+  /* ============================================================
+     10. 盲盒抽取 + 结果模态框
+     ============================================================ */
+  var gachaBtn = document.getElementById('gachaBtn');
+  var gachaBox = document.getElementById('gachaBox');
+  var resultModal = document.getElementById('resultModal');
+  var resultAmount = document.getElementById('resultAmount');
+  var resultTier = document.getElementById('resultTier');
+  var resultIcon = document.getElementById('resultIcon');
+  var resultBtn = document.getElementById('resultBtn');
+  var resultClose = document.getElementById('resultClose');
+  var lastFocus = null;
+
+  function openResult(tier, amount, isBig){
+    resultTier.textContent = tier;
+    resultAmount.textContent = amount;
+    resultIcon.textContent = isBig ? '🎉' : '財';
+    resultIcon.style.fontSize = isBig ? '36px' : '42px';
+    lastFocus = document.activeElement;
+    resultModal.classList.add('show');
+    resultModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ resultBtn && resultBtn.focus(); }, 100);
+  }
+  function closeResult(){
+    resultModal.classList.remove('show');
+    resultModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  if (gachaBtn && gachaBox){
+    gachaBtn.addEventListener('click', function(){
+      if (gachaBtn.disabled) return;
+      if (userPoints < 500){
+        showToast('余额不足 · 需 500 PTS', 'warn');
+        return;
+      }
+      gachaBtn.disabled = true;
+      gachaBtn.textContent = '正在抽取...';
+      gachaBox.classList.add('shake');
+
+      setTimeout(function(){
+        gachaBox.classList.remove('shake');
+        gachaBtn.disabled = false;
+        gachaBtn.textContent = '再抽一次 · 500 PTS';
+
+        spendPoints(500);
+
+        var r = Math.random();
+        var reward, tier, isBig = false;
+        if (r < 0.85){
+          reward = (1 + Math.random() * 2).toFixed(1);
+          tier = '小额奖励';
+        } else if (r < 0.98){
+          reward = (10 + Math.random() * 20).toFixed(1);
+          tier = '中额奖励';
+        } else {
+          reward = (100 + Math.random() * 900).toFixed(0);
+          tier = '超级大奖';
+          isBig = true;
+        }
+
+        openResult(tier, reward, isBig);
+      }, 750);
+    });
+  }
+
+  if (resultBtn){
+    resultBtn.addEventListener('click', function(){
+      closeResult();
+      setTimeout(function(){
+        if (gachaBtn) gachaBtn.click();
+      }, 180);
+    });
+  }
+  if (resultClose){
+    resultClose.addEventListener('click', closeResult);
+  }
+  if (resultModal){
+    resultModal.querySelectorAll('[data-close-result]').forEach(function(el){
+      el.addEventListener('click', closeResult);
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && resultModal.classList.contains('show')) closeResult();
+    });
+  }
+
+  /* ============================================================
+     11. 商城分类过滤
+     ============================================================ */
+  var catChips = document.querySelectorAll('.cat-chip');
+  var shopItems = document.querySelectorAll('.shop-item');
+  catChips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      catChips.forEach(function(c){
+        c.classList.remove('active');
+        c.setAttribute('aria-selected', 'false');
+      });
+      chip.classList.add('active');
+      chip.setAttribute('aria-selected', 'true');
+
+      var cat = chip.dataset.cat;
+      shopItems.forEach(function(item){
+        var show = cat === 'all' || item.dataset.cat === cat;
+        item.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  /* ============================================================
+     12. 商城兑换
+     ============================================================ */
+  document.querySelectorAll('.shop-btn:not(.sold)').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var price = parseInt(btn.dataset.price, 10) || 0;
+      if (!price) return;
+      if (!spendPoints(price)) return;
+      btn.classList.add('sold');
+      btn.textContent = '已兑换';
+      btn.disabled = true;
+      showToast('兑换成功 · 已扣 ' + price.toLocaleString('en-US') + ' PTS', 'success');
+    });
+  });
+
+  /* ============================================================
+     13. 任务领取
+     ============================================================ */
+  document.querySelectorAll('[data-claim]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (btn.disabled) return;
+      var reward = parseInt(btn.dataset.reward, 10) || 0;
+      var row = btn.closest('.task');
+      if (row){
+        row.classList.remove('claim');
+        row.classList.add('done');
+      }
+      btn.classList.add('claimed');
+      btn.textContent = '已领取';
+      btn.disabled = true;
+      addPoints(reward);
+      showToast('已领取 +' + reward + ' 财神积分', 'success');
+    });
+  });
+
+  /* ============================================================
+     14. 返回顶部
+     ============================================================ */
+  var backTop = document.getElementById('backTop');
+  if (backTop){
+    var onScroll = function(){
+      if (window.scrollY > 500) backTop.classList.add('show');
+      else backTop.classList.remove('show');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    backTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ============================================================
+     15. 初始化
+     ============================================================ */
+  renderCd();
+  setInterval(function(){ remain -= 1000; renderCd(); }, 1000);
+  animateCounts(document.getElementById('view-home'));
+  updateBalanceUI();
+})();
+</script>
+</body>
+</html>
