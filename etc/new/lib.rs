@@ -108,7 +108,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 管理员从白名单移除副币 Mint
+    /// 管理员从白名单移除副币 Mint（使用末尾填补法优化，达到 O(1) 效率）
     pub fn remove_secondary_mint(ctx: Context<UpdateConfig>, mint: Pubkey) -> Result<()> {
         let config = &mut ctx.accounts.config;
         let mut found_index = None;
@@ -121,12 +121,10 @@ pub mod custody_staking {
         }
 
         let idx = found_index.ok_or(CustodyError::SecondaryMintNotFound)?;
-
-        // 将后面的元素往前挪，或者直接清空并维护
         let count = config.num_secondary_mints as usize;
-        for i in idx..(count - 1) {
-            config.secondary_mints[i] = config.secondary_mints[i + 1];
-        }
+
+        // 用最后一个有效元素填补被删除的位置，然后将末尾清空
+        config.secondary_mints[idx] = config.secondary_mints[count - 1];
         config.secondary_mints[count - 1] = Pubkey::default();
         config.num_secondary_mints = config.num_secondary_mints.checked_sub(1).unwrap();
 
