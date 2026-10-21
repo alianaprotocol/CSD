@@ -1,11 +1,12 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 
-declare_id!("GPcYC73GKaKbsGpJFKzZVnoCz6s2T5Ym1u1Gvnn86vf9");
+declare_id!("ALjUNxwxxvYyW1KWSP2sBEtoyuJAmP9FQHagtnTdN6t6");
 
 // ───────────────────────────── Constants ─────────────────────────────
 
 pub const MAX_TIERS: usize = 5;
+pub const MAX_SECONDARY_MINTS: usize = 50;
 pub const WEIGHT_PRECISION: u64 = 10_000;
 pub const MAX_ANNUAL_RATE_BPS: u64 = 100_000; // 1000% 硬上限，支持 200% 档
 pub const SINGLE_PRIMARY_WEIGHT_BPS: u64 = 10_000;
@@ -16,7 +17,7 @@ pub const SINGLE_PRIMARY_WEIGHT_BPS: u64 = 10_000;
 pub mod custody_staking {
     use super::*;
 
-    /// 初始化：利率表 + 双币仓 60/40 权重 + 比例容差。只调用一次。
+    /// 初始化：利率表 + 双币仓权重 + 比例容差。只调用一次。
     pub fn initialize_config(
         ctx: Context<InitializeConfig>,
         tiers: Vec<RateTier>,
@@ -56,6 +57,7 @@ pub mod custody_staking {
         config.authority = ctx.accounts.authority.key();
         config.position_nonce = 0;
         config.num_tiers = tiers.len() as u8;
+        config.num_secondary_mints = 0;
         config.primary_weight_bps = primary_weight_bps;
         config.secondary_weight_bps = secondary_weight_bps;
         config.weight_tolerance_bps = weight_tolerance_bps;
@@ -69,6 +71,10 @@ pub mod custody_staking {
             };
         }
 
+        for i in 0..MAX_SECONDARY_MINTS {
+            config.secondary_mints[i] = Pubkey::default();
+        }
+
         emit!(ConfigInitialized {
             num_tiers: config.num_tiers,
             primary_weight_bps,
@@ -79,7 +85,55 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 更新某档位的单币/双币利率。duration 不可改，只影响新仓。
+    /// 管理员添加允许的副币 Mint 到白名单
+    pub fn add_secondary_mint(ctx: Context<UpdateConfig>, mint: Pubkey) -> Result<()> {
+        let config = &mut ctx.accounts.config;
+        require!(
+            (config.num_secondary_mints as usize) < MAX_SECONDARY_MINTS,
+            CustodyError::TooManySecondaryMints
+        );
+
+        // 检查是否已存在
+        for i in 0..config.num_secondary_mints as usize {
+            require!(
+                config.secondary_mints[i] != mint,
+                CustodyError::SecondaryMintAlreadyExists
+            );
+        }
+
+        let idx = config.num_secondary_mints as usize;
+        config.secondary_mints[idx] = mint;
+        config.num_secondary_mints = config.num_secondary_mints.checked_add(1).unwrap();
+
+        Ok(())
+    }
+
+    /// 管理员从白名单移除副币 Mint
+    pub fn remove_secondary_mint(ctx: Context<UpdateConfig>, mint: Pubkey) -> Result<()> {
+        let config = &mut ctx.accounts.config;
+        let mut found_index = None;
+
+        for i in 0..config.num_secondary_mints as usize {
+            if config.secondary_mints[i] == mint {
+                found_index = Some(i);
+                break;
+            }
+        }
+
+        let idx = found_index.ok_or(CustodyError::SecondaryMintNotFound)?;
+
+        // 将后面的元素往前挪，或者直接清空并维护
+        let count = config.num_secondary_mints as usize;
+        for i in idx..(count - 1) {
+            config.secondary_mints[i] = config.secondary_mints[i + 1];
+        }
+        config.secondary_mints[count - 1] = Pubkey::default();
+        config.num_secondary_mints = config.num_secondary_mints.checked_sub(1).unwrap();
+
+        Ok(())
+    }
+
+    /// 更新某档位的单币/双币利率
     pub fn update_tier_rates(
         ctx: Context<UpdateConfig>,
         tier_index: u8,
@@ -113,7 +167,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 更新双币仓 60/40 权重和容差。只影响新仓。
+    /// 更新双币仓权重和容差
     pub fn update_weights(
         ctx: Context<UpdateConfig>,
         primary_weight_bps: u64,
@@ -150,7 +204,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 单币仓建仓。
+    /// 单币仓建仓
     pub fn create_single_position(
         ctx: Context<CreateSinglePosition>,
         tier_index: u8,
@@ -226,7 +280,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 双币仓建仓。
+    /// 双币仓建仓（会校验副币是否在白名单中）
     pub fn create_dual_position(
         ctx: Context<CreateDualPosition>,
         tier_index: u8,
@@ -249,6 +303,17 @@ pub mod custody_staking {
             CustodyError::InvalidTierIndex
         );
 
+        // 校验 secondary_mint 是否在白名单中
+        let secondary_mint_key = ctx.accounts.secondary_mint.key();
+        let mut found = false;
+        for i in 0..config.num_secondary_mints as usize {
+            if config.secondary_mints[i] == secondary_mint_key {
+                found = true;
+                break;
+            }
+        }
+        require!(found, CustodyError::SecondaryMintNotFound);
+
         let tier = config.tiers[tier_index as usize];
         let unlock_at = clock
             .unix_timestamp
@@ -270,7 +335,7 @@ pub mod custody_staking {
 
         position.primary_mint = ctx.accounts.primary_mint.key();
         position.primary_amount = primary_amount;
-        position.secondary_mint = ctx.accounts.secondary_mint.key();
+        position.secondary_mint = secondary_mint_key;
         position.secondary_amount = secondary_amount;
 
         position.rate_bps = tier.dual_rate_bps;
@@ -325,8 +390,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 到期释放本金。Single 禁止传副币账户，Dual 强制传且逐字段校验。
-    /// 到期释放本金。Single 禁止传副币账户，Dual 强制传且逐字段校验。
+    /// 到期释放本金
     pub fn release_position(ctx: Context<ReleasePosition>) -> Result<()> {
         let clock = Clock::get()?;
 
@@ -339,7 +403,6 @@ pub mod custody_staking {
             CustodyError::NotYetUnlocked
         );
 
-        // 提前缓存需要的字段，避免长生命周期可变借用冲突
         let owner_key = ctx.accounts.position.owner;
         let position_id = ctx.accounts.position.position_id;
         let position_bump = ctx.accounts.position.bump;
@@ -413,7 +476,6 @@ pub mod custody_staking {
             }
         }
 
-        // 最后再对 position 进行可变修改
         ctx.accounts.position.is_released = true;
 
         emit!(Released {
@@ -426,7 +488,7 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 关闭已释放的 Position，回收租金。
+    /// 关闭已释放的 Position，回收租金
     pub fn close_position(ctx: Context<ClosePosition>) -> Result<()> {
         emit!(PositionClosed {
             position: ctx.accounts.position.key(),
@@ -546,7 +608,6 @@ pub struct CreateDualPosition<'info> {
 
     pub secondary_mint: Account<'info, Mint>,
 
-    // 使用 Box 将大结构体放到堆上，解决爆栈问题
     pub secondary_user_ata: Box<Account<'info, TokenAccount>>,
 
     #[account(
@@ -613,8 +674,8 @@ pub struct ClosePosition<'info> {
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, InitSpace, Default)]
 pub struct RateTier {
     pub duration_secs: i64,
-    pub single_rate_bps: u64, // 单币仓 APR
-    pub dual_rate_bps: u64,   // 双币仓 APR
+    pub single_rate_bps: u64,
+    pub dual_rate_bps: u64,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, InitSpace)]
@@ -630,9 +691,11 @@ pub struct VaultConfig {
     pub position_nonce: u64,
     pub tiers: [RateTier; MAX_TIERS],
     pub num_tiers: u8,
-    pub primary_weight_bps: u64,   // 6000
-    pub secondary_weight_bps: u64, // 4000
-    pub weight_tolerance_bps: u64, // 500 = ±5%
+    pub secondary_mints: [Pubkey; MAX_SECONDARY_MINTS],
+    pub num_secondary_mints: u8,
+    pub primary_weight_bps: u64,
+    pub secondary_weight_bps: u64,
+    pub weight_tolerance_bps: u64,
     pub bump: u8,
 }
 
@@ -760,4 +823,10 @@ pub enum CustodyError {
     MissingSecondaryAccounts,
     #[msg("Math overflow")]
     MathOverflow,
+    #[msg("Too many secondary mints (max 50)")]
+    TooManySecondaryMints,
+    #[msg("Secondary mint already exists in whitelist")]
+    SecondaryMintAlreadyExists,
+    #[msg("Secondary mint not found in whitelist")]
+    SecondaryMintNotFound,
 }
