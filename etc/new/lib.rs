@@ -8,7 +8,7 @@ declare_id!("ALjUNxwxxvYyW1KWSP2sBEtoyuJAmP9FQHagtnTdN6t6");
 pub const MAX_TIERS: usize = 5;
 pub const MAX_SECONDARY_MINTS: usize = 50;
 pub const WEIGHT_PRECISION: u64 = 10_000;
-pub const MAX_ANNUAL_RATE_BPS: u64 = 100_000; // 1000% 硬上限，支持 200% 档
+pub const MAX_ANNUAL_RATE_BPS: u64 = 100_000;
 pub const SINGLE_PRIMARY_WEIGHT_BPS: u64 = 10_000;
 
 // ───────────────────────────── Program ─────────────────────────────
@@ -17,7 +17,6 @@ pub const SINGLE_PRIMARY_WEIGHT_BPS: u64 = 10_000;
 pub mod custody_staking {
     use super::*;
 
-    /// 初始化：利率表 + 双币仓权重 + 比例容差。只调用一次。
     pub fn initialize_config(
         ctx: Context<InitializeConfig>,
         tiers: Vec<RateTier>,
@@ -38,7 +37,7 @@ pub mod custody_staking {
             CustodyError::InvalidWeights
         );
         require!(
-            weight_tolerance_bps <= 2_000, // 容差不超过 ±20%
+            weight_tolerance_bps <= 2_000,
             CustodyError::InvalidWeights
         );
 
@@ -85,7 +84,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 管理员添加允许的副币 Mint 到白名单
     pub fn add_secondary_mint(ctx: Context<UpdateConfig>, mint: Pubkey) -> Result<()> {
         let config = &mut ctx.accounts.config;
         require!(
@@ -93,7 +91,6 @@ pub mod custody_staking {
             CustodyError::TooManySecondaryMints
         );
 
-        // 检查是否已存在
         for i in 0..config.num_secondary_mints as usize {
             require!(
                 config.secondary_mints[i] != mint,
@@ -108,7 +105,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 管理员从白名单移除副币 Mint（使用末尾填补法优化，达到 O(1) 效率）
     pub fn remove_secondary_mint(ctx: Context<UpdateConfig>, mint: Pubkey) -> Result<()> {
         let config = &mut ctx.accounts.config;
         let mut found_index = None;
@@ -123,7 +119,6 @@ pub mod custody_staking {
         let idx = found_index.ok_or(CustodyError::SecondaryMintNotFound)?;
         let count = config.num_secondary_mints as usize;
 
-        // 用最后一个有效元素填补被删除的位置，然后将末尾清空
         config.secondary_mints[idx] = config.secondary_mints[count - 1];
         config.secondary_mints[count - 1] = Pubkey::default();
         config.num_secondary_mints = config.num_secondary_mints.checked_sub(1).unwrap();
@@ -131,7 +126,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 更新某档位的单币/双币利率
     pub fn update_tier_rates(
         ctx: Context<UpdateConfig>,
         tier_index: u8,
@@ -165,7 +159,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 更新双币仓权重和容差
     pub fn update_weights(
         ctx: Context<UpdateConfig>,
         primary_weight_bps: u64,
@@ -202,7 +195,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 单币仓建仓
     pub fn create_single_position(
         ctx: Context<CreateSinglePosition>,
         tier_index: u8,
@@ -278,7 +270,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 双币仓建仓（会校验副币是否在白名单中）
     pub fn create_dual_position(
         ctx: Context<CreateDualPosition>,
         tier_index: u8,
@@ -301,7 +292,6 @@ pub mod custody_staking {
             CustodyError::InvalidTierIndex
         );
 
-        // 校验 secondary_mint 是否在白名单中
         let secondary_mint_key = ctx.accounts.secondary_mint.key();
         let mut found = false;
         for i in 0..config.num_secondary_mints as usize {
@@ -388,7 +378,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 到期释放本金
     pub fn release_position(ctx: Context<ReleasePosition>) -> Result<()> {
         let clock = Clock::get()?;
 
@@ -486,7 +475,6 @@ pub mod custody_staking {
         Ok(())
     }
 
-    /// 关闭已释放的 Position，回收租金
     pub fn close_position(ctx: Context<ClosePosition>) -> Result<()> {
         emit!(PositionClosed {
             position: ctx.accounts.position.key(),
@@ -552,7 +540,7 @@ pub struct CreateSinglePosition<'info> {
         constraint = primary_user_ata.mint == primary_mint.key() @ CustodyError::MintMismatch,
         constraint = primary_user_ata.owner == owner.key() @ CustodyError::InvalidAtaOwner,
     )]
-    pub primary_user_ata: Account<'info, TokenAccount>,
+    pub primary_user_ata: Box<Account<'info, TokenAccount>>,
 
     #[account(
         init,
@@ -562,7 +550,7 @@ pub struct CreateSinglePosition<'info> {
         seeds = [b"vault", position.key().as_ref(), primary_mint.key().as_ref()],
         bump,
     )]
-    pub primary_vault: Account<'info, TokenAccount>,
+    pub primary_vault: Box<Account<'info, TokenAccount>>,
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
@@ -592,7 +580,7 @@ pub struct CreateDualPosition<'info> {
         constraint = primary_user_ata.mint == primary_mint.key() @ CustodyError::MintMismatch,
         constraint = primary_user_ata.owner == owner.key() @ CustodyError::InvalidAtaOwner,
     )]
-    pub primary_user_ata: Account<'info, TokenAccount>,
+    pub primary_user_ata: Box<Account<'info, TokenAccount>>,
 
     #[account(
         init,
@@ -602,10 +590,15 @@ pub struct CreateDualPosition<'info> {
         seeds = [b"vault", position.key().as_ref(), primary_mint.key().as_ref()],
         bump,
     )]
-    pub primary_vault: Account<'info, TokenAccount>,
+    pub primary_vault: Box<Account<'info, TokenAccount>>,
 
     pub secondary_mint: Account<'info, Mint>,
 
+    #[account(
+        mut,
+        constraint = secondary_user_ata.mint == secondary_mint.key() @ CustodyError::MintMismatch,
+        constraint = secondary_user_ata.owner == owner.key() @ CustodyError::InvalidAtaOwner,
+    )]
     pub secondary_user_ata: Box<Account<'info, TokenAccount>>,
 
     #[account(
@@ -635,20 +628,20 @@ pub struct ReleasePosition<'info> {
         constraint = primary_vault.mint == position.primary_mint @ CustodyError::MintMismatch,
         constraint = primary_vault.owner == position.key() @ CustodyError::InvalidVaultOwner,
     )]
-    pub primary_vault: Account<'info, TokenAccount>,
+    pub primary_vault: Box<Account<'info, TokenAccount>>,
 
     #[account(
         mut,
         constraint = primary_user_ata.mint == position.primary_mint @ CustodyError::MintMismatch,
         constraint = primary_user_ata.owner == owner.key() @ CustodyError::InvalidAtaOwner,
     )]
-    pub primary_user_ata: Account<'info, TokenAccount>,
+    pub primary_user_ata: Box<Account<'info, TokenAccount>>,
 
     #[account(mut)]
-    pub secondary_vault: Option<Account<'info, TokenAccount>>,
+    pub secondary_vault: Option<Box<Account<'info, TokenAccount>>>,
 
     #[account(mut)]
-    pub secondary_user_ata: Option<Account<'info, TokenAccount>>,
+    pub secondary_user_ata: Option<Box<Account<'info, TokenAccount>>>,
 
     pub token_program: Program<'info, Token>,
 }
