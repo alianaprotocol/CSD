@@ -231,60 +231,152 @@ body{
 .abstract b{color:var(--ink); font-weight:700;}
 .abstract .hl{color:var(--cyber); font-weight:700; border-bottom:2px solid var(--cyber-glow-soft); padding-bottom:1px;}
 
-/* ================= 核心优势卡片 ================= */
-.hl-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
-.hl-card{
-  padding:16px 16px 17px; border:1px solid var(--line); border-radius:var(--r);
-  background:var(--card); min-width:0; position:relative; overflow:hidden;
-  transition:background-color .25s ease, border-color .3s ease, transform .3s cubic-bezier(.34,1.2,.64,1), box-shadow .3s ease;
+/* ================= 核心优势卡片（移动优先全新设计） ================= */
+.hl-grid{
+  display: grid;
+  grid-template-columns: 1fr; /* 移动端默认单列，极大化阅读空间 */
+  gap: 16px;
 }
-.hl-card::before{
-  content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
-  background:var(--gold); border-radius:0 3px 3px 0;
-}
-.hl-card.hl-red::before{background:var(--cyber); box-shadow:0 0 8px var(--cyber-glow);}
-.hl-card::after{
-  content:""; position:absolute; top:0; right:0; width:0; height:0;
-  border-top:14px solid var(--cyber-glow-soft); border-left:14px solid transparent;
-  opacity:.7; transition:opacity .3s ease, border-top-color .3s ease;
-}
-.hl-card:hover{
-  transform:translateY(-2px); border-color:var(--cyber-glow);
-  box-shadow:0 8px 22px -12px rgba(20,24,29,.22), 0 0 0 1px var(--cyber-glow-soft), 0 0 20px -4px var(--cyber-glow-soft);
-}
-.hl-card:hover::after{opacity:1; border-top-color:var(--cyber);}
-.hl-ico{
-  position:absolute; top:12px; right:12px;
-  width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center;
-  border-radius:6px; background:var(--cyber-glow-faint);
-  color:var(--cyber); opacity:.75;
-  transition:opacity .25s ease, background .25s ease;
-}
-.hl-ico svg{width:15px; height:15px; display:block;}
-.hl-card:hover .hl-ico{opacity:1; background:var(--cyber-glow-soft);}
-.hl-card.hl-red .hl-ico{background:var(--cyber-glow-soft); opacity:.9;}
-.hl-num{
-  font-family:var(--mono); font-size:22px; font-weight:700; letter-spacing:-.03em;
-  color:var(--ink); line-height:1.1; margin-bottom:6px; padding-right:32px;
-}
-.hl-card.hl-red .hl-num{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
-.hl-t{font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.4; letter-spacing:-.005em;}
-.hl-d{margin-top:6px; font-size:11.5px; color:var(--muted); line-height:1.7;}
 
-.hl-links { margin-top: 12px; display: flex; gap: 8px; }
-.hl-link {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border: 1px solid var(--cyber-glow-soft);
-  border-radius: 4px; background: var(--cyber-glow-faint);
-  color: var(--cyber); font-size: 11.5px; font-weight: 600;
-  text-decoration: none; transition: all .2s ease;
-  -webkit-tap-highlight-color: transparent;
+.hl-card{
+  position: relative;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--card);
+  /* 现代感悬浮阴影：大面积、低透明度 */
+  box-shadow: 0 12px 32px -12px rgba(20, 24, 29, 0.08), 0 0 0 1px var(--line); 
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.hl-link:hover {
-  background: var(--cyber-glow-soft); border-color: var(--cyber);
-  box-shadow: 0 0 10px -2px var(--cyber-glow);
+
+/* 移除旧版的左侧粗线和右上角三角 */
+.hl-card::before, .hl-card::after { display: none; }
+
+/* 悬浮交互 */
+.hl-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(255, 45, 85, 0.15), 0 0 0 1px var(--cyber-glow-soft);
 }
-.hl-link svg { width: 12px; height: 12px; }
+
+/* 右上角图标：改为现代化的圆角药丸背景 */
+.hl-ico{
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--cyber-glow-faint);
+  color: var(--cyber);
+  transition: all 0.3s ease;
+}
+.hl-ico svg{ width: 22px; height: 22px; }
+.hl-card:hover .hl-ico {
+  background: var(--cyber-glow-soft);
+  transform: scale(1.05) rotate(-5deg);
+}
+
+/* 核心数字：极其醒目、极简无衬线粗体 */
+.hl-num{
+  font-family: var(--sans);
+  font-size: clamp(32px, 8vw, 42px); /* 大屏稍大，小屏依然震撼 */
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 8px;
+  padding-right: 60px; /* 给右上角图标留出空间，防重叠 */
+}
+
+/* 红色数据的特殊渐变色 */
+.hl-card.hl-red:not(:last-child) .hl-num,
+.hl-num.is-red {
+  background: linear-gradient(135deg, var(--cyber-d), var(--cyber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 标题 */
+.hl-t{
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+/* 描述文本 */
+.hl-d{
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ================= ★ 终极惊喜：焦点卡片（第 5 张，总发行量） ================= */
+.hl-card.hl-red:last-child {
+  /* 强制覆盖 grid 布局，让最后一张卡片独占一行并极其醒目 */
+  grid-column: 1 / -1 !important;
+  /* 深邃的高级感渐变背景 */
+  background: linear-gradient(145deg, #1c1e24 0%, #121419 100%);
+  border: 1px solid rgba(255, 45, 85, 0.2);
+  box-shadow: 0 16px 40px -12px rgba(255, 45, 85, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 在深色卡片上反转所有文字颜色 */
+.hl-card.hl-red:last-child .hl-num {
+  color: #fff;
+  text-shadow: 0 0 24px rgba(255, 45, 85, 0.6);
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+.hl-card.hl-red:last-child .hl-t { color: #fff; }
+.hl-card.hl-red:last-child .hl-d { color: #9aa3b0; }
+.hl-card.hl-red:last-child .hl-ico {
+  background: rgba(255, 45, 85, 0.15);
+  color: var(--cyber-l);
+}
+
+/* 深色卡片上的按钮焕然一新 */
+.hl-card.hl-red:last-child .hl-links {
+  margin-top: 20px;
+}
+.hl-card.hl-red:last-child .hl-link {
+  width: 100%;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 45, 85, 0.1);
+  border: 1px solid rgba(255, 45, 85, 0.3);
+  color: var(--cyber-l);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease;
+}
+.hl-card.hl-red:last-child .hl-link:hover {
+  background: var(--cyber);
+  color: #fff;
+  border-color: var(--cyber);
+  box-shadow: 0 8px 24px -6px var(--cyber-glow);
+  transform: translateY(-2px);
+}
+
+/* 桌面端（大屏）改为 2x2 网格，让卡片不至于拉得过长 */
+@media (min-width: 600px) {
+  .hl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hl-card { padding: 28px; }
+  /* 限制前四张卡片的文字不要太长 */
+  .hl-card:not(.hl-red) .hl-d { min-height: 48px; }
+}
 
 /* ================= 通用段落 ================= */
 .sec{padding:var(--sp-9) 0 var(--sp-7); border-bottom:1px solid var(--line); scroll-margin-top:56px;}
@@ -1187,6 +1279,13 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .eb-en { font-size: 11px; }
   .doc-sub { font-size: 14.5px; }
 
+  /* 核心优势卡片小屏微调 */
+  .hl-card { padding: 20px; }
+  .hl-ico { top: 20px; right: 20px; width: 42px; height: 42px; }
+  .hl-ico svg { width: 20px; height: 20px; }
+  .hl-num { padding-right: 50px; }
+  .hl-card.hl-red:last-child .hl-link { padding: 14px; font-size: 14px; }
+
   /* 卡片内部微调 */
   .alloc-row { padding: 14px; }
   .rel { padding: 14px; gap: 8px; }
@@ -1280,68 +1379,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .tl-v-why { font-size: 13px; }
   .tl-v-item { padding: 0 0 20px 28px; }
 
-  /* ================= 核心优势卡片移动端深度优化 ================= */
-  .hl-grid {
-    gap: 14px;
-  }
-
-  .hl-card {
-    padding: 18px 16px;
-    border-radius: 12px;
-  }
-
-  .hl-card::after {
-    display: none;
-  }
-
-  .hl-card::before {
-    width: 4px;
-  }
-
-  .hl-ico {
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-  }
-  .hl-ico svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .hl-num {
-    font-size: 26px;
-    margin-bottom: 8px;
-    padding-right: 40px;
-  }
-
-  .hl-num span {
-    font-size: 15px !important;
-  }
-
-  .hl-t {
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-
-  .hl-d {
-    font-size: 13.5px;
-    line-height: 1.65;
-    color: var(--ink-3);
-  }
-
-  .hl-links {
-    margin-top: 16px;
-  }
-  .hl-link {
-    width: 100%;
-    justify-content: center;
-    padding: 12px;
-    font-size: 13.5px;
-    border-radius: 8px;
-  }
-
   /* ================= 风险与声明（法律条款）移动端优化 ================= */
   .legal-grid {
     margin-top: var(--sp-3);
@@ -1413,15 +1450,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
     grid-template-columns: repeat(2, 1fr); /* 超小屏幕变为两列排布 */
     gap: 12px 10px;
   }
-
-  /* 核心优势卡片极窄屏 */
-  .hl-grid{ gap: 12px; }
-  .hl-card{ padding: 16px 14px; }
-  .hl-num { font-size: 24px; }
-  .hl-ico { width: 28px; height: 28px; top: 14px; right: 14px; }
-  .hl-ico svg { width: 16px; height: 16px; }
-  .hl-t { font-size: 15px; }
-  .hl-d { font-size: 13px; }
 
   .alloc-name { font-size: 14px; }
   .alloc-pct { font-size: 14.5px; }
@@ -1508,4 +1536,8 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
 
   .abstract::before { display: none !important; }
   .abstract-banner { box-shadow: none !important; border: 1px solid #ddd; }
+  
+  /* 打印时还原核心卡片背景为白色，防深色墨盒浪费 */
+  .hl-card.hl-red:last-child { background: #fff !important; border: 1px solid #ccc !important; color: #000 !important; }
+  .hl-card.hl-red:last-child .hl-num, .hl-card.hl-red:last-child .hl-t, .hl-card.hl-red:last-child .hl-d { color: #000 !important; text-shadow: none !important; background: none !important; -webkit-text-fill-color: initial !important; }
 }
