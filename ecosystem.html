@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,6 +8,21 @@
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E7%A6%8F%3C/text%3E%3C/svg%3E">
 <title>财神DAO生态系统 · 生态文档</title>
+
+<!-- ① 语言早期探测 -->
+<script>
+  (function () {
+    var lang;
+    try { lang = localStorage.getItem('gof-lang'); } catch (e) {}
+    if (lang !== 'zh' && lang !== 'en') {
+      var nav = (navigator.language || 'zh-CN').toLowerCase();
+      lang = nav.indexOf('zh') === 0 ? 'zh' : 'en';
+    }
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+  })();
+</script>
+
 <style>
   :root{
     color-scheme: light dark;
@@ -34,13 +49,36 @@
 
     --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px;
     --r:3px;
-    --sans:-apple-system,BlinkMacSystemFont,system-ui,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+
+    /* 字体栈优化：拉丁优先，中文兜底 */
+    --sans:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+
+    /* 排版基准 */
+    --lh-base: 1.8;
+    --fs-base: 15px;
+    --title-tracking: normal;
   }
+
+  /* 英文排版微调 */
+  :root[data-lang="en"] {
+    --lh-base: 1.65;
+    --fs-base: 14.5px;
+    --title-tracking: -0.015em;
+  }
+  :root[data-lang="en"] .doc-title { letter-spacing: -0.02em; font-size: clamp(24px, 6vw, 30px); }
+  :root[data-lang="en"] .sec-title { letter-spacing: -0.01em; }
+
+  /* 英文下隐藏冗余的中文标签 */
+  :root[data-lang="en"] .eb-cn { display: none; }
+  :root[data-lang="en"] .sec-title .sd-en { display: none; }
+  :root[data-lang="en"] .sec-lead { font-size: 14.5px; }
+  :root[data-lang="en"] .abstract p { font-size: 15px; line-height: 1.8; }
+
   *,*::before,*::after{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
   body{
     margin:0; background:var(--bg); color:var(--ink);
-    font-size:15px; line-height:1.8;
+    font-size:var(--fs-base); line-height:var(--lh-base);
     font-family:var(--sans);
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
@@ -79,23 +117,27 @@
   }
   .eb-cn{font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--ink-3); line-height:1;}
   .eb-en{font-family:var(--mono); font-size:10px; font-weight:400; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); line-height:1;}
-  .doc-title{margin:0; font-size:clamp(23px,5.8vw,28px); font-weight:700; letter-spacing:-.014em; line-height:1.24; color:var(--ink); text-wrap:balance;}
+  .doc-title{margin:0; font-size:clamp(23px,5.8vw,28px); font-weight:700; letter-spacing:var(--title-tracking); line-height:1.24; color:var(--ink); text-wrap:balance;}
   .doc-sub{margin:var(--sp-2) 0 0; font-size:13px; color:var(--ink-3); letter-spacing:.02em; line-height:1.55;}
 
-  .theme-toggle{
+  .header-actions { display: flex; gap: 8px; flex: none; margin-top: 2px; }
+
+  .theme-toggle, .lang-toggle{
     flex:none; display:inline-flex; align-items:center; justify-content:center;
-    width:36px; height:36px; padding:0;
+    height:36px; padding:0;
     border:1px solid var(--line); border-radius:8px;
     background:var(--card); color:var(--ink-3); cursor:pointer;
     -webkit-tap-highlight-color:transparent;
     transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
-    margin-top:2px;
   }
-  .theme-toggle:hover{
+  .theme-toggle { width: 36px; }
+  .lang-toggle { padding: 0 12px; font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+
+  .theme-toggle:hover, .lang-toggle:hover{
     border-color:var(--cyber-glow); color:var(--cyber);
     background:var(--cyber-glow-faint);
   }
-  .theme-toggle:active{background:var(--cyber-glow-soft);}
+  .theme-toggle:active, .lang-toggle:active{background:var(--cyber-glow-soft);}
   .theme-toggle svg{width:18px; height:18px; display:block;}
   .theme-toggle .ico-sun{display:none;}
   .theme-toggle .ico-moon{display:block;}
@@ -199,7 +241,6 @@
     line-height:1.35; color:var(--ink);
   }
 
-  /* 章节副标题：状态标签 + 描述 */
   .sec-title span{
     display:flex; align-items:center; flex-wrap:wrap; gap:7px;
     margin-top:7px; line-height:1.2;
@@ -250,6 +291,7 @@
     color:var(--muted); letter-spacing:.1em; text-transform:uppercase;
     margin-top:4px; line-height:1;
   }
+  :root[data-lang="en"] .sub-title span { display: none; }
 
   /* ================= 定义列表 ================= */
   .def{border-top:1px solid var(--line); margin:0;}
@@ -324,6 +366,9 @@
   .spec-k-en{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); line-height:1.4;}
   .spec-v{font-size:14px; color:var(--ink-2); line-height:1.85; min-width:0; text-wrap:pretty;}
   .spec-v b{color:var(--ink); font-weight:600;}
+
+  :root[data-lang="en"] .spec-k-cn { display: none; }
+  :root[data-lang="en"] .spec-k-en { display: block; font-size: 11px; letter-spacing: .05em; color: var(--ink-3); margin-top: 2px; }
 
   /* ================= 说明条 ================= */
   .caption{
@@ -715,6 +760,7 @@
     .toc-link{padding:8px 14px; min-height:40px; display:inline-flex; align-items:center;}
     .theme-toggle{width:40px; height:40px;}
     .theme-toggle svg{width:19px; height:19px;}
+    .lang-toggle { height: 40px; padding: 0 16px; font-size: 13px; }
     .faq-toggle-all{padding:8px 14px; min-height:36px;}
     .partners{grid-template-columns:1fr 1fr;}
   }
@@ -764,6 +810,7 @@
     .doc-sub{font-size:12.5px;}
     .theme-toggle{width:32px; height:32px; margin-top:1px;}
     .theme-toggle svg{width:16px; height:16px;}
+    .lang-toggle{height:32px; padding:0 10px; font-size:11px;}
     .mast-meta{gap:var(--sp-3) 20px;}
     .hl-grid{grid-template-columns:1fr; gap:8px;}
     .hl-card{padding:14px 14px 15px;}
@@ -809,7 +856,7 @@
     body{background:#fff; color:#000; font-size:10.5pt; line-height:1.6;}
     .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
     .doc::before, .masthead::after, .doc-foot::before{display:none !important;}
-    .theme-toggle, .toc, .back-top, .faq-tools, #toast, .segmented{display:none !important;}
+    .theme-toggle, .toc, .back-top, .faq-tools, #toast, .segmented, .lang-toggle{display:none !important;}
     .panel{display:block !important;}
     .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
     .sec-head{margin-bottom:10px;}
@@ -844,69 +891,72 @@
     <div class="mast-row">
       <div class="mast-left">
         <div class="eyebrow">
-          <span class="eb-cn">生态文档</span>
-          <span class="eb-en">ECOSYSTEM Documentation</span>
+          <span class="eb-cn" data-i18n="mast.eb.cn">生态文档</span>
+          <span class="eb-en" data-i18n="mast.eb.en">ECOSYSTEM Documentation</span>
         </div>
-        <h1 class="doc-title">财神DAO生态系统</h1>
-        <p class="doc-sub">从信仰到资产 · 从文化到娱乐的完整链上财神宇宙</p>
+        <h1 class="doc-title" data-i18n="mast.title">财神DAO生态系统</h1>
+        <p class="doc-sub" data-i18n="mast.sub">从信仰到资产 · 从文化到娱乐的完整链上财神宇宙</p>
       </div>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
-        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-      </button>
+      <div class="header-actions">
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="mast-meta">
       <div class="cell">
-        <span class="k">版本</span>
+        <span class="k" data-i18n="meta.ver.k">版本</span>
         <span class="v num">V3.0</span>
       </div>
       <div class="cell">
-        <span class="k">已上线</span>
-        <span class="v">燃香赐福 · 聚宝盆</span>
+        <span class="k" data-i18n="meta.live.k">已上线</span>
+        <span class="v" data-i18n="meta.live.v">燃香赐福 · 聚宝盆</span>
       </div>
       <div class="cell">
-        <span class="k">已集成</span>
-        <span class="v">4 合作代币</span>
+        <span class="k" data-i18n="meta.partner.k">已集成</span>
+        <span class="v" data-i18n="meta.partner.v">4 合作代币</span>
       </div>
       <div class="cell">
-        <span class="k">规划中</span>
-        <span class="v num">6 板块 + 联名 NFT + 活动层</span>
+        <span class="k" data-i18n="meta.plan.k">规划中</span>
+        <span class="v num" data-i18n="meta.plan.v">6 板块 + 联名 NFT + 活动层</span>
       </div>
     </div>
   </header>
 
   <!-- ================= 目录 ================= -->
   <nav class="toc" aria-label="文档导航">
-    <a class="toc-link" href="#overview">总览</a>
-    <a class="toc-link" href="#incense">燃香赐福</a>
-    <a class="toc-link" href="#treasure">聚宝盆</a>
-    <a class="toc-link" href="#nft">财神 NFT</a>
-    <a class="toc-link" href="#culture">文化院</a>
-    <a class="toc-link" href="#mall">商城</a>
-    <a class="toc-link" href="#game">小游戏</a>
-    <a class="toc-link" href="#partners">合作生态</a>
-    <a class="toc-link" href="#season">活动层</a>
-    <a class="toc-link" href="#loop">生态闭环</a>
-    <a class="toc-link" href="#risk">风险提示</a>
-    <a class="toc-link" href="#faq">FAQ</a>
+    <a class="toc-link" href="#overview" data-i18n="toc.overview">总览</a>
+    <a class="toc-link" href="#incense" data-i18n="toc.incense">燃香赐福</a>
+    <a class="toc-link" href="#treasure" data-i18n="toc.treasure">聚宝盆</a>
+    <a class="toc-link" href="#nft" data-i18n="toc.nft">财神 NFT</a>
+    <a class="toc-link" href="#culture" data-i18n="toc.culture">文化院</a>
+    <a class="toc-link" href="#mall" data-i18n="toc.mall">商城</a>
+    <a class="toc-link" href="#game" data-i18n="toc.game">小游戏</a>
+    <a class="toc-link" href="#partners" data-i18n="toc.partners">合作生态</a>
+    <a class="toc-link" href="#season" data-i18n="toc.season">活动层</a>
+    <a class="toc-link" href="#loop" data-i18n="toc.loop">生态闭环</a>
+    <a class="toc-link" href="#risk" data-i18n="toc.risk">风险提示</a>
+    <a class="toc-link" href="#faq" data-i18n="toc.faq">FAQ</a>
   </nav>
 
   <!-- ================= 摘要 ================= -->
   <section class="wrap abstract">
-    <p>
+    <p data-i18n-html="abstract.text">
       财神生态系统以 <b>$财神DAO</b> 为唯一核心资产，连接信仰、资产、文化、教育、娱乐、消费与治理。
       现有双引擎为 <span class="hl">燃香赐福</span> 与 <span class="hl">聚宝盆</span>：
       前者以「燃香即销毁」构建通缩入口，后者以「单宝 / 双宝」两种本位模型承接质押需求。
@@ -921,10 +971,10 @@
   <section class="wrap sec" id="overview">
     <div class="sec-head">
       <span class="sec-idx">01</span>
-      <h2 class="sec-title">总览<span class="sd-en">Product Overview</span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.ov.title">总览</span><span class="sd-en">Product Overview</span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.ov.lead">
       财神DAO生态系统由「现有双引擎 + 未来六大板块 + 合作代币 + 横向运营活动层」构成。每个产品承担一个明确的入口职能，
       彼此以 $财神DAO 为价值纽带，形成可循环、可验证、可持续的生态结构。
     </p>
@@ -935,45 +985,45 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
         </span>
         <div class="hl-num">2</div>
-        <div class="hl-t">现有双引擎</div>
-        <div class="hl-d">燃香赐福负责通缩与信仰入口，聚宝盆负责质押与资产留存</div>
+        <div class="hl-t" data-i18n="hl.1.t">现有双引擎</div>
+        <div class="hl-d" data-i18n="hl.1.d">燃香赐福负责通缩与信仰入口，聚宝盆负责质押与资产留存</div>
       </div>
       <div class="hl-card">
         <span class="hl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
         </span>
         <div class="hl-num">20M</div>
-        <div class="hl-t">燃香燃烧总额度</div>
-        <div class="hl-d">全周期上限 20,000,000 枚，对应返还池 50,224,000 枚</div>
+        <div class="hl-t" data-i18n="hl.2.t">燃香燃烧总额度</div>
+        <div class="hl-d" data-i18n="hl.2.d">全周期上限 20,000,000 枚，对应返还池 50,224,000 枚</div>
       </div>
       <div class="hl-card">
         <span class="hl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
         </span>
         <div class="hl-num">108</div>
-        <div class="hl-t">创世 NFT 总量</div>
-        <div class="hl-d">金身 8 · 招财尊 20 · 财神令 80，极少数创世身份凭证</div>
+        <div class="hl-t" data-i18n="hl.3.t">创世 NFT 总量</div>
+        <div class="hl-d" data-i18n="hl.3.d">金身 8 · 招财尊 20 · 财神令 80，极少数创世身份凭证</div>
       </div>
       <div class="hl-card">
         <span class="hl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         </span>
         <div class="hl-num">8</div>
-        <div class="hl-t">生态入口</div>
-        <div class="hl-d">信仰 · 资产 · 身份 · 文化 · 消费 · 娱乐 · 治理 · 公益</div>
+        <div class="hl-t" data-i18n="hl.4.t">生态入口</div>
+        <div class="hl-d" data-i18n="hl.4.d">信仰 · 资产 · 身份 · 文化 · 消费 · 娱乐 · 治理 · 公益</div>
       </div>
     </div>
 
     <div class="note info" style="margin-top:var(--sp-4);">
-      <span class="note-tag">合作</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.coop.tag">合作</span>
+      <div class="note-body" data-i18n-html="note.coop.body">
         目前合作代币包括 <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，通过聚宝盆双宝组合接入生态，
         不改变燃香赐福与单宝质押的币本位机制，也不影响 $财神DAO 的核心地位。
       </div>
     </div>
     <div class="note info">
-      <span class="note-tag">活动</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.op.tag">活动</span>
+      <div class="note-body" data-i18n-html="note.op.body">
         <b>运营活动层</b>是横向运营模块，不是独立产品：以赛季制竞赛、任务与排行榜为各产品导流，
         奖励来自生态预算中的空投营销与运营份额，<b>不新增铸币，不动燃香返还池与质押本金池</b>。
       </div>
@@ -982,96 +1032,96 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">01·A</span>
-        <h3 class="sub-title">产品矩阵<span>Product Matrix</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.matrix.title">产品矩阵</span><span>Product Matrix</span></h3>
       </div>
     </div>
 
     <div class="matrix">
       <div class="matrix-row">
-        <div class="matrix-name">燃香赐福</div>
-        <span class="matrix-status live">已上线</span>
-        <div class="matrix-desc">财神直播间限定。燃香打入黑洞、永不回流，赐福按币本位每日释放，连续 365 天，累计返还 251.12%。</div>
+        <div class="matrix-name" data-i18n="toc.incense">燃香赐福</div>
+        <span class="matrix-status live" data-i18n="status.live">已上线</span>
+        <div class="matrix-desc" data-i18n="matrix.1.desc">财神直播间限定。燃香打入黑洞、永不回流，赐福按币本位每日释放，连续 365 天，累计返还 251.12%。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">聚宝盆</div>
-        <span class="matrix-status live">已上线</span>
-        <div class="matrix-desc">质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。</div>
+        <div class="matrix-name" data-i18n="toc.treasure">聚宝盆</div>
+        <span class="matrix-status live" data-i18n="status.live">已上线</span>
+        <div class="matrix-desc" data-i18n="matrix.2.desc">质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">合作代币</div>
-        <span class="matrix-status op">已集成</span>
-        <div class="matrix-desc">Antfun · BG · LUCKY99 · FIST。通过聚宝盆双宝组合接入，金本位计算、币本位发放，不改变单宝与燃香的币本位机制。</div>
+        <div class="matrix-name" data-i18n="matrix.3.name">合作代币</div>
+        <span class="matrix-status op" data-i18n="status.integrated">已集成</span>
+        <div class="matrix-desc" data-i18n="matrix.3.desc">Antfun · BG · LUCKY99 · FIST。通过聚宝盆双宝组合接入，金本位计算、币本位发放，不改变单宝与燃香的币本位机制。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">财神 NFT</div>
-        <span class="matrix-status plan">规划中</span>
-        <div class="matrix-desc">108 枚创世身份凭证，唯一编号；另设联名系列，与特定社区 / 基金会联名发行，持有者享财神生态与合作方双重权益。</div>
+        <div class="matrix-name" data-i18n="toc.nft">财神 NFT</div>
+        <span class="matrix-status plan" data-i18n="status.planned">规划中</span>
+        <div class="matrix-desc" data-i18n="matrix.4.desc">108 枚创世身份凭证，唯一编号；另设联名系列，与特定社区 / 基金会联名发行，持有者享财神生态与合作方双重权益。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">财神文化院</div>
-        <span class="matrix-status plan">规划中</span>
-        <div class="matrix-desc">风水命理教育板块。课程体系、命理师与风水师入驻网络、认证与咨询服务平台。</div>
+        <div class="matrix-name" data-i18n="matrix.5.name">财神文化院</div>
+        <span class="matrix-status plan" data-i18n="status.planned">规划中</span>
+        <div class="matrix-desc" data-i18n="matrix.5.desc">风水命理教育板块。课程体系、命理师与风水师入驻网络、认证与咨询服务平台。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">财神商城</div>
-        <span class="matrix-status plan">规划中</span>
-        <div class="matrix-desc">财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神DAO 支付，NFT 持有者享折扣。</div>
+        <div class="matrix-name" data-i18n="toc.mall">财神商城</div>
+        <span class="matrix-status plan" data-i18n="status.planned">规划中</span>
+        <div class="matrix-desc" data-i18n="matrix.6.desc">财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神DAO 支付，NFT 持有者享折扣。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">财神小游戏</div>
-        <span class="matrix-status plan">规划中</span>
-        <div class="matrix-desc">娱乐板块。玩游戏赚 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。</div>
+        <div class="matrix-name" data-i18n="toc.game">财神小游戏</div>
+        <span class="matrix-status plan" data-i18n="status.planned">规划中</span>
+        <div class="matrix-desc" data-i18n="matrix.7.desc">娱乐板块。玩游戏赚 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。</div>
       </div>
       <div class="matrix-row">
-        <div class="matrix-name">财神赛季 · 运营活动</div>
-        <span class="matrix-status op">运营层</span>
-        <div class="matrix-desc">横向运营模块，按赛季开展交易竞赛、小游戏赛季、文化知识赛与 DAO 提案赛；奖励来自生态预算，不新增铸币，具体规则以单次活动公告为准。</div>
+        <div class="matrix-name" data-i18n="matrix.8.name">财神赛季 · 运营活动</div>
+        <span class="matrix-status op" data-i18n="matrix.8.status">运营层</span>
+        <div class="matrix-desc" data-i18n="matrix.8.desc">横向运营模块，按赛季开展交易竞赛、小游戏赛季、文化知识赛与 DAO 提案赛；奖励来自生态预算，不新增铸币，具体规则以单次活动公告为准。</div>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">01·B</span>
-        <h3 class="sub-title">推进节奏<span>Rollout Phases</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.rollout.title">推进节奏</span><span>Rollout Phases</span></h3>
       </div>
     </div>
 
     <div class="spec">
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">阶段一</span>
+          <span class="spec-k-cn" data-i18n="phase.1.k">阶段一</span>
           <span class="spec-k-en">Phase 01</span>
         </div>
-        <div class="spec-v"><b>已上线</b> —— 燃香赐福、聚宝盆。完成「通缩入口 + 资产留存」的最小闭环，验证数值模型与用户路径。</div>
+        <div class="spec-v" data-i18n-html="phase.1.v"><b>已上线</b> —— 燃香赐福、聚宝盆。完成「通缩入口 + 资产留存」的最小闭环，验证数值模型与用户路径。</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">阶段二</span>
+          <span class="spec-k-cn" data-i18n="phase.2.k">阶段二</span>
           <span class="spec-k-en">Phase 02</span>
         </div>
-        <div class="spec-v"><b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢；同步推进联名系列发行。</div>
+        <div class="spec-v" data-i18n-html="phase.2.v"><b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢；同步推进联名系列发行。</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">阶段三</span>
+          <span class="spec-k-cn" data-i18n="phase.3.k">阶段三</span>
           <span class="spec-k-en">Phase 03</span>
         </div>
-        <div class="spec-v"><b>消费与内容</b> —— 财神商城、财神文化院。让 $财神DAO 获得真实支付场景与内容供给。</div>
+        <div class="spec-v" data-i18n-html="phase.3.v"><b>消费与内容</b> —— 财神商城、财神文化院。让 $财神DAO 获得真实支付场景与内容供给。</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">阶段四</span>
+          <span class="spec-k-cn" data-i18n="phase.4.k">阶段四</span>
           <span class="spec-k-en">Phase 04</span>
         </div>
-        <div class="spec-v"><b>娱乐与治理</b> —— 财神小游戏、财神 DAO、财神福报。以高频互动与社区共治完成生态自循环。</div>
+        <div class="spec-v" data-i18n-html="phase.4.v"><b>娱乐与治理</b> —— 财神小游戏、财神 DAO、财神福报。以高频互动与社区共治完成生态自循环。</div>
       </div>
     </div>
 
-    <p class="caption">
+    <p class="caption" data-i18n-html="caption.rollout">
       <b>说明：</b>阶段划分为规划顺序，实际推进以官方公告为准。每个产品上线前均会单独发布机制文档，
       明确数值口径、发放来源与风控边界。
     </p>
-    <p class="caption gold">
+    <p class="caption gold" data-i18n-html="caption.horizontal">
       <b>横向层：</b>合作代币与运营活动层不占用阶段编号，按需穿插在各阶段之间，为对应产品导流。
     </p>
   </section>
@@ -1080,59 +1130,59 @@
   <section class="wrap sec" id="incense">
     <div class="sec-head">
       <span class="sec-idx">02</span>
-      <h2 class="sec-title">燃香赐福<span><em class="st st-live">已上线</em><em class="sd">通缩入口</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="toc.incense">燃香赐福</span><span><em class="st st-live" data-i18n="status.live">已上线</em><em class="sd" data-i18n="sec.incense.sd">通缩入口</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.incense.lead">
       每日财神直播间限定活动。用户燃香即把 $财神DAO 打入黑洞地址，链上公开可查、不可撤回；
       赐福按币本位每日释放，连续 365 天，累计返还燃烧量的 251.12%。
     </p>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">开放时间</span>
-        <span class="def-v">财神直播间限定，限额限量，按实际情况动态开放，以直播间公告为准</span>
+        <span class="def-k" data-i18n="incense.time.k">开放时间</span>
+        <span class="def-v" data-i18n="incense.time.v">财神直播间限定，限额限量，按实际情况动态开放，以直播间公告为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">总额度</span>
-        <span class="def-v"><b>20,000,000 枚固定</b>，额满即止</span>
+        <span class="def-k" data-i18n="incense.quota.k">总额度</span>
+        <span class="def-v" data-i18n-html="incense.quota.v"><b>20,000,000 枚固定</b>，额满即止</span>
       </div>
       <div class="def-row">
-        <span class="def-k">燃香方式</span>
-        <span class="def-v">打入黑洞地址，<b>不可撤回</b></span>
+        <span class="def-k" data-i18n="incense.burn.k">燃香方式</span>
+        <span class="def-v" data-i18n-html="incense.burn.v">打入黑洞地址，<b>不可撤回</b></span>
       </div>
       <div class="def-row">
-        <span class="def-k">赐福方式</span>
-        <span class="def-v">币本位返还，连续 365 天</span>
+        <span class="def-k" data-i18n="incense.release.k">赐福方式</span>
+        <span class="def-v" data-i18n="incense.release.v">币本位返还，连续 365 天</span>
       </div>
       <div class="def-row">
-        <span class="def-k">每日释放</span>
-        <span class="def-v"><code>0.688%</code> / 天</span>
+        <span class="def-k" data-i18n="incense.daily.k">每日释放</span>
+        <span class="def-v" data-i18n-html="incense.daily.v"><code>0.688%</code> / 天</span>
       </div>
       <div class="def-row">
-        <span class="def-k">总返还率</span>
-        <span class="def-v"><code>251.12%</code>（0.688% × 365）</span>
+        <span class="def-k" data-i18n="incense.total.k">总返还率</span>
+        <span class="def-v" data-i18n-html="incense.total.v"><code>251.12%</code>（0.688% × 365）</span>
       </div>
       <div class="def-row">
-        <span class="def-k">领取入口</span>
-        <span class="def-v"><code>lock.jup.ag</code> 链上托管领取</span>
+        <span class="def-k" data-i18n="incense.claim.k">领取入口</span>
+        <span class="def-v" data-i18n-html="incense.claim.v"><code>lock.jup.ag</code> 链上托管领取</span>
       </div>
       <div class="def-row">
-        <span class="def-k">领取时间</span>
-        <span class="def-v">T+1 起可领取，建议 24 个月内领取有效</span>
+        <span class="def-k" data-i18n="incense.claimtime.k">领取时间</span>
+        <span class="def-v" data-i18n="incense.claimtime.v">T+1 起可领取，建议 24 个月内领取有效</span>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">02·A</span>
-        <h3 class="sub-title">返还池与代币分配的关系<span>Pool Consistency</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.incense.pool.title">返还池与代币分配的关系</span><span>Pool Consistency</span></h3>
       </div>
     </div>
 
     <div class="note info">
-      <span class="note-tag">关联</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.rel.tag">关联</span>
+      <div class="note-body" data-i18n-html="note.rel.body">
         燃香赐福的返还来源为代币经济文档中的 <b>燃香赐福池 50,224,000 枚</b>，
         与燃烧总额度严格对应：<b>20,000,000 × 251.12% = 50,224,000</b>。
         也就是说，全周期可燃烧上限与可返还上限在总量层面完全闭合，不存在超额承诺。
@@ -1140,41 +1190,41 @@
     </div>
 
     <div class="calc">
-      <span class="calc-label">返还池闭合验算</span>
-      <div class="calc-line">燃烧总额度 <span class="op">=</span> <span class="n">20,000,000</span><span class="u">枚</span></div>
-      <div class="calc-line">单枚返还倍数 <span class="op">=</span> <span class="n">0.688%</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">251.12%</span></div>
-      <div class="calc-line">返还池上限 <span class="op">=</span> <span class="n">20,000,000</span> <span class="op">×</span> <span class="n">251.12%</span> <span class="op">=</span> <span class="r">50,224,000</span><span class="u">枚</span></div>
-      <div class="calc-line">与代币分配「燃香赐福池」 <span class="op">=</span> <span class="r">完全一致</span></div>
+      <span class="calc-label" data-i18n="calc.pool.label">返还池闭合验算</span>
+      <div class="calc-line"><span data-i18n="calc.pool.1">燃烧总额度</span> <span class="op">=</span> <span class="n">20,000,000</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.pool.2">单枚返还倍数</span> <span class="op">=</span> <span class="n">0.688%</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">251.12%</span></div>
+      <div class="calc-line"><span data-i18n="calc.pool.3">返还池上限</span> <span class="op">=</span> <span class="n">20,000,000</span> <span class="op">×</span> <span class="n">251.12%</span> <span class="op">=</span> <span class="r">50,224,000</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.pool.4">与代币分配「燃香赐福池」</span> <span class="op">=</span> <span class="r" data-i18n="calc.pool.5">完全一致</span></div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">02·B</span>
-        <h3 class="sub-title">领取示例<span>Example · 以 10,000 枚为例</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.incense.ex.title">领取示例</span><span>Example · 以 10,000 枚为例</span></h3>
       </div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">计算公式</span>
-      <div class="calc-line">每日赐福 <span class="op">=</span> 燃烧数量 <span class="op">×</span> <span class="n">0.688%</span></div>
-      <div class="calc-line">累计返还 <span class="op">=</span> 每日赐福 <span class="op">×</span> <span class="n">365</span></div>
+      <span class="calc-label" data-i18n="calc.ex.label">计算公式</span>
+      <div class="calc-line"><span data-i18n="calc.ex.1">每日赐福</span> <span class="op">=</span> <span data-i18n="calc.ex.2">燃烧数量</span> <span class="op">×</span> <span class="n">0.688%</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex.3">累计返还</span> <span class="op">=</span> <span data-i18n="calc.ex.1">每日赐福</span> <span class="op">×</span> <span class="n">365</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">示例 · 燃烧 10,000 枚 $财神DAO</span>
-      <div class="calc-line">每日赐福 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.688%</span> <span class="op">=</span> <span class="r">68.8</span><span class="u">枚/天</span></div>
-      <div class="calc-line">累计返还 <span class="op">=</span> <span class="n">68.8</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">25,112</span><span class="u">枚</span></div>
-      <div class="calc-line">净增数量 <span class="op">=</span> <span class="n">25,112</span> <span class="op">−</span> <span class="n">10,000</span> <span class="op">=</span> <span class="r">15,112</span><span class="u">枚</span></div>
+      <span class="calc-label" data-i18n="calc.ex2.label">示例 · 燃烧 10,000 枚 $财神DAO</span>
+      <div class="calc-line"><span data-i18n="calc.ex.1">每日赐福</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.688%</span> <span class="op">=</span> <span class="r">68.8</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex.3">累计返还</span> <span class="op">=</span> <span class="n">68.8</span> <span class="op">×</span> <span class="n">365</span> <span class="op">=</span> <span class="r">25,112</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex.4">净增数量</span> <span class="op">=</span> <span class="n">25,112</span> <span class="op">−</span> <span class="n">10,000</span> <span class="op">=</span> <span class="r">15,112</span><span class="u" data-i18n="unit.token">枚</span></div>
     </div>
 
     <div class="tbl-scroll" style="margin-top:var(--sp-4);">
       <table>
         <thead>
           <tr>
-            <th scope="col">燃烧数量</th>
-            <th scope="col">每日赐福</th>
-            <th scope="col">365 天累计</th>
-            <th scope="col">净增数量</th>
+            <th scope="col" data-i18n="tbl.ex.th1">燃烧数量</th>
+            <th scope="col" data-i18n="tbl.ex.th2">每日赐福</th>
+            <th scope="col" data-i18n="tbl.ex.th3">365 天累计</th>
+            <th scope="col" data-i18n="tbl.ex.th4">净增数量</th>
           </tr>
         </thead>
         <tbody>
@@ -1185,41 +1235,41 @@
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">单位：枚 $财神DAO。示例仅用于说明机制，实际以官方页面为准。</p>
+    <p class="tbl-caption" data-i18n="tbl.ex.caption">单位：枚 $财神DAO。示例仅用于说明机制，实际以官方页面为准。</p>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">02·C</span>
-        <h3 class="sub-title">机制要点<span>Mechanics</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.incense.mk.title">机制要点</span><span>Mechanics</span></h3>
       </div>
     </div>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">燃香即销毁</span>
-        <span class="def-v">燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通</b>，构成项目通缩的一环。</span>
+        <span class="def-k" data-i18n="incense.mk.1.k">燃香即销毁</span>
+        <span class="def-v" data-i18n-html="incense.mk.1.v">燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通</b>，构成项目通缩的一环。</span>
       </div>
       <div class="def-row">
-        <span class="def-k">币本位返还</span>
-        <span class="def-v">返还的是 $财神DAO 的数量，不随法币价格变化。价格涨跌只影响返还份额的法币价值，不影响枚数。</span>
+        <span class="def-k" data-i18n="incense.mk.2.k">币本位返还</span>
+        <span class="def-v" data-i18n="incense.mk.2.v">返还的是 $财神DAO 的数量，不随法币价格变化。价格涨跌只影响返还份额的法币价值，不影响枚数。</span>
       </div>
       <div class="def-row">
-        <span class="def-k">额度刚性</span>
-        <span class="def-v">总额度 20,000,000 枚固定，额满即止，不会追加、不会临时扩容。</span>
+        <span class="def-k" data-i18n="incense.mk.3.k">额度刚性</span>
+        <span class="def-v" data-i18n="incense.mk.3.v">总额度 20,000,000 枚固定，额满即止，不会追加、不会临时扩容。</span>
       </div>
       <div class="def-row">
-        <span class="def-k">防刷机制</span>
-        <span class="def-v">单地址限额、频次校验与链上行为分析并行，异常地址将被限制参与。</span>
+        <span class="def-k" data-i18n="incense.mk.4.k">防刷机制</span>
+        <span class="def-v" data-i18n="incense.mk.4.v">单地址限额、频次校验与链上行为分析并行，异常地址将被限制参与。</span>
       </div>
       <div class="def-row">
-        <span class="def-k">可验证性</span>
-        <span class="def-v">每一笔燃烧可在 <code>solscan.io</code> 验证，每日释放可通过 <code>lock.jup.ag</code> 逐笔核对，任何人都无法篡改记录。</span>
+        <span class="def-k" data-i18n="incense.mk.5.k">可验证性</span>
+        <span class="def-v" data-i18n-html="incense.mk.5.v">每一笔燃烧可在 <code>solscan.io</code> 验证，每日释放可通过 <code>lock.jup.ag</code> 逐笔核对，任何人都无法篡改记录。</span>
       </div>
     </div>
 
     <div class="note warn" style="margin-top:var(--sp-5);">
-      <span class="note-tag">注意</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">注意</span>
+      <div class="note-body" data-i18n-html="note.incense.warn">
         燃香不可撤回，燃烧即永久放弃该部分代币；活动限额限量、额满即止；开放时间不设固定场次，以直播间公告为准；
         单地址限额，防刷机制已启用；建议 24 个月内领取有效，逾期视为放弃。
       </div>
@@ -1230,10 +1280,10 @@
   <section class="wrap sec" id="treasure">
     <div class="sec-head">
       <span class="sec-idx">03</span>
-      <h2 class="sec-title">聚宝盆<span><em class="st st-live">已上线</em><em class="sd">资产留存</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="toc.treasure">聚宝盆</span><span><em class="st st-live" data-i18n="status.live">已上线</em><em class="sd" data-i18n="sec.treasure.sd">资产留存</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n-html="sec.treasure.lead">
       质押 $财神DAO，支持单宝与双宝两种组合、四档周期。收益按日线性释放，本金到期返还。
       两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。
     </p>
@@ -1241,89 +1291,89 @@
     <div class="compare" style="margin-bottom:var(--sp-5);">
       <div class="compare-col">
         <div class="compare-head">
-          <span class="compare-name">单宝质押</span>
+          <span class="compare-name" data-i18n="cmp.single.title">单宝质押</span>
           <span class="compare-tag">Single</span>
         </div>
-        <div class="compare-line"><span class="k">质押组合</span><span class="v">100% $财神DAO</span></div>
-        <div class="compare-line"><span class="k">计算本位</span><span class="v red">币本位</span></div>
-        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神DAO</span></div>
-        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神DAO</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.combo">质押组合</span><span class="v">100% $财神DAO</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.denom">计算本位</span><span class="v red" data-i18n="cmp.coin">币本位</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.yield">收益发放</span><span class="v red">$财神DAO</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.principal">本金返还</span><span class="v">$财神DAO</span></div>
       </div>
       <div class="compare-col">
         <div class="compare-head">
-          <span class="compare-name">双宝聚财</span>
+          <span class="compare-name" data-i18n="cmp.double.title">双宝聚财</span>
           <span class="compare-tag">Double</span>
         </div>
-        <div class="compare-line"><span class="k">质押组合</span><span class="v">60% + 40% 合作币</span></div>
-        <div class="compare-line"><span class="k">计算本位</span><span class="v red">金本位</span></div>
-        <div class="compare-line"><span class="k">收益发放</span><span class="v red">$财神DAO</span></div>
-        <div class="compare-line"><span class="k">本金返还</span><span class="v">$财神DAO + 合作币</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.combo">质押组合</span><span class="v" data-i18n="cmp.combo.val">60% + 40% 合作币</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.denom">计算本位</span><span class="v red" data-i18n="cmp.usd">金本位</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.yield">收益发放</span><span class="v red">$财神DAO</span></div>
+        <div class="compare-line"><span class="k" data-i18n="cmp.principal">本金返还</span><span class="v" data-i18n="cmp.principal.val">$财神DAO + 合作币</span></div>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·A</span>
-        <h3 class="sub-title">质押方案<span>Staking Plans</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.plan.title">质押方案</span><span>Staking Plans</span></h3>
       </div>
     </div>
 
     <div class="segmented" id="segTreasure" role="group" aria-label="质押方案切换">
-      <button class="active" data-panel="single" type="button" aria-pressed="true">单宝质押</button>
-      <button data-panel="double" type="button" aria-pressed="false">双宝聚财</button>
-      <button data-panel="all" type="button" aria-pressed="false">APY 总表</button>
+      <button class="active" data-panel="single" type="button" aria-pressed="true" data-i18n="seg.single">单宝质押</button>
+      <button data-panel="double" type="button" aria-pressed="false" data-i18n="seg.double">双宝聚财</button>
+      <button data-panel="all" type="button" aria-pressed="false" data-i18n="seg.all">APY 总表</button>
     </div>
 
     <div class="panel active" id="panel-single" role="region" aria-label="单宝质押方案">
       <div class="note info" style="margin-bottom:var(--sp-4);">
-        <span class="note-tag">方案</span>
-        <div class="note-body"><b>质押组合：</b>100% $财神DAO · 币本位计算、币本位发放</div>
+        <span class="note-tag" data-i18n="panel.tag.plan">方案</span>
+        <div class="note-body" data-i18n-html="panel.single.desc"><b>质押组合：</b>100% $财神DAO · 币本位计算、币本位发放</div>
       </div>
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th scope="col">周期</th>
-              <th scope="col">APY</th>
-              <th scope="col">到期总收益率</th>
-              <th scope="col">总返还倍数</th>
+              <th scope="col" data-i18n="tbl.stake.th1">周期</th>
+              <th scope="col" data-i18n="tbl.stake.th2">APY</th>
+              <th scope="col" data-i18n="tbl.stake.th3">到期总收益率</th>
+              <th scope="col" data-i18n="tbl.stake.th4">总返还倍数</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>30 天</td><td style="color:var(--cyber);font-weight:700;">40%</td><td>3.29%</td><td>1.0329</td></tr>
-            <tr><td>90 天</td><td style="color:var(--cyber);font-weight:700;">80%</td><td>19.73%</td><td>1.1973</td></tr>
-            <tr><td>120 天</td><td style="color:var(--cyber);font-weight:700;">110%</td><td>36.16%</td><td>1.3616</td></tr>
-            <tr><td>180 天</td><td style="color:var(--cyber);font-weight:700;">170%</td><td>83.84%</td><td>1.8384</td></tr>
+            <tr><td data-i18n="tbl.stake.tr1">30 天</td><td style="color:var(--cyber);font-weight:700;">40%</td><td>3.29%</td><td>1.0329</td></tr>
+            <tr><td data-i18n="tbl.stake.tr2">90 天</td><td style="color:var(--cyber);font-weight:700;">80%</td><td>19.73%</td><td>1.1973</td></tr>
+            <tr><td data-i18n="tbl.stake.tr3">120 天</td><td style="color:var(--cyber);font-weight:700;">110%</td><td>36.16%</td><td>1.3616</td></tr>
+            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">170%</td><td>83.84%</td><td>1.8384</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="tbl-caption">到期总收益率 = APY ÷ 365 × 周期天数。APY 为简单年化，非复利。</p>
+      <p class="tbl-caption" data-i18n="tbl.stake.caption">到期总收益率 = APY ÷ 365 × 周期天数。APY 为简单年化，非复利。</p>
     </div>
 
     <div class="panel" id="panel-double" role="region" aria-label="双宝聚财方案">
       <div class="note info" style="margin-bottom:var(--sp-4);">
-        <span class="note-tag">方案</span>
-        <div class="note-body"><b>质押组合：</b>60% $财神DAO + 40% 合作币（Antfun · BG · LUCKY99 · FIST） · 金本位计算、币本位发放</div>
+        <span class="note-tag" data-i18n="panel.tag.plan">方案</span>
+        <div class="note-body" data-i18n-html="panel.double.desc"><b>质押组合：</b>60% $财神DAO + 40% 合作币（Antfun · BG · LUCKY99 · FIST） · 金本位计算、币本位发放</div>
       </div>
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th scope="col">周期</th>
-              <th scope="col">APY</th>
-              <th scope="col">到期总收益率</th>
-              <th scope="col">总返还倍数</th>
+              <th scope="col" data-i18n="tbl.stake.th1">周期</th>
+              <th scope="col" data-i18n="tbl.stake.th2">APY</th>
+              <th scope="col" data-i18n="tbl.stake.th3">到期总收益率</th>
+              <th scope="col" data-i18n="tbl.stake.th4">总返还倍数</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>30 天</td><td style="color:var(--cyber);font-weight:700;">55%</td><td>4.52%</td><td>1.0452</td></tr>
-            <tr><td>90 天</td><td style="color:var(--cyber);font-weight:700;">105%</td><td>25.89%</td><td>1.2589</td></tr>
-            <tr><td>120 天</td><td style="color:var(--cyber);font-weight:700;">140%</td><td>46.03%</td><td>1.4603</td></tr>
-            <tr><td>180 天</td><td style="color:var(--cyber);font-weight:700;">200%</td><td>98.63%</td><td>1.9863</td></tr>
+            <tr><td data-i18n="tbl.stake.tr1">30 天</td><td style="color:var(--cyber);font-weight:700;">55%</td><td>4.52%</td><td>1.0452</td></tr>
+            <tr><td data-i18n="tbl.stake.tr2">90 天</td><td style="color:var(--cyber);font-weight:700;">105%</td><td>25.89%</td><td>1.2589</td></tr>
+            <tr><td data-i18n="tbl.stake.tr3">120 天</td><td style="color:var(--cyber);font-weight:700;">140%</td><td>46.03%</td><td>1.4603</td></tr>
+            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">200%</td><td>98.63%</td><td>1.9863</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="tbl-caption">到期总收益率 = APY ÷ 365 × 周期天数。合作币按入场时价格快照，收益以 $财神DAO 结算。</p>
+      <p class="tbl-caption" data-i18n="tbl.stake.caption2">到期总收益率 = APY ÷ 365 × 周期天数。合作币按入场时价格快照，收益以 $财神DAO 结算。</p>
     </div>
 
     <div class="panel" id="panel-all" role="region" aria-label="APY 总表">
@@ -1331,8 +1381,8 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">模式</th>
-              <th scope="col">质押组合</th>
+              <th scope="col" data-i18n="tbl.all.th1">模式</th>
+              <th scope="col" data-i18n="tbl.all.th2">质押组合</th>
               <th scope="col">30 天</th>
               <th scope="col">90 天</th>
               <th scope="col">120 天</th>
@@ -1341,7 +1391,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>单宝质押</td>
+              <td data-i18n="seg.single">单宝质押</td>
               <td>100% $财神DAO</td>
               <td style="color:var(--cyber);font-weight:700;">40%</td>
               <td style="color:var(--cyber);font-weight:700;">80%</td>
@@ -1349,8 +1399,8 @@
               <td style="color:var(--cyber);font-weight:700;">170%</td>
             </tr>
             <tr>
-              <td>双宝聚财</td>
-              <td>60% + 40% 合作币</td>
+              <td data-i18n="seg.double">双宝聚财</td>
+              <td data-i18n="cmp.combo.val">60% + 40% 合作币</td>
               <td style="color:var(--cyber);font-weight:700;">55%</td>
               <td style="color:var(--cyber);font-weight:700;">105%</td>
               <td style="color:var(--cyber);font-weight:700;">140%</td>
@@ -1359,122 +1409,122 @@
           </tbody>
         </table>
       </div>
-      <p class="tbl-caption">以上为建议参数，实际 APY 以官方质押页面实时显示为准。</p>
+      <p class="tbl-caption" data-i18n="tbl.all.caption">以上为建议参数，实际 APY 以官方质押页面实时显示为准。</p>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·B</span>
-        <h3 class="sub-title">收益释放规则<span>Daily Linear Release</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.rel.title">收益释放规则</span><span>Daily Linear Release</span></h3>
       </div>
     </div>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">释放方式</span>
-        <span class="def-v"><b>按日线性释放</b>，T+1 起每日释放</span>
+        <span class="def-k" data-i18n="treasure.rel.1.k">释放方式</span>
+        <span class="def-v" data-i18n-html="treasure.rel.1.v"><b>按日线性释放</b>，T+1 起每日释放</span>
       </div>
       <div class="def-row">
-        <span class="def-k">每日释放</span>
-        <span class="def-v"><code>质押本金 × APY ÷ 365</code></span>
+        <span class="def-k" data-i18n="treasure.rel.2.k">每日释放</span>
+        <span class="def-v" data-i18n-html="treasure.rel.2.v"><code>质押本金 × APY ÷ 365</code></span>
       </div>
       <div class="def-row">
-        <span class="def-k">双宝计算</span>
-        <span class="def-v">按总质押 USDT 等值计算，收益以 $财神DAO 结算，合作币按入场时价格快照</span>
+        <span class="def-k" data-i18n="treasure.rel.3.k">双宝计算</span>
+        <span class="def-v" data-i18n="treasure.rel.3.v">按总质押 USDT 等值计算，收益以 $财神DAO 结算，合作币按入场时价格快照</span>
       </div>
       <div class="def-row">
-        <span class="def-k">领取方式</span>
-        <span class="def-v">每日可领取，未领取可累积，建议 24 个月内领取有效</span>
+        <span class="def-k" data-i18n="treasure.rel.4.k">领取方式</span>
+        <span class="def-v" data-i18n="treasure.rel.4.v">每日可领取，未领取可累积，建议 24 个月内领取有效</span>
       </div>
       <div class="def-row">
-        <span class="def-k">本金返还</span>
-        <span class="def-v">本金到期原路返还，收益释放完毕后质押结束</span>
+        <span class="def-k" data-i18n="treasure.rel.5.k">本金返还</span>
+        <span class="def-v" data-i18n="treasure.rel.5.v">本金到期原路返还，收益释放完毕后质押结束</span>
       </div>
       <div class="def-row">
-        <span class="def-k">年化口径</span>
-        <span class="def-v">APY 为简单年化，按日线性释放，<b>非复利</b></span>
+        <span class="def-k" data-i18n="treasure.rel.6.k">年化口径</span>
+        <span class="def-v" data-i18n-html="treasure.rel.6.v">APY 为简单年化，按日线性释放，<b>非复利</b></span>
       </div>
       <div class="def-row">
-        <span class="def-k">提前解锁</span>
-        <span class="def-v">不支持；如后续开放，罚金规则以官方页面为准</span>
+        <span class="def-k" data-i18n="treasure.rel.7.k">提前解锁</span>
+        <span class="def-v" data-i18n="treasure.rel.7.v">不支持；如后续开放，罚金规则以官方页面为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">APY 调整</span>
-        <span class="def-v">可动态调整，每周公示；已质押部分建议锁定入场 APY</span>
+        <span class="def-k" data-i18n="treasure.rel.8.k">APY 调整</span>
+        <span class="def-v" data-i18n="treasure.rel.8.v">可动态调整，每周公示；已质押部分建议锁定入场 APY</span>
       </div>
       <div class="def-row">
-        <span class="def-k">合作币风控</span>
-        <span class="def-v">需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合</span>
+        <span class="def-k" data-i18n="treasure.rel.9.k">合作币风控</span>
+        <span class="def-v" data-i18n="treasure.rel.9.v">需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合</span>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·C</span>
-        <h3 class="sub-title">单宝计算示例<span>Single · 币本位 · 180 天 / APY 170%</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.ex1.title">单宝计算示例</span><span>Single · 币本位 · 180 天 / APY 170%</span></h3>
       </div>
     </div>
 
     <div class="note info" style="margin-bottom:var(--sp-4);">
-      <span class="note-tag">本位</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.denom.tag">本位</span>
+      <div class="note-body" data-i18n-html="note.single.denom">
         单宝 100% $财神DAO，<b>币本位计算、币本位发放</b>。收益数量只与质押的 $财神DAO 数量有关，不涉及 USDT 折算。
       </div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">计算公式</span>
-      <div class="calc-line">每日释放 <span class="op">=</span> 质押本金 <span class="op">×</span> APY <span class="op">÷</span> <span class="n">365</span></div>
-      <div class="calc-line">总收益 <span class="op">=</span> 每日释放 <span class="op">×</span> 质押天数</div>
-      <div class="calc-line">到期总返还 <span class="op">=</span> 本金 <span class="op">+</span> 总收益</div>
+      <span class="calc-label" data-i18n="calc.stake.label">计算公式</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span data-i18n="calc.stake.2">质押本金</span> <span class="op">×</span> APY <span class="op">÷</span> <span class="n">365</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.3">总收益</span> <span class="op">=</span> <span data-i18n="calc.stake.1">每日释放</span> <span class="op">×</span> <span data-i18n="calc.stake.4">质押天数</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.5">到期总返还</span> <span class="op">=</span> <span data-i18n="calc.stake.6">本金</span> <span class="op">+</span> <span data-i18n="calc.stake.3">总收益</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%</span>
-      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">170%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">46.5753</span><span class="u">枚/天</span></div>
-      <div class="calc-line">总收益 <span class="op">=</span> <span class="n">46.5753</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">8,383.56</span><span class="u">枚</span></div>
-      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">8,383.56</span> <span class="op">=</span> <span class="r">18,383.56</span><span class="u">枚</span></div>
+      <span class="calc-label" data-i18n="calc.ex3.label">示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">170%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">46.5753</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.3">总收益</span> <span class="op">=</span> <span class="n">46.5753</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">8,383.56</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.5">到期总返还</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">8,383.56</span> <span class="op">=</span> <span class="r">18,383.56</span><span class="u" data-i18n="unit.token">枚</span></div>
     </div>
 
     <div class="tbl-scroll" style="margin-top:var(--sp-4);">
       <table>
         <thead>
           <tr>
-            <th scope="col">周期</th>
-            <th scope="col">APY</th>
-            <th scope="col">每日释放</th>
-            <th scope="col">总收益</th>
-            <th scope="col">到期总返还</th>
+            <th scope="col" data-i18n="tbl.stake.th1">周期</th>
+            <th scope="col" data-i18n="tbl.stake.th2">APY</th>
+            <th scope="col" data-i18n="tbl.stake.ex1">每日释放</th>
+            <th scope="col" data-i18n="tbl.stake.ex2">总收益</th>
+            <th scope="col" data-i18n="tbl.stake.ex3">到期总返还</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>30 天</td><td>40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
-          <tr><td>90 天</td><td>80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
-          <tr><td>120 天</td><td>110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
-          <tr><td>180 天</td><td>170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
+          <tr><td data-i18n="tbl.stake.tr1">30 天</td><td>40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
+          <tr><td data-i18n="tbl.stake.tr2">90 天</td><td>80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
+          <tr><td data-i18n="tbl.stake.tr3">120 天</td><td>110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
+          <tr><td data-i18n="tbl.stake.tr4">180 天</td><td>170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">单位：枚 $财神DAO。示例仅用于说明，实际以官方页面为准。</p>
+    <p class="tbl-caption" data-i18n="tbl.stake.ex.caption">单位：枚 $财神DAO。示例仅用于说明，实际以官方页面为准。</p>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·D</span>
-        <h3 class="sub-title">双宝计算示例<span>Double · 金本位计算 · 180 天 / APY 200%</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.ex2.title">双宝计算示例</span><span>Double · 金本位计算 · 180 天 / APY 200%</span></h3>
       </div>
     </div>
 
     <div class="note info" style="margin-bottom:var(--sp-4);">
-      <span class="note-tag">本位</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.denom.tag">本位</span>
+      <div class="note-body" data-i18n-html="note.double.denom">
         双宝 60% $财神DAO + 40% 合作币，<b>金本位计算、币本位发放、本金原路返还</b>。
         收益按总投入 USDT 等值计算，以 $财神DAO 发放。
       </div>
     </div>
 
     <div class="note gold">
-      <span class="note-tag">假设</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.assume.tag">假设</span>
+      <div class="note-body" data-i18n-html="note.double.assume">
         <b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br>
         <b>双宝比例：</b>60% $财神DAO + 40% BG<br>
         <b>周期 / APY：</b>180 天 / 200%
@@ -1482,29 +1532,29 @@
     </div>
 
     <div class="calc">
-      <span class="calc-label">第一步 · 按价值配比（总投入 1,000 USDT）</span>
-      <div class="calc-line">$财神DAO部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">600</span><span class="u">USDT</span></div>
-      <div class="calc-line">$财神DAO数量 <span class="op">=</span> <span class="n">600</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">40,000</span><span class="u">枚</span></div>
-      <div class="calc-line">BG 部分 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">400</span><span class="u">USDT</span></div>
-      <div class="calc-line">BG 数量 <span class="op">=</span> <span class="n">400</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">1,333,333.33</span><span class="u">枚</span></div>
+      <span class="calc-label" data-i18n="calc.ex4.label">第一步 · 按价值配比（总投入 1,000 USDT）</span>
+      <div class="calc-line"><span data-i18n="calc.ex4.1">$财神DAO部分</span> <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">600</span><span class="u">USDT</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex4.2">$财神DAO数量</span> <span class="op">=</span> <span class="n">600</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">40,000</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex4.3">BG 部分</span> <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">400</span><span class="u">USDT</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex4.4">BG 数量</span> <span class="op">=</span> <span class="n">400</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">1,333,333.33</span><span class="u" data-i18n="unit.token">枚</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">第二步 · 按总 USDT 等值算每日释放</span>
-      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">5.4795</span><span class="u">USDT/天</span></div>
-      <div class="calc-line">折 $财神DAO <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u">枚/天</span></div>
+      <span class="calc-label" data-i18n="calc.ex5.label">第二步 · 按总 USDT 等值算每日释放</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">5.4795</span><span class="u">USDT/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">第三步 · 180 天总释放与到期返还</span>
-      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神DAO</span></div>
-      <div class="calc-line">到期返还本金 <span class="op">=</span> <span class="r">40,000 枚 $财神DAO + 1,333,333.33 枚 BG</span></div>
-      <div class="calc-line">总返还价值 <span class="op">≈</span> <span class="r">1,986.30 USDT 等值</span></div>
+      <span class="calc-label" data-i18n="calc.ex6.label">第三步 · 180 天总释放与到期返还</span>
+      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神DAO</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.2">到期返还本金</span> <span class="op">=</span> <span class="r">40,000 枚 $财神DAO + 1,333,333.33 枚 BG</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.3">总返还价值</span> <span class="op">≈</span> <span class="r">1,986.30 USDT 等值</span></div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">风险</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">风险</span>
+      <div class="note-body" data-i18n-html="note.double.warn">
         BG 价格波动会影响本金的法币价值，但返还的是原数量的 BG。收益以 $财神DAO 发放，不按 BG 结算。
         合作币存在脱锚、流动性不足等风险。
       </div>
@@ -1513,31 +1563,31 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·E</span>
-        <h3 class="sub-title">反向计算示例<span>Reverse · 手上有 10,000 枚 $财神DAO</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.ex3.title">反向计算示例</span><span>Reverse · 手上有 10,000 枚 $财神DAO</span></h3>
       </div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">第一步 · 按 60% 反推总投入</span>
-      <div class="calc-line">$财神DAO价值 <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">150</span><span class="u">USDT</span></div>
-      <div class="calc-line">总投入价值 <span class="op">=</span> <span class="n">150</span> <span class="op">÷</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">250</span><span class="u">USDT</span></div>
+      <span class="calc-label" data-i18n="calc.ex7.label">第一步 · 按 60% 反推总投入</span>
+      <div class="calc-line"><span data-i18n="calc.ex7.1">$财神DAO价值</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">150</span><span class="u">USDT</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex7.2">总投入价值</span> <span class="op">=</span> <span class="n">150</span> <span class="op">÷</span> <span class="n">60%</span> <span class="op">=</span> <span class="r">250</span><span class="u">USDT</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">第二步 · 算 BG 部分与数量</span>
-      <div class="calc-line">BG 部分价值 <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">100</span><span class="u">USDT</span></div>
-      <div class="calc-line">BG 数量 <span class="op">=</span> <span class="n">100</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">333,333.33</span><span class="u">枚</span></div>
+      <span class="calc-label" data-i18n="calc.ex8.label">第二步 · 算 BG 部分与数量</span>
+      <div class="calc-line"><span data-i18n="calc.ex8.1">BG 部分价值</span> <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">40%</span> <span class="op">=</span> <span class="r">100</span><span class="u">USDT</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex8.2">BG 数量</span> <span class="op">=</span> <span class="n">100</span> <span class="op">÷</span> <span class="n">0.0003</span> <span class="op">=</span> <span class="r">333,333.33</span><span class="u" data-i18n="unit.token">枚</span></div>
     </div>
 
     <div class="calc">
-      <span class="calc-label">第三步 · 180 天 / APY 200% 收益</span>
-      <div class="calc-line">每日释放 <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.3699</span><span class="u">USDT/天</span></div>
-      <div class="calc-line">折 $财神DAO <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u">枚/天</span></div>
-      <div class="calc-line">180 天总释放 <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神DAO</span></div>
-      <div class="calc-line">到期总返还 <span class="op">=</span> <span class="r">10,000 枚 $财神DAO + 333,333.33 枚 BG</span></div>
+      <span class="calc-label" data-i18n="calc.ex9.label">第三步 · 180 天 / APY 200% 收益</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.3699</span><span class="u">USDT/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神DAO</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.2">到期总返还</span> <span class="op">=</span> <span class="r">10,000 枚 $财神DAO + 333,333.33 枚 BG</span></div>
     </div>
 
-    <p class="caption gold">
+    <p class="caption gold" data-i18n-html="caption.treasure.summary">
       <b>总结：</b>单宝币本位计算、币本位发放；双宝金本位计算、币本位发放、本金原路返还。
       双宝最终发的仍是 $财神DAO，而不是 USDT，因此并非纯金本位，而是「金本位计价、币本位结算」。
     </p>
@@ -1547,10 +1597,10 @@
   <section class="wrap sec" id="nft">
     <div class="sec-head">
       <span class="sec-idx">04</span>
-      <h2 class="sec-title">财神 NFT<span><em class="st st-plan">规划中</em><em class="sd">身份中枢 · 联名双重权益</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="toc.nft">财神 NFT</span><span><em class="st st-plan" data-i18n="status.planned">规划中</em><em class="sd" data-i18n="sec.nft.sd">身份中枢 · 联名双重权益</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n-html="sec.nft.lead">
       极少数创世竞拍，共 108 枚、唯一编号。作为财神生态系统的创世身份凭证，
       持有者享有专属权益与生态分红权重，是连接全部产品线的权益中枢。
       除创世系列外，财神 NFT 另设<b>联名系列</b>，与特定社区 / 基金会联名发行，持有者同时享有财神生态权益与合作方权益。
@@ -1559,7 +1609,7 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">04·A</span>
-        <h3 class="sub-title">发行机制<span>Issuance</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.nft.issue.title">发行机制</span><span>Issuance</span></h3>
       </div>
     </div>
 
@@ -1567,25 +1617,25 @@
       <table>
         <thead>
           <tr>
-            <th scope="col">等级</th>
-            <th scope="col">数量</th>
-            <th scope="col">定位</th>
-            <th scope="col">分红权重</th>
+            <th scope="col" data-i18n="tbl.nft.th1">等级</th>
+            <th scope="col" data-i18n="tbl.nft.th2">数量</th>
+            <th scope="col" data-i18n="tbl.nft.th3">定位</th>
+            <th scope="col" data-i18n="tbl.nft.th4">分红权重</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>财神金身</td><td style="color:var(--cyber);font-weight:700;">8 枚</td><td>创世至尊</td><td>最高</td></tr>
-          <tr><td>招财尊</td><td style="color:var(--cyber);font-weight:700;">20 枚</td><td>创世核心</td><td>高</td></tr>
-          <tr><td>财神令</td><td style="color:var(--cyber);font-weight:700;">80 枚</td><td>创世成员</td><td>基础</td></tr>
-          <tr><td>合计</td><td style="color:var(--cyber);font-weight:700;">108 枚</td><td>极少数创世</td><td>—</td></tr>
+          <tr><td data-i18n="tbl.nft.tr1">财神金身</td><td style="color:var(--cyber);font-weight:700;" data-i18n="tbl.nft.val8">8 枚</td><td data-i18n="tbl.nft.desc1">创世至尊</td><td data-i18n="tbl.nft.w1">最高</td></tr>
+          <tr><td data-i18n="tbl.nft.tr2">招财尊</td><td style="color:var(--cyber);font-weight:700;" data-i18n="tbl.nft.val20">20 枚</td><td data-i18n="tbl.nft.desc2">创世核心</td><td data-i18n="tbl.nft.w2">高</td></tr>
+          <tr><td data-i18n="tbl.nft.tr3">财神令</td><td style="color:var(--cyber);font-weight:700;" data-i18n="tbl.nft.val80">80 枚</td><td data-i18n="tbl.nft.desc3">创世成员</td><td data-i18n="tbl.nft.w3">基础</td></tr>
+          <tr><td data-i18n="tbl.nft.tr4">合计</td><td style="color:var(--cyber);font-weight:700;" data-i18n="tbl.nft.val108">108 枚</td><td data-i18n="tbl.nft.desc4">极少数创世</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-caption">创世系列发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。</p>
+    <p class="tbl-caption" data-i18n="tbl.nft.caption">创世系列发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。</p>
 
     <div class="note gold">
-      <span class="note-tag">联名</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.coop.tag">联名</span>
+      <div class="note-body" data-i18n-html="note.nft.coop">
         <b>联名系列：</b>财神 NFT 与特定社区 / 基金会联名发行，独立编号、独立总量，按合作方案单独公示。
         联名系列不影响 108 枚创世系列的总量与等级结构，二者并列存在、各自稀缺。
       </div>
@@ -1594,165 +1644,165 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">04·B</span>
-        <h3 class="sub-title">NFT 独有权益<span>Exclusive Benefits</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.nft.bene.title">NFT 独有权益</span><span>Exclusive Benefits</span></h3>
       </div>
     </div>
 
     <div class="benefits">
       <div class="benefit">
         <span class="benefit-idx">01</span>
-        <div class="benefit-t">身份权益</div>
-        <div class="benefit-d">创世身份、专属标识、勋章、直播间展示</div>
+        <div class="benefit-t" data-i18n="ben.1.t">身份权益</div>
+        <div class="benefit-d" data-i18n="ben.1.d">创世身份、专属标识、勋章、直播间展示</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">02</span>
-        <div class="benefit-t">生态分红</div>
-        <div class="benefit-d">按等级权重参与生态分红池分配</div>
+        <div class="benefit-t" data-i18n="ben.2.t">生态分红</div>
+        <div class="benefit-d" data-i18n="ben.2.d">按等级权重参与生态分红池分配</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">03</span>
-        <div class="benefit-t">燃香赐福</div>
-        <div class="benefit-d">优先参与权、专属额度、专属通道</div>
+        <div class="benefit-t" data-i18n="toc.incense">燃香赐福</div>
+        <div class="benefit-d" data-i18n="ben.3.d">优先参与权、专属额度、专属通道</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">04</span>
-        <div class="benefit-t">聚宝盆</div>
-        <div class="benefit-d">专属 APY 加成、专属质押池、优先体验新周期</div>
+        <div class="benefit-t" data-i18n="toc.treasure">聚宝盆</div>
+        <div class="benefit-d" data-i18n="ben.4.d">专属 APY 加成、专属质押池、优先体验新周期</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">05</span>
-        <div class="benefit-t">财神商城</div>
-        <div class="benefit-d">终身折扣、专属商品、联名优先购、限量周边</div>
+        <div class="benefit-t" data-i18n="toc.mall">财神商城</div>
+        <div class="benefit-d" data-i18n="ben.5.d">终身折扣、专属商品、联名优先购、限量周边</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">06</span>
-        <div class="benefit-t">文化院</div>
-        <div class="benefit-d">课程免费或折扣、1v1 咨询、线下课优先</div>
+        <div class="benefit-t" data-i18n="toc.culture">文化院</div>
+        <div class="benefit-d" data-i18n="ben.6.d">课程免费或折扣、1v1 咨询、线下课优先</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">07</span>
-        <div class="benefit-t">小游戏</div>
-        <div class="benefit-d">专属皮肤、道具、称号、地图、收益加成</div>
+        <div class="benefit-t" data-i18n="toc.game">小游戏</div>
+        <div class="benefit-d" data-i18n="ben.7.d">专属皮肤、道具、称号、地图、收益加成</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">08</span>
-        <div class="benefit-t">财神 DAO</div>
-        <div class="benefit-d">治理投票、提案权、金库监督权</div>
+        <div class="benefit-t" data-i18n="ben.8.t">财神 DAO</div>
+        <div class="benefit-d" data-i18n="ben.8.d">治理投票、提案权、金库监督权</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">09</span>
-        <div class="benefit-t">空投优先</div>
-        <div class="benefit-d">未来生态代币、NFT、权益空投优先</div>
+        <div class="benefit-t" data-i18n="ben.9.t">空投优先</div>
+        <div class="benefit-d" data-i18n="ben.9.d">未来生态代币、NFT、权益空投优先</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">10</span>
-        <div class="benefit-t">线下活动</div>
-        <div class="benefit-d">财神峰会、闭门会、游学、祈福 VIP</div>
+        <div class="benefit-t" data-i18n="ben.10.t">线下活动</div>
+        <div class="benefit-d" data-i18n="ben.10.d">财神峰会、闭门会、游学、祈福 VIP</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">11</span>
-        <div class="benefit-t">命名权</div>
-        <div class="benefit-d">殿堂、房间、课程、NPC、地图命名权</div>
+        <div class="benefit-t" data-i18n="ben.11.t">命名权</div>
+        <div class="benefit-d" data-i18n="ben.11.d">殿堂、房间、课程、NPC、地图命名权</div>
       </div>
       <div class="benefit">
         <span class="benefit-idx">12</span>
-        <div class="benefit-t">交易版税</div>
-        <div class="benefit-d">NFT 可自由交易，版税进入生态池与福报池</div>
+        <div class="benefit-t" data-i18n="ben.12.t">交易版税</div>
+        <div class="benefit-d" data-i18n="ben.12.d">NFT 可自由交易，版税进入生态池与福报池</div>
       </div>
       <div class="benefit benefit-coop">
         <span class="benefit-idx">13</span>
-        <div class="benefit-t">联名双重权益</div>
-        <div class="benefit-d">联名系列同时享有财神生态权益与合作社区 / 基金会权益</div>
+        <div class="benefit-t" data-i18n="ben.13.t">联名双重权益</div>
+        <div class="benefit-d" data-i18n="ben.13.d">联名系列同时享有财神生态权益与合作社区 / 基金会权益</div>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">04·C</span>
-        <h3 class="sub-title">分红与版税口径<span>Dividend &amp; Royalty</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.nft.div.title">分红与版税口径</span><span>Dividend &amp; Royalty</span></h3>
       </div>
     </div>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">分红来源</span>
-        <span class="def-v">商城销售、文化院课程与服务、小游戏道具与版税等<b>生态实际收入</b>，按治理决定注入分红池</span>
+        <span class="def-k" data-i18n="nft.div.1.k">分红来源</span>
+        <span class="def-v" data-i18n="nft.div.1.v">商城销售、文化院课程与服务、小游戏道具与版税等<b>生态实际收入</b>，按治理决定注入分红池</span>
       </div>
       <div class="def-row">
-        <span class="def-k">分配权重</span>
-        <span class="def-v">金身 &gt; 招财尊 &gt; 财神令，具体权重由治理提案确定并公示</span>
+        <span class="def-k" data-i18n="nft.div.2.k">分配权重</span>
+        <span class="def-v" data-i18n="nft.div.2.v">金身 &gt; 招财尊 &gt; 财神令，具体权重由治理提案确定并公示</span>
       </div>
       <div class="def-row">
-        <span class="def-k">发放周期</span>
-        <span class="def-v">建议按季度结算，具体节奏以官方公告为准</span>
+        <span class="def-k" data-i18n="nft.div.3.k">发放周期</span>
+        <span class="def-v" data-i18n="nft.div.3.v">建议按季度结算，具体节奏以官方公告为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">版税比例</span>
-        <span class="def-v">二级市场交易版税进入生态池与福报池，比例以链上合约为准</span>
+        <span class="def-k" data-i18n="nft.div.4.k">版税比例</span>
+        <span class="def-v" data-i18n="nft.div.4.v">二级市场交易版税进入生态池与福报池，比例以链上合约为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">权益不随价格</span>
-        <span class="def-v">权益与分红权重绑定 NFT 本身，与二级市场价格无关；NFT 转让即权益转让</span>
+        <span class="def-k" data-i18n="nft.div.5.k">权益不随价格</span>
+        <span class="def-v" data-i18n="nft.div.5.v">权益与分红权重绑定 NFT 本身，与二级市场价格无关；NFT 转让即权益转让</span>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">04·D</span>
-        <h3 class="sub-title">联名发行与双重权益<span>Co-branded Series</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.nft.coop.title">联名发行与双重权益</span><span>Co-branded Series</span></h3>
       </div>
     </div>
 
-    <p class="sec-lead" style="margin-bottom:var(--sp-4);">
+    <p class="sec-lead" style="margin-bottom:var(--sp-4);" data-i18n-html="nft.coop.lead">
       财神 NFT 与特定社区 / 基金会联名发行，形成「联名系列」。联名系列的持有者同时连接两条权益线：
       <b>财神侧权益</b>（生态产品、治理、空投、活动）与<b>合作方侧权益</b>（社区身份、基金会资源、合作方专属活动）。
     </p>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">联名对象</span>
-        <span class="def-v">特定社区、基金会或生态伙伴；具体联名名单由官方在发行前公示</span>
+        <span class="def-k" data-i18n="nft.coop.1.k">联名对象</span>
+        <span class="def-v" data-i18n="nft.coop.1.v">特定社区、基金会或生态伙伴；具体联名名单由官方在发行前公示</span>
       </div>
       <div class="def-row">
-        <span class="def-k">发行方式</span>
-        <span class="def-v">独立编号、独立总量，按合作方案单独发行；不影响 108 枚创世系列的总量与等级结构</span>
+        <span class="def-k" data-i18n="nft.coop.2.k">发行方式</span>
+        <span class="def-v" data-i18n="nft.coop.2.v">独立编号、独立总量，按合作方案单独发行；不影响 108 枚创世系列的总量与等级结构</span>
       </div>
       <div class="def-row">
-        <span class="def-k">双重权益</span>
-        <span class="def-v">
+        <span class="def-k" data-i18n="nft.coop.3.k">双重权益</span>
+        <span class="def-v" data-i18n-html="nft.coop.3.v">
           <b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务；<br>
           <b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证
         </span>
       </div>
       <div class="def-row">
-        <span class="def-k">权益归属</span>
-        <span class="def-v">财神侧权益由财神生态兑现；合作侧权益由合作方兑现。二者以 NFT 为载体绑定，<b>转让即权益转让</b></span>
+        <span class="def-k" data-i18n="nft.coop.4.k">权益归属</span>
+        <span class="def-v" data-i18n-html="nft.coop.4.v">财神侧权益由财神生态兑现；合作侧权益由合作方兑现。二者以 NFT 为载体绑定，<b>转让即权益转让</b></span>
       </div>
       <div class="def-row">
-        <span class="def-k">分配权重</span>
-        <span class="def-v">联名系列的分红权重与创世系列分开计算，具体权重以该联名方案公示为准</span>
+        <span class="def-k" data-i18n="nft.coop.5.k">分配权重</span>
+        <span class="def-v" data-i18n="nft.coop.5.v">联名系列的分红权重与创世系列分开计算，具体权重以该联名方案公示为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">版税与结算</span>
-        <span class="def-v">联名系列二级市场版税按合作方案拆分，比例与流向以链上合约与官方公示为准</span>
+        <span class="def-k" data-i18n="nft.coop.6.k">版税与结算</span>
+        <span class="def-v" data-i18n="nft.coop.6.v">联名系列二级市场版税按合作方案拆分，比例与流向以链上合约与官方公示为准</span>
       </div>
       <div class="def-row">
-        <span class="def-k">边界</span>
-        <span class="def-v">联名系列<b>不稀释</b> 108 枚创世身份的稀缺性，<b>不改变</b>创世系列的分红权重与等级结构</span>
+        <span class="def-k" data-i18n="nft.coop.7.k">边界</span>
+        <span class="def-v" data-i18n-html="nft.coop.7.v">联名系列<b>不稀释</b> 108 枚创世身份的稀缺性，<b>不改变</b>创世系列的分红权重与等级结构</span>
       </div>
     </div>
 
     <div class="note info">
-      <span class="note-tag">双重权益</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="nft.coop.tag">双重权益</span>
+      <div class="note-body" data-i18n-html="note.nft.double">
         <b>举例：</b>某联名系列共 N 枚，持有者既可在财神生态内参与治理、活动与空投优先，
         又可在合作社区 / 基金会内享有对应身份与资源。两条权益线并行，由 NFT 本身承载。
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">风险</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">风险</span>
+      <div class="note-body" data-i18n-html="note.nft.warn">
         生态分红不是固定收益，不承诺分红金额，取决于生态实际收入与治理决定。
         NFT 竞拍存在市场风险，价格可能大幅波动。
         联名系列的<b>合作侧权益由合作方兑现</b>，其兑现能力、规则与存续取决于合作方；合作方权益变化不影响财神侧权益，
@@ -1765,10 +1815,10 @@
   <section class="wrap sec" id="culture">
     <div class="sec-head">
       <span class="sec-idx">05</span>
-      <h2 class="sec-title">财神文化院<span><em class="st st-plan">规划中</em><em class="sd">内容供给</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.culture.title">财神文化院</span><span><em class="st st-plan" data-i18n="status.planned">规划中</em><em class="sd" data-i18n="sec.culture.sd">内容供给</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.culture.lead">
       风水命理教育板块，涵盖易学基础、财神文化、民俗信仰与风水实战。
       以文化传承、知识学习、兴趣交流为核心，为生态提供可持续的内容供给。
     </p>
@@ -1776,74 +1826,74 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">05·A</span>
-        <h3 class="sub-title">课程体系<span>Curriculum</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.culture.cur.title">课程体系</span><span>Curriculum</span></h3>
       </div>
     </div>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">入门</span>
-        <span class="def-v">易学基础、财神文化、民俗信仰、风水入门</span>
+        <span class="def-k" data-i18n="culture.cur.1.k">入门</span>
+        <span class="def-v" data-i18n="culture.cur.1.v">易学基础、财神文化、民俗信仰、风水入门</span>
       </div>
       <div class="def-row">
-        <span class="def-k">进阶</span>
-        <span class="def-v">家居风水、商业风水、八字命理、择日、姓名学</span>
+        <span class="def-k" data-i18n="culture.cur.2.k">进阶</span>
+        <span class="def-v" data-i18n="culture.cur.2.v">家居风水、商业风水、八字命理、择日、姓名学</span>
       </div>
       <div class="def-row">
-        <span class="def-k">专业</span>
-        <span class="def-v">风水实战、命理咨询、案例研讨、讲师认证</span>
+        <span class="def-k" data-i18n="culture.cur.3.k">专业</span>
+        <span class="def-v" data-i18n="culture.cur.3.v">风水实战、命理咨询、案例研讨、讲师认证</span>
       </div>
       <div class="def-row">
-        <span class="def-k">形式</span>
-        <span class="def-v">直播课、录播课、训练营、线下课、游学、认证考试</span>
+        <span class="def-k" data-i18n="culture.cur.4.k">形式</span>
+        <span class="def-v" data-i18n="culture.cur.4.v">直播课、录播课、训练营、线下课、游学、认证考试</span>
       </div>
       <div class="def-row">
-        <span class="def-k">支付</span>
-        <span class="def-v">课程券与咨询券支持 <b>$财神DAO</b> 购买，NFT 持有者享折扣</span>
+        <span class="def-k" data-i18n="culture.cur.5.k">支付</span>
+        <span class="def-v" data-i18n-html="culture.cur.5.v">课程券与咨询券支持 <b>$财神DAO</b> 购买，NFT 持有者享折扣</span>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">05·B</span>
-        <h3 class="sub-title">命理师与风水师入驻<span>Professional Network</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.culture.pro.title">命理师与风水师入驻</span><span>Professional Network</span></h3>
       </div>
     </div>
 
     <div class="spec">
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">入驻流程</span>
+          <span class="spec-k-cn" data-i18n="culture.pro.1.k">入驻流程</span>
           <span class="spec-k-en">Onboarding</span>
         </div>
-        <div class="spec-v">申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算</div>
+        <div class="spec-v" data-i18n="culture.pro.1.v">申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">服务形式</span>
+          <span class="spec-k-cn" data-i18n="culture.pro.2.k">服务形式</span>
           <span class="spec-k-en">Services</span>
         </div>
-        <div class="spec-v">付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制</div>
+        <div class="spec-v" data-i18n="culture.pro.2.v">付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">平台机制</span>
+          <span class="spec-k-cn" data-i18n="culture.pro.3.k">平台机制</span>
           <span class="spec-k-en">Platform</span>
         </div>
-        <div class="spec-v">实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成</div>
+        <div class="spec-v" data-i18n="culture.pro.3.v">实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">收入结算</span>
+          <span class="spec-k-cn" data-i18n="culture.pro.4.k">收入结算</span>
           <span class="spec-k-en">Settlement</span>
         </div>
-        <div class="spec-v">按服务完成度与用户评价分期结算，平台抽成比例公示，争议订单进入人工仲裁</div>
+        <div class="spec-v" data-i18n="culture.pro.4.v">按服务完成度与用户评价分期结算，平台抽成比例公示，争议订单进入人工仲裁</div>
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">注意</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">注意</span>
+      <div class="note-body" data-i18n="note.culture.warn">
         风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。
       </div>
     </div>
@@ -1853,50 +1903,50 @@
   <section class="wrap sec" id="mall">
     <div class="sec-head">
       <span class="sec-idx">06</span>
-      <h2 class="sec-title">财神商城<span><em class="st st-plan">规划中</em><em class="sd">消费场景</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.mall.title">财神商城</span><span><em class="st st-plan" data-i18n="status.planned">规划中</em><em class="sd" data-i18n="sec.mall.sd">消费场景</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.mall.lead">
       财神生态系统的消费板块，售卖财神周边、文创商品、数字藏品、课程与咨询券。
       支持 $财神DAO 支付，是代币从「金融资产」走向「可用货币」的关键场景。
     </p>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">商品方向</span>
-        <span class="def-v">财神像、香品、手串、护身符、开运摆件、联名服饰、文创礼品、数字藏品、礼品卡</span>
+        <span class="def-k" data-i18n="mall.1.k">商品方向</span>
+        <span class="def-v" data-i18n="mall.1.v">财神像、香品、手串、护身符、开运摆件、联名服饰、文创礼品、数字藏品、礼品卡</span>
       </div>
       <div class="def-row">
-        <span class="def-k">课程咨询</span>
-        <span class="def-v">课程券、咨询券、线下活动门票</span>
+        <span class="def-k" data-i18n="mall.2.k">课程咨询</span>
+        <span class="def-v" data-i18n="mall.2.v">课程券、咨询券、线下活动门票</span>
       </div>
       <div class="def-row">
-        <span class="def-k">游戏道具</span>
-        <span class="def-v">小游戏道具、皮肤、NFT 道具</span>
+        <span class="def-k" data-i18n="mall.3.k">游戏道具</span>
+        <span class="def-v" data-i18n="mall.3.v">小游戏道具、皮肤、NFT 道具</span>
       </div>
       <div class="def-row">
-        <span class="def-k">支付方式</span>
-        <span class="def-v">支持 <b>$财神DAO</b> 支付</span>
+        <span class="def-k" data-i18n="mall.4.k">支付方式</span>
+        <span class="def-v" data-i18n-html="mall.4.v">支持 <b>$财神DAO</b> 支付</span>
       </div>
       <div class="def-row">
-        <span class="def-k">NFT 折扣</span>
-        <span class="def-v">财神 NFT 持有者享阶梯折扣，等级越高折扣越大</span>
+        <span class="def-k" data-i18n="mall.5.k">NFT 折扣</span>
+        <span class="def-v" data-i18n="mall.5.v">财神 NFT 持有者享阶梯折扣，等级越高折扣越大</span>
       </div>
       <div class="def-row">
-        <span class="def-k">积分抵扣</span>
-        <span class="def-v">积分与福气值可抵扣部分订单金额</span>
+        <span class="def-k" data-i18n="mall.6.k">积分抵扣</span>
+        <span class="def-v" data-i18n="mall.6.v">积分与福气值可抵扣部分订单金额</span>
       </div>
       <div class="def-row">
-        <span class="def-k">供应链原则</span>
-        <span class="def-v">正品保障、溯源可查、联名优选、品质把控</span>
+        <span class="def-k" data-i18n="mall.7.k">供应链原则</span>
+        <span class="def-v" data-i18n="mall.7.v">正品保障、溯源可查、联名优选、品质把控</span>
       </div>
       <div class="def-row">
-        <span class="def-k">收入去向</span>
-        <span class="def-v">部分收入进入生态池，按治理规则用于回购、销毁或分红</span>
+        <span class="def-k" data-i18n="mall.8.k">收入去向</span>
+        <span class="def-v" data-i18n="mall.8.v">部分收入进入生态池，按治理规则用于回购、销毁或分红</span>
       </div>
     </div>
 
-    <p class="caption">
+    <p class="caption" data-i18n-html="caption.mall">
       <b>定位：</b>商城不是「卖货」，而是把 $财神DAO 变成可消费的货币。
       支付场景越真实，代币的需求侧就越稳固。
     </p>
@@ -1906,55 +1956,55 @@
   <section class="wrap sec" id="game">
     <div class="sec-head">
       <span class="sec-idx">07</span>
-      <h2 class="sec-title">财神小游戏<span><em class="st st-plan">规划中</em><em class="sd">娱乐入口</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.game.title">财神小游戏</span><span><em class="st st-plan" data-i18n="status.planned">规划中</em><em class="sd" data-i18n="sec.game.sd">娱乐入口</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.game.lead">
       财神生态系统的娱乐板块。玩游戏可获取 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。
       高频互动为整个生态带来日活与传播。
     </p>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">玩法方向</span>
-        <span class="def-v">每日签到、招财转盘、财神消消乐、财神大冒险、财神庙经营、风水布局、答题闯关、PVE / PVP、排行榜赛季</span>
+        <span class="def-k" data-i18n="game.1.k">玩法方向</span>
+        <span class="def-v" data-i18n="game.1.v">每日签到、招财转盘、财神消消乐、财神大冒险、财神庙经营、风水布局、答题闯关、PVE / PVP、排行榜赛季</span>
       </div>
       <div class="def-row">
-        <span class="def-k">奖励体系</span>
-        <span class="def-v">$财神DAO、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值</span>
+        <span class="def-k" data-i18n="game.2.k">奖励体系</span>
+        <span class="def-v" data-i18n="game.2.v">$财神DAO、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值</span>
       </div>
       <div class="def-row">
-        <span class="def-k">道具与皮肤</span>
-        <span class="def-v">可购买、可升级、可合成、可交易</span>
+        <span class="def-k" data-i18n="game.3.k">道具与皮肤</span>
+        <span class="def-v" data-i18n="game.3.v">可购买、可升级、可合成、可交易</span>
       </div>
       <div class="def-row">
-        <span class="def-k">NFT 化</span>
-        <span class="def-v">稀有道具 NFT 化，支持自由交易，平台收取版税</span>
+        <span class="def-k" data-i18n="game.4.k">NFT 化</span>
+        <span class="def-v" data-i18n="game.4.v">稀有道具 NFT 化，支持自由交易，平台收取版税</span>
       </div>
       <div class="def-row">
-        <span class="def-k">版税流向</span>
-        <span class="def-v">部分进入生态分红池与福报池</span>
+        <span class="def-k" data-i18n="game.5.k">版税流向</span>
+        <span class="def-v" data-i18n="game.5.v">部分进入生态分红池与福报池</span>
       </div>
       <div class="def-row">
-        <span class="def-k">奖励来源</span>
-        <span class="def-v">来自生态预算（空投营销与运营份额），<b>不新增铸币</b>，代币总量始终恒定</span>
+        <span class="def-k" data-i18n="game.6.k">奖励来源</span>
+        <span class="def-v" data-i18n-html="game.6.v">来自生态预算（空投营销与运营份额），<b>不新增铸币</b>，代币总量始终恒定</span>
       </div>
       <div class="def-row">
-        <span class="def-k">防刷机制</span>
-        <span class="def-v">体力限制、冷却时间、随机奖励、反脚本、实名认证、排行榜监控、黑名单</span>
+        <span class="def-k" data-i18n="game.7.k">防刷机制</span>
+        <span class="def-v" data-i18n="game.7.v">体力限制、冷却时间、随机奖励、反脚本、实名认证、排行榜监控、黑名单</span>
       </div>
     </div>
 
     <div class="note gold" style="margin-top:var(--sp-5);">
-      <span class="note-tag">循环</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.loop.tag">循环</span>
+      <div class="note-body" data-i18n-html="note.game.loop">
         <b>经济循环：</b>玩游戏 → 赚 $财神DAO → 买道具 / 皮肤 / 商城商品 → 质押 / 燃香 → NFT 道具交易 → 消耗 $财神DAO → 回流生态池
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">风险</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">风险</span>
+      <div class="note-body" data-i18n-html="note.game.warn">
         游戏奖励为币本位，不承诺法币价值，数字资产价格波动风险较高。
         奖励额度受生态预算约束，可能随运营情况调整。
       </div>
@@ -1965,10 +2015,10 @@
   <section class="wrap sec" id="partners">
     <div class="sec-head">
       <span class="sec-idx">08</span>
-      <h2 class="sec-title">合作生态<span><em class="st st-coop">已集成</em><em class="sd">合作代币</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.partners.title">合作生态</span><span><em class="st st-coop" data-i18n="status.integrated">已集成</em><em class="sd" data-i18n="sec.partners.sd">合作代币</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n-html="sec.partners.lead">
       财神生态系统在 Solana 上通过合作代币接入外部社区与流动性。目前合作代币包括
       <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，主要通过聚宝盆双宝组合进入生态，
       承担社区互导与合作流动性的职能。合作代币不改变 $财神DAO 的核心地位，
@@ -1979,74 +2029,74 @@
       <div class="partner-card">
         <div class="partner-head">
           <span class="partner-sym">Antfun</span>
-          <span class="partner-role">合作代币</span>
+          <span class="partner-role" data-i18n="partner.role">合作代币</span>
         </div>
-        <p class="partner-desc">Solana 链上合作代币，接入双宝组合，作为合作侧资产与 $财神DAO 配对质押。</p>
+        <p class="partner-desc" data-i18n="partner.desc.1">Solana 链上合作代币，接入双宝组合，作为合作侧资产与 $财神DAO 配对质押。</p>
       </div>
       <div class="partner-card">
         <div class="partner-head">
           <span class="partner-sym">BG</span>
-          <span class="partner-role">合作代币</span>
+          <span class="partner-role" data-i18n="partner.role">合作代币</span>
         </div>
-        <p class="partner-desc">已接入双宝组合的合作代币，用于双宝金本位计算，与 $财神DAO 共同构成 60 / 40 质押结构。</p>
+        <p class="partner-desc" data-i18n="partner.desc.2">已接入双宝组合的合作代币，用于双宝金本位计算，与 $财神DAO 共同构成 60 / 40 质押结构。</p>
       </div>
       <div class="partner-card">
         <div class="partner-head">
           <span class="partner-sym">LUCKY99</span>
-          <span class="partner-role">合作代币</span>
+          <span class="partner-role" data-i18n="partner.role">合作代币</span>
         </div>
-        <p class="partner-desc">娱乐方向的合作代币，接入双宝组合，为社区带来跨项目的互动与流动性。</p>
+        <p class="partner-desc" data-i18n="partner.desc.3">娱乐方向的合作代币，接入双宝组合，为社区带来跨项目的互动与流动性。</p>
       </div>
       <div class="partner-card">
         <div class="partner-head">
           <span class="partner-sym">FIST</span>
-          <span class="partner-role">合作代币</span>
+          <span class="partner-role" data-i18n="partner.role">合作代币</span>
         </div>
-        <p class="partner-desc">生态方向的合作代币，接入双宝组合，用于丰富双宝的可选资产组合。</p>
+        <p class="partner-desc" data-i18n="partner.desc.4">生态方向的合作代币，接入双宝组合，用于丰富双宝的可选资产组合。</p>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">08·A</span>
-        <h3 class="sub-title">整合方式<span>Integration</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.partners.integration.title">整合方式</span><span>Integration</span></h3>
       </div>
     </div>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">接入通道</span>
-        <span class="def-v">聚宝盆 · 双宝组合（60% $财神DAO + 40% 合作币）</span>
+        <span class="def-k" data-i18n="partners.int.1.k">接入通道</span>
+        <span class="def-v" data-i18n="partners.int.1.v">聚宝盆 · 双宝组合（60% $财神DAO + 40% 合作币）</span>
       </div>
       <div class="def-row">
-        <span class="def-k">计算方式</span>
-        <span class="def-v">金本位计算、币本位发放、本金原路返还；合作币按入场时价格快照，收益以 $财神DAO 结算</span>
+        <span class="def-k" data-i18n="partners.int.2.k">计算方式</span>
+        <span class="def-v" data-i18n="partners.int.2.v">金本位计算、币本位发放、本金原路返还；合作币按入场时价格快照，收益以 $财神DAO 结算</span>
       </div>
       <div class="def-row">
-        <span class="def-k">不影响主线</span>
-        <span class="def-v">不改变燃香赐福的返还率与额度，不改变单宝质押的币本位口径，不改变 $财神DAO 的核心资产地位</span>
+        <span class="def-k" data-i18n="partners.int.3.k">不影响主线</span>
+        <span class="def-v" data-i18n="partners.int.3.v">不改变燃香赐福的返还率与额度，不改变单宝质押的币本位口径，不改变 $财神DAO 的核心资产地位</span>
       </div>
       <div class="def-row">
-        <span class="def-k">合作门槛</span>
-        <span class="def-v">需通过审计、流动性充足、社区透明；合作代币清单与组合比例由官方公示</span>
+        <span class="def-k" data-i18n="partners.int.4.k">合作门槛</span>
+        <span class="def-v" data-i18n="partners.int.4.v">需通过审计、流动性充足、社区透明；合作代币清单与组合比例由官方公示</span>
       </div>
       <div class="def-row">
-        <span class="def-k">退出与暂停</span>
-        <span class="def-v">若合作币发生脱锚、流动性不足等异常，官方有权暂停对应组合；已质押用户按原条款到期返还</span>
+        <span class="def-k" data-i18n="partners.int.5.k">退出与暂停</span>
+        <span class="def-v" data-i18n="partners.int.5.v">若合作币发生脱锚、流动性不足等异常，官方有权暂停对应组合；已质押用户按原条款到期返还</span>
       </div>
     </div>
 
     <div class="note info">
-      <span class="note-tag">说明</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.info.tag">说明</span>
+      <div class="note-body" data-i18n-html="note.partners.info">
         合作代币清单可能随生态合作情况调整，新增或下线均会通过官方渠道提前公示。
         合作代币的接入不改变燃香赐福与单宝质押的既有机制与口径。
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">风险</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.warn.tag">风险</span>
+      <div class="note-body" data-i18n-html="note.partners.warn">
         合作代币存在脱锚、流动性不足、合约漏洞与价格波动等风险。合作代币不构成对 $财神DAO 的兑换承诺，
         也不影响单宝质押。请在参与双宝组合前充分评估合作币的稳定性与流动性。
       </div>
@@ -2057,52 +2107,52 @@
   <section class="wrap sec" id="season">
     <div class="sec-head">
       <span class="sec-idx">09</span>
-      <h2 class="sec-title">运营活动层<span><em class="st st-plan">横向模块</em><em class="sd">赛季与竞赛</em></span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.season.title">运营活动层</span><span><em class="st st-plan" data-i18n="matrix.8.status">横向模块</em><em class="sd" data-i18n="sec.season.sd">赛季与竞赛</em></span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.season.lead">
       运营活动层不是独立产品，而是横跨各产品线的赛季化运营模块：以竞赛、任务与排行榜为小游戏、文化院、商城、NFT 与 DAO 导流，
       同时承接新用户教育与社区活跃。它不改变任何产品本身的收益与返还口径，只负责「把人带到产品面前」。
     </p>
 
     <div class="def">
       <div class="def-row">
-        <span class="def-k">定位</span>
-        <span class="def-v">横向运营层，按赛季 / 批次开展，<b>不替代任何产品机制</b>，不占用推进阶段编号</span>
+        <span class="def-k" data-i18n="season.1.k">定位</span>
+        <span class="def-v" data-i18n-html="season.1.v">横向运营层，按赛季 / 批次开展，<b>不替代任何产品机制</b>，不占用推进阶段编号</span>
       </div>
       <div class="def-row">
-        <span class="def-k">活动类型</span>
-        <span class="def-v">交易竞赛、小游戏赛季、文化知识赛、DAO 提案赛、NFT 专属任务、商城 UGC 赛</span>
+        <span class="def-k" data-i18n="season.2.k">活动类型</span>
+        <span class="def-v" data-i18n="season.2.v">交易竞赛、小游戏赛季、文化知识赛、DAO 提案赛、NFT 专属任务、商城 UGC 赛</span>
       </div>
       <div class="def-row">
-        <span class="def-k">奖励来源</span>
-        <span class="def-v">生态预算中的空投营销与运营份额，<b>不新增铸币</b>，不动燃香返还池与质押本金池</span>
+        <span class="def-k" data-i18n="season.3.k">奖励来源</span>
+        <span class="def-v" data-i18n-html="season.3.v">生态预算中的空投营销与运营份额，<b>不新增铸币</b>，不动燃香返还池与质押本金池</span>
       </div>
       <div class="def-row">
-        <span class="def-k">预算原则</span>
-        <span class="def-v">每赛季固定预算、公示总奖池、用完即止；运营费用单独列支，不占用活动奖池</span>
+        <span class="def-k" data-i18n="season.4.k">预算原则</span>
+        <span class="def-v" data-i18n="season.4.v">每赛季固定预算、公示总奖池、用完即止；运营费用单独列支，不占用活动奖池</span>
       </div>
       <div class="def-row">
-        <span class="def-k">与产品关系</span>
-        <span class="def-v">活动是各产品的「导流器」与「权益使用场景」，<b>不提高质押 APY、不改变燃香返还率、不承诺分红</b></span>
+        <span class="def-k" data-i18n="season.5.k">与产品关系</span>
+        <span class="def-v" data-i18n-html="season.5.v">活动是各产品的「导流器」与「权益使用场景」，<b>不提高质押 APY、不改变燃香返还率、不承诺分红</b></span>
       </div>
       <div class="def-row">
-        <span class="def-k">规则公示</span>
-        <span class="def-v">单次活动的规则、奖池、周期、防刷与申诉机制以<b>独立活动文档</b>为准</span>
+        <span class="def-k" data-i18n="season.6.k">规则公示</span>
+        <span class="def-v" data-i18n-html="season.6.v">单次活动的规则、奖池、周期、防刷与申诉机制以<b>独立活动文档</b>为准</span>
       </div>
     </div>
 
     <div class="note info" style="margin-top:var(--sp-5);">
-      <span class="note-tag">首期</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="season.first.tag">首期</span>
+      <div class="note-body" data-i18n-html="note.season.first">
         活动层首期将以 <b>DEX 交易激励赛季</b> 落地。具体奖池、积分权重、押金、快照与风控规则，
         以该活动独立发布的执行文档为准，不在本文档展开。
       </div>
     </div>
 
     <div class="note warn">
-      <span class="note-tag">边界</span>
-      <div class="note-body">
+      <span class="note-tag" data-i18n="note.boundary.tag">边界</span>
+      <div class="note-body" data-i18n-html="note.season.warn">
         活动奖励为激励性质，<b>不构成固定收益或投资回报承诺</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。
         涉及押金、KYC、排名与没收规则的，以该活动独立条款为准。参与前请自行评估规则与风险。
       </div>
@@ -2113,89 +2163,89 @@
   <section class="wrap sec" id="loop">
     <div class="sec-head">
       <span class="sec-idx">10</span>
-      <h2 class="sec-title">生态闭环<span class="sd-en">Ecosystem Loop</span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.loop.title">生态闭环</span><span class="sd-en">Ecosystem Loop</span></h2>
     </div>
 
-    <p class="sec-lead">
+    <p class="sec-lead" data-i18n="sec.loop.lead">
       从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，
       八条入口与横向的合作生态、运营活动层共同指向同一个核心资产：$财神DAO。
     </p>
 
     <div class="loop">
       <div class="loop-row">
-        <span class="loop-k">信仰入口</span>
-        <span class="loop-v">燃香赐福 —— 燃烧即通缩，赐福按币本位释放</span>
+        <span class="loop-k" data-i18n="loop.1.k">信仰入口</span>
+        <span class="loop-v" data-i18n="loop.1.v">燃香赐福 —— 燃烧即通缩，赐福按币本位释放</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">资产入口</span>
-        <span class="loop-v">聚宝盆 —— 单宝 / 双宝质押，日线释放收益</span>
+        <span class="loop-k" data-i18n="loop.2.k">资产入口</span>
+        <span class="loop-v" data-i18n="loop.2.v">聚宝盆 —— 单宝 / 双宝质押，日线释放收益</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">身份入口</span>
-        <span class="loop-v">财神 NFT —— 108 枚创世 + 联名系列，双重权益身份中枢</span>
+        <span class="loop-k" data-i18n="loop.3.k">身份入口</span>
+        <span class="loop-v" data-i18n="loop.3.v">财神 NFT —— 108 枚创世 + 联名系列，双重权益身份中枢</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">文化入口</span>
-        <span class="loop-v">财神文化院 —— 课程、咨询与讲师认证体系</span>
+        <span class="loop-k" data-i18n="loop.4.k">文化入口</span>
+        <span class="loop-v" data-i18n="loop.4.v">财神文化院 —— 课程、咨询与讲师认证体系</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">消费入口</span>
-        <span class="loop-v">财神商城 —— 周边、文创与数字藏品，支持 $财神DAO 支付</span>
+        <span class="loop-k" data-i18n="loop.5.k">消费入口</span>
+        <span class="loop-v" data-i18n="loop.5.v">财神商城 —— 周边、文创与数字藏品，支持 $财神DAO 支付</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">娱乐入口</span>
-        <span class="loop-v">财神小游戏 —— 高频互动，道具 NFT 化交易</span>
+        <span class="loop-k" data-i18n="loop.6.k">娱乐入口</span>
+        <span class="loop-v" data-i18n="loop.6.v">财神小游戏 —— 高频互动，道具 NFT 化交易</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">治理入口</span>
-        <span class="loop-v">财神 DAO —— 提案、投票与金库监督</span>
+        <span class="loop-k" data-i18n="loop.7.k">治理入口</span>
+        <span class="loop-v" data-i18n="loop.7.v">财神 DAO —— 提案、投票与金库监督</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">公益入口</span>
-        <span class="loop-v">财神福报 —— 版税与生态收入的一部分回馈社会</span>
+        <span class="loop-k" data-i18n="loop.8.k">公益入口</span>
+        <span class="loop-v" data-i18n="loop.8.v">财神福报 —— 版税与生态收入的一部分回馈社会</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">合作入口</span>
-        <span class="loop-v">合作代币 —— Antfun / BG / LUCKY99 / FIST，通过双宝接入生态</span>
+        <span class="loop-k" data-i18n="loop.9.k">合作入口</span>
+        <span class="loop-v" data-i18n="loop.9.v">合作代币 —— Antfun / BG / LUCKY99 / FIST，通过双宝接入生态</span>
       </div>
       <div class="loop-row">
-        <span class="loop-k">活动层</span>
-        <span class="loop-v">赛季与竞赛 —— 横向运营模块，为各产品导流与拉新，奖励来自生态预算</span>
+        <span class="loop-k" data-i18n="loop.10.k">活动层</span>
+        <span class="loop-v" data-i18n="loop.10.v">赛季与竞赛 —— 横向运营模块，为各产品导流与拉新，奖励来自生态预算</span>
       </div>
     </div>
 
     <div class="spec" style="margin-top:var(--sp-5);">
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">飞轮一</span>
+          <span class="spec-k-cn" data-i18n="fly.1.k">飞轮一</span>
           <span class="spec-k-en">Flywheel 01</span>
         </div>
-        <div class="spec-v"><b>通缩飞轮</b> —— 燃香燃烧减少流通量 → 筹码稀缺性上升 → 持有意愿增强 → 质押与消费需求提升</div>
+        <div class="spec-v" data-i18n-html="fly.1.v"><b>通缩飞轮</b> —— 燃香燃烧减少流通量 → 筹码稀缺性上升 → 持有意愿增强 → 质押与消费需求提升</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">飞轮二</span>
+          <span class="spec-k-cn" data-i18n="fly.2.k">飞轮二</span>
           <span class="spec-k-en">Flywheel 02</span>
         </div>
-        <div class="spec-v"><b>收入飞轮</b> —— 商城与文化院产生真实收入 → 部分注入生态池 → 回购 / 分红 → 持币人受益</div>
+        <div class="spec-v" data-i18n-html="fly.2.v"><b>收入飞轮</b> —— 商城与文化院产生真实收入 → 部分注入生态池 → 回购 / 分红 → 持币人受益</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">飞轮三</span>
+          <span class="spec-k-cn" data-i18n="fly.3.k">飞轮三</span>
           <span class="spec-k-en">Flywheel 03</span>
         </div>
-        <div class="spec-v"><b>身份飞轮</b> —— NFT 权益横跨全部产品，联名系列接入外部社区 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳</div>
+        <div class="spec-v" data-i18n-html="fly.3.v"><b>身份飞轮</b> —— NFT 权益横跨全部产品，联名系列接入外部社区 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳</div>
       </div>
       <div class="spec-row">
         <div class="spec-k">
-          <span class="spec-k-cn">飞轮四</span>
+          <span class="spec-k-cn" data-i18n="fly.4.k">飞轮四</span>
           <span class="spec-k-en">Flywheel 04</span>
         </div>
-        <div class="spec-v"><b>活动飞轮</b> —— 赛季活动为各产品导流 → 提升日活与交易深度 → 沉淀真实持币社区 → 反哺生态预算与治理</div>
+        <div class="spec-v" data-i18n-html="fly.4.v"><b>活动飞轮</b> —— 赛季活动为各产品导流 → 提升日活与交易深度 → 沉淀真实持币社区 → 反哺生态预算与治理</div>
       </div>
     </div>
 
-    <p class="caption">
+    <p class="caption" data-i18n-html="caption.loop">
       <b>总结：</b>从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，
       财神生态系统正在形成一个自我强化、彼此导流的完整财神宇宙。
       合作代币与活动层不新增独立入口，而是作为横向模块，让各入口之间「转起来」。
@@ -2206,35 +2256,35 @@
   <section class="wrap sec" id="risk">
     <div class="sec-head">
       <span class="sec-idx">11</span>
-      <h2 class="sec-title">风险提示<span class="sd-en">Disclosure</span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.risk.title">风险提示</span><span class="sd-en">Disclosure</span></h2>
     </div>
 
-    <p class="risk-intro">
+    <p class="risk-intro" data-i18n-html="risk.intro">
       <b>重要提示：</b>数字资产投资存在重大风险，包括本金全部损失的可能。
       本页所有产品机制、APY、额度、比例、合作代币、联名 NFT 与活动奖励仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。
     </p>
 
     <ol class="risk-list">
-      <li class="risk-item"><b>燃香不可撤回</b> —— 燃香即打入黑洞，资产永久退出流通，无法找回、无法退还。</li>
-      <li class="risk-item"><b>锁仓流动性受限</b> —— 聚宝盆质押不可提前解锁，资金在周期内无法动用。</li>
-      <li class="risk-item"><b>币本位收益不保本</b> —— 币本位收益不保本法币价值，代币价格波动会直接影响实际收益。</li>
-      <li class="risk-item"><b>额度刚性</b> —— 燃香总额度 20M 固定，限额限量、额满即止，可能无法参与。</li>
-      <li class="risk-item"><b>开放时间不确定</b> —— 开放时间与额度以直播间公告为准，不设固定场次。</li>
-      <li class="risk-item"><b>合作币风险</b> —— 双宝合作币（Antfun / BG / LUCKY99 / FIST）存在脱锚、流动性不足、合约漏洞等风险，极端情况下本金价值可能大幅缩水。</li>
-      <li class="risk-item"><b>合作币非兑换承诺</b> —— 合作代币不构成对 $财神DAO 的兑换承诺，也不影响单宝质押；合作币清单与组合比例可能调整，以官方公示为准。</li>
-      <li class="risk-item"><b>APY 可调整</b> —— 聚宝盆 APY 为动态参数，可随生态情况调整，以官方页面实时显示为准。</li>
-      <li class="risk-item"><b>非复利口径</b> —— 聚宝盆收益按日线性释放，APY 为简单年化、非复利，实际累计收益需按周期自行核算。</li>
-      <li class="risk-item"><b>NFT 市场风险</b> —— 财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
-      <li class="risk-item"><b>联名 NFT 风险</b> —— 联名系列的合作侧权益由合作方兑现，其兑现能力、规则与存续取决于合作方；合作方权益变化可能影响联名 NFT 整体价值。联名方案以官方与对应合作方公告为准。</li>
-      <li class="risk-item"><b>分红不保本</b> —— 生态分红取决于生态实际收入，不承诺分红金额，可能为零。</li>
-      <li class="risk-item"><b>文化院合规边界</b> —— 风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
-      <li class="risk-item"><b>游戏奖励波动</b> —— 财神小游戏奖励为币本位，不承诺法币价值，奖励额度受生态预算约束。</li>
-      <li class="risk-item"><b>活动奖励非收益承诺</b> —— 运营活动层的奖励为激励性质，不承诺法币价值，不构成固定收益或投资回报承诺。</li>
-      <li class="risk-item"><b>活动规则可变</b> —— 活动规则、奖池、预算与周期可能按赛季调整，以单次活动公告与独立条款为准。</li>
-      <li class="risk-item"><b>活动押金风险</b> —— 涉及押金的活动，押金在违规、作弊或触发没收条款时可能被扣除；具体以该活动独立条款为准。</li>
-      <li class="risk-item"><b>活动与产品解耦</b> —— 活动不提高质押 APY、不改变燃香返还率、不承诺分红；活动奖励来自既有生态预算，不新增铸币。</li>
-      <li class="risk-item"><b>机制调整</b> —— 各产品参数可能在治理程序下调整，调整将通过官方渠道公示。</li>
-      <li class="risk-item"><b>非投资建议</b> —— 本文档不构成投资建议，请自行充分调研并咨询专业人士后理性参与。</li>
+      <li class="risk-item" data-i18n-html="risk.1"><b>燃香不可撤回</b> —— 燃香即打入黑洞，资产永久退出流通，无法找回、无法退还。</li>
+      <li class="risk-item" data-i18n-html="risk.2"><b>锁仓流动性受限</b> —— 聚宝盆质押不可提前解锁，资金在周期内无法动用。</li>
+      <li class="risk-item" data-i18n-html="risk.3"><b>币本位收益不保本</b> —— 币本位收益不保本法币价值，代币价格波动会直接影响实际收益。</li>
+      <li class="risk-item" data-i18n-html="risk.4"><b>额度刚性</b> —— 燃香总额度 20M 固定，限额限量、额满即止，可能无法参与。</li>
+      <li class="risk-item" data-i18n-html="risk.5"><b>开放时间不确定</b> —— 开放时间与额度以直播间公告为准，不设固定场次。</li>
+      <li class="risk-item" data-i18n-html="risk.6"><b>合作币风险</b> —— 双宝合作币（Antfun / BG / LUCKY99 / FIST）存在脱锚、流动性不足、合约漏洞等风险，极端情况下本金价值可能大幅缩水。</li>
+      <li class="risk-item" data-i18n-html="risk.7"><b>合作币非兑换承诺</b> —— 合作代币不构成对 $财神DAO 的兑换承诺，也不影响单宝质押；合作币清单与组合比例可能调整，以官方公示为准。</li>
+      <li class="risk-item" data-i18n-html="risk.8"><b>APY 可调整</b> —— 聚宝盆 APY 为动态参数，可随生态情况调整，以官方页面实时显示为准。</li>
+      <li class="risk-item" data-i18n-html="risk.9"><b>非复利口径</b> —— 聚宝盆收益按日线性释放，APY 为简单年化、非复利，实际累计收益需按周期自行核算。</li>
+      <li class="risk-item" data-i18n-html="risk.10"><b>NFT 市场风险</b> —— 财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。</li>
+      <li class="risk-item" data-i18n-html="risk.11"><b>联名 NFT 风险</b> —— 联名系列的合作侧权益由合作方兑现，其兑现能力、规则与存续取决于合作方；合作方权益变化可能影响联名 NFT 整体价值。联名方案以官方与对应合作方公告为准。</li>
+      <li class="risk-item" data-i18n-html="risk.12"><b>分红不保本</b> —— 生态分红取决于生态实际收入，不承诺分红金额，可能为零。</li>
+      <li class="risk-item" data-i18n-html="risk.13"><b>文化院合规边界</b> —— 风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。</li>
+      <li class="risk-item" data-i18n-html="risk.14"><b>游戏奖励波动</b> —— 财神小游戏奖励为币本位，不承诺法币价值，奖励额度受生态预算约束。</li>
+      <li class="risk-item" data-i18n-html="risk.15"><b>活动奖励非收益承诺</b> —— 运营活动层的奖励为激励性质，不承诺法币价值，不构成固定收益或投资回报承诺。</li>
+      <li class="risk-item" data-i18n-html="risk.16"><b>活动规则可变</b> —— 活动规则、奖池、预算与周期可能按赛季调整，以单次活动公告与独立条款为准。</li>
+      <li class="risk-item" data-i18n-html="risk.17"><b>活动押金风险</b> —— 涉及押金的活动，押金在违规、作弊或触发没收条款时可能被扣除；具体以该活动独立条款为准。</li>
+      <li class="risk-item" data-i18n-html="risk.18"><b>活动与产品解耦</b> —— 活动不提高质押 APY、不改变燃香返还率、不承诺分红；活动奖励来自既有生态预算，不新增铸币。</li>
+      <li class="risk-item" data-i18n-html="risk.19"><b>机制调整</b> —— 各产品参数可能在治理程序下调整，调整将通过官方渠道公示。</li>
+      <li class="risk-item" data-i18n-html="risk.20"><b>非投资建议</b> —— 本文档不构成投资建议，请自行充分调研并咨询专业人士后理性参与。</li>
     </ol>
   </section>
 
@@ -2242,7 +2292,7 @@
   <section class="wrap sec" id="faq">
     <div class="sec-head">
       <span class="sec-idx">12</span>
-      <h2 class="sec-title">常见问题<span class="sd-en">FAQ</span></h2>
+      <h2 class="sec-title"><span data-i18n="sec.faq.title">常见问题</span><span class="sd-en">FAQ</span></h2>
     </div>
 
     <div class="faq-tools">
@@ -2250,14 +2300,14 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
-        <span>展开全部</span>
+        <span data-i18n="faq.expand">展开全部</span>
       </button>
     </div>
 
     <div class="faq-list">
       <details class="faq-item">
-        <summary>燃香燃烧的 $财神DAO 去哪了？为什么返还比燃烧还多？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.1.q">燃香燃烧的 $财神DAO 去哪了？为什么返还比燃烧还多？</summary>
+        <div class="faq-a" data-i18n-html="faq.1.a">
           燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通、无法找回</b>。
           返还比燃烧多，是因为赐福池在燃烧发生之前就已按 20,000,000 枚 × 251.12% = 50,224,000 枚预留完毕，
           返还的是这个池子里的代币，而不是凭空增发。代币总量始终恒定。
@@ -2265,8 +2315,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>20,000,000 枚额度与代币经济文档的 50,224,000 枚是什么关系？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.2.q">20,000,000 枚额度与代币经济文档的 50,224,000 枚是什么关系？</summary>
+        <div class="faq-a" data-i18n-html="faq.2.a">
           前者是<b>燃烧上限</b>，后者是<b>返还上限</b>，两者的换算关系为：
           <code>20,000,000 × 251.12% = 50,224,000</code>。
           这正好对应代币分配表里的「燃香赐福池」份额，说明全周期可燃烧量与可返还量在总量层面完全闭合，
@@ -2275,8 +2325,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>聚宝盆的 APY 从哪来？会不会无法兑付？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.3.q">聚宝盆的 APY 从哪来？会不会无法兑付？</summary>
+        <div class="faq-a" data-i18n-html="faq.3.a">
           APY 来自生态激励预算与生态实际收入的组合，属于<b>激励参数而非承诺收益</b>。
           代币层面，聚宝盆的收益发放来源已在代币分配中预留对应份额；
           若生态预算不足以支撑当前 APY，治理层面可以下调参数。用户需自行评估收益可持续性。
@@ -2284,8 +2334,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>单宝和双宝的「本位」差异到底影响什么？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.4.q">单宝和双宝的「本位」差异到底影响什么？</summary>
+        <div class="faq-a" data-i18n-html="faq.4.a">
           影响<b>收益的计算方式</b>，不影响<b>发放的币种</b>。<br>
           单宝是币本位：质押 10,000 枚，收益就按 10,000 枚计算，与价格无关。<br>
           双宝是金本位：按总投入的 USDT 等值计算收益，再折算成 $财神DAO 发放。<br>
@@ -2294,8 +2344,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>联名 NFT 的「双重权益」到底是什么？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.5.q">联名 NFT 的「双重权益」到底是什么？</summary>
+        <div class="faq-a" data-i18n-html="faq.5.a">
           <b>双重权益 = 财神侧权益 + 合作侧权益。</b><br>
           <b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务等，由财神生态兑现。<br>
           <b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证，由合作方兑现。<br>
@@ -2305,8 +2355,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>合作代币在生态里扮演什么角色？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.6.q">合作代币在生态里扮演什么角色？</summary>
+        <div class="faq-a" data-i18n-html="faq.6.a">
           合作代币（Antfun / BG / LUCKY99 / FIST）通过<b>聚宝盆双宝组合</b>接入生态，承担社区互导与合作流动性的职能。
           合作代币不改变 $财神DAO 的核心资产地位，也不影响燃香赐福与单宝质押的币本位机制。
           合作币清单与组合比例由官方公示，可能随生态合作情况调整。
@@ -2314,8 +2364,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>双宝里的合作币脱锚了怎么办？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.7.q">双宝里的合作币脱锚了怎么办？</summary>
+        <div class="faq-a" data-i18n-html="faq.7.a">
           双宝返还的是<b>原数量的合作币</b>，因此合作币脱锚会直接影响本金的法币价值。
           官方风控措施包括：合作币需通过审计、需保证流动性充足、发生脱锚时有权暂停该组合。
           用户在选择双宝时应充分评估合作币的稳定性。
@@ -2323,8 +2373,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>财神 NFT 的分红是固定收益吗？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.8.q">财神 NFT 的分红是固定收益吗？</summary>
+        <div class="faq-a" data-i18n-html="faq.8.a">
           不是。分红来自生态的<b>实际收入</b>（商城、文化院、小游戏版税等），
           由治理决定注入比例与分配权重。生态收入好，分红可能较高；收入差，分红可能很低甚至为零。
           它绑定的是生态成长性，而不是固定利率。
@@ -2332,8 +2382,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>小游戏发的奖励会不会导致代币无限增发？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.9.q">小游戏发的奖励会不会导致代币无限增发？</summary>
+        <div class="faq-a" data-i18n-html="faq.9.a">
           不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。
           小游戏奖励来自生态预算中已预留的空投营销与运营份额，
           属于<b>既有份额的再分配</b>，不新增铸币。
@@ -2341,8 +2391,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>运营活动层的奖励会不会导致代币增发？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.10.q">运营活动层的奖励会不会导致代币增发？</summary>
+        <div class="faq-a" data-i18n-html="faq.10.a">
           不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。
           活动奖励来自生态预算中已预留的空投营销与运营份额，属于<b>既有份额的再分配</b>，
           不新增铸币，也不占用燃香返还池与质押本金池。
@@ -2350,8 +2400,8 @@
       </details>
 
       <details class="faq-item">
-        <summary>赛季竞赛是不是变相收益承诺？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.11.q">赛季竞赛是不是变相收益承诺？</summary>
+        <div class="faq-a" data-i18n-html="faq.11.a">
           不是。活动奖励是激励性质，<b>不是固定收益或投资回报</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。
           涉及押金、排名、KYC、没收等规则，以该活动独立发布的条款为准。
           参与前请自行评估规则与风险。
@@ -2359,16 +2409,16 @@
       </details>
 
       <details class="faq-item">
-        <summary>这些规划中的产品什么时候上线？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.12.q">这些规划中的产品什么时候上线？</summary>
+        <div class="faq-a" data-i18n-html="faq.12.a">
           阶段二至阶段四的具体时间表以官方公告为准。本文档描述的是产品结构与机制方向，
           不代表时间承诺。每个产品上线前会单独发布机制文档，明确数值口径、发放来源与风控边界。
         </div>
       </details>
 
       <details class="faq-item">
-        <summary>为什么聚宝盆不支持提前解锁？</summary>
-        <div class="faq-a">
+        <summary data-i18n="faq.13.q">为什么聚宝盆不支持提前解锁？</summary>
+        <div class="faq-a" data-i18n-html="faq.13.a">
           质押周期是收益定价的基础。如果允许随时退出，APY 就无法维持在公示水平，
           对按期质押的用户也不公平。因此周期内不支持提前解锁。
           如后续开放，会配套明确的罚金规则并提前公示。
@@ -2381,15 +2431,15 @@
   <footer class="wrap doc-foot">
     <div class="foot-row">
       <span class="foot-k">Document</span>
-      <span class="foot-v">财神DAO生态系统 · Ecosystem Documentation</span>
+      <span class="foot-v" data-i18n="foot.doc">财神DAO生态系统 · Ecosystem Documentation</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">V3.0 · 内部评审稿</span>
+      <span class="foot-v" data-i18n="foot.ver">V3.0 · 内部评审稿</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Existing</span>
-      <span class="foot-v">燃香赐福 · 聚宝盆</span>
+      <span class="foot-v" data-i18n="foot.exist">燃香赐福 · 聚宝盆</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Partners</span>
@@ -2397,15 +2447,15 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">NFT</span>
-      <span class="foot-v">108 枚创世 + 联名系列（双重权益）</span>
+      <span class="foot-v" data-i18n="foot.nft">108 枚创世 + 联名系列（双重权益）</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Planned</span>
-      <span class="foot-v">财神 NFT · 文化院 · 商城 · 小游戏 · DAO · 福报</span>
+      <span class="foot-v" data-i18n="foot.plan">财神 NFT · 文化院 · 商城 · 小游戏 · DAO · 福报</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Activity</span>
-      <span class="foot-v">运营活动层 · 赛季与竞赛（横向模块）</span>
+      <span class="foot-v" data-i18n="foot.activity">运营活动层 · 赛季与竞赛（横向模块）</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Core Asset</span>
@@ -2418,7 +2468,7 @@
       <span class="foot-v">Solana SPL</span>
     </div>
 
-    <div class="disc">
+    <div class="disc" data-i18n-html="foot.disc">
       本文档为财神生态系统，用于信息展示，不构成任何投资建议。<br>
       所有规则、APY、额度、周期、分红比例、合作代币、联名 NFT 与活动奖励以官方最新公告和页面为准；单次活动与联名细则以独立文档为准。<br>
       数字资产价格波动剧烈，请理性判断、注意风险。
@@ -2435,11 +2485,1029 @@
 
 <div id="toast" role="status" aria-live="polite">已复制</div>
 
+<!-- 语言字典 -->
 <script>
+  var I18N = {
+    zh: {
+      'page.title': '财神DAO生态系统 · 生态文档',
+      'mast.eb.cn': '生态文档',
+      'mast.eb.en': 'ECOSYSTEM Documentation',
+      'mast.title': '财神DAO生态系统',
+      'mast.sub': '从信仰到资产 · 从文化到娱乐的完整链上财神宇宙',
+      'meta.ver.k': '版本',
+      'meta.live.k': '已上线',
+      'meta.live.v': '燃香赐福 · 聚宝盆',
+      'meta.partner.k': '已集成',
+      'meta.partner.v': '4 合作代币',
+      'meta.plan.k': '规划中',
+      'meta.plan.v': '6 板块 + 联名 NFT + 活动层',
+
+      'toc.overview': '总览',
+      'toc.incense': '燃香赐福',
+      'toc.treasure': '聚宝盆',
+      'toc.nft': '财神 NFT',
+      'toc.culture': '文化院',
+      'toc.mall': '商城',
+      'toc.game': '小游戏',
+      'toc.partners': '合作生态',
+      'toc.season': '活动层',
+      'toc.loop': '生态闭环',
+      'toc.risk': '风险提示',
+      'toc.faq': 'FAQ',
+
+      'abstract.text': '财神生态系统以 <b>$财神DAO</b> 为唯一核心资产，连接信仰、资产、文化、教育、娱乐、消费与治理。现有双引擎为 <span class="hl">燃香赐福</span> 与 <span class="hl">聚宝盆</span>：前者以「燃香即销毁」构建通缩入口，后者以「单宝 / 双宝」两种本位模型承接质押需求。在此基础上，财神 NFT、财神文化院、财神商城、财神小游戏、财神 DAO 与财神福报将依次展开，并接入 <span class="hl">Antfun / BG / LUCKY99 / FIST</span> 等合作代币与横向的 <span class="hl">运营活动层</span>，形成从信仰到资产、从文化到娱乐的完整闭环。本文档用于团队内部理解产品架构、机制口径与规划边界；单次活动的执行细则以独立活动文档为准。',
+
+      'sec.ov.title': '总览',
+      'sec.ov.lead': '财神DAO生态系统由「现有双引擎 + 未来六大板块 + 合作代币 + 横向运营活动层」构成。每个产品承担一个明确的入口职能，彼此以 $财神DAO 为价值纽带，形成可循环、可验证、可持续的生态结构。',
+
+      'hl.1.t': '现有双引擎',
+      'hl.1.d': '燃香赐福负责通缩与信仰入口，聚宝盆负责质押与资产留存',
+      'hl.2.t': '燃香燃烧总额度',
+      'hl.2.d': '全周期上限 20,000,000 枚，对应返还池 50,224,000 枚',
+      'hl.3.t': '创世 NFT 总量',
+      'hl.3.d': '金身 8 · 招财尊 20 · 财神令 80，极少数创世身份凭证',
+      'hl.4.t': '生态入口',
+      'hl.4.d': '信仰 · 资产 · 身份 · 文化 · 消费 · 娱乐 · 治理 · 公益',
+
+      'note.coop.tag': '合作',
+      'note.coop.body': '目前合作代币包括 <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，通过聚宝盆双宝组合接入生态，不改变燃香赐福与单宝质押的币本位机制，也不影响 $财神DAO 的核心地位。',
+      'note.op.tag': '活动',
+      'note.op.body': '<b>运营活动层</b>是横向运营模块，不是独立产品：以赛季制竞赛、任务与排行榜为各产品导流，奖励来自生态预算中的空投营销与运营份额，<b>不新增铸币，不动燃香返还池与质押本金池</b>。',
+
+      'sub.matrix.title': '产品矩阵',
+      'status.live': '已上线',
+      'status.integrated': '已集成',
+      'status.planned': '规划中',
+
+      'matrix.1.desc': '财神直播间限定。燃香打入黑洞、永不回流，赐福按币本位每日释放，连续 365 天，累计返还 251.12%。',
+      'matrix.2.desc': '质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。',
+      'matrix.3.name': '合作代币',
+      'matrix.3.desc': 'Antfun · BG · LUCKY99 · FIST。通过聚宝盆双宝组合接入，金本位计算、币本位发放，不改变单宝与燃香的币本位机制。',
+      'matrix.4.desc': '108 枚创世身份凭证，唯一编号；另设联名系列，与特定社区 / 基金会联名发行，持有者享财神生态与合作方双重权益。',
+      'matrix.5.name': '财神文化院',
+      'matrix.5.desc': '风水命理教育板块。课程体系、命理师与风水师入驻网络、认证与咨询服务平台。',
+      'matrix.6.desc': '财神周边、文创礼品、数字藏品、课程与咨询券，支持 $财神DAO 支付，NFT 持有者享折扣。',
+      'matrix.7.desc': '娱乐板块。玩游戏赚 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。',
+      'matrix.8.name': '财神赛季 · 运营活动',
+      'matrix.8.status': '运营层',
+      'matrix.8.desc': '横向运营模块，按赛季开展交易竞赛、小游戏赛季、文化知识赛与 DAO 提案赛；奖励来自生态预算，不新增铸币，具体规则以单次活动公告为准。',
+
+      'sub.rollout.title': '推进节奏',
+      'phase.1.k': '阶段一',
+      'phase.1.v': '<b>已上线</b> —— 燃香赐福、聚宝盆。完成「通缩入口 + 资产留存」的最小闭环，验证数值模型与用户路径。',
+      'phase.2.k': '阶段二',
+      'phase.2.v': '<b>创世身份</b> —— 财神 NFT 竞拍发行。以 108 枚创世身份承接长期持有者，形成权益中枢；同步推进联名系列发行。',
+      'phase.3.k': '阶段三',
+      'phase.3.v': '<b>消费与内容</b> —— 财神商城、财神文化院。让 $财神DAO 获得真实支付场景与内容供给。',
+      'phase.4.k': '阶段四',
+      'phase.4.v': '<b>娱乐与治理</b> —— 财神小游戏、财神 DAO、财神福报。以高频互动与社区共治完成生态自循环。',
+      'caption.rollout': '<b>说明：</b>阶段划分为规划顺序，实际推进以官方公告为准。每个产品上线前均会单独发布机制文档，明确数值口径、发放来源与风控边界。',
+      'caption.horizontal': '<b>横向层：</b>合作代币与运营活动层不占用阶段编号，按需穿插在各阶段之间，为对应产品导流。',
+
+      'sec.incense.sd': '通缩入口',
+      'sec.incense.lead': '每日财神直播间限定活动。用户燃香即把 $财神DAO 打入黑洞地址，链上公开可查、不可撤回；赐福按币本位每日释放，连续 365 天，累计返还燃烧量的 251.12%。',
+      'incense.time.k': '开放时间',
+      'incense.time.v': '财神直播间限定，限额限量，按实际情况动态开放，以直播间公告为准',
+      'incense.quota.k': '总额度',
+      'incense.quota.v': '<b>20,000,000 枚固定</b>，额满即止',
+      'incense.burn.k': '燃香方式',
+      'incense.burn.v': '打入黑洞地址，<b>不可撤回</b>',
+      'incense.release.k': '赐福方式',
+      'incense.release.v': '币本位返还，连续 365 天',
+      'incense.daily.k': '每日释放',
+      'incense.daily.v': '<code>0.688%</code> / 天',
+      'incense.total.k': '总返还率',
+      'incense.total.v': '<code>251.12%</code>（0.688% × 365）',
+      'incense.claim.k': '领取入口',
+      'incense.claim.v': '<code>lock.jup.ag</code> 链上托管领取',
+      'incense.claimtime.k': '领取时间',
+      'incense.claimtime.v': 'T+1 起可领取，建议 24 个月内领取有效',
+      'sub.incense.pool.title': '返还池与代币分配的关系',
+      'note.rel.tag': '关联',
+      'note.rel.body': '燃香赐福的返还来源为代币经济文档中的 <b>燃香赐福池 50,224,000 枚</b>，与燃烧总额度严格对应：<b>20,000,000 × 251.12% = 50,224,000</b>。也就是说，全周期可燃烧上限与可返还上限在总量层面完全闭合，不存在超额承诺。',
+      'calc.pool.label': '返还池闭合验算',
+      'calc.pool.1': '燃烧总额度',
+      'calc.pool.2': '单枚返还倍数',
+      'calc.pool.3': '返还池上限',
+      'calc.pool.4': '与代币分配「燃香赐福池」',
+      'calc.pool.5': '完全一致',
+      'unit.token': '枚',
+      'unit.token.day': '枚/天',
+      'sub.incense.ex.title': '领取示例',
+      'calc.ex.label': '计算公式',
+      'calc.ex.1': '每日赐福',
+      'calc.ex.2': '燃烧数量',
+      'calc.ex.3': '累计返还',
+      'calc.ex.4': '净增数量',
+      'calc.ex2.label': '示例 · 燃烧 10,000 枚 $财神DAO',
+      'tbl.ex.th1': '燃烧数量',
+      'tbl.ex.th2': '每日赐福',
+      'tbl.ex.th3': '365 天累计',
+      'tbl.ex.th4': '净增数量',
+      'tbl.ex.caption': '单位：枚 $财神DAO。示例仅用于说明机制，实际以官方页面为准。',
+      'sub.incense.mk.title': '机制要点',
+      'incense.mk.1.k': '燃香即销毁',
+      'incense.mk.1.v': '燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通</b>，构成项目通缩的一环。',
+      'incense.mk.2.k': '币本位返还',
+      'incense.mk.2.v': '返还的是 $财神DAO 的数量，不随法币价格变化。价格涨跌只影响返还份额的法币价值，不影响枚数。',
+      'incense.mk.3.k': '额度刚性',
+      'incense.mk.3.v': '总额度 20,000,000 枚固定，额满即止，不会追加、不会临时扩容。',
+      'incense.mk.4.k': '防刷机制',
+      'incense.mk.4.v': '单地址限额、频次校验与链上行为分析并行，异常地址将被限制参与。',
+      'incense.mk.5.k': '可验证性',
+      'incense.mk.5.v': '每一笔燃烧可在 <code>solscan.io</code> 验证，每日释放可通过 <code>lock.jup.ag</code> 逐笔核对，任何人都无法篡改记录。',
+      'note.warn.tag': '注意',
+      'note.incense.warn': '燃香不可撤回，燃烧即永久放弃该部分代币；活动限额限量、额满即止；开放时间不设固定场次，以直播间公告为准；单地址限额，防刷机制已启用；建议 24 个月内领取有效，逾期视为放弃。',
+
+      'sec.treasure.sd': '资产留存',
+      'sec.treasure.lead': '质押 $财神DAO，支持单宝与双宝两种组合、四档周期。收益按日线性释放，本金到期返还。两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。',
+      'cmp.single.title': '单宝质押',
+      'cmp.double.title': '双宝聚财',
+      'cmp.combo': '质押组合',
+      'cmp.denom': '计算本位',
+      'cmp.coin': '币本位',
+      'cmp.usd': '金本位',
+      'cmp.yield': '收益发放',
+      'cmp.principal': '本金返还',
+      'cmp.combo.val': '60% + 40% 合作币',
+      'cmp.principal.val': '$财神DAO + 合作币',
+      'sub.treasure.plan.title': '质押方案',
+      'seg.single': '单宝质押',
+      'seg.double': '双宝聚财',
+      'seg.all': 'APY 总表',
+      'panel.tag.plan': '方案',
+      'panel.single.desc': '<b>质押组合：</b>100% $财神DAO · 币本位计算、币本位发放',
+      'panel.double.desc': '<b>质押组合：</b>60% $财神DAO + 40% 合作币（Antfun · BG · LUCKY99 · FIST） · 金本位计算、币本位发放',
+      'tbl.stake.th1': '周期',
+      'tbl.stake.th2': 'APY',
+      'tbl.stake.th3': '到期总收益率',
+      'tbl.stake.th4': '总返还倍数',
+      'tbl.stake.tr1': '30 天',
+      'tbl.stake.tr2': '90 天',
+      'tbl.stake.tr3': '120 天',
+      'tbl.stake.tr4': '180 天',
+      'tbl.stake.caption': '到期总收益率 = APY ÷ 365 × 周期天数。APY 为简单年化，非复利。',
+      'tbl.stake.caption2': '到期总收益率 = APY ÷ 365 × 周期天数。合作币按入场时价格快照，收益以 $财神DAO 结算。',
+      'tbl.all.th1': '模式',
+      'tbl.all.th2': '质押组合',
+      'tbl.all.caption': '以上为建议参数，实际 APY 以官方质押页面实时显示为准。',
+      'sub.treasure.rel.title': '收益释放规则',
+      'treasure.rel.1.k': '释放方式',
+      'treasure.rel.1.v': '<b>按日线性释放</b>，T+1 起每日释放',
+      'treasure.rel.2.k': '每日释放',
+      'treasure.rel.2.v': '<code>质押本金 × APY ÷ 365</code>',
+      'treasure.rel.3.k': '双宝计算',
+      'treasure.rel.3.v': '按总质押 USDT 等值计算，收益以 $财神DAO 结算，合作币按入场时价格快照',
+      'treasure.rel.4.k': '领取方式',
+      'treasure.rel.4.v': '每日可领取，未领取可累积，建议 24 个月内领取有效',
+      'treasure.rel.5.k': '本金返还',
+      'treasure.rel.5.v': '本金到期原路返还，收益释放完毕后质押结束',
+      'treasure.rel.6.k': '年化口径',
+      'treasure.rel.6.v': 'APY 为简单年化，按日线性释放，<b>非复利</b>',
+      'treasure.rel.7.k': '提前解锁',
+      'treasure.rel.7.v': '不支持；如后续开放，罚金规则以官方页面为准',
+      'treasure.rel.8.k': 'APY 调整',
+      'treasure.rel.8.v': '可动态调整，每周公示；已质押部分建议锁定入场 APY',
+      'treasure.rel.9.k': '合作币风控',
+      'treasure.rel.9.v': '需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合',
+      'sub.treasure.ex1.title': '单宝计算示例',
+      'note.denom.tag': '本位',
+      'note.single.denom': '单宝 100% $财神DAO，<b>币本位计算、币本位发放</b>。收益数量只与质押的 $财神DAO 数量有关，不涉及 USDT 折算。',
+      'calc.stake.label': '计算公式',
+      'calc.stake.1': '每日释放',
+      'calc.stake.2': '质押本金',
+      'calc.stake.3': '总收益',
+      'calc.stake.4': '质押天数',
+      'calc.stake.5': '到期总返还',
+      'calc.stake.6': '本金',
+      'calc.ex3.label': '示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%',
+      'tbl.stake.ex1': '每日释放',
+      'tbl.stake.ex2': '总收益',
+      'tbl.stake.ex3': '到期总返还',
+      'tbl.stake.ex.caption': '单位：枚 $财神DAO。示例仅用于说明，实际以官方页面为准。',
+      'sub.treasure.ex2.title': '双宝计算示例',
+      'note.double.denom': '双宝 60% $财神DAO + 40% 合作币，<b>金本位计算、币本位发放、本金原路返还</b>。收益按总投入 USDT 等值计算，以 $财神DAO 发放。',
+      'note.assume.tag': '假设',
+      'note.double.assume': '<b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br><b>双宝比例：</b>60% $财神DAO + 40% BG<br><b>周期 / APY：</b>180 天 / 200%',
+      'calc.ex4.label': '第一步 · 按价值配比（总投入 1,000 USDT）',
+      'calc.ex4.1': '$财神DAO部分',
+      'calc.ex4.2': '$财神DAO数量',
+      'calc.ex4.3': 'BG 部分',
+      'calc.ex4.4': 'BG 数量',
+      'calc.ex5.label': '第二步 · 按总 USDT 等值算每日释放',
+      'calc.ex5.1': '折 $财神DAO',
+      'calc.ex6.label': '第三步 · 180 天总释放与到期返还',
+      'calc.ex6.1': '180 天总释放',
+      'calc.ex6.2': '到期返还本金',
+      'calc.ex6.3': '总返还价值',
+      'note.double.warn': 'BG 价格波动会影响本金的法币价值，但返还的是原数量的 BG。收益以 $财神DAO 发放，不按 BG 结算。合作币存在脱锚、流动性不足等风险。',
+      'sub.treasure.ex3.title': '反向计算示例',
+      'calc.ex7.label': '第一步 · 按 60% 反推总投入',
+      'calc.ex7.1': '$财神DAO价值',
+      'calc.ex7.2': '总投入价值',
+      'calc.ex8.label': '第二步 · 算 BG 部分与数量',
+      'calc.ex8.1': 'BG 部分价值',
+      'calc.ex8.2': 'BG 数量',
+      'calc.ex9.label': '第三步 · 180 天 / APY 200% 收益',
+      'caption.treasure.summary': '<b>总结：</b>单宝币本位计算、币本位发放；双宝金本位计算、币本位发放、本金原路返还。双宝最终发的仍是 $财神DAO，而不是 USDT，因此并非纯金本位，而是「金本位计价、币本位结算」。',
+
+      'sec.nft.sd': '身份中枢 · 联名双重权益',
+      'sec.nft.lead': '极少数创世竞拍，共 108 枚、唯一编号。作为财神生态系统的创世身份凭证，持有者享有专属权益与生态分红权重，是连接全部产品线的权益中枢。除创世系列外，财神 NFT 另设<b>联名系列</b>，与特定社区 / 基金会联名发行，持有者同时享有财神生态权益与合作方权益。',
+      'sub.nft.issue.title': '发行机制',
+      'tbl.nft.th1': '等级',
+      'tbl.nft.th2': '数量',
+      'tbl.nft.th3': '定位',
+      'tbl.nft.th4': '分红权重',
+      'tbl.nft.tr1': '财神金身',
+      'tbl.nft.tr2': '招财尊',
+      'tbl.nft.tr3': '财神令',
+      'tbl.nft.tr4': '合计',
+      'tbl.nft.val8': '8 枚',
+      'tbl.nft.val20': '20 枚',
+      'tbl.nft.val80': '80 枚',
+      'tbl.nft.val108': '108 枚',
+      'tbl.nft.desc1': '创世至尊',
+      'tbl.nft.desc2': '创世核心',
+      'tbl.nft.desc3': '创世成员',
+      'tbl.nft.desc4': '极少数创世',
+      'tbl.nft.w1': '最高',
+      'tbl.nft.w2': '高',
+      'tbl.nft.w3': '基础',
+      'tbl.nft.caption': '创世系列发行方式为竞拍，最终数量、起拍价与时间以官方公告为准。',
+      'note.nft.coop': '<b>联名系列：</b>财神 NFT 与特定社区 / 基金会联名发行，独立编号、独立总量，按合作方案单独公示。联名系列不影响 108 枚创世系列的总量与等级结构，二者并列存在、各自稀缺。',
+      'sub.nft.bene.title': 'NFT 独有权益',
+      'ben.1.t': '身份权益',
+      'ben.1.d': '创世身份、专属标识、勋章、直播间展示',
+      'ben.2.t': '生态分红',
+      'ben.2.d': '按等级权重参与生态分红池分配',
+      'ben.3.d': '优先参与权、专属额度、专属通道',
+      'ben.4.d': '专属 APY 加成、专属质押池、优先体验新周期',
+      'ben.5.d': '终身折扣、专属商品、联名优先购、限量周边',
+      'ben.6.d': '课程免费或折扣、1v1 咨询、线下课优先',
+      'ben.7.d': '专属皮肤、道具、称号、地图、收益加成',
+      'ben.8.t': '财神 DAO',
+      'ben.8.d': '治理投票、提案权、金库监督权',
+      'ben.9.t': '空投优先',
+      'ben.9.d': '未来生态代币、NFT、权益空投优先',
+      'ben.10.t': '线下活动',
+      'ben.10.d': '财神峰会、闭门会、游学、祈福 VIP',
+      'ben.11.t': '命名权',
+      'ben.11.d': '殿堂、房间、课程、NPC、地图命名权',
+      'ben.12.t': '交易版税',
+      'ben.12.d': 'NFT 可自由交易，版税进入生态池与福报池',
+      'ben.13.t': '联名双重权益',
+      'ben.13.d': '联名系列同时享有财神生态权益与合作社区 / 基金会权益',
+      'sub.nft.div.title': '分红与版税口径',
+      'nft.div.1.k': '分红来源',
+      'nft.div.1.v': '商城销售、文化院课程与服务、小游戏道具与版税等<b>生态实际收入</b>，按治理决定注入分红池',
+      'nft.div.2.k': '分配权重',
+      'nft.div.2.v': '金身 &gt; 招财尊 &gt; 财神令，具体权重由治理提案确定并公示',
+      'nft.div.3.k': '发放周期',
+      'nft.div.3.v': '建议按季度结算，具体节奏以官方公告为准',
+      'nft.div.4.k': '版税比例',
+      'nft.div.4.v': '二级市场交易版税进入生态池与福报池，比例以链上合约为准',
+      'nft.div.5.k': '权益不随价格',
+      'nft.div.5.v': '权益与分红权重绑定 NFT 本身，与二级市场价格无关；NFT 转让即权益转让',
+      'sub.nft.coop.title': '联名发行与双重权益',
+      'nft.coop.lead': '财神 NFT 与特定社区 / 基金会联名发行，形成「联名系列」。联名系列的持有者同时连接两条权益线：<b>财神侧权益</b>（生态产品、治理、空投、活动）与<b>合作方侧权益</b>（社区身份、基金会资源、合作方专属活动）。',
+      'nft.coop.1.k': '联名对象',
+      'nft.coop.1.v': '特定社区、基金会或生态伙伴；具体联名名单由官方在发行前公示',
+      'nft.coop.2.k': '发行方式',
+      'nft.coop.2.v': '独立编号、独立总量，按合作方案单独发行；不影响 108 枚创世系列的总量与等级结构',
+      'nft.coop.3.k': '双重权益',
+      'nft.coop.3.v': '<b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务；<br><b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证',
+      'nft.coop.4.k': '权益归属',
+      'nft.coop.4.v': '财神侧权益由财神生态兑现；合作侧权益由合作方兑现。二者以 NFT 为载体绑定，<b>转让即权益转让</b>',
+      'nft.coop.5.k': '分配权重',
+      'nft.coop.5.v': '联名系列的分红权重与创世系列分开计算，具体权重以该联名方案公示为准',
+      'nft.coop.6.k': '版税与结算',
+      'nft.coop.6.v': '联名系列二级市场版税按合作方案拆分，比例与流向以链上合约与官方公示为准',
+      'nft.coop.7.k': '边界',
+      'nft.coop.7.v': '联名系列<b>不稀释</b> 108 枚创世身份的稀缺性，<b>不改变</b>创世系列的分红权重与等级结构',
+      'nft.coop.tag': '双重权益',
+      'note.nft.double': '<b>举例：</b>某联名系列共 N 枚，持有者既可在财神生态内参与治理、活动与空投优先，又可在合作社区 / 基金会内享有对应身份与资源。两条权益线并行，由 NFT 本身承载。',
+      'note.nft.warn': '生态分红不是固定收益，不承诺分红金额，取决于生态实际收入与治理决定。NFT 竞拍存在市场风险，价格可能大幅波动。联名系列的<b>合作侧权益由合作方兑现</b>，其兑现能力、规则与存续取决于合作方；合作方权益变化不影响财神侧权益，但可能影响联名 NFT 的整体价值。联名方案、合作方名单与权益细则以官方与对应合作方公告为准。',
+
+      'sec.culture.title': '财神文化院',
+      'sec.culture.sd': '内容供给',
+      'sec.culture.lead': '风水命理教育板块，涵盖易学基础、财神文化、民俗信仰与风水实战。以文化传承、知识学习、兴趣交流为核心，为生态提供可持续的内容供给。',
+      'sub.culture.cur.title': '课程体系',
+      'culture.cur.1.k': '入门',
+      'culture.cur.1.v': '易学基础、财神文化、民俗信仰、风水入门',
+      'culture.cur.2.k': '进阶',
+      'culture.cur.2.v': '家居风水、商业风水、八字命理、择日、姓名学',
+      'culture.cur.3.k': '专业',
+      'culture.cur.3.v': '风水实战、命理咨询、案例研讨、讲师认证',
+      'culture.cur.4.k': '形式',
+      'culture.cur.4.v': '直播课、录播课、训练营、线下课、游学、认证考试',
+      'culture.cur.5.k': '支付',
+      'culture.cur.5.v': '课程券与咨询券支持 <b>$财神DAO</b> 购买，NFT 持有者享折扣',
+      'sub.culture.pro.title': '命理师与风水师入驻',
+      'culture.pro.1.k': '入驻流程',
+      'culture.pro.1.v': '申请 → 资质审核 → 试讲 / 面试 → 评级 → 上架服务 → 预约 / 直播 → 用户评价 → 结算',
+      'culture.pro.2.k': '服务形式',
+      'culture.pro.2.v': '付费咨询、直播连麦、课程教学、线下服务、企业顾问、专属定制',
+      'culture.pro.3.k': '平台机制',
+      'culture.pro.3.v': '实名认证、资质审核、服务评价、信誉等级、保证金、争议处理、黑名单、平台抽成',
+      'culture.pro.4.k': '收入结算',
+      'culture.pro.4.v': '按服务完成度与用户评价分期结算，平台抽成比例公示，争议订单进入人工仲裁',
+      'note.culture.warn': '风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。',
+
+      'sec.mall.title': '财神商城',
+      'sec.mall.sd': '消费场景',
+      'sec.mall.lead': '财神生态系统的消费板块，售卖财神周边、文创商品、数字藏品、课程与咨询券。支持 $财神DAO 支付，是代币从「金融资产」走向「可用货币」的关键场景。',
+      'mall.1.k': '商品方向',
+      'mall.1.v': '财神像、香品、手串、护身符、开运摆件、联名服饰、文创礼品、数字藏品、礼品卡',
+      'mall.2.k': '课程咨询',
+      'mall.2.v': '课程券、咨询券、线下活动门票',
+      'mall.3.k': '游戏道具',
+      'mall.3.v': '小游戏道具、皮肤、NFT 道具',
+      'mall.4.k': '支付方式',
+      'mall.4.v': '支持 <b>$财神DAO</b> 支付',
+      'mall.5.k': 'NFT 折扣',
+      'mall.5.v': '财神 NFT 持有者享阶梯折扣，等级越高折扣越大',
+      'mall.6.k': '积分抵扣',
+      'mall.6.v': '积分与福气值可抵扣部分订单金额',
+      'mall.7.k': '供应链原则',
+      'mall.7.v': '正品保障、溯源可查、联名优选、品质把控',
+      'mall.8.k': '收入去向',
+      'mall.8.v': '部分收入进入生态池，按治理规则用于回购、销毁或分红',
+      'caption.mall': '<b>定位：</b>商城不是「卖货」，而是把 $财神DAO 变成可消费的货币。支付场景越真实，代币的需求侧就越稳固。',
+
+      'sec.game.title': '财神小游戏',
+      'sec.game.sd': '娱乐入口',
+      'sec.game.lead': '财神生态系统的娱乐板块。玩游戏可获取 $财神DAO，购买道具皮肤，稀有道具 NFT 化后可自由交易。高频互动为整个生态带来日活与传播。',
+      'game.1.k': '玩法方向',
+      'game.1.v': '每日签到、招财转盘、财神消消乐、财神大冒险、财神庙经营、风水布局、答题闯关、PVE / PVP、排行榜赛季',
+      'game.2.k': '奖励体系',
+      'game.2.v': '$财神DAO、道具、皮肤、NFT 碎片、NFT 道具、称号、经验值',
+      'game.3.k': '道具与皮肤',
+      'game.3.v': '可购买、可升级、可合成、可交易',
+      'game.4.k': 'NFT 化',
+      'game.4.v': '稀有道具 NFT 化，支持自由交易，平台收取版税',
+      'game.5.k': '版税流向',
+      'game.5.v': '部分进入生态分红池与福报池',
+      'game.6.k': '奖励来源',
+      'game.6.v': '来自生态预算（空投营销与运营份额），<b>不新增铸币</b>，代币总量始终恒定',
+      'game.7.k': '防刷机制',
+      'game.7.v': '体力限制、冷却时间、随机奖励、反脚本、实名认证、排行榜监控、黑名单',
+      'note.loop.tag': '循环',
+      'note.game.loop': '<b>经济循环：</b>玩游戏 → 赚 $财神DAO → 买道具 / 皮肤 / 商城商品 → 质押 / 燃香 → NFT 道具交易 → 消耗 $财神DAO → 回流生态池',
+      'note.game.warn': '游戏奖励为币本位，不承诺法币价值，数字资产价格波动风险较高。奖励额度受生态预算约束，可能随运营情况调整。',
+
+      'sec.partners.title': '合作生态',
+      'sec.partners.sd': '合作代币',
+      'sec.partners.lead': '财神生态系统在 Solana 上通过合作代币接入外部社区与流动性。目前合作代币包括 <b>Antfun</b>、<b>BG</b>、<b>LUCKY99</b>、<b>FIST</b>，主要通过聚宝盆双宝组合进入生态，承担社区互导与合作流动性的职能。合作代币不改变 $财神DAO 的核心地位，也不影响燃香赐福与单宝质押的币本位机制。',
+      'partner.role': '合作代币',
+      'partner.desc.1': 'Solana 链上合作代币，接入双宝组合，作为合作侧资产与 $财神DAO 配对质押。',
+      'partner.desc.2': '已接入双宝组合的合作代币，用于双宝金本位计算，与 $财神DAO 共同构成 60 / 40 质押结构。',
+      'partner.desc.3': '娱乐方向的合作代币，接入双宝组合，为社区带来跨项目的互动与流动性。',
+      'partner.desc.4': '生态方向的合作代币，接入双宝组合，用于丰富双宝的可选资产组合。',
+      'sub.partners.integration.title': '整合方式',
+      'partners.int.1.k': '接入通道',
+      'partners.int.1.v': '聚宝盆 · 双宝组合（60% $财神DAO + 40% 合作币）',
+      'partners.int.2.k': '计算方式',
+      'partners.int.2.v': '金本位计算、币本位发放、本金原路返还；合作币按入场时价格快照，收益以 $财神DAO 结算',
+      'partners.int.3.k': '不影响主线',
+      'partners.int.3.v': '不改变燃香赐福的返还率与额度，不改变单宝质押的币本位口径，不改变 $财神DAO 的核心资产地位',
+      'partners.int.4.k': '合作门槛',
+      'partners.int.4.v': '需通过审计、流动性充足、社区透明；合作代币清单与组合比例由官方公示',
+      'partners.int.5.k': '退出与暂停',
+      'partners.int.5.v': '若合作币发生脱锚、流动性不足等异常，官方有权暂停对应组合；已质押用户按原条款到期返还',
+      'note.info.tag': '说明',
+      'note.partners.info': '合作代币清单可能随生态合作情况调整，新增或下线均会通过官方渠道提前公示。合作代币的接入不改变燃香赐福与单宝质押的既有机制与口径。',
+      'note.partners.warn': '合作代币存在脱锚、流动性不足、合约漏洞与价格波动等风险。合作代币不构成对 $财神DAO 的兑换承诺，也不影响单宝质押。请在参与双宝组合前充分评估合作币的稳定性与流动性。',
+
+      'sec.season.title': '运营活动层',
+      'sec.season.sd': '赛季与竞赛',
+      'sec.season.lead': '运营活动层不是独立产品，而是横跨各产品线的赛季化运营模块：以竞赛、任务与排行榜为小游戏、文化院、商城、NFT 与 DAO 导流，同时承接新用户教育与社区活跃。它不改变任何产品本身的收益与返还口径，只负责「把人带到产品面前」。',
+      'season.1.k': '定位',
+      'season.1.v': '横向运营层，按赛季 / 批次开展，<b>不替代任何产品机制</b>，不占用推进阶段编号',
+      'season.2.k': '活动类型',
+      'season.2.v': '交易竞赛、小游戏赛季、文化知识赛、DAO 提案赛、NFT 专属任务、商城 UGC 赛',
+      'season.3.k': '奖励来源',
+      'season.3.v': '生态预算中的空投营销与运营份额，<b>不新增铸币</b>，不动燃香返还池与质押本金池',
+      'season.4.k': '预算原则',
+      'season.4.v': '每赛季固定预算、公示总奖池、用完即止；运营费用单独列支，不占用活动奖池',
+      'season.5.k': '与产品关系',
+      'season.5.v': '活动是各产品的「导流器」与「权益使用场景」，<b>不提高质押 APY、不改变燃香返还率、不承诺分红</b>',
+      'season.6.k': '规则公示',
+      'season.6.v': '单次活动的规则、奖池、周期、防刷与申诉机制以<b>独立活动文档</b>为准',
+      'season.first.tag': '首期',
+      'note.season.first': '活动层首期将以 <b>DEX 交易激励赛季</b> 落地。具体奖池、积分权重、押金、快照与风控规则，以该活动独立发布的执行文档为准，不在本文档展开。',
+      'note.boundary.tag': '边界',
+      'note.season.warn': '活动奖励为激励性质，<b>不构成固定收益或投资回报承诺</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。涉及押金、KYC、排名与没收规则的，以该活动独立条款为准。参与前请自行评估规则与风险。',
+
+      'sec.loop.title': '生态闭环',
+      'sec.loop.lead': '从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，八条入口与横向的合作生态、运营活动层共同指向同一个核心资产：$财神DAO。',
+      'loop.1.k': '信仰入口',
+      'loop.1.v': '燃香赐福 —— 燃烧即通缩，赐福按币本位释放',
+      'loop.2.k': '资产入口',
+      'loop.2.v': '聚宝盆 —— 单宝 / 双宝质押，日线释放收益',
+      'loop.3.k': '身份入口',
+      'loop.3.v': '财神 NFT —— 108 枚创世 + 联名系列，双重权益身份中枢',
+      'loop.4.k': '文化入口',
+      'loop.4.v': '财神文化院 —— 课程、咨询与讲师认证体系',
+      'loop.5.k': '消费入口',
+      'loop.5.v': '财神商城 —— 周边、文创与数字藏品，支持 $财神DAO 支付',
+      'loop.6.k': '娱乐入口',
+      'loop.6.v': '财神小游戏 —— 高频互动，道具 NFT 化交易',
+      'loop.7.k': '治理入口',
+      'loop.7.v': '财神 DAO —— 提案、投票与金库监督',
+      'loop.8.k': '公益入口',
+      'loop.8.v': '财神福报 —— 版税与生态收入的一部分回馈社会',
+      'loop.9.k': '合作入口',
+      'loop.9.v': '合作代币 —— Antfun / BG / LUCKY99 / FIST，通过双宝接入生态',
+      'loop.10.k': '活动层',
+      'loop.10.v': '赛季与竞赛 —— 横向运营模块，为各产品导流与拉新，奖励来自生态预算',
+      'fly.1.k': '飞轮一',
+      'fly.1.v': '<b>通缩飞轮</b> —— 燃香燃烧减少流通量 → 筹码稀缺性上升 → 持有意愿增强 → 质押与消费需求提升',
+      'fly.2.k': '飞轮二',
+      'fly.2.v': '<b>收入飞轮</b> —— 商城与文化院产生真实收入 → 部分注入生态池 → 回购 / 分红 → 持币人受益',
+      'fly.3.k': '飞轮三',
+      'fly.3.v': '<b>身份飞轮</b> —— NFT 权益横跨全部产品，联名系列接入外部社区 → 持有者成为长期共建者 → 治理质量提升 → 生态更稳',
+      'fly.4.k': '飞轮四',
+      'fly.4.v': '<b>活动飞轮</b> —— 赛季活动为各产品导流 → 提升日活与交易深度 → 沉淀真实持币社区 → 反哺生态预算与治理',
+      'caption.loop': '<b>总结：</b>从燃香到质押，从 NFT 到教育，从商城到游戏，从分红到福报，财神生态系统正在形成一个自我强化、彼此导流的完整财神宇宙。合作代币与活动层不新增独立入口，而是作为横向模块，让各入口之间「转起来」。',
+
+      'sec.risk.title': '风险提示',
+      'risk.intro': '<b>重要提示：</b>数字资产投资存在重大风险，包括本金全部损失的可能。本页所有产品机制、APY、额度、比例、合作代币、联名 NFT 与活动奖励仅用于说明项目结构，不构成任何形式的投资建议、要约或招揽。',
+      'risk.1': '<b>燃香不可撤回</b> —— 燃香即打入黑洞，资产永久退出流通，无法找回、无法退还。',
+      'risk.2': '<b>锁仓流动性受限</b> —— 聚宝盆质押不可提前解锁，资金在周期内无法动用。',
+      'risk.3': '<b>币本位收益不保本</b> —— 币本位收益不保本法币价值，代币价格波动会直接影响实际收益。',
+      'risk.4': '<b>额度刚性</b> —— 燃香总额度 20M 固定，限额限量、额满即止，可能无法参与。',
+      'risk.5': '<b>开放时间不确定</b> —— 开放时间与额度以直播间公告为准，不设固定场次。',
+      'risk.6': '<b>合作币风险</b> —— 双宝合作币（Antfun / BG / LUCKY99 / FIST）存在脱锚、流动性不足、合约漏洞等风险，极端情况下本金价值可能大幅缩水。',
+      'risk.7': '<b>合作币非兑换承诺</b> —— 合作代币不构成对 $财神DAO 的兑换承诺，也不影响单宝质押；合作币清单与组合比例可能调整，以官方公示为准。',
+      'risk.8': '<b>APY 可调整</b> —— 聚宝盆 APY 为动态参数，可随生态情况调整，以官方页面实时显示为准。',
+      'risk.9': '<b>非复利口径</b> —— 聚宝盆收益按日线性释放，APY 为简单年化、非复利，实际累计收益需按周期自行核算。',
+      'risk.10': '<b>NFT 市场风险</b> —— 财神 NFT 竞拍存在市场风险，权益与生态分红以官方规则为准，不承诺固定收益。',
+      'risk.11': '<b>联名 NFT 风险</b> —— 联名系列的合作侧权益由合作方兑现，其兑现能力、规则与存续取决于合作方；合作方权益变化可能影响联名 NFT 整体价值。联名方案以官方与对应合作方公告为准。',
+      'risk.12': '<b>分红不保本</b> —— 生态分红取决于生态实际收入，不承诺分红金额，可能为零。',
+      'risk.13': '<b>文化院合规边界</b> —— 风水命理教育属于文化教育与民俗交流，不承诺改运、不承诺效果，不替代医疗、法律、投资建议。',
+      'risk.14': '<b>游戏奖励波动</b> —— 财神小游戏奖励为币本位，不承诺法币价值，奖励额度受生态预算约束。',
+      'risk.15': '<b>活动奖励非收益承诺</b> —— 运营活动层的奖励为激励性质，不承诺法币价值，不构成固定收益或投资回报承诺。',
+      'risk.16': '<b>活动规则可变</b> —— 活动规则、奖池、预算与周期可能按赛季调整，以单次活动公告与独立条款为准。',
+      'risk.17': '<b>活动押金风险</b> —— 涉及押金的活动，押金在违规、作弊或触发没收条款时可能被扣除；具体以该活动独立条款为准。',
+      'risk.18': '<b>活动与产品解耦</b> —— 活动不提高质押 APY、不改变燃香返还率、不承诺分红；活动奖励来自既有生态预算，不新增铸币。',
+      'risk.19': '<b>机制调整</b> —— 各产品参数可能在治理程序下调整，调整将通过官方渠道公示。',
+      'risk.20': '<b>非投资建议</b> —— 本文档不构成投资建议，请自行充分调研并咨询专业人士后理性参与。',
+
+      'sec.faq.title': '常见问题',
+      'faq.expand': '展开全部',
+      'faq.collapse': '收起全部',
+      'faq.1.q': '燃香燃烧的 $财神DAO 去哪了？为什么返还比燃烧还多？',
+      'faq.1.a': '燃烧的 $财神DAO 直接转入 Solana 黑洞地址，私钥不存在，<b>永久退出流通、无法找回</b>。返还比燃烧多，是因为赐福池在燃烧发生之前就已按 20,000,000 枚 × 251.12% = 50,224,000 枚预留完毕，返还的是这个池子里的代币，而不是凭空增发。代币总量始终恒定。',
+      'faq.2.q': '20,000,000 枚额度与代币经济文档的 50,224,000 枚是什么关系？',
+      'faq.2.a': '前者是<b>燃烧上限</b>，后者是<b>返还上限</b>，两者的换算关系为：<code>20,000,000 × 251.12% = 50,224,000</code>。这正好对应代币分配表里的「燃香赐福池」份额，说明全周期可燃烧量与可返还量在总量层面完全闭合，不存在超额承诺。',
+      'faq.3.q': '聚宝盆的 APY 从哪来？会不会无法兑付？',
+      'faq.3.a': 'APY 来自生态激励预算与生态实际收入的组合，属于<b>激励参数而非承诺收益</b>。代币层面，聚宝盆的收益发放来源已在代币分配中预留对应份额；若生态预算不足以支撑当前 APY，治理层面可以下调参数。用户需自行评估收益可持续性。',
+      'faq.4.q': '单宝和双宝的「本位」差异到底影响什么？',
+      'faq.4.a': '影响<b>收益的计算方式</b>，不影响<b>发放的币种</b>。<br>单宝是币本位：质押 10,000 枚，收益就按 10,000 枚计算，与价格无关。<br>双宝是金本位：按总投入的 USDT 等值计算收益，再折算成 $财神DAO 发放。<br>两种模式最终发的都是 $财神DAO，区别在于计价基准不同。',
+      'faq.5.q': '联名 NFT 的「双重权益」到底是什么？',
+      'faq.5.a': '<b>双重权益 = 财神侧权益 + 合作侧权益。</b><br><b>财神侧：</b>生态产品权益、治理与空投优先、活动专属任务等，由财神生态兑现。<br><b>合作侧：</b>合作社区 / 基金会身份、专属活动、合作方资源与凭证，由合作方兑现。<br>两者以 NFT 为载体绑定，NFT 转让即权益转让。联名系列独立编号、独立总量，<b>不稀释 108 枚创世身份的稀缺性</b>。合作侧权益的具体内容、兑现能力与存续取决于合作方，以官方与对应合作方公告为准。',
+      'faq.6.q': '合作代币在生态里扮演什么角色？',
+      'faq.6.a': '合作代币（Antfun / BG / LUCKY99 / FIST）通过<b>聚宝盆双宝组合</b>接入生态，承担社区互导与合作流动性的职能。合作代币不改变 $财神DAO 的核心资产地位，也不影响燃香赐福与单宝质押的币本位机制。合作币清单与组合比例由官方公示，可能随生态合作情况调整。',
+      'faq.7.q': '双宝里的合作币脱锚了怎么办？',
+      'faq.7.a': '双宝返还的是<b>原数量的合作币</b>，因此合作币脱锚会直接影响本金的法币价值。官方风控措施包括：合作币需通过审计、需保证流动性充足、发生脱锚时有权暂停该组合。用户在选择双宝时应充分评估合作币的稳定性。',
+      'faq.8.q': '财神 NFT 的分红是固定收益吗？',
+      'faq.8.a': '不是。分红来自生态的<b>实际收入</b>（商城、文化院、小游戏版税等），由治理决定注入比例与分配权重。生态收入好，分红可能较高；收入差，分红可能很低甚至为零。它绑定的是生态成长性，而不是固定利率。',
+      'faq.9.q': '小游戏发的奖励会不会导致代币无限增发？',
+      'faq.9.a': '不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。小游戏奖励来自生态预算中已预留的空投营销与运营份额，属于<b>既有份额的再分配</b>，不新增铸币。',
+      'faq.10.q': '运营活动层的奖励会不会导致代币增发？',
+      'faq.10.a': '不会。$财神DAO 总量恒定 686,868,686 枚、永不增发。活动奖励来自生态预算中已预留的空投营销与运营份额，属于<b>既有份额的再分配</b>，不新增铸币，也不占用燃香返还池与质押本金池。',
+      'faq.11.q': '赛季竞赛是不是变相收益承诺？',
+      'faq.11.a': '不是。活动奖励是激励性质，<b>不是固定收益或投资回报</b>；活动不提高质押 APY、不改变燃香返还率、不承诺分红。涉及押金、排名、KYC、没收等规则，以该活动独立发布的条款为准。参与前请自行评估规则与风险。',
+      'faq.12.q': '这些规划中的产品什么时候上线？',
+      'faq.12.a': '阶段二至阶段四的具体时间表以官方公告为准。本文档描述的是产品结构与机制方向，不代表时间承诺。每个产品上线前会单独发布机制文档，明确数值口径、发放来源与风控边界。',
+      'faq.13.q': '为什么聚宝盆不支持提前解锁？',
+      'faq.13.a': '质押周期是收益定价的基础。如果允许随时退出，APY 就无法维持在公示水平，对按期质押的用户也不公平。因此周期内不支持提前解锁。如后续开放，会配套明确的罚金规则并提前公示。',
+
+      'foot.doc': '财神DAO生态系统 · Ecosystem Documentation',
+      'foot.ver': 'V3.0 · 内部评审稿',
+      'foot.exist': '燃香赐福 · 聚宝盆',
+      'foot.nft': '108 枚创世 + 联名系列（双重权益）',
+      'foot.plan': '财神 NFT · 文化院 · 商城 · 小游戏 · DAO · 福报',
+      'foot.activity': '运营活动层 · 赛季与竞赛（横向模块）',
+      'foot.disc': '本文档为财神生态系统，用于信息展示，不构成任何投资建议。<br>所有规则、APY、额度、周期、分红比例、合作代币、联名 NFT 与活动奖励以官方最新公告和页面为准；单次活动与联名细则以独立文档为准。<br>数字资产价格波动剧烈，请理性判断、注意风险。',
+
+      'label.lang.switch': 'Switch to English',
+      'label.lang.text': 'EN'
+    },
+    en: {
+      'page.title': 'Caishen Ecosystem · Documentation',
+      'mast.eb.cn': '',
+      'mast.eb.en': 'ECOSYSTEM Documentation',
+      'mast.title': 'Caishen Ecosystem',
+      'mast.sub': 'A complete on-chain Caishen universe bridging faith, assets, culture, and entertainment.',
+      'meta.ver.k': 'Version',
+      'meta.live.k': 'Live',
+      'meta.live.v': 'Incense Offering · Treasure Bowl',
+      'meta.partner.k': 'Integrated',
+      'meta.partner.v': '4 Partner Tokens',
+      'meta.plan.k': 'Planned',
+      'meta.plan.v': '6 Sectors + Co-branded NFTs + Event Layer',
+
+      'toc.overview': 'Overview',
+      'toc.incense': 'Incense Offering',
+      'toc.treasure': 'Treasure Bowl',
+      'toc.nft': 'Caishen NFT',
+      'toc.culture': 'Culture Academy',
+      'toc.mall': 'Mall',
+      'toc.game': 'Mini-Games',
+      'toc.partners': 'Partners',
+      'toc.season': 'Event Layer',
+      'toc.loop': 'Ecosystem Loop',
+      'toc.risk': 'Risks',
+      'toc.faq': 'FAQ',
+
+      'abstract.text': 'The Caishen Ecosystem centers exclusively on <b>$财神DAO</b>, connecting faith, assets, culture, education, entertainment, consumption, and governance. The dual engines are <span class="hl">Incense Offering</span> and <span class="hl">Treasure Bowl</span>: the former establishes a deflationary entry point via "burn-on-offer", while the latter captures staking demand through Single-Stake and Dual-Stake models. Building upon this, the Caishen NFT, Culture Academy, Mall, Mini-Games, DAO, and Charity will unfold sequentially. Integrating partner tokens like <span class="hl">Antfun / BG / LUCKY99 / FIST</span> and a horizontal <span class="hl">Event Layer</span>, it forms a complete closed loop. This document outlines the product architecture, mechanism parameters, and planning boundaries for internal alignment; execution details for specific events are subject to standalone event documents.',
+
+      'sec.ov.title': 'Product Overview',
+      'sec.ov.lead': 'The Caishen Ecosystem comprises the "Dual Engines + Six Future Sectors + Partner Tokens + Horizontal Event Layer". Each product serves a distinct entry function, bound together by $财神DAO as the value link, forming a cyclical, verifiable, and sustainable ecosystem.',
+
+      'hl.1.t': 'Dual Engines',
+      'hl.1.d': 'Incense Offering for deflation and faith entry; Treasure Bowl for staking and asset retention',
+      'hl.2.t': 'Incense Burn Cap',
+      'hl.2.d': 'Lifetime cap of 20,000,000 tokens, corresponding to a 50,224,000 token reward pool',
+      'hl.3.t': 'Genesis NFT Supply',
+      'hl.3.d': '8 Golden · 20 Wealth · 80 Decree. Ultra-scarce genesis identity credentials',
+      'hl.4.t': 'Ecosystem Entries',
+      'hl.4.d': 'Faith · Assets · Identity · Culture · Consumption · Entertainment · Governance · Charity',
+
+      'note.coop.tag': 'Partners',
+      'note.coop.body': 'Current partner tokens include <b>Antfun</b>, <b>BG</b>, <b>LUCKY99</b>, and <b>FIST</b>, integrated via the Dual-Stake model. This does not alter the coin-denominated mechanisms of Incense Offering or Single-Stake, nor does it affect the core status of $财神DAO.',
+      'note.op.tag': 'Events',
+      'note.op.body': 'The <b>Event Layer</b> is a horizontal operational module, not a standalone product. It drives traffic to all products via seasonal competitions, tasks, and leaderboards. Rewards come from the pre-allocated airdrop/marketing budget, <b>without minting new tokens or touching the reward/principal pools</b>.',
+
+      'sub.matrix.title': 'Product Matrix',
+      'status.live': 'Live',
+      'status.integrated': 'Integrated',
+      'status.planned': 'Planned',
+
+      'matrix.1.desc': 'Exclusive to the Caishen Live Room. Incense is burned to the black hole permanently. Blessings are released daily in coin-denominated terms for 365 days, totaling a 251.12% return.',
+      'matrix.2.desc': 'Stake $财神DAO with Single or Dual-Stake options across 30 / 90 / 120 / 180-day cycles. Yield is linearly released daily, with principal returned at maturity.',
+      'matrix.3.name': 'Partner Tokens',
+      'matrix.3.desc': 'Antfun · BG · LUCKY99 · FIST. Integrated via Dual-Stake. Calculated in USD-denominated terms, paid in $财神DAO, preserving the coin-denominated nature of Single-Stake.',
+      'matrix.4.desc': '108 uniquely numbered Genesis identity credentials. Co-branded series will also be launched with specific communities/foundations, offering dual benefits.',
+      'matrix.5.name': 'Culture Academy',
+      'matrix.5.desc': 'Feng Shui and astrology education sector. Curriculum system, professional onboarding, certification, and consultation services.',
+      'matrix.6.desc': 'Caishen merchandise, cultural gifts, digital collectibles, and course vouchers. Supports $财神DAO payments, with tiered discounts for NFT holders.',
+      'matrix.7.desc': 'Entertainment sector. Play to earn $财神DAO, purchase skins, and trade rare NFT items freely.',
+      'matrix.8.name': 'Caishen Season · Events',
+      'matrix.8.status': 'Ops Layer',
+      'matrix.8.desc': 'Horizontal operational module. Seasonal trading competitions, mini-game seasons, and DAO proposal contests. Rewards come from ecosystem budgets without minting new tokens.',
+
+      'sub.rollout.title': 'Rollout Phases',
+      'phase.1.k': 'Phase 01',
+      'phase.1.v': '<b>Live</b> — Incense Offering and Treasure Bowl. Completed the minimal loop of "deflationary entry + asset retention", validating the numerical model and user journey.',
+      'phase.2.k': 'Phase 02',
+      'phase.2.v': '<b>Genesis Identity</b> — Caishen NFT auction. 108 Genesis identities anchoring long-term holders and forming the benefits hub; co-branded series launching simultaneously.',
+      'phase.3.k': 'Phase 03',
+      'phase.3.v': '<b>Consumption & Content</b> — Caishen Mall and Culture Academy. Providing real payment scenarios and content supply for $财神DAO.',
+      'phase.4.k': 'Phase 04',
+      'phase.4.v': '<b>Entertainment & Governance</b> — Mini-Games, DAO, and Charity. Achieving ecosystem self-circulation through high-frequency interaction and community co-governance.',
+      'caption.rollout': '<b>Note:</b> Phases indicate the planning sequence; actual rollout is subject to official announcements. A detailed mechanism document will be published prior to each product launch.',
+      'caption.horizontal': '<b>Horizontal Layer:</b> Partner tokens and the Event Layer do not occupy phase numbers; they are interspersed as needed to drive traffic.',
+
+      'sec.incense.sd': 'Deflationary Entry',
+      'sec.incense.lead': 'Exclusive daily event in the Caishen Live Room. Users burn $财神DAO to a black hole address (publicly verifiable, irrevocable). Blessings are released daily in coin-denominated terms for 365 days, totaling 251.12% of the burned amount.',
+      'incense.time.k': 'Availability',
+      'incense.time.v': 'Exclusive to the Caishen Live Room. Limited quota, dynamically opened based on actual conditions, subject to live announcements.',
+      'incense.quota.k': 'Total Quota',
+      'incense.quota.v': '<b>Fixed at 20,000,000 tokens</b>, first come, first served.',
+      'incense.burn.k': 'Burn Method',
+      'incense.burn.v': 'Transferred to the black hole address, <b>irrevocable</b>.',
+      'incense.release.k': 'Reward Method',
+      'incense.release.v': 'Coin-denominated return, daily for 365 consecutive days.',
+      'incense.daily.k': 'Daily Release',
+      'incense.daily.v': '<code>0.688%</code> / day',
+      'incense.total.k': 'Total Return Rate',
+      'incense.total.v': '<code>251.12%</code> (0.688% × 365)',
+      'incense.claim.k': 'Claim Portal',
+      'incense.claim.v': 'On-chain escrow claim via <code>lock.jup.ag</code>.',
+      'incense.claimtime.k': 'Claim Period',
+      'incense.claimtime.v': 'Claimable starting T+1. Recommended to claim within 24 months.',
+      'sub.incense.pool.title': 'Reward Pool Consistency',
+      'note.rel.tag': 'Relationship',
+      'note.rel.body': 'The reward source for Incense Offering is the <b>50,224,000 token Incense Pool</b> from the Tokenomics document. This strictly corresponds to the burn cap: <b>20,000,000 × 251.12% = 50,224,000</b>. Thus, the lifetime burn cap and reward cap are completely closed at the total supply level, with no over-commitment.',
+      'calc.pool.label': 'Reward Pool Closure Verification',
+      'calc.pool.1': 'Total Burn Cap',
+      'calc.pool.2': 'Return Multiplier',
+      'calc.pool.3': 'Reward Pool Cap',
+      'calc.pool.4': 'Matches Tokenomics "Incense Pool"',
+      'calc.pool.5': 'Exactly Consistent',
+      'unit.token': 'tokens',
+      'unit.token.day': 'tokens/day',
+      'sub.incense.ex.title': 'Claim Example',
+      'calc.ex.label': 'Calculation Formula',
+      'calc.ex.1': 'Daily Blessing',
+      'calc.ex.2': 'Burn Amount',
+      'calc.ex.3': 'Cumulative Return',
+      'calc.ex.4': 'Net Gain',
+      'calc.ex2.label': 'Example · Burn 10,000 $财神DAO',
+      'tbl.ex.th1': 'Burn Amount',
+      'tbl.ex.th2': 'Daily Blessing',
+      'tbl.ex.th3': '365-Day Total',
+      'tbl.ex.th4': 'Net Gain',
+      'tbl.ex.caption': 'Unit: $财神DAO tokens. Examples are for illustrative purposes only; actuals are subject to the official page.',
+      'sub.incense.mk.title': 'Mechanics',
+      'incense.mk.1.k': 'Burn-on-Offer',
+      'incense.mk.1.v': 'Burned $财神DAO is sent directly to the Solana black hole address. The private key does not exist, meaning it is <b>permanently removed from circulation</b>, contributing to project deflation.',
+      'incense.mk.2.k': 'Coin-Denominated',
+      'incense.mk.2.v': 'Returns are denominated in the quantity of $财神DAO, irrespective of fiat price. Price fluctuations only affect the fiat value, not the token amount.',
+      'incense.mk.3.k': 'Quota Rigidity',
+      'incense.mk.3.v': 'The total quota is strictly fixed at 20,000,000 tokens. It will not be increased or temporarily expanded.',
+      'incense.mk.4.k': 'Anti-Abuse',
+      'incense.mk.4.v': 'Per-address limits, frequency checks, and on-chain behavior analysis run in parallel. Abnormal addresses will be restricted.',
+      'incense.mk.5.k': 'Verifiability',
+      'incense.mk.5.v': 'Every burn is verifiable on <code>solscan.io</code>, and daily releases can be checked on <code>lock.jup.ag</code>. Records cannot be tampered with.',
+      'note.warn.tag': 'Warning',
+      'note.incense.warn': 'Burning is irrevocable, meaning you permanently renounce those tokens. The event is quota-limited, first come, first served. Availability is not on a fixed schedule; refer to live announcements. Anti-abuse mechanisms are active. Claim within 24 months; unclaimed tokens will be forfeited.',
+
+      'sec.treasure.sd': 'Asset Retention',
+      'sec.treasure.lead': 'Stake $财神DAO with Single-Stake or Dual-Stake options across four durations. Yield is linearly released daily, with principal returned at maturity. The core difference lies in the <b>denomination basis</b>: Single-Stake is coin-denominated, while Dual-Stake is USD-denominated.',
+      'cmp.single.title': 'Single-Stake',
+      'cmp.double.title': 'Dual-Stake',
+      'cmp.combo': 'Staking Combo',
+      'cmp.denom': 'Denomination',
+      'cmp.coin': 'Coin-denominated',
+      'cmp.usd': 'USD-denominated',
+      'cmp.yield': 'Yield Paid In',
+      'cmp.principal': 'Principal Returned In',
+      'cmp.combo.val': '60% + 40% Partner Token',
+      'cmp.principal.val': '$财神DAO + Partner Token',
+      'sub.treasure.plan.title': 'Staking Plans',
+      'seg.single': 'Single-Stake',
+      'seg.double': 'Dual-Stake',
+      'seg.all': 'APY Overview',
+      'panel.tag.plan': 'Plan',
+      'panel.single.desc': '<b>Staking Combo:</b> 100% $财神DAO · Coin-denominated calculation & payout',
+      'panel.double.desc': '<b>Staking Combo:</b> 60% $财神DAO + 40% Partner Token (Antfun · BG · LUCKY99 · FIST) · USD-denominated calculation, coin-denominated payout',
+      'tbl.stake.th1': 'Duration',
+      'tbl.stake.th2': 'APY',
+      'tbl.stake.th3': 'Total Yield Rate',
+      'tbl.stake.th4': 'Total Return Multiplier',
+      'tbl.stake.tr1': '30 Days',
+      'tbl.stake.tr2': '90 Days',
+      'tbl.stake.tr3': '120 Days',
+      'tbl.stake.tr4': '180 Days',
+      'tbl.stake.caption': 'Total Yield Rate = APY ÷ 365 × Duration. APY is simple annualized, non-compounding.',
+      'tbl.stake.caption2': 'Total Yield Rate = APY ÷ 365 × Duration. Partner tokens are priced at entry. Yield is settled in $财神DAO.',
+      'tbl.all.th1': 'Mode',
+      'tbl.all.th2': 'Staking Combo',
+      'tbl.all.caption': 'Parameters are recommended; actual APY is subject to the official staking page in real-time.',
+      'sub.treasure.rel.title': 'Daily Linear Release',
+      'treasure.rel.1.k': 'Release Method',
+      'treasure.rel.1.v': '<b>Daily linear release</b>, starting from T+1.',
+      'treasure.rel.2.k': 'Daily Release',
+      'treasure.rel.2.v': '<code>Principal × APY ÷ 365</code>',
+      'treasure.rel.3.k': 'Dual-Stake Calc',
+      'treasure.rel.3.v': 'Calculated based on total USDT-equivalent value. Yield is settled in $财神DAO. Partner tokens are priced at entry.',
+      'treasure.rel.4.k': 'Claim Method',
+      'treasure.rel.4.v': 'Claimable daily. Unclaimed yields accumulate. Recommended to claim within 24 months.',
+      'treasure.rel.5.k': 'Principal Return',
+      'treasure.rel.5.v': 'Principal is returned via the original route upon maturity. Staking concludes after yield release finishes.',
+      'treasure.rel.6.k': 'APY Basis',
+      'treasure.rel.6.v': 'APY is simple annualized, released daily linearly. <b>Non-compounding</b>.',
+      'treasure.rel.7.k': 'Early Unlock',
+      'treasure.rel.7.v': 'Not supported. If opened later, penalty rules will be subject to the official page.',
+      'treasure.rel.8.k': 'APY Adjustment',
+      'treasure.rel.8.v': 'Dynamic adjustment possible, announced weekly. Staked positions are recommended to lock in the entry APY.',
+      'treasure.rel.9.k': 'Partner Risk Ctrl',
+      'treasure.rel.9.v': 'Requires audit and sufficient liquidity. Official reserves the right to pause the combo if de-pegging occurs.',
+      'sub.treasure.ex1.title': 'Single-Stake Example',
+      'note.denom.tag': 'Denomination',
+      'note.single.denom': 'Single-Stake is 100% $财神DAO, <b>coin-denominated calculation and payout</b>. Yield quantity depends solely on the $财神DAO staked, with no USDT conversion.',
+      'calc.stake.label': 'Calculation Formula',
+      'calc.stake.1': 'Daily Release',
+      'calc.stake.2': 'Staking Principal',
+      'calc.stake.3': 'Total Yield',
+      'calc.stake.4': 'Staking Days',
+      'calc.stake.5': 'Total Return at Maturity',
+      'calc.stake.6': 'Principal',
+      'calc.ex3.label': 'Example · Stake 10,000 $财神DAO · 180 Days · APY 170%',
+      'tbl.stake.ex1': 'Daily Release',
+      'tbl.stake.ex2': 'Total Yield',
+      'tbl.stake.ex3': 'Total Return',
+      'tbl.stake.ex.caption': 'Unit: $财神DAO tokens. Examples are for illustrative purposes only; actuals are subject to the official page.',
+      'sub.treasure.ex2.title': 'Dual-Stake Example',
+      'note.double.denom': 'Dual-Stake is 60% $财神DAO + 40% Partner Token. <b>USD-denominated calculation, coin-denominated payout, principal returned as original</b>. Yield is calculated based on total USDT-equivalent value and paid in $财神DAO.',
+      'note.assume.tag': 'Assumptions',
+      'note.double.assume': '<b>Prices:</b> $财神DAO = 0.015 USDT, BG = 0.0003 USDT<br><b>Dual-Stake Ratio:</b> 60% $财神DAO + 40% BG<br><b>Duration / APY:</b> 180 Days / 200%',
+      'calc.ex4.label': 'Step 1 · Allocation by Value (Total 1,000 USDT)',
+      'calc.ex4.1': '$财神DAO Portion',
+      'calc.ex4.2': '$财神DAO Quantity',
+      'calc.ex4.3': 'BG Portion',
+      'calc.ex4.4': 'BG Quantity',
+      'calc.ex5.label': 'Step 2 · Daily Release based on USDT',
+      'calc.ex5.1': 'Convert to $财神DAO',
+      'calc.ex6.label': 'Step 3 · 180-Day Total Release & Return',
+      'calc.ex6.1': '180-Day Total Release',
+      'calc.ex6.2': 'Principal Return at Maturity',
+      'calc.ex6.3': 'Total Return Value',
+      'note.double.warn': 'BG price fluctuations will affect the fiat value of the principal, but the exact quantity of BG will be returned. Yield is paid in $财神DAO, not BG. Partner tokens carry de-pegging and liquidity risks.',
+      'sub.treasure.ex3.title': 'Reverse Calculation Example',
+      'calc.ex7.label': 'Step 1 · Reverse Total Input by 60%',
+      'calc.ex7.1': '$财神DAO Value',
+      'calc.ex7.2': 'Total Input Value',
+      'calc.ex8.label': 'Step 2 · Calculate BG Portion & Quantity',
+      'calc.ex8.1': 'BG Portion Value',
+      'calc.ex8.2': 'BG Quantity',
+      'calc.ex9.label': 'Step 3 · 180 Days / APY 200% Yield',
+      'caption.treasure.summary': '<b>Summary:</b> Single-Stake is calculated and paid in coins; Dual-Stake is calculated in USD, paid in coins, and returns principal in kind. Dual-Stake ultimately pays in $财神DAO, not USDT; hence it is "USD-denominated valuation, coin-denominated settlement".',
+
+      'sec.nft.sd': 'Identity Hub · Co-branded Dual Benefits',
+      'sec.nft.lead': 'An ultra-scarce Genesis auction of 108 uniquely numbered NFTs. As the Genesis identity credential of the Caishen Ecosystem, holders enjoy exclusive benefits and ecosystem dividend weights, serving as the benefits hub connecting all product lines. In addition to the Genesis series, Caishen NFTs include <b>Co-branded Series</b>, launched in partnership with specific communities/foundations, granting holders dual benefits from both Caishen and the partner.',
+      'sub.nft.issue.title': 'Issuance',
+      'tbl.nft.th1': 'Tier',
+      'tbl.nft.th2': 'Quantity',
+      'tbl.nft.th3': 'Positioning',
+      'tbl.nft.th4': 'Dividend Weight',
+      'tbl.nft.tr1': 'Golden',
+      'tbl.nft.tr2': 'Wealth',
+      'tbl.nft.tr3': 'Decree',
+      'tbl.nft.tr4': 'Total',
+      'tbl.nft.val8': '8',
+      'tbl.nft.val20': '20',
+      'tbl.nft.val80': '80',
+      'tbl.nft.val108': '108',
+      'tbl.nft.desc1': 'Genesis Supreme',
+      'tbl.nft.desc2': 'Genesis Core',
+      'tbl.nft.desc3': 'Genesis Member',
+      'tbl.nft.desc4': 'Ultra-Scarce',
+      'tbl.nft.w1': 'Highest',
+      'tbl.nft.w2': 'High',
+      'tbl.nft.w3': 'Basic',
+      'tbl.nft.caption': 'The Genesis series is issued via auction. Final quantities, starting prices, and dates are subject to official announcements.',
+      'note.nft.coop': '<b>Co-branded Series:</b> Caishen NFT partners with specific communities/foundations for independent, uniquely numbered series. Announced separately based on partnership terms. Co-branded series do not affect the supply or tier structure of the 108 Genesis series; both coexist, each with its own scarcity.',
+      'sub.nft.bene.title': 'Exclusive NFT Benefits',
+      'ben.1.t': 'Identity Rights',
+      'ben.1.d': 'Genesis identity, exclusive badges, medals, live room display',
+      'ben.2.t': 'Ecosystem Dividend',
+      'ben.2.d': 'Participate in the dividend pool distribution based on tier weight',
+      'ben.3.d': 'Priority access, exclusive quota, dedicated channels',
+      'ben.4.d': 'Exclusive APY boost, dedicated staking pool, early access to new cycles',
+      'ben.5.d': 'Lifetime discounts, exclusive merch, priority co-branded purchases, limited editions',
+      'ben.6.d': 'Free/discounted courses, 1-on-1 consultations, priority offline classes',
+      'ben.7.d': 'Exclusive skins, items, titles, maps, yield boosts',
+      'ben.8.t': 'Caishen DAO',
+      'ben.8.d': 'Governance voting, proposal rights, treasury oversight',
+      'ben.9.t': 'Airdrop Priority',
+      'ben.9.d': 'Priority for future ecosystem tokens, NFTs, and benefit airdrops',
+      'ben.10.t': 'Offline Events',
+      'ben.10.d': 'Caishen Summit, closed-door meetings, study tours, VIP blessings',
+      'ben.11.t': 'Naming Rights',
+      'ben.11.d': 'Naming rights for halls, rooms, courses, NPCs, maps',
+      'ben.12.t': 'Royalties',
+      'ben.12.d': 'NFTs trade freely; royalties flow into ecosystem and charity pools',
+      'ben.13.t': 'Co-branded Dual Benefits',
+      'ben.13.d': 'Co-branded series enjoy both Caishen Ecosystem and partner community/foundation benefits',
+      'sub.nft.div.title': 'Dividend & Royalty Basis',
+      'nft.div.1.k': 'Source',
+      'nft.div.1.v': 'Injected into the dividend pool based on governance decisions, sourced from <b>actual ecosystem revenue</b> (mall sales, academy courses, mini-game item/royalty fees, etc.)',
+      'nft.div.2.k': 'Weights',
+      'nft.div.2.v': 'Golden &gt; Wealth &gt; Decree. Specific weights determined by governance proposal and announced.',
+      'nft.div.3.k': 'Frequency',
+      'nft.div.3.v': 'Quarterly settlement recommended; specific schedule subject to official announcements.',
+      'nft.div.4.k': 'Royalty Rate',
+      'nft.div.4.v': 'Secondary market royalties flow to ecosystem and charity pools. Rate is subject to on-chain contracts.',
+      'nft.div.5.k': 'Benefit Binding',
+      'nft.div.5.v': 'Benefits and dividend weights are bound to the NFT itself, irrespective of market price. Transferring the NFT transfers the benefits.',
+      'sub.nft.coop.title': 'Co-branded Series & Dual Benefits',
+      'nft.coop.lead': 'Caishen NFT partners with specific communities/foundations to form the "Co-branded Series". Holders connect to two benefit lines: <b>Caishen-side benefits</b> (ecosystem products, governance, airdrops, events) and <b>Partner-side benefits</b> (community identity, foundation resources, partner-exclusive events).',
+      'nft.coop.1.k': 'Partners',
+      'nft.coop.1.v': 'Specific communities, foundations, or ecosystem partners. Partners will be announced prior to issuance.',
+      'nft.coop.2.k': 'Issuance',
+      'nft.coop.2.v': 'Independent numbering and supply. Issued separately based on partnership terms. Does not affect the 108 Genesis supply or tier structure.',
+      'nft.coop.3.k': 'Dual Benefits',
+      'nft.coop.3.v': '<b>Caishen-side:</b> Ecosystem product benefits, governance/airdrop priority, exclusive event tasks.<br><b>Partner-side:</b> Partner community/foundation identity, exclusive events, partner resources and credentials.',
+      'nft.coop.4.k': 'Fulfillment',
+      'nft.coop.4.v': 'Caishen-side benefits fulfilled by the Caishen Ecosystem; Partner-side benefits fulfilled by the partner. Both are bound to the NFT carrier; <b>transferring the NFT transfers the benefits</b>.',
+      'nft.coop.5.k': 'Weights',
+      'nft.coop.5.v': 'Co-branded series dividend weights are calculated separately from the Genesis series. Subject to the specific co-branded proposal.',
+      'nft.coop.6.k': 'Royalty & Settlement',
+      'nft.coop.6.v': 'Secondary market royalties for co-branded series are split according to the partnership terms. Subject to on-chain contracts and official announcements.',
+      'nft.coop.7.k': 'Boundary',
+      'nft.coop.7.v': 'Co-branded series <b>do not dilute</b> the scarcity of the 108 Genesis identities, and <b>do not alter</b> the dividend weights or tier structure of the Genesis series.',
+      'nft.coop.tag': 'Dual Benefits',
+      'note.nft.double': '<b>Example:</b> A co-branded series of N NFTs. Holders can participate in governance, events, and airdrop priority within the Caishen Ecosystem, while also enjoying corresponding identity and resources within the partner community/foundation. Two parallel benefit lines carried by the NFT.',
+      'note.nft.warn': 'Ecosystem dividends are not fixed yields and do not guarantee amounts; they depend on actual revenue and governance. NFT auctions carry market risks; prices may fluctuate significantly. The <b>Partner-side benefits of co-branded series are fulfilled by the partner</b>; fulfillment capacity, rules, and survival depend on the partner. Changes in partner benefits do not affect Caishen-side benefits but may impact the overall value of the NFT. Subject to official and partner announcements.',
+
+      'sec.culture.title': 'Caishen Culture Academy',
+      'sec.culture.sd': 'Content Supply',
+      'sec.culture.lead': 'Feng Shui and astrology education sector, covering I Ching basics, Caishen culture, folk beliefs, and practical Feng Shui. Centered on cultural inheritance, knowledge learning, and hobby exchange, providing sustainable content supply for the ecosystem.',
+      'sub.culture.cur.title': 'Curriculum',
+      'culture.cur.1.k': 'Entry',
+      'culture.cur.1.v': 'I Ching basics, Caishen culture, folk beliefs, Feng Shui introduction',
+      'culture.cur.2.k': 'Advanced',
+      'culture.cur.2.v': 'Home Feng Shui, business Feng Shui, Bazi, date selection, naming',
+      'culture.cur.3.k': 'Professional',
+      'culture.cur.3.v': 'Practical Feng Shui, astrology consulting, case studies, instructor certification',
+      'culture.cur.4.k': 'Format',
+      'culture.cur.4.v': 'Live/recorded courses, bootcamps, offline classes, study tours, certification exams',
+      'culture.cur.5.k': 'Payment',
+      'culture.cur.5.v': 'Course and consultation vouchers support <b>$财神DAO</b>. NFT holders enjoy discounts.',
+      'sub.culture.pro.title': 'Professional Network',
+      'culture.pro.1.k': 'Onboarding',
+      'culture.pro.1.v': 'Apply → Qualification review → Trial lecture / Interview → Rating → Service listing → Booking / Live stream → User review → Settlement',
+      'culture.pro.2.k': 'Services',
+      'culture.pro.2.v': 'Paid consultations, live co-streaming, teaching, offline services, corporate advisory, custom solutions',
+      'culture.pro.3.k': 'Platform',
+      'culture.pro.3.v': 'KYC, qualification review, service reviews, reputation levels, deposits, dispute resolution, blacklist, platform commission',
+      'culture.pro.4.k': 'Settlement',
+      'culture.pro.4.v': 'Installment settlement based on service completion and reviews. Platform commission is publicized. Disputed orders go to manual arbitration.',
+      'note.culture.warn': 'Feng Shui and astrology education falls under cultural education and folk exchange. It does not promise life-changing results or effects, and does not replace medical, legal, or investment advice.',
+
+      'sec.mall.title': 'Caishen Mall',
+      'sec.mall.sd': 'Consumption Scenario',
+      'sec.mall.lead': 'The consumption sector of the Caishen Ecosystem, selling Caishen merchandise, cultural creative goods, digital collectibles, and course/consultation vouchers. Supporting $财神DAO payments is the key scenario for the token to evolve from a "financial asset" to a "usable currency".',
+      'mall.1.k': 'Products',
+      'mall.1.v': 'Caishen statues, incense, bracelets, amulets, ornaments, co-branded apparel, cultural gifts, digital collectibles, gift cards',
+      'mall.2.k': 'Courses',
+      'mall.2.v': 'Course vouchers, consultation vouchers, offline event tickets',
+      'mall.3.k': 'Game Items',
+      'mall.3.v': 'Mini-game items, skins, NFT items',
+      'mall.4.k': 'Payment',
+      'mall.4.v': 'Supports <b>$财神DAO</b> payment.',
+      'mall.5.k': 'NFT Discounts',
+      'mall.5.v': 'Caishen NFT holders enjoy tiered discounts; higher tiers get larger discounts.',
+      'mall.6.k': 'Points',
+      'mall.6.v': 'Points and Fortune Value can offset a portion of order amounts.',
+      'mall.7.k': 'Supply Chain',
+      'mall.7.v': 'Authenticity guaranteed, traceable, curated co-branded items, quality controlled.',
+      'mall.8.k': 'Revenue Use',
+      'mall.8.v': 'A portion of revenue flows into the ecosystem pool for buyback, burn, or dividends according to governance rules.',
+      'caption.mall': '<b>Positioning:</b> The mall is not just "selling goods"; it transforms $财神DAO into a spendable currency. The more real the payment scenario, the more solid the demand side of the token.',
+
+      'sec.game.title': 'Caishen Mini-Games',
+      'sec.game.sd': 'Entertainment Entry',
+      'sec.game.lead': 'The entertainment sector of the Caishen Ecosystem. Play games to earn $财神DAO, purchase skins, and trade rare NFT items freely. High-frequency interaction drives DAU and virality for the entire ecosystem.',
+      'game.1.k': 'Gameplay',
+      'game.1.v': 'Daily check-ins, lucky spins, match-3, adventures, temple management, Feng Shui layout, quizzes, PVE/PVP, leaderboard seasons',
+      'game.2.k': 'Rewards',
+      'game.2.v': '$财神DAO, items, skins, NFT fragments, NFT items, titles, EXP',
+      'game.3.k': 'Items & Skins',
+      'game.3.v': 'Purchasable, upgradeable, craftable, tradable',
+      'game.4.k': 'NFTization',
+      'game.4.v': 'Rare items NFTized, freely tradable, platform collects royalties',
+      'game.5.k': 'Royalty Flow',
+      'game.5.v': 'A portion flows into the ecosystem dividend pool and charity pool',
+      'game.6.k': 'Reward Source',
+      'game.6.v': 'From the ecosystem budget (airdrop marketing and operations allocation), <b>no new minting</b>. Total supply remains constant.',
+      'game.7.k': 'Anti-Abuse',
+      'game.7.v': 'Stamina limits, cooldowns, random rewards, anti-scripts, KYC, leaderboard monitoring, blacklist',
+      'note.loop.tag': 'Loop',
+      'note.game.loop': '<b>Economic Loop:</b> Play games → Earn $财神DAO → Buy items/skins/mall goods → Stake/Burn → Trade NFT items → Spend $财神DAO → Reflow to ecosystem pool',
+      'note.game.warn': 'Game rewards are coin-denominated and do not guarantee fiat value. Digital asset price volatility risk is high. Reward quotas are subject to the ecosystem budget and may be adjusted based on operational conditions.',
+
+      'sec.partners.title': 'Partner Ecosystem',
+      'sec.partners.sd': 'Partner Tokens',
+      'sec.partners.lead': 'The Caishen Ecosystem integrates external communities and liquidity on Solana via partner tokens. Current partner tokens include <b>Antfun</b>, <b>BG</b>, <b>LUCKY99</b>, and <b>FIST</b>, primarily entering the ecosystem via the Treasure Bowl Dual-Stake combo to facilitate community cross-pollination and liquidity. Partner tokens do not alter the core status of $财神DAO, nor the coin-denominated mechanisms of Incense Offering and Single-Stake.',
+      'partner.role': 'Partner Token',
+      'partner.desc.1': 'A Solana partner token. Integrated into the Dual-Stake combo as a partner asset paired with $财神DAO.',
+      'partner.desc.2': 'An integrated partner token used for USD-denominated Dual-Stake calculations, forming a 60/40 staking structure with $财神DAO.',
+      'partner.desc.3': 'An entertainment-focused partner token integrated into the Dual-Stake combo, bringing cross-project interaction and liquidity to the community.',
+      'partner.desc.4': 'An ecosystem-focused partner token integrated into the Dual-Stake combo, enriching the selectable asset combinations for Dual-Stake.',
+      'sub.partners.integration.title': 'Integration',
+      'partners.int.1.k': 'Channel',
+      'partners.int.1.v': 'Treasure Bowl · Dual-Stake Combo (60% $财神DAO + 40% Partner Token)',
+      'partners.int.2.k': 'Calculation',
+      'partners.int.2.v': 'USD-denominated calculation, coin-denominated payout, principal returned as original. Partner tokens priced at entry; yield settled in $财神DAO.',
+      'partners.int.3.k': 'Core Integrity',
+      'partners.int.3.v': 'Does not alter the return rate/quota of Incense Offering, the coin-denominated basis of Single-Stake, or the core asset status of $财神DAO.',
+      'partners.int.4.k': 'Threshold',
+      'partners.int.4.v': 'Requires audit, sufficient liquidity, and community transparency. Partner list and ratios are official.',
+      'partners.int.5.k': 'Exit/Suspension',
+      'partners.int.5.v': 'In case of de-pegging or insufficient liquidity, the official reserves the right to suspend the combo. Staked users will get their principal back at maturity per original terms.',
+      'note.info.tag': 'Note',
+      'note.partners.info': 'The partner token list may be adjusted based on partnerships. Additions or removals will be announced via official channels in advance. Integration does not alter the existing mechanisms of Incense Offering and Single-Stake.',
+      'note.partners.warn': 'Partner tokens carry risks such as de-pegging, insufficient liquidity, contract vulnerabilities, and price volatility. Partner tokens do not constitute an exchange guarantee for $财神DAO, nor do they affect Single-Stake. Please fully evaluate the stability and liquidity of partner tokens before participating in Dual-Stake.',
+
+      'sec.season.title': 'Event Layer',
+      'sec.season.sd': 'Seasons & Competitions',
+      'sec.season.lead': 'The Event Layer is not a standalone product, but a seasonal operational module spanning all product lines. It drives traffic to Mini-Games, Culture Academy, Mall, NFTs, and DAO via competitions, tasks, and leaderboards, while onboarding new users and boosting community activity. It does not alter the yield or return parameters of any product; it solely focuses on "bringing users to the products".',
+      'season.1.k': 'Positioning',
+      'season.1.v': 'A horizontal operational layer, executed per season/batch. <b>Does not replace any product mechanism</b>, does not occupy rollout phase numbers.',
+      'season.2.k': 'Event Types',
+      'season.2.v': 'Trading competitions, mini-game seasons, culture quizzes, DAO proposal contests, exclusive NFT tasks, Mall UGC contests',
+      'season.3.k': 'Reward Source',
+      'season.3.v': 'From the ecosystem budget\'s airdrop marketing and operations allocation. <b>No new minting</b>, does not touch the Incense reward pool or staking principal pools.',
+      'season.4.k': 'Budget Principle',
+      'season.4.v': 'Fixed budget per season, publicized total prize pool, first come first served. Operational expenses are accounted for separately and do not occupy the prize pool.',
+      'season.5.k': 'Product Relationship',
+      'season.5.v': 'Events act as "traffic drivers" and "benefit utilization scenarios" for products. <b>Do not increase staking APY, alter Incense return rates, or promise dividends</b>.',
+      'season.6.k': 'Rule Disclosure',
+      'season.6.v': 'Specific event rules, prize pools, durations, anti-abuse, and appeal mechanisms are subject to the <b>standalone event document</b>.',
+      'season.first.tag': 'First Phase',
+      'note.season.first': 'The first phase of the Event Layer will launch as a <b>DEX Trading Incentive Season</b>. Specific prize pools, point weights, deposits, snapshots, and risk control rules are subject to the standalone execution document for that event.',
+      'note.boundary.tag': 'Boundary',
+      'note.season.warn': 'Event rewards are incentives and <b>do not constitute a promise of fixed returns or investment returns</b>. Events do not increase staking APY, alter Incense return rates, or promise dividends. Rules involving deposits, KYC, rankings, and forfeiture are subject to the event\'s independent terms. Evaluate rules and risks before participating.',
+
+      'sec.loop.title': 'Ecosystem Loop',
+      'sec.loop.lead': 'From incense to staking, from NFTs to education, from the mall to games, from dividends to charity — eight entries, together with the horizontal partner ecosystem and event layer, all point to the same core asset: $财神DAO.',
+      'loop.1.k': 'Faith',
+      'loop.1.v': 'Incense Offering — Burn equals deflation, blessings released in coins',
+      'loop.2.k': 'Assets',
+      'loop.2.v': 'Treasure Bowl — Single/Dual-Stake, daily linear yield release',
+      'loop.3.k': 'Identity',
+      'loop.3.v': 'Caishen NFT — 108 Genesis + Co-branded, dual-benefit identity hub',
+      'loop.4.k': 'Culture',
+      'loop.4.v': 'Culture Academy — Curriculum, consulting, and instructor certification',
+      'loop.5.k': 'Consumption',
+      'loop.5.v': 'Caishen Mall — Merch, cultural goods, digital collectibles, supports $财神DAO',
+      'loop.6.k': 'Entertainment',
+      'loop.6.v': 'Mini-Games — High-frequency interaction, NFTized item trading',
+      'loop.7.k': 'Governance',
+      'loop.7.v': 'Caishen DAO — Proposals, voting, and treasury oversight',
+      'loop.8.k': 'Charity',
+      'loop.8.v': 'Caishen Charity — A portion of royalties and revenue gives back to society',
+      'loop.9.k': 'Partners',
+      'loop.9.v': 'Partner Tokens — Antfun / BG / LUCKY99 / FIST, integrated via Dual-Stake',
+      'loop.10.k': 'Events',
+      'loop.10.v': 'Seasons & Competitions — Horizontal module, driving traffic, rewards from ecosystem budget',
+      'fly.1.k': 'Flywheel 1',
+      'fly.1.v': '<b>Deflation Flywheel</b> — Burning reduces supply → Scarcity increases → Holding intent strengthens → Staking & consumption demand rises',
+      'fly.2.k': 'Flywheel 2',
+      'fly.2.v': '<b>Revenue Flywheel</b> — Mall/Academy generate real revenue → Partially injected into ecosystem pool → Buyback/Dividends → Holders benefit',
+      'fly.3.k': 'Flywheel 3',
+      'fly.3.v': '<b>Identity Flywheel</b> — NFT benefits span all products, co-branded series integrate external communities → Holders become long-term co-builders → Governance quality improves → Ecosystem stabilizes',
+      'fly.4.k': 'Flywheel 4',
+      'fly.4.v': '<b>Event Flywheel</b> — Seasonal events drive traffic → Boost DAU & trading depth → Accumulate real community → Feedback into budget & governance',
+      'caption.loop': '<b>Summary:</b> From incense to staking, NFTs to education, mall to games, dividends to charity, the Caishen Ecosystem is forming a self-reinforcing, mutually-trafficking Caishen universe. Partner tokens and the Event Layer do not add separate entries, but act as horizontal modules to keep the entries "spinning".',
+
+      'sec.risk.title': 'Risks & Disclosure',
+      'risk.intro': '<b>Important:</b> Digital asset investments carry significant risk, including the possible loss of all principal. All product mechanisms, APYs, quotas, ratios, partner tokens, co-branded NFTs, and event rewards on this page are for illustrative purposes only and do not constitute any form of investment advice, offer, or solicitation.',
+      'risk.1': '<b>Burn is Irrevocable</b> — Incense is burned to the black hole, permanently removing the asset from circulation. It cannot be recovered or refunded.',
+      'risk.2': '<b>Staking Liquidity Limit</b> — Treasure Bowl staking cannot be unlocked early. Funds are locked for the duration.',
+      'risk.3': '<b>Yield Not Principal-Protected</b> — Coin-denominated yield does not protect fiat value. Token price volatility directly impacts actual returns.',
+      'risk.4': '<b>Quota Rigidity</b> — Total burn quota is fixed at 20M. First come, first served. Participation may not be guaranteed.',
+      'risk.5': '<b>Availability Uncertainty</b> — Availability and quota are subject to live announcements. No fixed schedule.',
+      'risk.6': '<b>Partner Token Risks</b> — Partner tokens (Antfun / BG / LUCKY99 / FIST) carry risks such as de-pegging, insufficient liquidity, and contract vulnerabilities. Principal value may shrink significantly in extreme cases.',
+      'risk.7': '<b>No Exchange Guarantee</b> — Partner tokens do not constitute an exchange guarantee for $财神DAO and do not affect Single-Stake. The list and ratios may change, subject to official disclosure.',
+      'risk.8': '<b>APY Adjustable</b> — Treasure Bowl APY is a dynamic parameter, adjustable based on ecosystem conditions. Subject to real-time display on the official page.',
+      'risk.9': '<b>Non-Compounding Basis</b> — Treasure Bowl yield is linearly released daily. APY is simple annualized, non-compounding. Actual cumulative yield requires self-calculation.',
+      'risk.10': '<b>NFT Market Risks</b> — Caishen NFT auctions carry market risks. Benefits and dividends are subject to official rules; no fixed returns are promised.',
+      'risk.11': '<b>Co-branded NFT Risks</b> — Partner-side benefits of co-branded series are fulfilled by the partner, whose capacity, rules, and survival determine fulfillment. Changes in partner benefits may affect the overall value of the NFT. Subject to official and partner announcements.',
+      'risk.12': '<b>Dividends Not Guaranteed</b> — Ecosystem dividends depend on actual revenue. Amounts are not guaranteed and may be zero.',
+      'risk.13': '<b>Culture Compliance</b> — Feng Shui/astrology education is cultural education and folk exchange. It does not promise life-changing effects, nor does it replace medical, legal, or investment advice.',
+      'risk.14': '<b>Game Reward Volatility</b> — Mini-game rewards are coin-denominated and do not guarantee fiat value. Quotas are subject to the ecosystem budget.',
+      'risk.15': '<b>Event Rewards Not Yield Promises</b> — Event Layer rewards are incentive-based and do not guarantee fiat value. They do not constitute fixed yields or investment return promises.',
+      'risk.16': '<b>Event Rules Subject to Change</b> — Event rules, prize pools, budgets, and durations may be adjusted seasonally. Subject to specific event announcements and independent terms.',
+      'risk.17': '<b>Event Deposit Risks</b> — For events involving deposits, deposits may be forfeited in case of violations, cheating, or triggering forfeiture clauses. Subject to the event\'s independent terms.',
+      'risk.18': '<b>Event-Product Decoupling</b> — Events do not increase staking APY, alter Incense return rates, or promise dividends. Rewards come from the existing ecosystem budget; no new minting.',
+      'risk.19': '<b>Mechanism Adjustments</b> — Product parameters may be adjusted through governance procedures, announced via official channels.',
+      'risk.20': '<b>Not Investment Advice</b> — This document does not constitute investment advice. Please conduct your own thorough research and consult professionals before participating.',
+
+      'sec.faq.title': 'Frequently Asked Questions',
+      'faq.expand': 'Expand All',
+      'faq.collapse': 'Collapse All',
+      'faq.1.q': 'Where do the burned $财神DAO go? Why is the return higher than the burn?',
+      'faq.1.a': 'Burned $财神DAO is sent to the Solana black hole address; the private key does not exist, meaning it is <b>permanently removed and unrecoverable</b>. The return is higher because the reward pool was pre-allocated at 50,224,000 tokens (20,000,000 × 251.12%) before any burns occurred. Returns are paid from this pool, not newly minted. Total supply remains constant.',
+      'faq.2.q': 'What is the relationship between the 20M quota and the 50.224M in Tokenomics?',
+      'faq.2.a': 'The former is the <b>burn cap</b>, the latter is the <b>reward cap</b>. The conversion is: <code>20,000,000 × 251.12% = 50,224,000</code>. This exactly matches the "Incense Pool" in the token distribution table, meaning the lifetime burn and reward limits are fully closed at the total supply level with no over-commitment.',
+      'faq.3.q': 'Where does the Treasure Bowl APY come from? Can it default?',
+      'faq.3.a': 'APY comes from a combination of the ecosystem incentive budget and actual ecosystem revenue, acting as an <b>incentive parameter rather than a guaranteed yield</b>. The token source for yield distribution has been pre-allocated in the tokenomics. If the budget is insufficient to support the current APY, governance can lower the parameter. Users must evaluate yield sustainability themselves.',
+      'faq.4.q': 'What exactly does the "denomination" difference between Single and Dual-Stake affect?',
+      'faq.4.a': 'It affects the <b>yield calculation method</b>, not the <b>payout currency</b>.<br>Single-Stake is coin-denominated: Stake 10,000 tokens, yield is calculated on 10,000 tokens, regardless of price.<br>Dual-Stake is USD-denominated: Yield is calculated on the total USDT-equivalent value, then converted to $财神DAO for payout.<br>Both ultimately pay in $财神DAO; the difference is the valuation basis.',
+      'faq.5.q': 'What exactly is the "dual benefit" of co-branded NFTs?',
+      'faq.5.a': '<b>Dual benefit = Caishen-side + Partner-side.</b><br><b>Caishen-side:</b> Ecosystem product benefits, governance/airdrop priority, exclusive event tasks, fulfilled by Caishen.<br><b>Partner-side:</b> Partner community/foundation identity, exclusive events, partner resources, fulfilled by the partner.<br>Both are bound to the NFT; transferring the NFT transfers the benefits. Co-branded series have independent numbering/supply and <b>do not dilute the scarcity of the 108 Genesis identities</b>. Partner-side benefits are subject to the partner\'s capability and announcements.',
+      'faq.6.q': 'What role do partner tokens play in the ecosystem?',
+      'faq.6.a': 'Partner tokens (Antfun / BG / LUCKY99 / FIST) integrate via the <b>Treasure Bowl Dual-Stake</b> to facilitate community cross-pollination and liquidity. They do not alter the core asset status of $财神DAO, nor the coin-denominated mechanisms of Incense Offering and Single-Stake. The partner list and ratios are public and may be adjusted based on partnerships.',
+      'faq.7.q': 'What happens if a partner token in Dual-Stake de-pegs?',
+      'faq.7.a': 'Dual-Stake returns the <b>exact original quantity</b> of the partner token, so de-pegging directly affects the fiat value of the principal. Official risk controls include requiring audits, ensuring sufficient liquidity, and the right to suspend the combo upon de-pegging. Users should fully evaluate partner token stability when choosing Dual-Stake.',
+      'faq.8.q': 'Is the Caishen NFT dividend a fixed yield?',
+      'faq.8.a': 'No. Dividends come from <b>actual ecosystem revenue</b> (mall, academy, game royalties, etc.), and the injection ratio and distribution weights are decided by governance. Good revenue means higher dividends; poor revenue means low or even zero dividends. It binds to ecosystem growth, not a fixed interest rate.',
+      'faq.9.q': 'Will mini-game rewards cause infinite token inflation?',
+      'faq.9.a': 'No. $财神DAO has a fixed total supply of 686,868,686 tokens and will never be minted further. Mini-game rewards come from the pre-allocated airdrop marketing and operations budget, which is a <b>redistribution of existing shares</b>, not new minting.',
+      'faq.10.q': 'Will Event Layer rewards cause token inflation?',
+      'faq.10.a': 'No. $财神DAO has a fixed total supply of 686,868,686 tokens. Event rewards come from the pre-allocated budget, which is a <b>redistribution of existing shares</b>, adding no new minting and not touching the Incense reward pool or staking principal pools.',
+      'faq.11.q': 'Are seasonal competitions a disguised yield promise?',
+      'faq.11.a': 'No. Event rewards are incentives and <b>not fixed yields or investment returns</b>. Events do not increase staking APY, alter Incense return rates, or promise dividends. Rules involving deposits, rankings, KYC, and forfeiture are subject to the event\'s standalone terms. Evaluate rules and risks before participating.',
+      'faq.12.q': 'When will the planned products launch?',
+      'faq.12.a': 'The specific timelines for Phases 2 to 4 are subject to official announcements. This document describes product structure and mechanism direction, not a time commitment. A detailed mechanism document will be published before each product launch.',
+      'faq.13.q': 'Why does Treasure Bowl not support early unlocking?',
+      'faq.13.a': 'The staking duration is the basis for yield pricing. If early exit were allowed, the APY could not be maintained at the publicized level, which would be unfair to users who stake for the full term. Thus, early unlocking is not supported. If opened later, clear penalty rules will be implemented and announced in advance.',
+
+      'foot.doc': 'Caishen Ecosystem · Documentation',
+      'foot.ver': 'V3.0 · Internal Review Draft',
+      'foot.exist': 'Incense Offering · Treasure Bowl',
+      'foot.nft': '108 Genesis + Co-branded Series (Dual Benefits)',
+      'foot.plan': 'Caishen NFT · Academy · Mall · Mini-Games · DAO · Charity',
+      'foot.activity': 'Event Layer · Seasons & Competitions (Horizontal Module)',
+      'foot.disc': 'This document is the Caishen Ecosystem documentation for informational purposes and does not constitute investment advice.<br>All rules, APYs, quotas, durations, dividend ratios, partner tokens, co-branded NFTs, and event rewards are subject to the latest official announcements and pages; specific event and co-branding details are subject to standalone documents.<br>Digital asset prices are highly volatile; please exercise rational judgment and be aware of risks.',
+
+      'label.lang.switch': '切换到中文',
+      'label.lang.text': '中文'
+    }
+  };
+
   (function () {
     'use strict';
 
-    /* ========== 主题色 meta ========== */
+    var htmlEl = document.documentElement;
+    var themeBtn = document.getElementById('themeToggle');
+    var langBtn = document.getElementById('langToggle');
     var themeColorMeta = document.createElement('meta');
     themeColorMeta.name = 'theme-color';
     document.head.appendChild(themeColorMeta);
@@ -2451,18 +3519,57 @@
     /* ========== Toast ========== */
     var toast = document.getElementById('toast');
     var toastTimer = null;
-    function showToast(msg) {
+    function showToast(msgKey) {
       if (!toast) return;
-      if (msg) toast.textContent = msg;
+      var msg = I18N[htmlEl.getAttribute('data-lang') || 'zh'][msgKey] || msgKey;
+      toast.textContent = msg;
       toast.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
     }
-    window.__gofToast = showToast;
+
+    /* ========== 语言切换 ========== */
+    function setLang(lang) {
+      if (!I18N[lang]) lang = 'zh';
+      var d = I18N[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (d[k] != null) el.textContent = d[k];
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n-html');
+        if (d[k] != null) el.innerHTML = d[k];
+      });
+
+      document.title = d['page.title'];
+      htmlEl.setAttribute('data-lang', lang);
+      htmlEl.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+
+      langBtn.setAttribute('aria-label', d['label.lang.switch']);
+      langBtn.textContent = d['label.lang.text'];
+
+      var faqBtn = document.getElementById('faqToggleAll');
+      if (faqBtn) {
+        var span = faqBtn.querySelector('span');
+        if (span) {
+           var faqAllOpen = faqBtn.getAttribute('data-open') === 'true';
+           span.textContent = d[faqAllOpen ? 'faq.collapse' : 'faq.expand'];
+        }
+      }
+
+      try { localStorage.setItem('gof-lang', lang); } catch (e) {}
+    }
+
+    langBtn.addEventListener('click', function () {
+      setLang(htmlEl.getAttribute('data-lang') === 'zh' ? 'en' : 'zh');
+    });
+
+    setLang(htmlEl.getAttribute('data-lang') || 'zh');
 
     /* ========== 主题切换 ========== */
     var root = document.documentElement;
-    var themeBtn = document.getElementById('themeToggle');
     var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
     var STORAGE_KEY = 'gof-theme';
 
@@ -2475,7 +3582,7 @@
       var t = currentTheme();
       if (themeBtn) {
         themeBtn.setAttribute('data-icon', t);
-        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        var label = I18N[htmlEl.getAttribute('data-lang') || 'zh'][t === 'dark' ? 'label.theme.light' : 'label.theme.dark'];
         themeBtn.setAttribute('aria-label', label);
         themeBtn.title = label;
       }
@@ -2546,13 +3653,16 @@
     /* ========== FAQ 全部展开 ========== */
     var faqBtn = document.getElementById('faqToggleAll');
     var faqItems = document.querySelectorAll('.faq-item');
-    var faqAllOpen = false;
     if (faqBtn) {
       faqBtn.addEventListener('click', function () {
-        faqAllOpen = !faqAllOpen;
+        var faqAllOpen = faqBtn.getAttribute('data-open') !== 'true';
+        faqBtn.setAttribute('data-open', faqAllOpen);
         faqItems.forEach(function (d) { d.open = faqAllOpen; });
         var span = faqBtn.querySelector('span');
-        if (span) span.textContent = faqAllOpen ? '收起全部' : '展开全部';
+        if (span) {
+           var d = I18N[htmlEl.getAttribute('data-lang') || 'zh'];
+           span.textContent = d[faqAllOpen ? 'faq.collapse' : 'faq.expand'];
+        }
         var svg = faqBtn.querySelector('svg');
         if (svg) svg.style.transform = faqAllOpen ? 'rotate(180deg)' : '';
       });
