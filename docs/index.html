@@ -69,8 +69,8 @@
     --radius-md: 16px;
     --radius-lg: 24px;
 
-    /* 顶栏尺寸 */
-    --nav-h: 68px;
+    /* 顶部安全留白（用于内容起始位置） */
+    --nav-h: 64px;
   }
 
   /* 深色主题 */
@@ -89,15 +89,12 @@
     --card-border-hover: rgba(255, 45, 85, 0.4);
     --card-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-    --glass-bg: rgba(18, 10, 14, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(20, 12, 16, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.55);
 
     --icon-bg: rgba(255, 183, 0, 0.08);
     --icon-border: rgba(255, 183, 0, 0.2);
-
-    /* 固定顶栏 */
-    --nav-bg: rgba(6, 3, 5, 0.72);
-    --nav-border: rgba(255, 255, 255, 0.07);
   }
 
   /* 浅色主题 */
@@ -116,15 +113,12 @@
     --card-border-hover: rgba(255, 45, 85, 0.3);
     --card-shadow: 0 8px 24px -8px rgba(169, 130, 28, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
 
-    --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 6px 18px -6px rgba(60, 40, 20, 0.18);
 
     --icon-bg: rgba(255, 183, 0, 0.15);
     --icon-border: rgba(255, 183, 0, 0.3);
-
-    /* 固定顶栏 */
-    --nav-bg: rgba(252, 250, 248, 0.78);
-    --nav-border: rgba(0, 0, 0, 0.07);
   }
 
   /* 英文排版微调 */
@@ -178,40 +172,38 @@
     display: flex; flex-direction: column; gap: 40px;
   }
 
-  /* ================= 顶部固定栏：语言 + 主题切换 ================= */
+  /* ================= 顶部悬浮控制：语言 + 主题 ================= */
   .top-nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 50;
-    pointer-events: none;                /* 背景不拦截页面点击/滚动 */
-    background: var(--nav-bg);
-    border-bottom: 1px solid var(--nav-border);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    transition: background-color var(--transition-smooth),
-                border-color var(--transition-smooth),
-                transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-                opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 60;
+    pointer-events: none;   /* 容器本身不拦截内容 */
+    background: transparent;
+    border: none;
+    transition:
+      transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.28s ease;
     will-change: transform, opacity;
   }
 
-  /* 滚动时隐藏 */
+  /* 滚动向下时：整组按钮轻柔滑出 */
   .top-nav.is-hidden {
-    transform: translateY(-100%);
+    transform: translateY(calc(-100% - 16px));
     opacity: 0;
+  }
+  .top-nav.is-hidden .theme-toggle,
+  .top-nav.is-hidden .lang-toggle {
     pointer-events: none;
   }
 
   .top-nav-inner {
     max-width: 640px;
     margin: 0 auto;
-    height: var(--nav-h);
-    padding: 0 20px;
-    padding-top: env(safe-area-inset-top, 0px);
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   /* 两个按钮尺寸完全统一为 44x44 正圆 */
@@ -222,19 +214,20 @@
     border-radius: 50%;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    box-shadow: var(--glass-shadow);
     color: var(--ink-secondary);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast),
+      background-color var(--transition-smooth);
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
-  .theme-toggle:hover {
-    color: var(--gold);
-    transform: rotate(15deg) scale(1.05);
-  }
-  .theme-toggle:active { transform: scale(0.95); }
   .theme-toggle svg { width: 20px; height: 20px; display: block; }
   .theme-toggle .icon-moon { display: none; }
   .theme-toggle .icon-sun { display: block; }
@@ -245,12 +238,23 @@
     font-family: var(--font-mono);
     font-size: 13px; font-weight: 700; letter-spacing: 0;
   }
-  .lang-toggle:hover {
-    color: var(--gold);
-    border-color: rgba(255, 183, 0, 0.35);
-    transform: scale(1.05);
+
+  .theme-toggle:active { transform: scale(0.93); }
+  .lang-toggle:active { transform: scale(0.93); }
+
+  /* 仅桌面端（支持 hover）启用悬停特效，避免触屏残留 */
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover {
+      color: var(--gold);
+      border-color: rgba(255, 183, 0, 0.4);
+      transform: rotate(15deg) scale(1.06);
+    }
+    .lang-toggle:hover {
+      color: var(--gold);
+      border-color: rgba(255, 183, 0, 0.4);
+      transform: scale(1.06);
+    }
   }
-  .lang-toggle:active { transform: scale(0.95); }
 
   /* ================= Hero 区域 ================= */
   .hero {
@@ -271,7 +275,7 @@
     background: linear-gradient(90deg, transparent, var(--ink-tertiary), transparent);
   }
 
-  /* 财神徽章及光圈优化 */
+  /* 财神徽章及光圈 */
   .badge-wrap {
     position: relative; width: 140px; height: 140px;
     display: flex; align-items: center; justify-content: center;
@@ -545,9 +549,9 @@
 
   /* 移动端适配 */
   @media (max-width: 380px) {
-    :root { --nav-h: 64px; }
+    :root { --nav-h: 60px; }
     .app-container { padding-left: 16px; padding-right: 16px; padding-bottom: 60px; }
-    .top-nav-inner { padding-left: 16px; padding-right: 16px; gap: 10px; }
+    .top-nav-inner { padding-left: 16px; padding-right: 16px; gap: 8px; }
     .badge-wrap { width: 120px; height: 120px; }
     .card { padding: 14px; gap: 12px; }
     .card-icon { width: 38px; height: 38px; }
@@ -565,6 +569,7 @@
       transition-duration: 0.01ms !important;
     }
     .fade-up { opacity: 1; transform: none; }
+    .top-nav { transition: none; }
   }
 </style>
 </head>
@@ -575,7 +580,7 @@
 <div class="grid-layer"></div>
 <canvas id="particles"></canvas>
 
-<!-- 顶部固定栏：语言 + 主题切换（滚动时隐藏） -->
+<!-- 顶部悬浮控制：语言 + 主题（滚动向下时隐藏，向上时显示） -->
 <div class="top-nav" id="topNav">
   <div class="top-nav-inner">
     <button class="lang-toggle" id="langBtn" aria-label="Switch to English">EN</button>
@@ -966,60 +971,40 @@
 })();
 </script>
 
-<!-- 顶栏滚动隐藏逻辑 -->
+<!-- 顶部悬浮按钮滚动隐藏逻辑 -->
 <script>
 (function () {
   const topNav = document.getElementById('topNav');
   if (!topNav) return;
 
-  let lastY = window.scrollY || 0;
+  let lastY = Math.max(0, window.scrollY || 0);
   let ticking = false;
-  let hideTimer = null;
   let isHidden = false;
 
-  const THRESHOLD = 6;          // 滚动超过该距离才判定方向，避免抖动
-  const TOP_ALWAYS_VISIBLE = 20; // 页面回到接近顶部时始终显示
-  const SHOW_DELAY = 350;        // 停止滚动后多久重新出现（ms）
+  const THRESHOLD = 10;            // 方向判定阈值，避免抖动
+  const TOP_ALWAYS_VISIBLE = 16;   // 接近顶部时始终显示
 
-  function showNav() {
-    if (!isHidden) return;
-    isHidden = false;
-    topNav.classList.remove('is-hidden');
+  function setHidden(hidden) {
+    if (hidden === isHidden) return;
+    isHidden = hidden;
+    topNav.classList.toggle('is-hidden', hidden);
   }
 
-  function hideNav() {
-    if (isHidden) return;
-    isHidden = true;
-    topNav.classList.add('is-hidden');
-  }
+  function update() {
+    const y = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
 
-  function onScroll() {
-    const y = window.scrollY || document.documentElement.scrollTop || 0;
-
-    // 接近顶部：始终显示
+    // 接近页面顶部：始终显示
     if (y <= TOP_ALWAYS_VISIBLE) {
-      showNav();
+      setHidden(false);
       lastY = y;
-      clearTimeout(hideTimer);
       return;
     }
 
     const delta = y - lastY;
 
     if (Math.abs(delta) > THRESHOLD) {
-      if (delta > 0) {
-        // 向下滚动 → 隐藏
-        hideNav();
-      } else {
-        // 向上滚动 → 显示
-        showNav();
-      }
-    }
-
-    // 滚动过程中重置“停止滚动后显示”的计时器（仅在向下滚动隐藏时有效）
-    if (isHidden) {
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(showNav, SHOW_DELAY);
+      // 向下滚动 → 隐藏；向上滚动 → 显示
+      setHidden(delta > 0);
     }
 
     lastY = y;
@@ -1029,21 +1014,9 @@
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
-      onScroll();
+      update();
       ticking = false;
     });
-  }, { passive: true });
-
-  // 触摸/滚轮停下时也触发一次恢复显示（双保险）
-  window.addEventListener('touchend', function () {
-    if (isHidden) {
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(showNav, SHOW_DELAY);
-    }
-  }, { passive: true });
-
-  window.addEventListener('scrollend', function () {
-    if (isHidden) showNav();
   }, { passive: true });
 })();
 </script>
