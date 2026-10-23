@@ -282,7 +282,7 @@ var I18N = {
     'vest.release': 'Vesting',
     'vest.none': 'None',
     'vest.by.milestone': 'By milestone',
-    'vest.3m': '3 Months',
+    'vest.3m': '3 Mths.',
     'vest.36m.linear': '36-Month Linear',
     'vest.12m.linear': '12-Month Linear',
     'vest.18m.linear': '18-Month Linear',
