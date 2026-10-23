@@ -75,36 +75,54 @@ body{
   content:""; position:absolute; left:0; bottom:-1.5px; width:34%; height:1.5px;
   background:linear-gradient(90deg, var(--cyber), transparent); box-shadow:0 0 8px var(--cyber-glow);
 }
-.mast-row{display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-5);}
-.mast-left{min-width:0; flex:1;}
+.mast-row{display:flex; align-items:flex-start;}
+.mast-left{min-width:0; flex:1; padding-right:100px; /* 为绝对定位的按钮预留空间，防止重叠 */}
+
+/* 调整 eyebrow 布局：纵向排列 + 红点定位 */
 .eyebrow{
-  margin:0 0 var(--sp-3); line-height:1;
-  display:flex; align-items:center; gap:10px;
-  flex-wrap:wrap;
+  margin:0 0 16px;
+  display:flex; flex-direction: column; align-items:flex-start; gap:8px;
+  position: relative; padding-left: 14px; 
 }
 .eyebrow::before{
-  content:""; display:block; width:5px; height:5px; border-radius:50%;
-  background:var(--cyber); box-shadow:0 0 6px var(--cyber), 0 0 12px var(--cyber-glow);
-  animation:cyberDot 2s ease-in-out infinite; flex:none;
+  content:""; display:block; position: absolute; left: 0; top: 6px;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--cyber); box-shadow:0 0 8px var(--cyber), 0 0 16px var(--cyber-glow);
+  animation:cyberDot 2s ease-in-out infinite;
 }
 @keyframes cyberDot{
   0%, 100%{ opacity:.5; transform:scale(1); }
   50%      { opacity:1;   transform:scale(1.3); }
 }
+
+/* 放大中文标题 */
 .eb-cn{
   font-family:var(--sans);
-  font-size:11px; font-weight:600; letter-spacing:.06em;
-  color:var(--ink-3); line-height:1;
+  font-size:18px; font-weight:700; letter-spacing:.02em;
+  color:var(--ink); line-height:1.3;
 }
+/* 放大英文副标 */
 .eb-en{
   font-family:var(--mono);
-  font-size:10px; font-weight:400; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--muted); line-height:1;
+  font-size:12px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--muted); line-height:1.2;
 }
-.doc-title{margin:0; font-size:clamp(22px,5.6vw,27px); font-weight:700; letter-spacing:var(--title-tracking); line-height:1.25; color:var(--ink);}
-.doc-sub{margin:var(--sp-2) 0 0; font-size:13px; color:var(--ink-3); letter-spacing:.02em; line-height:1.5;}
 
-.header-actions { display: flex; gap: 8px; flex: none; margin-top: 2px; }
+/* 放大副标题并加深颜色 */
+.doc-sub{
+  margin:0; font-size:16px; font-weight:500; color:var(--ink-2);
+  letter-spacing:.02em; line-height:1.5;
+}
+
+/* ★ 右侧按钮：绝对定位，固定在上方且永不位移 */
+.header-actions {
+  position: absolute;
+  top: var(--sp-9); /* 与头部 padding 对齐 */
+  right: 0;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
 
 .theme-toggle, .lang-toggle{
   flex:none; display:inline-flex; align-items:center; justify-content:center;
@@ -294,6 +312,12 @@ body{
 
 :root[data-lang="en"] .sec-title span { display: none; }
 :root[data-lang="en"] .eyebrow .eb-cn { display: none; }
+:root[data-lang="en"] .eb-en {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
 
 /* ================= 基础信息 ================= */
 .fact-grid{display:grid; grid-template-columns:repeat(2,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line);}
@@ -1155,9 +1179,24 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
     border-radius: 8px;
   }
 
+  /* 头部小屏适配 */
+  .masthead { padding-top: 28px; }
+  .header-actions { top: 28px; }
+  .mast-left { padding-right: 90px; }
+  .eb-cn { font-size: 16px; }
+  .eb-en { font-size: 11px; }
+  .doc-sub { font-size: 14.5px; }
+
   /* 卡片内部微调 */
-  .alloc-row, .rel { padding: 14px; }
+  .alloc-row { padding: 14px; }
+  .rel { padding: 14px; gap: 8px; }
   .rel-head { gap: 4px 12px; }
+  .rel-facts {
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 14px;
+  }
+  .rel-fact span { font-size: 13px; }
 
   .alloc-note { font-size: 12.5px; line-height: 1.75; margin-top: 10px; }
   .caption { font-size: 12.5px; line-height: 1.9; }
@@ -1336,25 +1375,19 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
     display: none;
   }
 }
-  .rel { padding: 14px; gap: 8px; }
-  .rel-facts {
-    gap: 10px;
-    margin-top: 10px;
-    padding-top: 14px;
-  }
-  .rel-fact span { font-size: 13px; }
-}
 
 /* ================= 响应式：≤400px ================= */
 @media (max-width: 400px) {
   .doc{padding:0 14px;}
   .toc{margin:0 -14px; padding:8px 14px;}
 
-  .doc-title { font-size: 20px; }
-  .doc-sub { font-size: 12.5px; }
-  .eyebrow { gap: 8px; }
-  .eb-cn { font-size: 10.5px; }
-  .eb-en { font-size: 9.5px; }
+  /* 头部极窄屏适配 */
+  .masthead { padding-top: 24px; }
+  .header-actions { top: 24px; }
+  .mast-left { padding-right: 82px; }
+  .eb-cn { font-size: 15px; }
+  .eb-en { font-size: 10px; }
+  .doc-sub { font-size: 13.5px; }
 
   .theme-toggle { width: 32px; height: 32px; }
   .theme-toggle svg { width: 16px; height: 16px; }
@@ -1370,12 +1403,16 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .foot-v{text-align:left;}
 
   /* 极窄屏卡片内排版调整 */
-  .alloc-row, .rel { padding: 12px; }
+  .alloc-row { padding: 12px; }
+  .rel { padding: 12px; gap: 8px; }
   .rel-title { font-size: 14px; }
   .rel-amt { font-size: 14px; }
   .rel-rule { font-size: 12px; }
   .rel-scope { font-size: 12px; }
-  .rel-facts { gap: 6px 10px; }
+  .rel-facts {
+    grid-template-columns: repeat(2, 1fr); /* 超小屏幕变为两列排布 */
+    gap: 12px 10px;
+  }
 
   /* 核心优势卡片极窄屏 */
   .hl-grid{ gap: 12px; }
@@ -1413,12 +1450,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .back-top{right:14px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); width:38px; height:38px;}
   #toast{bottom:calc(64px + env(safe-area-inset-bottom, 0px));}
 }
-  .rel { padding: 12px; gap: 8px; }
-  .rel-facts {
-    grid-template-columns: repeat(2, 1fr); /* 超小屏幕变为两列排布 */
-    gap: 12px 10px;
-  }
-}
 
 /* ================= 减少动效 ================= */
 @media (prefers-reduced-motion: reduce){
@@ -1448,7 +1479,8 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
   .doc::before, .masthead::after, .doc-foot::before{display:none !important;}
   .theme-toggle, .toc, .back-top, .alloc-links, .faq-tools, .scroll-hint::after, #toast,
-  .tbl-swipe-hint, .tbl-summary-icon, .mobile-only, .lang-toggle{display:none !important;}
+  .tbl-swipe-hint, .tbl-summary-icon, .mobile-only, .lang-toggle, .header-actions{display:none !important;}
+  .mast-left { padding-right: 0; }
   .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
   .sec-head{margin-bottom:10px;}
   .sec-title{font-size:13pt;}
