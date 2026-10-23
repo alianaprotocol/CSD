@@ -219,7 +219,7 @@ var I18N = {
     'mast.sub': 'Tokenomics Blueprint · A Deflationary Ecosystem for Sustainable Growth',
     'mast.standard.k': 'Token Standard',
     'mast.inflation.k': 'Mint Authority',
-    'mast.inflation.v': 'Null (No further minting)',
+    'mast.inflation.v': 'Null',
     'mast.status.k': 'Status',
     'mast.status.v': 'Pre-TGE',
 
@@ -232,7 +232,7 @@ var I18N = {
     'toc.risks': 'Risks',
     'toc.faq': 'FAQ',
 
-    'abstract.p1': '$CAISHEN has a fixed supply of <b>686,868,686</b> tokens with no future minting. <span class="hl">41.68%</span> of the supply is allocated to the "FDV Milestone Burn Pool" — as FDV increases, token tranches are permanently burned to the black hole address to be <span class="hl">removed from circulation</span>. Cumulative burns are capped at 286,291,150 tokens, with zero tokens returning to the team. The remaining 58.32% is distributed across Foundation, Community, Ecosystem, Liquidity, Operations, and Strategic Reserve. Most allocations feature a 3- to 36-month cliff and linear vesting. Liquidity allocations are partially released at TGE, with the remainder vesting linearly. All lockups are verifiable on-chain via independent addresses.',
+    'abstract.p1': '$财神DAO has a fixed supply of <b>686,868,686</b> tokens with no future minting. <span class="hl">41.68%</span> of the supply is allocated to the "FDV Milestone Burn Pool" — as FDV increases, token tranches are permanently burned to the black hole address to be <span class="hl">removed from circulation</span>. Cumulative burns are capped at 286,291,150 tokens, with zero tokens returning to the team. The remaining 58.32% is distributed across Foundation, Community, Ecosystem, Liquidity, Operations, and Strategic Reserve. Most allocations feature a 3- to 36-month cliff and linear vesting. Liquidity allocations are partially released at TGE, with the remainder vesting linearly. All lockups are verifiable on-chain via independent addresses.',
 
     'hl.title': 'Core Highlights',
     'hl.1.t': 'Burn Allocation',
@@ -250,9 +250,9 @@ var I18N = {
 
     'ov.title': 'Token Overview',
     'ov.name.k': 'Name',
-    'ov.name.v': 'God Of Fortune',
+    'ov.name.v': '财神到DAO God Of Fortune',
     'ov.symbol.k': 'Symbol',
-    'ov.symbol.v': '$CAISHEN',
+    'ov.symbol.v': '$财神DAO',
     'ov.network.k': 'Network',
     'ov.network.v': 'Solana SPL',
     'ov.supply.k': 'Total Supply',
@@ -361,7 +361,7 @@ var I18N = {
     'exec.1.v': 'FDV = Price × Original Total Supply (686,868,686). The calculation basis is fixed and independent of circulating supply.',
     'exec.2.v': 'Median price aggregation from CoinGecko, CMC, and on-chain oracles. A single data source cannot influence the outcome, preventing manipulation at the source.',
     'exec.3.v': 'Executed via a 5/7 multisig comprising the <b>Caishen Foundation</b> (2 seats), <b>Community</b> (4 seats), and an <b>Independent Third Party</b> (1 seat). No single entity can act unilaterally. Signer addresses are public and verifiable on Solscan. With 4/7 community seats, the 5/7 threshold ensures cross-party consensus; neither the team nor the community can execute decisions unilaterally.',
-    'exec.4.v': '$CAISHEN is the governance token. Holders can propose on:<br>(1) Ecosystem Fund allocation;<br>(2) Burn milestone parameters (thresholds, windows);<br>(3) Multisig signer rotation;<br>(4) Major partnerships & expenditures.<br>The governance framework will be introduced progressively, with detailed procedures announced separately.',
+    'exec.4.v': '$财神DAO is the governance token. Holders can propose on:<br>(1) Ecosystem Fund allocation;<br>(2) Burn milestone parameters (thresholds, windows);<br>(3) Multisig signer rotation;<br>(4) Major partnerships & expenditures.<br>The governance framework will be introduced progressively, with detailed procedures announced separately.',
     'exec.5.v': 'Solana black hole address, permanently locked upon transfer and unrecoverable:<br><code>1nc1nerator11111111111111111111111111111111</code>',
     'exec.6.v': 'The transaction hash, amount, timestamp, and executor of every burn are publicly disclosed and independently verifiable on-chain.',
     'exec.7.v': 'The Burn Pool remains locked, never returning to the team, nor repurposed.',
@@ -378,10 +378,10 @@ var I18N = {
     'risk.7': '<b>Concentration Risk</b> — Early-stage token holdings may be highly concentrated. Large holder trading behavior may significantly affect price and market depth.',
     'risk.8': '<b>Operational Risk</b> — The project relies heavily on the team\'s continuous commitment. Personnel changes, insufficient funding, or external environment shifts may lead to roadmap delays, mechanism adjustments, or temporary suspension.',
     'legal.1': '<b>Regional Restrictions:</b> This token and page content are not intended for residents of the United States, Mainland China, sanctioned regions, or any jurisdiction where digital asset trading is prohibited. Please verify local laws before use; any liability for legal violations is borne solely by the user.',
-    'legal.2': '<b>Token Nature:</b> $CAISHEN is <b>not a security, equity, or debt instrument, and confers no ownership or profit-sharing rights</b>. It does not promise any return, interest, or yield. The token is solely for functional access and governance within the ecosystem.',
+    'legal.2': '<b>Token Nature:</b> $财神DAO is <b>not a security, equity, or debt instrument, and confers no ownership or profit-sharing rights</b>. It does not promise any return, interest, or yield. The token is solely for functional access and governance within the ecosystem.',
     'legal.3': '<b>Forward-Looking Statements:</b> Words such as "will," "plan," "expect," "target," and "anticipate" are forward-looking statements based on current assumptions and may become inaccurate. Such statements do not constitute guarantees; actual results may differ materially.',
-    'legal.4': '<b>Tax Liability:</b> Holding, trading, or disposing of $CAISHEN may trigger tax obligations. Users must consult their own professional tax advisors. All tax liabilities are solely the responsibility of the user.',
-    'legal.disc': '<b>Disclaimer:</b> All content is for informational purposes only and does not constitute investment, legal, tax, or accounting advice. Before making any decision related to $CAISHEN, conduct your own research and consult licensed professionals.',
+    'legal.4': '<b>Tax Liability:</b> Holding, trading, or disposing of $财神DAO may trigger tax obligations. Users must consult their own professional tax advisors. All tax liabilities are solely the responsibility of the user.',
+    'legal.disc': '<b>Disclaimer:</b> All content is for informational purposes only and does not constitute investment, legal, tax, or accounting advice. Before making any decision related to $财神DAO, conduct your own research and consult licensed professionals.',
 
     'faq.title': 'Frequently Asked Questions',
     'faq.expand': 'Expand All',
