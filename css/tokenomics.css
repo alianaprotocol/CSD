@@ -243,6 +243,7 @@ body{
   padding: 24px;
   border-radius: 20px;
   background: var(--card);
+  /* 现代感悬浮阴影：大面积、低透明度 */
   box-shadow: 0 12px 32px -12px rgba(20, 24, 29, 0.08), 0 0 0 1px var(--line); 
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   overflow: hidden;
@@ -251,13 +252,16 @@ body{
   justify-content: center;
 }
 
+/* 移除旧版的左侧粗线和右上角三角 */
 .hl-card::before, .hl-card::after { display: none; }
 
+/* 悬浮交互 */
 .hl-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -12px rgba(255, 45, 85, 0.15), 0 0 0 1px var(--cyber-glow-soft);
 }
 
+/* 右上角图标：改为现代化的圆角药丸背景 */
 .hl-ico{
   position: absolute;
   top: 24px;
@@ -278,17 +282,19 @@ body{
   transform: scale(1.05) rotate(-5deg);
 }
 
+/* 核心数字：极其醒目、极简无衬线粗体 */
 .hl-num{
   font-family: var(--sans);
-  font-size: clamp(32px, 8vw, 42px); 
+  font-size: clamp(32px, 8vw, 42px); /* 大屏稍大，小屏依然震撼 */
   font-weight: 800;
   letter-spacing: -0.04em;
   color: var(--ink);
   line-height: 1.1;
   margin-bottom: 8px;
-  padding-right: 60px; 
+  padding-right: 60px; /* 给右上角图标留出空间，防重叠 */
 }
 
+/* 红色数据的特殊渐变色 */
 .hl-card.hl-red:not(:last-child) .hl-num,
 .hl-num.is-red {
   background: linear-gradient(135deg, var(--cyber-d), var(--cyber));
@@ -296,6 +302,7 @@ body{
   -webkit-text-fill-color: transparent;
 }
 
+/* 标题 */
 .hl-t{
   font-size: 17px;
   font-weight: 700;
@@ -305,6 +312,7 @@ body{
   letter-spacing: -0.01em;
 }
 
+/* 描述文本 */
 .hl-d{
   font-size: 14.5px;
   color: var(--muted);
@@ -313,13 +321,16 @@ body{
 
 /* ================= ★ 终极惊喜：焦点卡片（第 5 张，总发行量） ================= */
 .hl-card.hl-red:last-child {
+  /* 强制覆盖 grid 布局，让最后一张卡片独占一行并极其醒目 */
   grid-column: 1 / -1 !important;
+  /* 深邃的高级感渐变背景 */
   background: linear-gradient(145deg, #1c1e24 0%, #121419 100%);
   border: 1px solid rgba(255, 45, 85, 0.2);
   box-shadow: 0 16px 40px -12px rgba(255, 45, 85, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
+/* 在深色卡片上反转所有文字颜色 */
 .hl-card.hl-red:last-child .hl-num {
   color: #fff;
   text-shadow: 0 0 24px rgba(255, 45, 85, 0.6);
@@ -333,6 +344,7 @@ body{
   color: var(--cyber-l);
 }
 
+/* 深色卡片上的按钮焕然一新（强力修复尺寸） */
 .hl-card.hl-red:last-child .hl-links {
   margin-top: 24px;
 }
@@ -374,6 +386,7 @@ body{
   transform: translateY(-2px) !important;
 }
 
+/* 桌面端（大屏）改为 2x2 网格，让卡片不至于拉得过长 */
 @media (min-width: 600px) {
   .hl-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -498,18 +511,19 @@ body{
 }
 .lg-item:hover .lg-pct{color:var(--cyber);}
 
-/* ================= 分配列表 ================= */
+/* ================= 分配列表（移动端看板级重构） ================= */
 .alloc-list {
   display: flex; 
   flex-direction: column; 
-  gap: 16px; 
+  gap: 16px; /* 拉开卡片间距 */
   margin-top: 16px;
 }
 
 .alloc-row {
-  padding: 20px; 
-  border-radius: 16px; 
+  padding: 20px; /* 增加内边距，提升呼吸感 */
+  border-radius: 16px; /* 现代大圆角 */
   background: var(--card);
+  /* 用悬浮阴影替代生硬的边框 */
   box-shadow: 0 8px 24px -12px rgba(20, 24, 29, 0.08), 0 0 0 1px var(--line-2);
   position: relative;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -519,6 +533,7 @@ body{
   box-shadow: 0 12px 32px -12px rgba(20, 24, 29, 0.12), 0 0 0 1px var(--cyber-glow-soft);
 }
 
+/* ★ 特权卡片：FDV 销毁池专属设计 */
 .alloc-row.lead {
   background: linear-gradient(145deg, var(--red-soft) 0%, var(--card) 100%);
   box-shadow: 0 8px 24px -12px rgba(255, 45, 85, 0.15), 0 0 0 1px var(--cyber-glow-soft);
@@ -526,8 +541,10 @@ body{
 .alloc-row.lead:hover {
   box-shadow: 0 12px 32px -12px rgba(255, 45, 85, 0.25), 0 0 0 1px var(--cyber-glow);
 }
+/* 移除旧版的左侧粗红线 */
 .alloc-row.lead::before { display: none; } 
 
+/* 头部：名称与百分比 */
 .alloc-head {
   display: flex; 
   align-items: center; 
@@ -543,6 +560,7 @@ body{
 }
 .alloc-row.lead .alloc-name { color: var(--cyber-d); }
 
+/* 百分比：加粗、纯色 */
 .alloc-pct {
   flex: none; 
   font-family: var(--mono); 
@@ -553,6 +571,7 @@ body{
 }
 .alloc-row.lead .alloc-pct { color: var(--cyber); }
 
+/* 代币数量：放大字号，强化视觉焦点 */
 .alloc-amt {
   margin-top: 4px; 
   font-size: 20px; 
@@ -570,6 +589,7 @@ body{
 }
 .alloc-row.lead .alloc-amt { color: var(--cyber); }
 
+/* 进度条：极细、弱化，不抢数据风头 */
 .alloc-bar {
   margin-top: 16px; 
   height: 3px; 
@@ -588,9 +608,10 @@ body{
   box-shadow: 0 0 8px var(--cyber-glow);
 }
 
+/* ★ 核心重构：解锁规则数据网格 (替代拥挤的标签) */
 .alloc-vest {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr); /* 强制三等分网格 */
   gap: 8px;
   margin-top: 16px;
   padding-top: 16px;
@@ -599,13 +620,13 @@ body{
 
 .vest-item {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column; /* 纵向排列：标签上，数值下 */
   align-items: flex-start;
   gap: 4px;
   padding: 10px 12px;
   background: var(--bg);
   border-radius: 10px;
-  border: none; 
+  border: none; /* 移除旧边框 */
 }
 
 .vest-k {
@@ -622,9 +643,10 @@ body{
   color: var(--ink-2);
   font-variant-numeric: tabular-nums; 
   line-height: 1.3;
-  word-break: break-word; 
+  word-break: break-word; /* 防止文字过长溢出 */
 }
 
+/* TGE 特殊颜色高亮 */
 .vest-item.is-tge {
   background: var(--cyber-glow-faint);
 }
@@ -632,6 +654,7 @@ body{
 .vest-item.is-tge .vest-v { color: var(--cyber); }
 .vest-item.is-zero .vest-v { color: var(--muted); font-weight: 600; }
 
+/* 备注文字 */
 .alloc-note {
   margin-top: 16px; 
   font-size: 12.5px; 
@@ -639,6 +662,7 @@ body{
   line-height: 1.6;
 }
 
+/* 底部操作按钮：降噪轻量化 */
 .alloc-links {
   display: flex; 
   flex-wrap: wrap; 
@@ -651,7 +675,7 @@ body{
   justify-content: center;
   gap: 6px;
   padding: 8px 14px; 
-  border-radius: 8px; 
+  border-radius: 8px; /* 圆角矩形，更具操作感 */
   background: var(--bg); 
   color: var(--ink-3);
   font-size: 12px; 
@@ -767,7 +791,7 @@ body{
   margin-top:3px; line-height:1.65;
 }
 
-/* ================= ★ 释放规则明细（合计卡片区） ★ ================= */
+/* ================= ★ 释放规则明细（合计卡片区） ================= */
 .rel-list { 
   display: flex; 
   flex-direction: column; 
@@ -854,7 +878,6 @@ body{
 .rel.subtotal .rel-title { color: var(--cyber-d); }
 .rel.subtotal .rel-amt { color: var(--cyber); }
 .rel.subtotal .rel-scope { color: var(--ink-3); }
-
 
 /* ================= 表格 ================= */
 .tbl-details{margin: 0;}
@@ -1012,32 +1035,7 @@ tbody td:first-child{
   letter-spacing:.04em; line-height:1.5;
 }
 
-/* ================= ★ 执行规则（合并入通缩机制） ★ ================= */
-.exec-block {
-  margin-top: var(--sp-9);
-  padding-top: var(--sp-7);
-  border-top: 1px dashed var(--line);
-}
-
-.exec-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-  margin-bottom: var(--sp-5);
-}
-.exec-head-left { display: flex; align-items: center; gap: 10px; }
-.exec-badge {
-  font-family: var(--mono); font-size: 9px; font-weight: 700;
-  color: var(--cyber); background: var(--cyber-glow-faint);
-  padding: 3px 6px; border-radius: 4px; border: 1px solid var(--cyber-glow-soft);
-  letter-spacing: .08em; text-transform: uppercase;
-}
-.exec-title {
-  margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -.01em;
-}
-.exec-sub {
-  font-family: var(--mono); font-size: 11px; color: var(--muted);
-  letter-spacing: .04em;
-}
-
+/* ================= ★ 执行规则（独立章节） ================= */
 .exec-duo {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
 }
@@ -1619,7 +1617,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .legal-v b:first-child { display: none; }
 
   /* 执行卡片微调 */
-  .exec-head { flex-direction: column; align-items: flex-start; gap: 4px; }
   .exec-card { padding: 14px; }
   .multisig-card { padding: 16px; }
 }
