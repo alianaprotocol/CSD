@@ -327,6 +327,8 @@ body{
   background: linear-gradient(145deg, #1c1e24 0%, #121419 100%);
   border: 1px solid rgba(255, 45, 85, 0.2);
   box-shadow: 0 16px 40px -12px rgba(255, 45, 85, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* 强制隐藏可能存在的伪元素干扰 */
+  overflow: hidden;
 }
 
 /* 在深色卡片上反转所有文字颜色 */
@@ -343,29 +345,52 @@ body{
   color: var(--cyber-l);
 }
 
-/* 深色卡片上的按钮焕然一新 */
+/* ★ 修复底部按钮：重塑尺寸和内部元素 */
 .hl-card.hl-red:last-child .hl-links {
-  margin-top: 20px;
+  margin-top: 24px;
 }
+
 .hl-card.hl-red:last-child .hl-link {
-  width: 100%;
-  justify-content: center;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(255, 45, 85, 0.1);
-  border: 1px solid rgba(255, 45, 85, 0.3);
-  color: var(--cyber-l);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  transition: all 0.25s ease;
+  display: flex !important; /* 强制使用 flex 确保居中 */
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 14px 20px !important;
+  border-radius: 12px !important;
+  background: rgba(255, 45, 85, 0.1) !important;
+  border: 1px solid rgba(255, 45, 85, 0.3) !important;
+  color: var(--cyber-l) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
 }
+
+/* ★ 核心修复：死死锁住按钮内图标的尺寸 */
+.hl-card.hl-red:last-child .hl-link svg {
+  width: 18px !important;
+  height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  flex: none !important;
+  margin-right: 6px !important;
+  display: block !important;
+}
+
+.hl-card.hl-red:last-child .hl-link span {
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* 悬浮交互 */
 .hl-card.hl-red:last-child .hl-link:hover {
-  background: var(--cyber);
-  color: #fff;
-  border-color: var(--cyber);
-  box-shadow: 0 8px 24px -6px var(--cyber-glow);
-  transform: translateY(-2px);
+  background: var(--cyber) !important;
+  color: #fff !important;
+  border-color: var(--cyber) !important;
+  box-shadow: 0 8px 24px -6px var(--cyber-glow) !important;
+  transform: translateY(-2px) !important;
 }
 
 /* 桌面端（大屏）改为 2x2 网格，让卡片不至于拉得过长 */
