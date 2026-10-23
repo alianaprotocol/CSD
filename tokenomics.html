@@ -93,7 +93,6 @@
     <a class="toc-link" href="#distribution" data-i18n="toc.distribution">代币分配</a>
     <a class="toc-link" href="#vesting" data-i18n="toc.vesting">解锁节奏</a>
     <a class="toc-link" href="#burn" data-i18n="toc.burn">通缩机制</a>
-    <a class="toc-link" href="#execution" data-i18n="toc.execution">执行规则</a>
     <a class="toc-link" href="#risks" data-i18n="toc.risks">风险声明</a>
     <a class="toc-link" href="#faq" data-i18n="toc.faq">FAQ</a>
   </nav>
@@ -690,10 +689,11 @@
     </div>
   </section>
 
+  <!-- ★ 04 通缩机制（合并原「05 执行规则」） -->
   <section class="wrap sec" id="burn">
     <div class="sec-head">
       <span class="sec-idx">04</span>
-      <h2 class="sec-title" data-i18n="burn.title">通缩机制<span>FDV Milestone Burn · 12 Stages</span></h2>
+      <h2 class="sec-title" data-i18n="burn.title">通缩机制<span>Deflation &amp; Execution · 12 Stages</span></h2>
     </div>
 
     <p class="caption gold" style="margin-top:0;margin-bottom:16px;" data-i18n-html="burn.intro">
@@ -834,6 +834,121 @@
       </div>
     </div>
 
+    <!-- ★ 执行规则（并入通缩机制，作为子区块） -->
+    <div class="exec-block">
+      <div class="exec-head">
+        <div class="exec-head-left">
+          <span class="exec-badge">Execution</span>
+          <h3 class="exec-title" data-i18n="exec.title">执行规则</h3>
+        </div>
+        <span class="exec-sub">Governance &amp; Multisig</span>
+      </div>
+
+      <div class="exec-duo">
+        <div class="exec-card">
+          <span class="exec-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+          <div class="exec-card-t">触发条件</div>
+          <div class="exec-card-d" data-i18n="exec.1.v">FDV = 价格 × 原始总供应量 686,868,686，口径固定，不因流通量变化而改变</div>
+        </div>
+        <div class="exec-card">
+          <span class="exec-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </span>
+          <div class="exec-card-t">数据来源</div>
+          <div class="exec-card-d" data-i18n="exec.2.v">CoinGecko、CMC、链上预言机多源取中位数，单一数据源无法影响触发结果，从源头杜绝操纵</div>
+        </div>
+      </div>
+
+      <div class="multisig-card">
+        <div class="multisig-head">
+          <span class="exec-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <div>
+            <div class="multisig-title">5/7 多签执行</div>
+            <div class="multisig-sub">Squads Multisig</div>
+          </div>
+        </div>
+
+        <div class="multisig-seats">
+          <div class="seat seat-foundation">
+            <span class="seat-dot"></span>
+            <span class="seat-name">财神基金会</span>
+            <span class="seat-count">2 席</span>
+          </div>
+          <div class="seat seat-community">
+            <span class="seat-dot"></span>
+            <span class="seat-name">社区</span>
+            <span class="seat-count">4 席</span>
+          </div>
+          <div class="seat seat-third">
+            <span class="seat-dot"></span>
+            <span class="seat-name">独立第三方</span>
+            <span class="seat-count">1 席</span>
+          </div>
+        </div>
+
+        <div class="multisig-bar-wrap">
+          <div class="multisig-bar">
+            <div class="multisig-bar-fill"></div>
+          </div>
+          <div class="multisig-bar-meta">
+            <span>5 / 7 阈值</span>
+            <span>跨方共识</span>
+          </div>
+        </div>
+
+        <p class="multisig-note" data-i18n="exec.3.v">5/7 多签执行，7 个签名方分别代表财神基金会（2 席）、社区（4 席）与独立第三方（1 席）。任何单一主体无法独立操作，签名地址公开于链上，可随时在 Solscan 核验。社区席位占比 4/7，5/7 的通过门槛要求任何决定必须跨方共识，团队与社区均无法单方面执行。</p>
+      </div>
+
+      <div class="spec">
+        <div class="spec-row">
+          <div class="spec-k">
+            <span class="spec-k-cn">治理机制</span>
+            <span class="spec-k-en">Governance</span>
+          </div>
+          <div class="spec-v" data-i18n-html="exec.4.v">
+            $财神DAO 为治理代币。持币人可对以下事项发起治理提案：<br>
+            （1）生态建设基金的用途与分配；<br>
+            （2）销毁里程碑参数微调（档位阈值、判定窗口）；<br>
+            （3）多签签名方的更换与增补；<br>
+            （4）重大生态合作与资金支出。<br>
+            治理机制将随生态成熟逐步引入，具体流程与权重另行公告。
+          </div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-k">
+            <span class="spec-k-cn">销毁地址</span>
+            <span class="spec-k-en">Burn Address</span>
+          </div>
+          <div class="spec-v" data-i18n-html="exec.5.v">Solana 黑洞地址，转入后永久锁定、无法找回：<br><code>1nc1nerator11111111111111111111111111111111</code></div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-k">
+            <span class="spec-k-cn">公开披露</span>
+            <span class="spec-k-en">Disclosure</span>
+          </div>
+          <div class="spec-v" data-i18n="exec.6.v">每笔销毁的交易哈希、数量、时间与执行人全部对外公开，任何人可逐笔链上核验</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-k">
+            <span class="spec-k-cn">未触发处理</span>
+            <span class="spec-k-en">If Untriggered</span>
+          </div>
+          <div class="spec-v" data-i18n="exec.7.v">销毁池继续锁定，不回流团队，也不会转作他用</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-k">
+            <span class="spec-k-cn">跨档执行</span>
+            <span class="spec-k-en">Multi-Stage</span>
+          </div>
+          <div class="spec-v" data-i18n="exec.8.v">若一次性跨越多档，按顺序逐档执行，不跳过、不合并，每一档均可独立核验</div>
+        </div>
+      </div>
+    </div>
+
     <p class="caption" data-i18n-html="burn.caption">
       <b>FDV（完全稀释估值）</b> = 币价 × 原始总供应量 686,868,686。触发口径固定，不因流通量变化而改变。
       12 档目标逐级抬升，单档销毁量随之递增，全部触发后累计销毁量占总供应量的 41.68%。
@@ -841,86 +956,10 @@
     </p>
   </section>
 
-  <section class="wrap sec" id="execution">
-    <div class="sec-head">
-      <span class="sec-idx">05</span>
-      <h2 class="sec-title" data-i18n="exec.title">执行规则<span>Execution &amp; Governance</span></h2>
-    </div>
-
-    <div class="spec">
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">触发条件</span>
-          <span class="spec-k-en">Trigger</span>
-        </div>
-        <div class="spec-v" data-i18n="exec.1.v">FDV = 价格 × 原始总供应量 686,868,686，口径固定，不因流通量变化而改变</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">数据来源</span>
-          <span class="spec-k-en">Data Source</span>
-        </div>
-        <div class="spec-v" data-i18n="exec.2.v">CoinGecko、CMC、链上预言机多源取中位数，单一数据源无法影响触发结果，从源头杜绝操纵</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">多签执行</span>
-          <span class="spec-k-en">Multisig</span>
-        </div>
-        <div class="spec-v" data-i18n-html="exec.3.v">
-          5/7 多签执行，7 个签名方分别代表<b>财神基金会</b>（2 席）、<b>社区</b>（4 席）与<b>独立第三方</b>（1 席）。
-          任何单一主体无法独立操作，签名地址公开于链上，可随时在 Solscan 核验。
-          社区席位占比 4/7，5/7 的通过门槛要求任何决定必须跨方共识，团队与社区均无法单方面执行。
-        </div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">治理机制</span>
-          <span class="spec-k-en">Governance</span>
-        </div>
-        <div class="spec-v" data-i18n-html="exec.4.v">
-          $财神DAO 为治理代币。持币人可对以下事项发起治理提案：<br>
-          （1）生态建设基金的用途与分配；<br>
-          （2）销毁里程碑参数微调（档位阈值、判定窗口）；<br>
-          （3）多签签名方的更换与增补；<br>
-          （4）重大生态合作与资金支出。<br>
-          治理机制将随生态成熟逐步引入，具体流程与权重另行公告。
-        </div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">销毁地址</span>
-          <span class="spec-k-en">Burn Address</span>
-        </div>
-        <div class="spec-v" data-i18n-html="exec.5.v">Solana 黑洞地址，转入后永久锁定、无法找回：<br><code>1nc1nerator11111111111111111111111111111111</code></div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">公开披露</span>
-          <span class="spec-k-en">Disclosure</span>
-        </div>
-        <div class="spec-v" data-i18n="exec.6.v">每笔销毁的交易哈希、数量、时间与执行人全部对外公开，任何人可逐笔链上核验</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">未触发处理</span>
-          <span class="spec-k-en">If Untriggered</span>
-        </div>
-        <div class="spec-v" data-i18n="exec.7.v">销毁池继续锁定，不回流团队，也不会转作他用</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">跨档执行</span>
-          <span class="spec-k-en">Multi-Stage</span>
-        </div>
-        <div class="spec-v" data-i18n="exec.8.v">若一次性跨越多档，按顺序逐档执行，不跳过、不合并，每一档均可独立核验</div>
-      </div>
-    </div>
-  </section>
-
+  <!-- ★ 原 06 风险与声明，编号改为 05 -->
   <section class="wrap sec" id="risks">
     <div class="sec-head">
-      <span class="sec-idx">06</span>
+      <span class="sec-idx">05</span>
       <h2 class="sec-title" data-i18n="risk.title">风险与声明<span>Risks &amp; Disclaimers</span></h2>
     </div>
 
@@ -989,9 +1028,10 @@
     </p>
   </section>
 
+  <!-- ★ 原 07 FAQ，编号改为 06 -->
   <section class="wrap sec" id="faq">
     <div class="sec-head">
-      <span class="sec-idx">07</span>
+      <span class="sec-idx">06</span>
       <h2 class="sec-title" data-i18n="faq.title">常见问题<span>FAQ</span></h2>
     </div>
 
@@ -1166,7 +1206,7 @@
 
     <div class="disc" data-i18n="foot.disc">
       本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
-      完整风险披露请见「06 风险与声明」。文档版本 v1.7 · 最后更新 2026-10-18。
+      完整风险披露请见「05 风险与声明」。文档版本 v1.7 · 最后更新 2026-10-18。
     </div>
   </footer>
 
