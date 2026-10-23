@@ -68,6 +68,9 @@
     --radius-sm: 12px;
     --radius-md: 16px;
     --radius-lg: 24px;
+
+    /* 顶栏尺寸 */
+    --nav-h: 68px;
   }
 
   /* 深色主题 */
@@ -91,6 +94,10 @@
 
     --icon-bg: rgba(255, 183, 0, 0.08);
     --icon-border: rgba(255, 183, 0, 0.2);
+
+    /* 固定顶栏 */
+    --nav-bg: rgba(6, 3, 5, 0.72);
+    --nav-border: rgba(255, 255, 255, 0.07);
   }
 
   /* 浅色主题 */
@@ -114,6 +121,10 @@
 
     --icon-bg: rgba(255, 183, 0, 0.15);
     --icon-border: rgba(255, 183, 0, 0.3);
+
+    /* 固定顶栏 */
+    --nav-bg: rgba(252, 250, 248, 0.78);
+    --nav-border: rgba(0, 0, 0, 0.07);
   }
 
   /* 英文排版微调 */
@@ -163,16 +174,44 @@
   .app-container {
     position: relative; z-index: 2;
     max-width: 640px; margin: 0 auto;
-    padding: 84px 20px 80px;
+    padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 16px) 20px 80px;
     display: flex; flex-direction: column; gap: 40px;
   }
 
-  /* ================= 顶部导航 & 主题切换 ================= */
+  /* ================= 顶部固定栏：语言 + 主题切换 ================= */
   .top-nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    display: flex; justify-content: flex-end; align-items: center; gap: 12px;
-    padding: 16px 20px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    pointer-events: none;                /* 背景不拦截页面点击/滚动 */
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    transition: background-color var(--transition-smooth),
+                border-color var(--transition-smooth),
+                transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
+  }
+
+  /* 滚动时隐藏 */
+  .top-nav.is-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
     pointer-events: none;
+  }
+
+  .top-nav-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    height: var(--nav-h);
+    padding: 0 20px;
+    padding-top: env(safe-area-inset-top, 0px);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
   }
 
   /* 两个按钮尺寸完全统一为 44x44 正圆 */
@@ -240,7 +279,6 @@
     margin-bottom: 24px;
   }
 
-  /* 调大光晕范围与模糊度，显得更自然 */
   .badge-halo {
     position: absolute; inset: -30px; border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 45, 85, 0.3) 0%, transparent 65%);
@@ -256,7 +294,7 @@
 
   .badge-ring {
     position: absolute; border-radius: 50%; pointer-events: none;
-    z-index: 1; /* 确保环在图片下方/后方 */
+    z-index: 1;
   }
   .badge-ring.r1 {
     inset: -15px; border: 1px dashed var(--gold); opacity: 0.4;
@@ -274,7 +312,7 @@
     mask-image: radial-gradient(circle, transparent 60%, #000 65%);
     -webkit-mask-image: radial-gradient(circle, transparent 60%, #000 65%);
     animation: spin 4s linear infinite;
-    z-index: 0; /* 扫描线在人物下方 */
+    z-index: 0;
     pointer-events: none;
   }
 
@@ -282,7 +320,6 @@
     width: 100%; height: 100%; object-fit: contain;
     position: relative;
     z-index: 2;
-    /* 关键修复：用 lighten 模式滤掉原图可能存在的黑底/暗色方形背景 */
     mix-blend-mode: lighten;
     filter: drop-shadow(0 0 16px rgba(255, 183, 0, 0.5)) drop-shadow(0 0 32px rgba(255, 45, 85, 0.3));
     transition: transform var(--transition-fast), filter var(--transition-fast);
@@ -508,7 +545,9 @@
 
   /* 移动端适配 */
   @media (max-width: 380px) {
-    .app-container { padding: 76px 16px 60px; }
+    :root { --nav-h: 64px; }
+    .app-container { padding-left: 16px; padding-right: 16px; padding-bottom: 60px; }
+    .top-nav-inner { padding-left: 16px; padding-right: 16px; gap: 10px; }
     .badge-wrap { width: 120px; height: 120px; }
     .card { padding: 14px; gap: 12px; }
     .card-icon { width: 38px; height: 38px; }
@@ -536,13 +575,15 @@
 <div class="grid-layer"></div>
 <canvas id="particles"></canvas>
 
-<!-- 顶部：语言 + 主题切换 -->
-<div class="top-nav">
-  <button class="lang-toggle" id="langBtn" aria-label="Switch to English">EN</button>
-  <button class="theme-toggle" id="themeBtn" aria-label="切换主题">
-    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-  </button>
+<!-- 顶部固定栏：语言 + 主题切换（滚动时隐藏） -->
+<div class="top-nav" id="topNav">
+  <div class="top-nav-inner">
+    <button class="lang-toggle" id="langBtn" aria-label="Switch to English">EN</button>
+    <button class="theme-toggle" id="themeBtn" aria-label="切换主题">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
 </div>
 
 <main class="app-container">
@@ -726,7 +767,7 @@
       'page.title': '财神宇宙 · 入口 | $财神DAO',
       'nav.theme': '切换主题',
       'nav.lang.aria': 'Switch to English',
-      'nav.lang.label': 'EN', // 正圆按钮，字少一点更协调
+      'nav.lang.label': 'EN',
 
       'hero.title': '$财神DAO',
       'hero.subtitle': '全球华人第一文化 Meme IP',
@@ -764,7 +805,7 @@
       'page.title': 'Caishen Universe · Portal | $财神DAO',
       'nav.theme': 'Toggle theme',
       'nav.lang.aria': '切换到中文',
-      'nav.lang.label': '中', // 英文模式下显示单个中字
+      'nav.lang.label': '中',
 
       'hero.title': '$财神DAO',
       'hero.subtitle': 'The #1 Cultural Meme IP of the Global Chinese Community',
@@ -922,6 +963,88 @@
   initCanvas();
   if (!isReduced) draw();
 
+})();
+</script>
+
+<!-- 顶栏滚动隐藏逻辑 -->
+<script>
+(function () {
+  const topNav = document.getElementById('topNav');
+  if (!topNav) return;
+
+  let lastY = window.scrollY || 0;
+  let ticking = false;
+  let hideTimer = null;
+  let isHidden = false;
+
+  const THRESHOLD = 6;          // 滚动超过该距离才判定方向，避免抖动
+  const TOP_ALWAYS_VISIBLE = 20; // 页面回到接近顶部时始终显示
+  const SHOW_DELAY = 350;        // 停止滚动后多久重新出现（ms）
+
+  function showNav() {
+    if (!isHidden) return;
+    isHidden = false;
+    topNav.classList.remove('is-hidden');
+  }
+
+  function hideNav() {
+    if (isHidden) return;
+    isHidden = true;
+    topNav.classList.add('is-hidden');
+  }
+
+  function onScroll() {
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+
+    // 接近顶部：始终显示
+    if (y <= TOP_ALWAYS_VISIBLE) {
+      showNav();
+      lastY = y;
+      clearTimeout(hideTimer);
+      return;
+    }
+
+    const delta = y - lastY;
+
+    if (Math.abs(delta) > THRESHOLD) {
+      if (delta > 0) {
+        // 向下滚动 → 隐藏
+        hideNav();
+      } else {
+        // 向上滚动 → 显示
+        showNav();
+      }
+    }
+
+    // 滚动过程中重置“停止滚动后显示”的计时器（仅在向下滚动隐藏时有效）
+    if (isHidden) {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(showNav, SHOW_DELAY);
+    }
+
+    lastY = y;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      onScroll();
+      ticking = false;
+    });
+  }, { passive: true });
+
+  // 触摸/滚轮停下时也触发一次恢复显示（双保险）
+  window.addEventListener('touchend', function () {
+    if (isHidden) {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(showNav, SHOW_DELAY);
+    }
+  }, { passive: true });
+
+  window.addEventListener('scrollend', function () {
+    if (isHidden) showNav();
+  }, { passive: true });
 })();
 </script>
 
