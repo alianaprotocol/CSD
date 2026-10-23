@@ -349,7 +349,7 @@ var I18N = {
 
     'burn.title': 'Burn Mechanism',
     'burn.intro': 'Rising price drives FDV growth, triggering sequential tranche burns. Higher prices yield larger burns, creating a positive feedback loop: <b>Price ↑ → Deflation → Scarcity</b>. Once all 12 tranches are triggered, 286,291,150 tokens (41.68% of total supply) will be permanently burned, never returning to the team. The Burn Pool is accounted for separately and fully isolated from Foundation and Community allocations.',
-    'burn.tbl.title': 'FDV Milestone Burn Table', 'burn.tbl.meta': '12 Tranches · 286,291,150 Tokens',
+    'burn.tbl.title': 'FDV Burn Table', 'burn.tbl.meta': '12 Tranches · 286.29M Tokens',
     'burn.th.1': 'Stage', 'burn.th.2': 'FDV Trigger', 'burn.th.3': 'Tranche Burn', 'burn.th.4': 'Cumulative Burn', 'burn.th.5': 'Remaining Supply',
     'burn.swipe': 'Swipe to view full data',
     'chart.sub': 'Cumulative burn as FDV rises',
