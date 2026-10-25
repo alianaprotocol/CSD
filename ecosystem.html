@@ -1093,7 +1093,7 @@
       <div class="matrix-row">
         <div class="matrix-name" data-i18n="toc.treasure">聚宝盆</div>
         <span class="matrix-status live" data-i18n="status.live">已上线</span>
-        <div class="matrix-desc" data-i18n="matrix.2.desc">质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。</div>
+        <div class="matrix-desc" data-i18n="matrix.2.desc">质押 $财神DAO，支持单宝与双宝组合，7 / 30 / 90 / 120 / 180 天五档周期，收益按日线性释放、本金到期返还。</div>
       </div>
       <div class="matrix-row">
         <div class="matrix-name" data-i18n="matrix.3.name">合作代币</div>
@@ -1332,7 +1332,7 @@
     </div>
 
     <p class="sec-lead" data-i18n-html="sec.treasure.lead">
-      质押 $财神DAO，支持单宝与双宝两种组合、四档周期。收益按日线性释放，本金到期返还。
+      质押 $财神DAO，支持单宝与双宝两种组合、五档周期（7 / 30 / 90 / 120 / 180 天）。收益按日线性释放，本金到期返还。
       两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。
     </p>
 
@@ -1388,10 +1388,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr><td data-i18n="tbl.stake.tr0">7 天</td><td style="color:var(--cyber);font-weight:700;">50%</td><td>0.96%</td><td>1.0096</td></tr>
             <tr><td data-i18n="tbl.stake.tr1">30 天</td><td style="color:var(--cyber);font-weight:700;">40%</td><td>3.29%</td><td>1.0329</td></tr>
             <tr><td data-i18n="tbl.stake.tr2">90 天</td><td style="color:var(--cyber);font-weight:700;">80%</td><td>19.73%</td><td>1.1973</td></tr>
             <tr><td data-i18n="tbl.stake.tr3">120 天</td><td style="color:var(--cyber);font-weight:700;">110%</td><td>36.16%</td><td>1.3616</td></tr>
-            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">170%</td><td>83.84%</td><td>1.8384</td></tr>
+            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">150%</td><td>73.97%</td><td>1.7397</td></tr>
           </tbody>
         </table>
       </div>
@@ -1414,10 +1415,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr><td data-i18n="tbl.stake.tr0">7 天</td><td style="color:var(--cyber);font-weight:700;">65%</td><td>1.25%</td><td>1.0125</td></tr>
             <tr><td data-i18n="tbl.stake.tr1">30 天</td><td style="color:var(--cyber);font-weight:700;">55%</td><td>4.52%</td><td>1.0452</td></tr>
-            <tr><td data-i18n="tbl.stake.tr2">90 天</td><td style="color:var(--cyber);font-weight:700;">105%</td><td>25.89%</td><td>1.2589</td></tr>
-            <tr><td data-i18n="tbl.stake.tr3">120 天</td><td style="color:var(--cyber);font-weight:700;">140%</td><td>46.03%</td><td>1.4603</td></tr>
-            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">200%</td><td>98.63%</td><td>1.9863</td></tr>
+            <tr><td data-i18n="tbl.stake.tr2">90 天</td><td style="color:var(--cyber);font-weight:700;">100%</td><td>24.66%</td><td>1.2466</td></tr>
+            <tr><td data-i18n="tbl.stake.tr3">120 天</td><td style="color:var(--cyber);font-weight:700;">130%</td><td>42.74%</td><td>1.4274</td></tr>
+            <tr><td data-i18n="tbl.stake.tr4">180 天</td><td style="color:var(--cyber);font-weight:700;">180%</td><td>88.77%</td><td>1.8877</td></tr>
           </tbody>
         </table>
       </div>
@@ -1431,6 +1433,7 @@
             <tr>
               <th scope="col" data-i18n="tbl.all.th1">模式</th>
               <th scope="col" data-i18n="tbl.all.th2">质押组合</th>
+              <th scope="col">7 天</th>
               <th scope="col">30 天</th>
               <th scope="col">90 天</th>
               <th scope="col">120 天</th>
@@ -1441,24 +1444,30 @@
             <tr>
               <td data-i18n="seg.single">单宝质押</td>
               <td>100% $财神DAO</td>
+              <td style="color:var(--cyber);font-weight:700;">50%</td>
               <td style="color:var(--cyber);font-weight:700;">40%</td>
               <td style="color:var(--cyber);font-weight:700;">80%</td>
               <td style="color:var(--cyber);font-weight:700;">110%</td>
-              <td style="color:var(--cyber);font-weight:700;">170%</td>
+              <td style="color:var(--cyber);font-weight:700;">150%</td>
             </tr>
             <tr>
               <td data-i18n="seg.double">双宝聚财</td>
               <td data-i18n="cmp.combo.val">60% + 40% 合作币</td>
+              <td style="color:var(--cyber);font-weight:700;">65%</td>
               <td style="color:var(--cyber);font-weight:700;">55%</td>
-              <td style="color:var(--cyber);font-weight:700;">105%</td>
-              <td style="color:var(--cyber);font-weight:700;">140%</td>
-              <td style="color:var(--cyber);font-weight:700;">200%</td>
+              <td style="color:var(--cyber);font-weight:700;">100%</td>
+              <td style="color:var(--cyber);font-weight:700;">130%</td>
+              <td style="color:var(--cyber);font-weight:700;">180%</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="tbl-caption" data-i18n="tbl.all.caption">以上为建议参数，实际 APY 以官方质押页面实时显示为准。</p>
     </div>
+
+    <p class="caption red" data-i18n-html="caption.earlybird">
+      <b>早鸟档提示：</b>7 天体验档为限时促销，APY 高于常规档位，<b>不构成长期收益参考</b>。单地址设有严格质押上限，额满或到期后可能下架。
+    </p>
 
     <div class="sub-head">
       <div class="sub-head-line">
@@ -1493,8 +1502,12 @@
         <span class="def-v" data-i18n-html="treasure.rel.6.v">APY 为简单年化，按日线性释放，<b>非复利</b></span>
       </div>
       <div class="def-row">
+        <span class="def-k" data-i18n="treasure.rel.10.k">早鸟档限制</span>
+        <span class="def-v" data-i18n="treasure.rel.10.v">7 天体验档为限时促销，单地址设有严格质押上限以防刷单；不支持提前解锁；额满或到期后可能下架</span>
+      </div>
+      <div class="def-row">
         <span class="def-k" data-i18n="treasure.rel.7.k">提前解锁</span>
-        <span class="def-v" data-i18n="treasure.rel.7.v">不支持；如后续开放，罚金规则以官方页面为准</span>
+        <span class="def-v" data-i18n="treasure.rel.7.v">常规不支持；如后续开放，将收取 50%–70% 已产生收益作为罚金</span>
       </div>
       <div class="def-row">
         <span class="def-k" data-i18n="treasure.rel.8.k">APY 调整</span>
@@ -1502,14 +1515,18 @@
       </div>
       <div class="def-row">
         <span class="def-k" data-i18n="treasure.rel.9.k">合作币风控</span>
-        <span class="def-v" data-i18n="treasure.rel.9.v">需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合</span>
+        <span class="def-v" data-i18n="treasure.rel.9.v">需通过审计、流动性充足；若发生脱锚（如跌幅超 30%），官方有权暂停该组合新增质押</span>
+      </div>
+      <div class="def-row">
+        <span class="def-k" data-i18n="treasure.rel.11.k">单地址上限</span>
+        <span class="def-v" data-i18n="treasure.rel.11.v">单地址质押量不得超过该池总容量的 3%–5%</span>
       </div>
     </div>
 
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·C</span>
-        <h3 class="sub-title"><span data-i18n="sub.treasure.ex1.title">单宝计算示例</span><span>Single · 币本位 · 180 天 / APY 170%</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.ex1.title">单宝计算示例</span><span>Single · 币本位 · 180 天 / APY 150%</span></h3>
       </div>
     </div>
 
@@ -1528,10 +1545,10 @@
     </div>
 
     <div class="calc">
-      <span class="calc-label" data-i18n="calc.ex3.label">示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%</span>
-      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">170%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">46.5753</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
-      <div class="calc-line"><span data-i18n="calc.stake.3">总收益</span> <span class="op">=</span> <span class="n">46.5753</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">8,383.56</span><span class="u" data-i18n="unit.token">枚</span></div>
-      <div class="calc-line"><span data-i18n="calc.stake.5">到期总返还</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">8,383.56</span> <span class="op">=</span> <span class="r">18,383.56</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <span class="calc-label" data-i18n="calc.ex3.label">示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 150%</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">×</span> <span class="n">150%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">41.0959</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.3">总收益</span> <span class="op">=</span> <span class="n">41.0959</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">7,397.26</span><span class="u" data-i18n="unit.token">枚</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.5">到期总返还</span> <span class="op">=</span> <span class="n">10,000</span> <span class="op">+</span> <span class="n">7,397.26</span> <span class="op">=</span> <span class="r">17,397.26</span><span class="u" data-i18n="unit.token">枚</span></div>
     </div>
 
     <div class="tbl-scroll" style="margin-top:var(--sp-4);">
@@ -1546,10 +1563,11 @@
           </tr>
         </thead>
         <tbody>
+          <tr><td data-i18n="tbl.stake.tr0">7 天</td><td>50%</td><td>13.70</td><td>95.89</td><td>10,095.89</td></tr>
           <tr><td data-i18n="tbl.stake.tr1">30 天</td><td>40%</td><td>10.96</td><td>328.77</td><td>10,328.77</td></tr>
           <tr><td data-i18n="tbl.stake.tr2">90 天</td><td>80%</td><td>21.92</td><td>1,972.60</td><td>11,972.60</td></tr>
           <tr><td data-i18n="tbl.stake.tr3">120 天</td><td>110%</td><td>30.14</td><td>3,616.44</td><td>13,616.44</td></tr>
-          <tr><td data-i18n="tbl.stake.tr4">180 天</td><td>170%</td><td>46.58</td><td>8,383.56</td><td>18,383.56</td></tr>
+          <tr><td data-i18n="tbl.stake.tr4">180 天</td><td>150%</td><td>41.10</td><td>7,397.26</td><td>17,397.26</td></tr>
         </tbody>
       </table>
     </div>
@@ -1558,7 +1576,7 @@
     <div class="sub-head">
       <div class="sub-head-line">
         <span class="sub-idx">03·D</span>
-        <h3 class="sub-title"><span data-i18n="sub.treasure.ex2.title">双宝计算示例</span><span>Double · 金本位计算 · 180 天 / APY 200%</span></h3>
+        <h3 class="sub-title"><span data-i18n="sub.treasure.ex2.title">双宝计算示例</span><span>Double · 金本位计算 · 180 天 / APY 180%</span></h3>
       </div>
     </div>
 
@@ -1575,7 +1593,7 @@
       <div class="note-body" data-i18n-html="note.double.assume">
         <b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br>
         <b>双宝比例：</b>60% $财神DAO + 40% BG<br>
-        <b>周期 / APY：</b>180 天 / 200%
+        <b>周期 / APY：</b>180 天 / 180%
       </div>
     </div>
 
@@ -1589,15 +1607,15 @@
 
     <div class="calc">
       <span class="calc-label" data-i18n="calc.ex5.label">第二步 · 按总 USDT 等值算每日释放</span>
-      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">5.4795</span><span class="u">USDT/天</span></div>
-      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">5.4795</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">365.30</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">1,000</span> <span class="op">×</span> <span class="n">180%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">4.9315</span><span class="u">USDT/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">4.9315</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">328.77</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
     </div>
 
     <div class="calc">
       <span class="calc-label" data-i18n="calc.ex6.label">第三步 · 180 天总释放与到期返还</span>
-      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">365.30</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">65,753.42</span><span class="u">枚 $财神DAO</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">328.77</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">59,178.08</span><span class="u">枚 $财神DAO</span></div>
       <div class="calc-line"><span data-i18n="calc.ex6.2">到期返还本金</span> <span class="op">=</span> <span class="r">40,000 枚 $财神DAO + 1,333,333.33 枚 BG</span></div>
-      <div class="calc-line"><span data-i18n="calc.ex6.3">总返还价值</span> <span class="op">≈</span> <span class="r">1,986.30 USDT 等值</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.3">总返还价值</span> <span class="op">≈</span> <span class="r">1,887.67 USDT 等值</span></div>
     </div>
 
     <div class="note warn">
@@ -1628,10 +1646,10 @@
     </div>
 
     <div class="calc">
-      <span class="calc-label" data-i18n="calc.ex9.label">第三步 · 180 天 / APY 200% 收益</span>
-      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">200%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.3699</span><span class="u">USDT/天</span></div>
-      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">1.3699</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">91.32</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
-      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">91.32</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">16,437.60</span><span class="u">枚 $财神DAO</span></div>
+      <span class="calc-label" data-i18n="calc.ex9.label">第三步 · 180 天 / APY 180% 收益</span>
+      <div class="calc-line"><span data-i18n="calc.stake.1">每日释放</span> <span class="op">=</span> <span class="n">250</span> <span class="op">×</span> <span class="n">180%</span> <span class="op">÷</span> <span class="n">365</span> <span class="op">=</span> <span class="r">1.2329</span><span class="u">USDT/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex5.1">折 $财神DAO</span> <span class="op">=</span> <span class="n">1.2329</span> <span class="op">÷</span> <span class="n">0.015</span> <span class="op">=</span> <span class="r">82.19</span><span class="u" data-i18n="unit.token.day">枚/天</span></div>
+      <div class="calc-line"><span data-i18n="calc.ex6.1">180 天总释放</span> <span class="op">=</span> <span class="n">82.19</span> <span class="op">×</span> <span class="n">180</span> <span class="op">=</span> <span class="r">14,794.52</span><span class="u">枚 $财神DAO</span></div>
       <div class="calc-line"><span data-i18n="calc.ex6.2">到期总返还</span> <span class="op">=</span> <span class="r">10,000 枚 $财神DAO + 333,333.33 枚 BG</span></div>
     </div>
 
@@ -2588,7 +2606,7 @@
       'status.planned': '规划中',
 
       'matrix.1.desc': '财神直播间限定。燃香打入黑洞、永不回流，赐福按币本位每日释放，连续 365 天，累计返还 251.12%。',
-      'matrix.2.desc': '质押 $财神DAO，支持单宝与双宝组合，30 / 90 / 120 / 180 天四档周期，收益按日线性释放、本金到期返还。',
+      'matrix.2.desc': '质押 $财神DAO，支持单宝与双宝组合，7 / 30 / 90 / 120 / 180 天五档周期，收益按日线性释放、本金到期返还。',
       'matrix.3.name': '合作代币',
       'matrix.3.desc': 'Antfun · BG · LUCKY99 · FIST。通过聚宝盆双宝组合接入，金本位计算、币本位发放，不改变单宝与燃香的币本位机制。',
       'matrix.4.desc': '108 枚创世身份凭证，唯一编号；另设联名系列，与特定社区 / 基金会联名发行，持有者享财神生态与合作方双重权益。',
@@ -2668,7 +2686,7 @@
       'note.incense.warn': '燃香不可撤回，燃烧即永久放弃该部分代币；活动限额限量、额满即止；开放时间不设固定场次，以直播间公告为准；单地址限额，防刷机制已启用；建议 24 个月内领取有效，逾期视为放弃。',
 
       'sec.treasure.sd': '资产留存',
-      'sec.treasure.lead': '质押 $财神DAO，支持单宝与双宝两种组合、四档周期。收益按日线性释放，本金到期返还。两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。',
+      'sec.treasure.lead': '质押 $财神DAO，支持单宝与双宝两种组合、五档周期（7 / 30 / 90 / 120 / 180 天）。收益按日线性释放，本金到期返还。两种模式的核心差异在于<b>计算本位</b>：单宝为币本位，双宝为金本位。',
       'cmp.single.title': '单宝质押',
       'cmp.double.title': '双宝聚财',
       'cmp.combo': '质押组合',
@@ -2690,6 +2708,7 @@
       'tbl.stake.th2': 'APY',
       'tbl.stake.th3': '到期总收益率',
       'tbl.stake.th4': '总返还倍数',
+      'tbl.stake.tr0': '7 天',
       'tbl.stake.tr1': '30 天',
       'tbl.stake.tr2': '90 天',
       'tbl.stake.tr3': '120 天',
@@ -2699,6 +2718,7 @@
       'tbl.all.th1': '模式',
       'tbl.all.th2': '质押组合',
       'tbl.all.caption': '以上为建议参数，实际 APY 以官方质押页面实时显示为准。',
+      'caption.earlybird': '<b>早鸟档提示：</b>7 天体验档为限时促销，APY 高于常规档位，<b>不构成长期收益参考</b>。单地址设有严格质押上限，额满或到期后可能下架。',
       'sub.treasure.rel.title': '收益释放规则',
       'treasure.rel.1.k': '释放方式',
       'treasure.rel.1.v': '<b>按日线性释放</b>，T+1 起每日释放',
@@ -2713,11 +2733,15 @@
       'treasure.rel.6.k': '年化口径',
       'treasure.rel.6.v': 'APY 为简单年化，按日线性释放，<b>非复利</b>',
       'treasure.rel.7.k': '提前解锁',
-      'treasure.rel.7.v': '不支持；如后续开放，罚金规则以官方页面为准',
+      'treasure.rel.7.v': '常规不支持；如后续开放，将收取 50%–70% 已产生收益作为罚金',
       'treasure.rel.8.k': 'APY 调整',
       'treasure.rel.8.v': '可动态调整，每周公示；已质押部分建议锁定入场 APY',
       'treasure.rel.9.k': '合作币风控',
-      'treasure.rel.9.v': '需通过审计、流动性充足；若发生脱锚，官方有权暂停该组合',
+      'treasure.rel.9.v': '需通过审计、流动性充足；若发生脱锚（如跌幅超 30%），官方有权暂停该组合新增质押',
+      'treasure.rel.10.k': '早鸟档限制',
+      'treasure.rel.10.v': '7 天体验档为限时促销，单地址设有严格质押上限以防刷单；不支持提前解锁；额满或到期后可能下架',
+      'treasure.rel.11.k': '单地址上限',
+      'treasure.rel.11.v': '单地址质押量不得超过该池总容量的 3%–5%',
       'sub.treasure.ex1.title': '单宝计算示例',
       'note.denom.tag': '本位',
       'note.single.denom': '单宝 100% $财神DAO，<b>币本位计算、币本位发放</b>。收益数量只与质押的 $财神DAO 数量有关，不涉及 USDT 折算。',
@@ -2728,7 +2752,7 @@
       'calc.stake.4': '质押天数',
       'calc.stake.5': '到期总返还',
       'calc.stake.6': '本金',
-      'calc.ex3.label': '示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 170%',
+      'calc.ex3.label': '示例 · 质押 10,000 枚 $财神DAO · 180 天 · APY 150%',
       'tbl.stake.ex1': '每日释放',
       'tbl.stake.ex2': '总收益',
       'tbl.stake.ex3': '到期总返还',
@@ -2736,7 +2760,7 @@
       'sub.treasure.ex2.title': '双宝计算示例',
       'note.double.denom': '双宝 60% $财神DAO + 40% 合作币，<b>金本位计算、币本位发放、本金原路返还</b>。收益按总投入 USDT 等值计算，以 $财神DAO 发放。',
       'note.assume.tag': '假设',
-      'note.double.assume': '<b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br><b>双宝比例：</b>60% $财神DAO + 40% BG<br><b>周期 / APY：</b>180 天 / 200%',
+      'note.double.assume': '<b>价格：</b>$财神DAO = 0.015 USDT，BG = 0.0003 USDT<br><b>双宝比例：</b>60% $财神DAO + 40% BG<br><b>周期 / APY：</b>180 天 / 180%',
       'calc.ex4.label': '第一步 · 按价值配比（总投入 1,000 USDT）',
       'calc.ex4.1': '$财神DAO部分',
       'calc.ex4.2': '$财神DAO数量',
@@ -2756,7 +2780,7 @@
       'calc.ex8.label': '第二步 · 算 BG 部分与数量',
       'calc.ex8.1': 'BG 部分价值',
       'calc.ex8.2': 'BG 数量',
-      'calc.ex9.label': '第三步 · 180 天 / APY 200% 收益',
+      'calc.ex9.label': '第三步 · 180 天 / APY 180% 收益',
       'caption.treasure.summary': '<b>总结：</b>单宝币本位计算、币本位发放；双宝金本位计算、币本位发放、本金原路返还。双宝最终发的仍是 $财神DAO，而不是 USDT，因此并非纯金本位，而是「金本位计价、币本位结算」。',
 
       'sec.nft.sd': '身份中枢 · 联名双重权益',
@@ -3095,7 +3119,7 @@
       'status.planned': 'Planned',
 
       'matrix.1.desc': 'Exclusive to the Caishen Live Room. Incense is burned to the black hole permanently. Blessings are released daily in coin-denominated terms for 365 days, totaling a 251.12% return.',
-      'matrix.2.desc': 'Stake $财神DAO with Single or Dual-Stake options across 30 / 90 / 120 / 180-day cycles. Yield is linearly released daily, with principal returned at maturity.',
+      'matrix.2.desc': 'Stake $财神DAO with Single or Dual-Stake options across 7 / 30 / 90 / 120 / 180-day cycles. Yield is linearly released daily, with principal returned at maturity.',
       'matrix.3.name': 'Partner Tokens',
       'matrix.3.desc': 'Antfun · BG · LUCKY99 · FIST. Integrated via Dual-Stake. USD-valued calculation with $财神DAO payout, preserving the coin-denominated nature of Single-Stake.',
       'matrix.4.desc': '108 uniquely numbered Genesis identity credentials. Co-branded series will also be launched with specific communities/foundations, offering dual benefits to holders.',
@@ -3175,7 +3199,7 @@
       'note.incense.warn': 'Burning is irrevocable, meaning you permanently renounce those tokens. The event is quota-limited, first come, first served. Availability is not on a fixed schedule; refer to live announcements. Anti-abuse mechanisms are active. Claim within 24 months; unclaimed tokens will be forfeited.',
 
       'sec.treasure.sd': 'Asset Retention',
-      'sec.treasure.lead': 'Stake $财神DAO with Single-Stake or Dual-Stake options across four durations. Yield is linearly released daily, with principal returned at maturity. The core difference lies in the <b>denomination basis</b>: Single-Stake is coin-denominated, while Dual-Stake is USD-denominated.',
+      'sec.treasure.lead': 'Stake $财神DAO with Single-Stake or Dual-Stake options across five durations (7 / 30 / 90 / 120 / 180 days). Yield is linearly released daily, with principal returned at maturity. The core difference lies in the <b>denomination basis</b>: Single-Stake is coin-denominated, while Dual-Stake is USD-denominated.',
       'cmp.single.title': 'Single-Stake',
       'cmp.double.title': 'Dual-Stake',
       'cmp.combo': 'Staking Combo',
@@ -3197,6 +3221,7 @@
       'tbl.stake.th2': 'APY',
       'tbl.stake.th3': 'Total Yield Rate',
       'tbl.stake.th4': 'Total Return Multiplier',
+      'tbl.stake.tr0': '7 Days',
       'tbl.stake.tr1': '30 Days',
       'tbl.stake.tr2': '90 Days',
       'tbl.stake.tr3': '120 Days',
@@ -3206,6 +3231,7 @@
       'tbl.all.th1': 'Mode',
       'tbl.all.th2': 'Staking Combo',
       'tbl.all.caption': 'Parameters are recommended; actual APY is subject to the official staking page in real-time.',
+      'caption.earlybird': '<b>Early Bird Notice:</b> The 7-day tier is a limited-time promotion with a higher APY than regular tiers and <b>does not represent long-term yield</b>. Strict per-address caps apply; the tier may be delisted upon quota exhaustion or expiry.',
       'sub.treasure.rel.title': 'Daily Linear Release',
       'treasure.rel.1.k': 'Release Method',
       'treasure.rel.1.v': '<b>Daily linear release</b>, starting from T+1.',
@@ -3220,11 +3246,15 @@
       'treasure.rel.6.k': 'APY Basis',
       'treasure.rel.6.v': 'APY is simple annualized, released daily linearly. <b>Non-compounding</b>.',
       'treasure.rel.7.k': 'Early Unlock',
-      'treasure.rel.7.v': 'Not supported. If opened later, penalty rules will be subject to the official page.',
+      'treasure.rel.7.v': 'Normally not supported. If opened later, 50%–70% of accrued yield will be charged as a penalty.',
       'treasure.rel.8.k': 'APY Adjustment',
       'treasure.rel.8.v': 'Dynamic adjustment possible, announced weekly. Staked positions are recommended to lock in the entry APY.',
       'treasure.rel.9.k': 'Partner Risk Controls',
-      'treasure.rel.9.v': 'Requires audit and sufficient liquidity. Official reserves the right to pause the combo if de-pegging occurs.',
+      'treasure.rel.9.v': 'Requires audit and sufficient liquidity. Official reserves the right to pause new stakes in the combo if de-pegging occurs (e.g., drop >40% will capture on 3 days TWAP.',
+      'treasure.rel.10.k': 'Early Bird Tier',
+      'treasure.rel.10.v': 'The 7-day tier is a limited-time promotion with strict per-address stake caps to prevent abuse. No early unlock. May be delisted upon quota exhaustion or expiry.',
+      'treasure.rel.11.k': 'Per-Address Cap',
+      'treasure.rel.11.v': 'Single-address stake must not exceed 3%–5% of the pool\'s total capacity.',
       'sub.treasure.ex1.title': 'Single-Stake Example',
       'note.denom.tag': 'Denomination',
       'note.single.denom': 'Single-Stake is 100% $财神DAO, <b>coin-denominated calculation and payout</b>. Yield quantity depends solely on the $财神DAO staked, with no USDT conversion.',
@@ -3235,7 +3265,7 @@
       'calc.stake.4': 'Staking Days',
       'calc.stake.5': 'Total Return at Maturity',
       'calc.stake.6': 'Principal',
-      'calc.ex3.label': 'Example · Stake 10,000 $财神DAO · 180 Days · APY 170%',
+      'calc.ex3.label': 'Example · Stake 10,000 $财神DAO · 180 Days · APY 150%',
       'tbl.stake.ex1': 'Daily Release',
       'tbl.stake.ex2': 'Total Yield',
       'tbl.stake.ex3': 'Total Return',
@@ -3243,7 +3273,7 @@
       'sub.treasure.ex2.title': 'Dual-Stake Example',
       'note.double.denom': 'Dual-Stake is 60% $财神DAO + 40% Partner Token. <b>USD-denominated calculation, coin-denominated payout, principal returned as original</b>. Yield is calculated based on total USDT-equivalent value and paid in $财神DAO.',
       'note.assume.tag': 'Assumptions',
-      'note.double.assume': '<b>Prices:</b> $财神DAO = 0.015 USDT, BG = 0.0003 USDT<br><b>Dual-Stake Ratio:</b> 60% $财神DAO + 40% BG<br><b>Duration / APY:</b> 180 Days / 200%',
+      'note.double.assume': '<b>Prices:</b> $财神DAO = 0.015 USDT, BG = 0.0003 USDT<br><b>Dual-Stake Ratio:</b> 60% $财神DAO + 40% BG<br><b>Duration / APY:</b> 180 Days / 180%',
       'calc.ex4.label': 'Step 1 · Allocation by Value (Total 1,000 USDT)',
       'calc.ex4.1': '$财神DAO Portion',
       'calc.ex4.2': '$财神DAO Quantity',
@@ -3263,7 +3293,7 @@
       'calc.ex8.label': 'Step 2 · Calculate BG Portion & Quantity',
       'calc.ex8.1': 'BG Portion Value',
       'calc.ex8.2': 'BG Quantity',
-      'calc.ex9.label': 'Step 3 · 180 Days / APY 200% Yield',
+      'calc.ex9.label': 'Step 3 · 180 Days / APY 180% Yield',
       'caption.treasure.summary': '<b>Summary:</b> Single-Stake is calculated and paid in coins; Dual-Stake is calculated in USD, paid in coins, and returns principal in kind. Dual-Stake ultimately pays in $财神DAO, not USDT; hence it is "USD-denominated valuation, coin-denominated settlement".',
 
       'sec.nft.sd': 'Identity Hub · Co-branded Dual Benefits',
