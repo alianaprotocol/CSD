@@ -1,35 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff" id="themeColorMeta">
 <title>$财神DAO · 交易狂欢季 | 68,888 USDC 奖池等你瓜分</title>
-<meta name="description" content="$财神DAO DEX 交易激励狂欢季：68,888 USDC 等值总奖池，28 天净额积分制双轨联赛。净买入 1.2 倍权重、首日早鸟 2.0 倍乘数、20 USDC 押金全额退还。新手任务 + 连续参与 + 早鸟保底，中小用户也能拿到奖励。">
+<meta name="description" id="metaDesc" content="$财神DAO DEX 交易激励狂欢季：68,888 USDC 等值总奖池，28 天净额积分制双轨联赛。净买入 1.2 倍权重、首日早鸟 2.0 倍乘数、20 USDC 押金全额退还。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<!-- ① 语言早期探测 -->
+<script>
+  (function () {
+    var lang;
+    try { lang = localStorage.getItem('gof-lang'); } catch (e) {}
+    if (lang !== 'zh' && lang !== 'en') {
+      var nav = (navigator.language || 'zh-CN').toLowerCase();
+      lang = nav.indexOf('zh') === 0 ? 'zh' : 'en';
+    }
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+  })();
+</script>
+
 <style>
+  /* =========================================================
+     字体系统
+     · 拉丁优先 Inter / system-ui，中文回退 PingFang SC 等
+     · 中英文分别设置字距、行高、数字对齐
+     ========================================================= */
   :root{
     color-scheme: light dark;
     --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#8a939d;
     --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
     --red-soft:#fbf4f4;
     --gold:#a8821c;
-    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
     --cyber:#ff2d55; --cyber-d:#cc0e30;
     --cyber-glow:rgba(255,45,85,.45); --cyber-glow-soft:rgba(255,45,85,.18); --cyber-glow-faint:rgba(255,45,85,.06);
     --toc-bg:rgba(255,255,255,.92); --abstract-from:#fcfcfd; --abstract-to:#ffffff;
     --thead-bg:#f4f6f8; --zebra-bg:#fbfcfd; --sum-line:#efd2d4; --scroll-thumb:#d2d8dd;
     --hero-a:#fff5f6; --hero-b:#ffffff;
+
+    /* 字体栈：拉丁优先，中文兜底 */
+    --font-latin:"Inter","Inter Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans SC",sans-serif;
+    --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,"Cascadia Mono",Consolas,"Liberation Mono","Courier New",monospace;
+    --sans:var(--font-latin),var(--font-cjk);
+
     --doc-pad:26px;
     --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-7:28px; --sp-9:36px; --sp-10:44px; --r:3px;
+
+    /* 排版基准 —— 中文 */
+    --lh-base:1.75;
+    --fs-base:14.5px;
   }
+
+  /* 英文排版微调 */
+  :root[data-lang="en"]{
+    --lh-base:1.7;
+    --fs-base:15px;
+  }
+  :root[data-lang="en"] .hero-title{letter-spacing:-0.03em;}
+  :root[data-lang="en"] .sec-title{letter-spacing:-0.012em;}
+  :root[data-lang="en"] .prose p{line-height:1.8; font-size:14.5px;}
+  :root[data-lang="en"] .abstract p{line-height:1.85;}
+  :root[data-lang="en"] .step-d{line-height:1.7;}
+  :root[data-lang="en"] .source-text{line-height:1.65; letter-spacing:.002em;}
+  :root[data-lang="en"] .hl-box-body{line-height:1.8;}
+  :root[data-lang="en"] .faq-a{line-height:1.8;}
+  :root[data-lang="en"] .notice-body{line-height:1.85;}
+  :root[data-lang="en"] .caption{line-height:1.8;}
+
   *,*::before,*::after{box-sizing:border-box;}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.75;
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:64px;font-optical-sizing:auto;text-autospace:ideograph-alpha ideograph-numeric;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-size:var(--fs-base);line-height:var(--lh-base);
+    font-family:var(--sans);
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"kern" 1,"liga" 1,"calt" 1;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;
+    -webkit-tap-highlight-color:transparent;overflow-wrap:break-word;
     transition:background-color .25s ease, color .25s ease;}
+  :root[data-lang="en"] body{font-feature-settings:"kern" 1,"liga" 1,"calt" 1,"ss01" 1;}
   :focus-visible{outline:2px solid var(--cyber);outline-offset:3px;border-radius:4px;box-shadow:0 0 0 4px var(--cyber-glow-soft);}
   img,svg{max-width:100%;}
 
@@ -64,7 +115,7 @@
     filter:blur(28px);pointer-events:none;
   }
   .hero > *{position:relative;z-index:1;}
-  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  .eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
     margin:0 0 var(--sp-3);line-height:1;display:flex;align-items:center;justify-content:center;gap:8px;}
   .eyebrow::before{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--cyber);
     box-shadow:0 0 6px var(--cyber),0 0 12px var(--cyber-glow);flex:none;animation:cyberDot 2s ease-in-out infinite;}
@@ -72,19 +123,19 @@
     0%, 100%{ opacity:.5; transform:scale(1); }
     50%      { opacity:1;   transform:scale(1.3); }
   }
-  .hero-title{margin:0;font-size:clamp(25px,7vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--ink);}
+  .hero-title{margin:0;font-size:clamp(25px,7vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--ink);text-wrap:balance;}
   .hero-title em{font-style:normal;color:var(--cyber);}
   .hero-sub{margin:10px 0 0;font-size:13.5px;color:var(--ink-3);letter-spacing:.03em;line-height:1.6;}
   .hero-pool{margin-top:26px;line-height:1;}
   .hero-amount{
-    font-family:var(--mono);font-size:clamp(46px,15.5vw,74px);font-weight:800;line-height:.92;letter-spacing:-.045em;
+    font-family:var(--font-mono);font-size:clamp(46px,15.5vw,74px);font-weight:800;line-height:.92;letter-spacing:-.045em;
     display:block;
     background:linear-gradient(135deg,var(--cyber) 0%, #ff6b81 46%, var(--gold) 100%);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent;
     filter:drop-shadow(0 4px 18px var(--cyber-glow-soft));
   }
-  .hero-unit{display:block;margin-top:12px;font-family:var(--mono);font-size:11.5px;font-weight:700;
+  .hero-unit{display:block;margin-top:12px;font-family:var(--font-mono);font-size:11.5px;font-weight:700;
     letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);}
 
   .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:22px;}
@@ -98,7 +149,7 @@
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
     padding:0 26px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;
     letter-spacing:.02em;transition:transform .18s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease, color .2s ease;
-    -webkit-tap-highlight-color:transparent;white-space:nowrap;}
+    -webkit-tap-highlight-color:transparent;white-space:nowrap;touch-action:manipulation;}
   .btn i{font-size:12px;}
   .btn-primary{background:linear-gradient(135deg,var(--cyber),var(--cyber-d));color:#fff;
     box-shadow:0 10px 26px -10px var(--cyber-glow),0 0 0 1px var(--cyber-glow-soft);}
@@ -111,22 +162,27 @@
     font-size:11.5px;color:var(--muted);letter-spacing:.02em;line-height:1.8;}
   .hero-foot b{color:var(--ink-2);font-weight:600;}
 
-  /* ================= 主题切换 ================= */
-  .theme-toggle{
+  /* ================= 头部操作区 ================= */
+  .header-actions{
     position:absolute;top:16px;right:var(--doc-pad);z-index:3;
+    display:flex;gap:8px;
+  }
+  .theme-toggle,.lang-toggle{
     display:inline-flex;align-items:center;justify-content:center;
-    width:36px; height:36px; padding:0;
+    height:36px;padding:0;flex:none;
     border:1px solid var(--line); border-radius:8px;
     background:var(--card); color:var(--ink-3); cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
     transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
   }
-  .theme-toggle:hover{
+  .theme-toggle{width:36px;}
+  .lang-toggle{padding:0 12px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.03em;}
+  .theme-toggle:hover,.lang-toggle:hover{
     border-color:var(--cyber-glow-soft); color:var(--cyber);
     background:var(--cyber-glow-faint);
     box-shadow:0 0 0 1px var(--cyber-glow-faint), 0 0 12px -2px var(--cyber-glow-soft);
   }
-  .theme-toggle:active{background:var(--cyber-glow-soft);}
+  .theme-toggle:active,.lang-toggle:active{background:var(--cyber-glow-soft);}
   .theme-toggle svg{width:18px; height:18px; display:block;}
   .theme-toggle .ico-sun{display:none;}
   .theme-toggle .ico-moon{display:block;}
@@ -141,28 +197,32 @@
     transition:background-color .25s ease, border-color .25s ease;}
   .toc::-webkit-scrollbar{display:none;}
   .toc-link{flex:none;display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-3);text-decoration:none;
-    background:transparent;border:1px solid transparent;transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;letter-spacing:.02em;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+    background:transparent;border:1px solid transparent;transition:background .18s ease,color .18s ease,border-color .18s ease, box-shadow .3s ease;letter-spacing:.02em;white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
   .toc-link:hover{background:var(--bg);color:var(--ink);border-color:var(--cyber-glow-soft);}
   .toc-link.active{background:var(--cyber-d);color:#fff;border-color:var(--cyber);box-shadow:0 4px 14px -4px var(--cyber-glow),0 0 0 1px var(--cyber-glow-soft);}
+  :root[data-lang="en"] .toc-link{letter-spacing:.01em;}
 
   /* ================= 摘要 ================= */
   .abstract{padding:var(--sp-7) 0;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--abstract-from) 0%,var(--abstract-to) 100%);}
-  .abstract p{margin:0;font-size:14px;line-height:1.95;color:var(--ink-2);}
+  .abstract p{margin:0;font-size:14px;line-height:1.95;color:var(--ink-2);letter-spacing:.005em;}
   .abstract p + p{margin-top:14px;}
   .abstract b{color:var(--ink);font-weight:700;}
   .abstract .hl{color:var(--cyber);font-weight:700;border-bottom:2px solid var(--cyber-glow-soft);padding-bottom:1px;}
 
   /* ================= 章节 ================= */
-  .sec{padding:var(--sp-9) 0 var(--sp-7);border-bottom:1px solid var(--line);scroll-margin-top:56px;}
+  .sec{padding:var(--sp-9) 0 var(--sp-7);border-bottom:1px solid var(--line);scroll-margin-top:64px;}
   .sec:last-of-type{border-bottom:0;padding-bottom:var(--sp-10);}
   .sec-head{display:flex;align-items:baseline;gap:var(--sp-3);margin:0 0 var(--sp-5);}
-  .sec-idx{flex:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--cyber);padding:3px 8px;line-height:1;
+  .sec-idx{flex:none;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--cyber);padding:3px 8px;line-height:1;
     border:1px solid var(--cyber-glow-soft);border-radius:4px;background:var(--cyber-glow-faint);text-shadow:0 0 8px var(--cyber-glow-soft);
-    transition:border-color .25s ease, background .25s ease;}
+    transition:border-color .25s ease, background .25s ease;font-variant-numeric:tabular-nums;}
   .sec-head:hover .sec-idx{border-color:var(--cyber-glow);background:var(--cyber-glow-soft);}
   .sec-title{margin:0;font-size:16.5px;font-weight:700;letter-spacing:-.008em;line-height:1.35;color:var(--ink);transition:color .25s ease;}
   .sec-head:hover .sec-title{color:var(--cyber-d);}
-  .sec-title span{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:5px;line-height:1;}
+  .sec-title .st-cn{display:inline;}
+  .sec-title .st-en{display:block;font-family:var(--font-mono);font-size:10.5px;font-weight:400;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:5px;line-height:1;}
+  :root[data-lang="en"] .sec-title .st-cn{display:none;}
+
   .prose p{margin:0 0 12px;font-size:14px;line-height:1.9;color:var(--ink-2);}
   .prose p:last-child{margin-bottom:0;}
   .prose b{color:var(--ink);font-weight:700;}
@@ -174,7 +234,7 @@
   .raise-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:20px 0;}
   .raise-cell{background:var(--card);padding:18px 12px;text-align:center;transition:background-color .2s ease;}
   .raise-cell:hover{background:var(--cyber-glow-faint);}
-  .raise-cell .amount{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--cyber);display:block;line-height:1.2;letter-spacing:-.02em;}
+  .raise-cell .amount{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--cyber);display:block;line-height:1.2;letter-spacing:-.02em;}
   .raise-cell .label{font-size:11px;color:var(--muted);margin-top:6px;display:block;letter-spacing:.04em;line-height:1.45;}
 
   /* ================= 步骤 ================= */
@@ -182,7 +242,7 @@
     border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:4px;}
   .step{background:var(--card);padding:18px 16px;transition:background-color .2s ease;position:relative;}
   .step:hover{background:var(--cyber-glow-faint);}
-  .step-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cyber);letter-spacing:.12em;line-height:1;
+  .step-n{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--cyber);letter-spacing:.12em;line-height:1;
     display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
     border:1px solid var(--cyber-glow-soft);background:var(--cyber-glow-faint);margin-bottom:10px;}
   .step-t{font-size:14px;font-weight:700;color:var(--ink);margin:0 0 5px;letter-spacing:-.005em;line-height:1.4;}
@@ -196,7 +256,7 @@
   .task-card .task-title{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 4px;display:flex;align-items:center;gap:8px;line-height:1.4;}
   .task-card .task-title i{color:var(--cyber);font-size:11px;flex:none;}
   .task-card .task-cond{font-size:12px;color:var(--ink-3);line-height:1.7;margin:0 0 8px;}
-  .task-card .task-reward{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyber);line-height:1.4;}
+  .task-card .task-reward{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--cyber);line-height:1.4;}
   .task-card .task-reward small{font-family:inherit;font-size:10.5px;font-weight:400;color:var(--muted);margin-left:4px;}
 
   /* ================= 板块卡 ================= */
@@ -207,38 +267,40 @@
   .sector-title{font-size:14.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:10px;letter-spacing:-.005em;min-width:0;}
   .sector-title .s-icon{width:26px;height:26px;border-radius:50%;background:var(--cyber-glow-soft);border:1px solid var(--cyber-glow);
     display:flex;align-items:center;justify-content:center;color:var(--cyber);font-size:12px;flex:none;}
-  .sector-amount{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--cyber);white-space:nowrap;}
+  .sector-amount{font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--cyber);white-space:nowrap;}
   .sector-body{padding:16px 18px;}
   .sector-desc{font-size:13px;color:var(--ink-3);line-height:1.8;margin:0 0 14px;}
   .sector-desc b{color:var(--ink);font-weight:600;}
   .sector-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
   .s-stat{padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);min-width:0;transition:border-color .2s ease;}
   .s-stat:hover{border-color:var(--cyber-glow-soft);}
-  .s-stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;line-height:1;}
+  .s-stat .k{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;line-height:1;}
   .s-stat .v{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.005em;}
   .s-stat .v.is-red{color:var(--cyber);}
 
   .sources{border-top:1px solid var(--line-2);margin-top:14px;}
   .source-row{display:grid;grid-template-columns:20px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-2);align-items:baseline;}
   .source-row:last-child{border-bottom:0;}
-  .source-idx{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cyber);opacity:.7;line-height:1.7;}
+  .source-idx{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cyber);opacity:.7;line-height:1.7;font-variant-numeric:tabular-nums;}
   .source-text{font-size:12.5px;color:var(--ink-2);line-height:1.7;}
   .source-text b{color:var(--ink);font-weight:600;}
 
   /* ================= 表格 ================= */
-  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r);background:var(--card);scrollbar-width:thin;position:relative;}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r);background:var(--card);scrollbar-width:thin;position:relative;
+    box-shadow:inset -10px 0 10px -12px rgba(20,24,29,.06);}
   .tbl-scroll::-webkit-scrollbar{height:4px;}
   .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold));border-radius:2px;}
   table{border-collapse:collapse;width:100%;font-size:13px;background:var(--card);}
-  th,td{padding:11px 16px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line-2);line-height:1.5;position:relative;}
+  th,td{padding:11px 16px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line-2);line-height:1.5;position:relative;font-variant-numeric:tabular-nums;}
   th:first-child,td:first-child{text-align:left;}
-  thead th{background:var(--thead-bg);color:var(--ink-3);font-weight:600;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);}
+  thead th{background:var(--thead-bg);color:var(--ink-3);font-weight:600;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);}
   tbody tr:last-child td{border-bottom:0;}
   tbody tr:nth-child(even){background:var(--zebra-bg);}
   tbody tr{transition:background-color .18s ease;}
   tbody tr:hover{background:var(--cyber-glow-faint);}
   tbody td{color:var(--ink-2);}
   tbody td:first-child{color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.02em;}
+  :root[data-lang="en"] tbody td:first-child{font-family:var(--sans);font-size:12.5px;letter-spacing:0;}
   tr.sum td{background:var(--thead-bg)!important;font-weight:700;color:var(--ink);border-top:1px solid var(--line);}
   .hl{color:var(--cyber)!important;font-weight:700!important;}
 
@@ -249,7 +311,7 @@
 
   .hl-box{padding:16px 18px;border-radius:var(--r);background:linear-gradient(135deg, var(--cyber-glow-faint), transparent);
     border:1px solid var(--cyber-glow-soft);margin:16px 0;}
-  .hl-box-title{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyber);
+  .hl-box-title{font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyber);
     margin-bottom:8px;display:flex;align-items:center;gap:8px;}
   .hl-box-title::before{content:"";display:block;width:14px;height:1px;background:var(--cyber);}
   .hl-box-body{font-size:13px;color:var(--ink-2);line-height:1.85;}
@@ -263,7 +325,7 @@
     list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;
     -webkit-tap-highlight-color:transparent;line-height:1.6;}
   .faq summary::-webkit-details-marker{display:none;}
-  .faq summary::after{content:"+";flex:none;font-family:var(--mono);color:var(--cyber);font-size:17px;font-weight:700;line-height:1;}
+  .faq summary::after{content:"+";flex:none;font-family:var(--font-mono);color:var(--cyber);font-size:17px;font-weight:700;line-height:1;}
   .faq details[open] summary::after{content:"−";}
   .faq-a{padding:0 16px 16px;font-size:13px;color:var(--ink-2);line-height:1.85;}
   .faq-a b{color:var(--ink);font-weight:700;}
@@ -296,8 +358,8 @@
   .doc-foot::before{content:"";position:absolute;top:-1px;left:0;width:34%;height:1px;background:linear-gradient(90deg, var(--cyber), transparent);box-shadow:0 0 8px var(--cyber-glow);}
   .foot-row{display:flex;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;padding:var(--sp-2) 0;border-bottom:1px solid var(--line-2);}
   .foot-row:last-of-type{border-bottom:0;}
-  .foot-k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.8;flex:none;}
-  .foot-v{font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.8;word-break:break-all;text-align:right;}
+  .foot-k{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.8;flex:none;}
+  .foot-v{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);line-height:1.8;word-break:break-all;text-align:right;font-variant-numeric:tabular-nums;}
   .foot-v.foot-ca{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
   .foot-ca-text{word-break:break-all;}
 
@@ -306,7 +368,7 @@
     width:26px;height:26px;padding:0;flex:none;
     border:1px solid var(--line);border-radius:5px;
     background:var(--bg);color:var(--ink-3);cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
     transition:border-color .15s ease, color .2s ease, background .15s ease, box-shadow .25s ease;
   }
   .copy-btn:hover{border-color:var(--cyber-glow-soft);color:var(--cyber);background:var(--cyber-glow-faint);box-shadow:0 0 10px -2px var(--cyber-glow-soft);}
@@ -348,7 +410,7 @@
     box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
     opacity:0;transform:translateY(12px);pointer-events:none;
     transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
   }
   .back-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
   .back-top:hover{
@@ -398,9 +460,11 @@
 
   /* ================= 响应式 ================= */
   @media (max-width:720px){
+    :root{--doc-pad:20px;}
     .toc-link{padding:8px 14px;min-height:40px;display:inline-flex;align-items:center;}
     .theme-toggle{width:40px;height:40px;}
     .theme-toggle svg{width:19px;height:19px;}
+    .lang-toggle{height:40px;padding:0 14px;font-size:13px;}
     .copy-btn{width:32px;height:32px;}
     .back-top{width:42px;height:42px;}
     .back-top svg{width:19px;height:19px;}
@@ -412,12 +476,12 @@
   }
 
   @media (max-width:480px){
-    :root{--doc-pad:20px;}
     body{font-size:15px;line-height:1.8;}
+    :root[data-lang="en"] body{font-size:15px;line-height:1.7;}
     .toc{padding:8px var(--doc-pad);}
 
-    .hero{padding:44px var(--doc-pad) 32px;}
-    .theme-toggle{top:12px;}
+    .hero{padding:52px var(--doc-pad) 32px;}
+    .header-actions{top:12px;}
     .hero-sub{font-size:12.5px;}
     .eyebrow{font-size:10.5px;letter-spacing:.16em;}
     .btn{width:100%;}
@@ -425,6 +489,7 @@
 
     .abstract{padding:24px 0;}
     .abstract p{font-size:14.5px;line-height:1.95;}
+    :root[data-lang="en"] .abstract p{font-size:15px;line-height:1.8;}
 
     .sec{padding:32px 0 24px;}
     .sec-head{margin-bottom:18px;}
@@ -468,8 +533,10 @@
     :root{--doc-pad:18px;}
     .toc{padding:8px var(--doc-pad);}
     .hero-title{font-size:22px;}
+    :root[data-lang="en"] .hero-title{font-size:23px;}
     .theme-toggle{width:34px;height:34px;}
     .theme-toggle svg{width:16px;height:16px;}
+    .lang-toggle{height:34px;padding:0 10px;font-size:11.5px;}
     .back-top{right:14px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));width:38px;height:38px;}
     .back-top svg{width:17px;height:17px;}
   }
@@ -496,45 +563,48 @@
 
   <!-- ================= Hero ================= -->
   <header class="hero" id="top">
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
-      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题" data-icon="light">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
 
-    <div class="eyebrow">Solana · DEX Trading Carnival</div>
-    <h1 class="hero-title"><em>$财神DAO</em> 交易狂欢季</h1>
-    <p class="hero-sub">买得越多、拿得越久、战队越强，收益越高 · 押金全额退还</p>
+    <div class="eyebrow" data-i18n="hero.eb">Solana · DEX 交易狂欢季</div>
+    <h1 class="hero-title" data-i18n-html="hero.title"><em>$财神DAO</em> 交易狂欢季</h1>
+    <p class="hero-sub" data-i18n="hero.sub">买得越多、拿得越久、战队越强，收益越高 · 押金全额退还</p>
 
     <div class="hero-pool">
       <span class="hero-amount num">68,888</span>
-      <span class="hero-unit">USDC 等值总奖池</span>
+      <span class="hero-unit" data-i18n="hero.unit">USDC 等值总奖池</span>
     </div>
 
     <div class="chips">
-      <span class="chip"><i class="fas fa-bolt"></i>首日早鸟 2.0×</span>
-      <span class="chip"><i class="fas fa-crown"></i>冠军独享 5,500</span>
-      <span class="chip"><i class="fas fa-seedling"></i>新手任务 + 连续参与</span>
-      <span class="chip"><i class="fas fa-shield-halved"></i>押金全额退还</span>
+      <span class="chip"><i class="fas fa-bolt"></i><span data-i18n="chip.1">首日早鸟 2.0×</span></span>
+      <span class="chip"><i class="fas fa-crown"></i><span data-i18n="chip.2">冠军独享 5,500</span></span>
+      <span class="chip"><i class="fas fa-seedling"></i><span data-i18n="chip.3">新手任务 + 连续参与</span></span>
+      <span class="chip"><i class="fas fa-shield-halved"></i><span data-i18n="chip.4">押金全额退还</span></span>
     </div>
 
     <div class="cta-row">
-      <a class="btn btn-primary" href="#join">查看怎么参与 <i class="fas fa-arrow-right"></i></a>
-      <a class="btn btn-ghost" href="#rewards">先看奖池</a>
+      <a class="btn btn-primary" href="#join"><span data-i18n="btn.join">查看怎么参与</span> <i class="fas fa-arrow-right"></i></a>
+      <a class="btn btn-ghost" href="#rewards" data-i18n="btn.rewards">先看奖池</a>
     </div>
 
-    <p class="hero-foot">
+    <p class="hero-foot" data-i18n-html="hero.foot">
       代币总量恒定 <b>686,868,686</b> 枚 · 无增发 · 无冻结权限<br>
       奖励以 USDC 计价，结束 <b>7 天内</b>按 24h TWAP 折算 <b>$财神DAO</b> 自动空投
     </p>
@@ -542,40 +612,40 @@
 
   <!-- ================= 目录导航 ================= -->
   <nav class="toc" aria-label="页面导航">
-    <a class="toc-link" href="#overview">概览</a>
-    <a class="toc-link" href="#join">怎么参与</a>
-    <a class="toc-link" href="#rewards">奖池</a>
-    <a class="toc-link" href="#points">积分</a>
-    <a class="toc-link" href="#personal">个人</a>
-    <a class="toc-link" href="#team">战队</a>
-    <a class="toc-link" href="#starter">新手 &amp; 连续</a>
-    <a class="toc-link" href="#gacha">宝盒</a>
-    <a class="toc-link" href="#early">早鸟</a>
-    <a class="toc-link" href="#rules">保障</a>
-    <a class="toc-link" href="#faq">问答</a>
+    <a class="toc-link" href="#overview" data-i18n="toc.overview">概览</a>
+    <a class="toc-link" href="#join" data-i18n="toc.join">怎么参与</a>
+    <a class="toc-link" href="#rewards" data-i18n="toc.rewards">奖池</a>
+    <a class="toc-link" href="#points" data-i18n="toc.points">积分</a>
+    <a class="toc-link" href="#personal" data-i18n="toc.personal">个人</a>
+    <a class="toc-link" href="#team" data-i18n="toc.team">战队</a>
+    <a class="toc-link" href="#starter" data-i18n="toc.starter">新手 &amp; 连续</a>
+    <a class="toc-link" href="#gacha" data-i18n="toc.gacha">宝盒</a>
+    <a class="toc-link" href="#early" data-i18n="toc.early">早鸟</a>
+    <a class="toc-link" href="#rules" data-i18n="toc.rules">保障</a>
+    <a class="toc-link" href="#faq" data-i18n="toc.faq">问答</a>
   </nav>
 
   <!-- ================= 概览 ================= -->
   <section class="wrap abstract" id="overview">
-    <p>
+    <p data-i18n-html="ov.p1">
       <b>$财神DAO</b> 发行于 Solana 主网，总量恒定 <b>686,868,686</b> 枚，无增发、无冻结权限。
       本次交易狂欢季投入 <span class="hl">68,888 USDC 等值 $财神DAO</span> 作为总奖池，
       用 <b>28 天</b>「净额积分制」个人 + 战队双轨联赛，奖励真实交易、真实持币、真实社区。
     </p>
-    <p>
+    <p data-i18n-html="ov.p2">
       简单说：<span class="hl">净买入越多、拿得越久、战队越强，你能拿到的积分和奖励就越高</span>。
       净买入享受 <b>1.2 倍</b>权重，净卖出权重降至 <b>0.1</b>；日均持仓越高，乘数越高（<b>0.7–1.5×</b>）；加入战队再叠 <b>1.1×</b> 加成。
       新手任务和连续参与奖励额外送积分，不占用主奖池。
     </p>
-    <p>
+    <p data-i18n-html="ov.p3">
       报名只需锁定 <b>20 USDC 等值 $财神DAO</b> 押金，活动结束后 <b>24 小时内全额退还</b>（退还报名时锁定的代币数量，不随币价变动）。
       全部奖励以 <b>USDC 计价、$财神DAO 发放</b>，结束后 <b>7 天内</b>自动空投，无需手动领取。
     </p>
 
     <div class="raise-overview" style="margin-bottom:0;">
-      <div class="raise-cell"><span class="amount">28</span><span class="label">天活动周期</span></div>
-      <div class="raise-cell"><span class="amount">20</span><span class="label">USDC 押金<br>全额退还</span></div>
-      <div class="raise-cell"><span class="amount">7</span><span class="label">天内<br>自动发放奖励</span></div>
+      <div class="raise-cell"><span class="amount">28</span><span class="label" data-i18n="ov.c1">天活动周期</span></div>
+      <div class="raise-cell"><span class="amount">20</span><span class="label" data-i18n="ov.c2">USDC 押金<br>全额退还</span></div>
+      <div class="raise-cell"><span class="amount">7</span><span class="label" data-i18n="ov.c3">天内<br>自动发放奖励</span></div>
     </div>
   </section>
 
@@ -583,37 +653,37 @@
   <section class="wrap sec" id="join">
     <div class="sec-head">
       <span class="sec-idx">01</span>
-      <h2 class="sec-title">四步拿到奖励<span>How To Join</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.join">四步拿到奖励</span><span class="st-en">How To Join</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>完成报名后当天开始计分，交易、持仓、组队同步累积，五重奖励可叠加。</p>
+    <p class="gain-lead" data-i18n-html="join.lead"><b>你能得到：</b>完成报名后当天开始计分，交易、持仓、组队同步累积，五重奖励可叠加。</p>
 
     <div class="steps">
       <div class="step">
         <span class="step-n">1</span>
-        <h3 class="step-t">锁定押金，完成报名</h3>
-        <p class="step-d">用 <b>20 USDC 等值 $财神DAO</b> 锁定押金，通过 4 项安全检查后进入白名单，当天开始计分。押金活动结束 <b>24 小时内全额退还</b>。</p>
+        <h3 class="step-t" data-i18n="join.s1.t">锁定押金，完成报名</h3>
+        <p class="step-d" data-i18n-html="join.s1.d">用 <b>20 USDC 等值 $财神DAO</b> 锁定押金，通过 4 项安全检查后进入白名单，当天开始计分。押金活动结束 <b>24 小时内全额退还</b>。</p>
       </div>
       <div class="step">
         <span class="step-n">2</span>
-        <h3 class="step-t">交易赚「财神积分」</h3>
-        <p class="step-d">净买入享 <b>1.2 倍</b>权重，首日早鸟乘数 <b>2.0×</b>，持仓越久乘数越高。积分实时累计，段位自动升级。</p>
+        <h3 class="step-t" data-i18n="join.s2.t">交易赚「财神积分」</h3>
+        <p class="step-d" data-i18n-html="join.s2.d">净买入享 <b>1.2 倍</b>权重，首日早鸟乘数 <b>2.0×</b>，持仓越久乘数越高。积分实时累计，段位自动升级。</p>
       </div>
       <div class="step">
         <span class="step-n">3</span>
-        <h3 class="step-t">组队放大收益</h3>
-        <p class="step-d">邀请好友组成战队，冲击战队榜。队长独享 <b>30%</b> 分成，队员按积分比例瓜分 <b>70%</b>，全员额外 <b>1.1×</b> 积分加成。</p>
+        <h3 class="step-t" data-i18n="join.s3.t">组队放大收益</h3>
+        <p class="step-d" data-i18n-html="join.s3.d">邀请好友组成战队，冲击战队榜。队长独享 <b>30%</b> 分成，队员按积分比例瓜分 <b>70%</b>，全员额外 <b>1.1×</b> 积分加成。</p>
       </div>
       <div class="step">
         <span class="step-n">4</span>
-        <h3 class="step-t">瓜分 68,888 USDC</h3>
-        <p class="step-d">段位奖 + 王者榜 + 战队奖 + 宝盒 + 早鸟奖，五重收益可叠加。结束 <b>7 天内</b>自动空投至报名钱包。</p>
+        <h3 class="step-t" data-i18n="join.s4.t">瓜分 68,888 USDC</h3>
+        <p class="step-d" data-i18n-html="join.s4.d">段位奖 + 王者榜 + 战队奖 + 宝盒 + 早鸟奖，五重收益可叠加。结束 <b>7 天内</b>自动空投至报名钱包。</p>
       </div>
     </div>
 
     <div class="hl-box" style="margin-top:20px;">
-      <div class="hl-box-title">报名门槛 · 4 项安全检查</div>
-      <div class="hl-box-body">
+      <div class="hl-box-title" data-i18n="join.gate.title">报名门槛 · 4 项安全检查</div>
+      <div class="hl-box-body" data-i18n-html="join.gate.body">
         <b>历史交易 ≥ 3 笔</b>　·　<b>SOL 余额 ≥ 0.01</b>　·　<b>钱包年龄 ≥ 3 天</b>　·　<b>不在黑名单</b><br>
         全部通过即可进入白名单。门槛用于拦截批量注册的女巫钱包，保护真实参与者的奖池不被稀释。
       </div>
@@ -624,38 +694,38 @@
   <section class="wrap sec" id="rewards">
     <div class="sec-head">
       <span class="sec-idx">02</span>
-      <h2 class="sec-title">你能拿到哪几份<span>Prize Pools</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.rewards">你能拿到哪几份</span><span class="st-en">Prize Pools</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>五重奖池独立计算、可叠加。冲榜拿王者榜和战队奖，达标拿段位奖，早鸟期额外拿冲刺奖，积分还能抽宝盒。</p>
+    <p class="gain-lead" data-i18n-html="rw.lead"><b>你能得到：</b>五重奖池独立计算、可叠加。冲榜拿王者榜和战队奖，达标拿段位奖，早鸟期额外拿冲刺奖，积分还能抽宝盒。</p>
 
     <div class="raise-overview">
-      <div class="raise-cell"><span class="amount">20,000</span><span class="label">个人段位奖<br>含青铜瓜分池 3,000</span></div>
-      <div class="raise-cell"><span class="amount">13,000</span><span class="label">个人王者榜<br>Top 10 瓜分</span></div>
-      <div class="raise-cell"><span class="amount">20,666</span><span class="label">战队赛道<br>Top 战队 + 最佳新人</span></div>
+      <div class="raise-cell"><span class="amount">20,000</span><span class="label" data-i18n="rw.c1">个人段位奖<br>含青铜瓜分池 3,000</span></div>
+      <div class="raise-cell"><span class="amount">13,000</span><span class="label" data-i18n="rw.c2">个人王者榜<br>Top 10 瓜分</span></div>
+      <div class="raise-cell"><span class="amount">20,666</span><span class="label" data-i18n="rw.c3">战队赛道<br>Top 战队 + 最佳新人</span></div>
     </div>
     <div class="raise-overview" style="grid-template-columns:repeat(2,1fr);">
-      <div class="raise-cell"><span class="amount">8,333</span><span class="label">财神宝盒<br>积分抽取，抽完即止</span></div>
-      <div class="raise-cell"><span class="amount">6,889</span><span class="label">早鸟冲刺<br>前 7 天额外奖池</span></div>
+      <div class="raise-cell"><span class="amount">8,333</span><span class="label" data-i18n="rw.c4">财神宝盒<br>积分抽取，抽完即止</span></div>
+      <div class="raise-cell"><span class="amount">6,889</span><span class="label" data-i18n="rw.c5">早鸟冲刺<br>前 7 天额外奖池</span></div>
     </div>
 
     <div class="tbl-scroll" style="margin-top:20px;">
       <table>
-        <thead><tr><th>模块</th><th>占比</th><th>USDC 等值</th><th>怎么拿</th></tr></thead>
+        <thead><tr><th data-i18n="rw.th1">模块</th><th data-i18n="rw.th2">占比</th><th data-i18n="rw.th3">USDC 等值</th><th data-i18n="rw.th4">怎么拿</th></tr></thead>
         <tbody>
-          <tr><td>个人王者榜</td><td class="num">18.87%</td><td class="num">13,000</td><td>积分冲进 Top 10</td></tr>
-          <tr><td>个人段位奖</td><td class="num">29.03%</td><td class="num">20,000</td><td>积分达标即得</td></tr>
-          <tr><td>战队赛道</td><td class="num">30.00%</td><td class="num">20,666</td><td>组队冲榜，队长队员分</td></tr>
-          <tr><td>财神宝盒</td><td class="num">12.10%</td><td class="num">8,333</td><td>50 积分抽一次</td></tr>
-          <tr><td>早鸟冲刺</td><td class="num">10.00%</td><td class="num">6,889</td><td>前 7 天净买入排名</td></tr>
-          <tr class="sum"><td>合计</td><td class="num">100%</td><td class="num">68,888</td><td>押金独立运作，不计入奖池</td></tr>
+          <tr><td data-i18n="rw.r1a">个人王者榜</td><td class="num">18.87%</td><td class="num">13,000</td><td data-i18n="rw.r1d">积分冲进 Top 10</td></tr>
+          <tr><td data-i18n="rw.r2a">个人段位奖</td><td class="num">29.03%</td><td class="num">20,000</td><td data-i18n="rw.r2d">积分达标即得</td></tr>
+          <tr><td data-i18n="rw.r3a">战队赛道</td><td class="num">30.00%</td><td class="num">20,666</td><td data-i18n="rw.r3d">组队冲榜，队长队员分</td></tr>
+          <tr><td data-i18n="rw.r4a">财神宝盒</td><td class="num">12.10%</td><td class="num">8,333</td><td data-i18n="rw.r4d">50 积分抽一次</td></tr>
+          <tr><td data-i18n="rw.r5a">早鸟冲刺</td><td class="num">10.00%</td><td class="num">6,889</td><td data-i18n="rw.r5d">前 7 天净买入排名</td></tr>
+          <tr class="sum"><td data-i18n="rw.rta">合计</td><td class="num">100%</td><td class="num">68,888</td><td data-i18n="rw.rtd">押金独立运作，不计入奖池</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="hl-box" style="margin-top:20px;">
-      <div class="hl-box-title">奖励折算与发放</div>
-      <div class="hl-box-body">
+      <div class="hl-box-title" data-i18n="rw.hb.title">奖励折算与发放</div>
+      <div class="hl-box-body" data-i18n-html="rw.hb.body">
         <b>计价：</b>全部奖励以 USDC 计价，页面展示的 USDC 等值仅为参考。<br>
         <b>折算：</b>实得代币数量 = USDC 等值奖励 ÷ 活动结束时 $财神DAO/USDC 的 <b>24h TWAP</b>。<br>
         <b>TWAP 口径：</b>取 Meteora TWAP 的<b>中位数</b>，并<b>排除最后 2 小时</b>数据。<br>
@@ -668,43 +738,43 @@
   <section class="wrap sec" id="points">
     <div class="sec-head">
       <span class="sec-idx">03</span>
-      <h2 class="sec-title">怎么买、拿多久，积分最高<span>Point System</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.points">怎么买、拿多久，积分最高</span><span class="st-en">Point System</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>同样买入 500 USDC，首日买入比第 8 天买入多拿 1 倍积分；持有 14 天比不持有多 20%–50%；组队再多 10%。</p>
+    <p class="gain-lead" data-i18n-html="pt.lead"><b>你能得到：</b>同样买入 500 USDC，首日买入比第 8 天买入多拿 1 倍积分；持有 14 天比不持有多 20%–50%；组队再多 10%。</p>
 
     <div class="prose" style="margin-bottom:16px;">
-      <p>
+      <p data-i18n-html="pt.p1">
         总积分公式：<b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>，
         <b>财神积分 = S<sub>final</sub> × 100</b>。排行榜、段位门槛、宝盒消耗均以财神积分计。
       </p>
-      <p>每日 UTC 00:00 结算前一日（UTC 00:00–23:59）的净买入与卖出，应用当日早鸟乘数，累加即为总交易积分。</p>
+      <p data-i18n="pt.p2">每日 UTC 00:00 结算前一日（UTC 00:00–23:59）的净买入与卖出，应用当日早鸟乘数，累加即为总交易积分。</p>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-calculator"></i></span>净买入怎么算</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-calculator"></i></span><span data-i18n="pt.s1.title">净买入怎么算</span></div>
         <span class="sector-amount">1.2 / 0.3 / 0.1</span>
       </div>
       <div class="sector-body">
-        <p class="sector-desc"><b>核心逻辑：</b>按当日净买入方向差异化计分——净买入为正时，卖出也能拿到 0.3 权重；一旦当日净买入 ≤ 0，卖出权重直接降至 0.1。买入并持有是拿积分最划算的方式。</p>
+        <p class="sector-desc" data-i18n-html="pt.s1.desc"><b>核心逻辑：</b>按当日净买入方向差异化计分——净买入为正时，卖出也能拿到 0.3 权重；一旦当日净买入 ≤ 0，卖出权重直接降至 0.1。买入并持有是拿积分最划算的方式。</p>
 
         <div class="hl-box" style="margin-top:8px;">
-          <div class="hl-box-title">计分公式</div>
-          <div class="hl-box-body">
+          <div class="hl-box-title" data-i18n="pt.s1.hb.title">计分公式</div>
+          <div class="hl-box-body" data-i18n-html="pt.s1.hb.body">
             <b>当净买入 &gt; 0 时：</b>S<sub>trade</sub> = (V<sub>净买入</sub> × 1.2 + V<sub>卖出</sub> × 0.3) / 100<br>
             <b>当净买入 ≤ 0 时：</b>S<sub>trade</sub> = V<sub>卖出</sub> × 0.1 / 100
           </div>
         </div>
 
         <div class="sector-stats" style="margin-top:14px;">
-          <div class="s-stat"><div class="k">净买入权重</div><div class="v is-red">1.2</div></div>
-          <div class="s-stat"><div class="k">卖出权重（净买入 &gt; 0）</div><div class="v is-red">0.3</div></div>
-          <div class="s-stat"><div class="k">卖出权重（净买入 ≤ 0）</div><div class="v is-red">0.1</div></div>
-          <div class="s-stat"><div class="k">单笔最低门槛</div><div class="v">20 USDC</div></div>
+          <div class="s-stat"><div class="k" data-i18n="pt.s1.k1">净买入权重</div><div class="v is-red">1.2</div></div>
+          <div class="s-stat"><div class="k" data-i18n="pt.s1.k2">卖出权重（净买入 &gt; 0）</div><div class="v is-red">0.3</div></div>
+          <div class="s-stat"><div class="k" data-i18n="pt.s1.k3">卖出权重（净买入 ≤ 0）</div><div class="v is-red">0.1</div></div>
+          <div class="s-stat"><div class="k" data-i18n="pt.s1.k4">单笔最低门槛</div><div class="v">20 USDC</div></div>
         </div>
 
-        <p class="caption">
+        <p class="caption" data-i18n-html="pt.s1.cap">
           <b>场景 A（买入并持有）：</b>买入 500、卖出 200，净买入 300。<br>
           S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = <b>420 财神积分</b>。<br>
           <b>场景 B（买入后立刻卖出）：</b>买入 100、卖出 300，净买入 −200。<br>
@@ -716,50 +786,50 @@
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-clock"></i></span>越早买，积分越多 E<sub>i</sub></div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-clock"></i></span><span data-i18n="pt.s2.title">越早买，积分越多 E<sub>i</sub></span></div>
         <span class="sector-amount">最高 2.0×</span>
       </div>
       <div class="sector-body">
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>活动阶段</th><th>乘数</th><th>你能多拿多少</th></tr></thead>
+            <thead><tr><th data-i18n="pt.s2.th1">活动阶段</th><th data-i18n="pt.s2.th2">乘数</th><th data-i18n="pt.s2.th3">你能多拿多少</th></tr></thead>
             <tbody>
-              <tr><td>第 1 天</td><td class="hl">2.0</td><td>同样买入，积分翻倍</td></tr>
-              <tr><td>第 2–3 天</td><td class="hl">1.5</td><td>多拿 50%</td></tr>
-              <tr><td>第 4–7 天</td><td class="hl">1.2</td><td>多拿 20%</td></tr>
-              <tr><td>第 8 天起</td><td>1.0</td><td>标准积分</td></tr>
+              <tr><td data-i18n="pt.s2.r1">第 1 天</td><td class="hl">2.0</td><td data-i18n="pt.s2.d1">同样买入，积分翻倍</td></tr>
+              <tr><td data-i18n="pt.s2.r2">第 2–3 天</td><td class="hl">1.5</td><td data-i18n="pt.s2.d2">多拿 50%</td></tr>
+              <tr><td data-i18n="pt.s2.r3">第 4–7 天</td><td class="hl">1.2</td><td data-i18n="pt.s2.d3">多拿 20%</td></tr>
+              <tr><td data-i18n="pt.s2.r4">第 8 天起</td><td>1.0</td><td data-i18n="pt.s2.d4">标准积分</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption"><b>应用方式：</b>按<b>交易发生日</b>逐日应用，每日结算使用当日乘数，不影响持仓乘数与战队加成。<b>行动建议：</b>想冲榜的话，首日完成第一笔有效买入最划算。</p>
+        <p class="caption" data-i18n-html="pt.s2.cap"><b>应用方式：</b>按<b>交易发生日</b>逐日应用，每日结算使用当日乘数，不影响持仓乘数与战队加成。<b>行动建议：</b>想冲榜的话，首日完成第一笔有效买入最划算。</p>
       </div>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-hand-holding-heart"></i></span>拿得越久，乘数越高 M<sub>hold</sub></div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-hand-holding-heart"></i></span><span data-i18n="pt.s3.title">拿得越久，乘数越高 M<sub>hold</sub></span></div>
         <span class="sector-amount">0.7 – 1.5×</span>
       </div>
       <div class="sector-body">
-        <p class="sector-desc">每日 UTC 00:00 对白名单地址做余额快照（时间随机），按 USDC 等值计算日均持仓。</p>
+        <p class="sector-desc" data-i18n="pt.s3.desc">每日 UTC 00:00 对白名单地址做余额快照（时间随机），按 USDC 等值计算日均持仓。</p>
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>日均持仓（USDC 等值）</th><th>乘数</th><th>你能多拿多少</th></tr></thead>
+            <thead><tr><th data-i18n="pt.s3.th1">日均持仓（USDC 等值）</th><th data-i18n="pt.s3.th2">乘数</th><th data-i18n="pt.s3.th3">你能多拿多少</th></tr></thead>
             <tbody>
-              <tr><td>&lt; 50</td><td class="hl">0.7</td><td>积分打 7 折</td></tr>
-              <tr><td>50 – 200</td><td>1.0</td><td>标准积分</td></tr>
-              <tr><td>200 – 500</td><td class="hl">1.2</td><td>多拿 20%</td></tr>
-              <tr><td>&gt; 500</td><td class="hl">1.5</td><td>多拿 50%</td></tr>
+              <tr><td>&lt; 50</td><td class="hl">0.7</td><td data-i18n="pt.s3.d1">积分打 7 折</td></tr>
+              <tr><td>50 – 200</td><td>1.0</td><td data-i18n="pt.s3.d2">标准积分</td></tr>
+              <tr><td>200 – 500</td><td class="hl">1.2</td><td data-i18n="pt.s3.d3">多拿 20%</td></tr>
+              <tr><td>&gt; 500</td><td class="hl">1.5</td><td data-i18n="pt.s3.d4">多拿 50%</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption"><b>示例：</b>参与 14 天，前 7 天每天持仓 300 USDC，后 7 天为 0。日均持仓 = (300×7 + 0×7) / 14 = 150 USDC → 乘数 <b>1.0</b>。<b>行动建议：</b>如果打算冲段位，尽量让日均持仓保持在 200 USDC 以上。</p>
+        <p class="caption" data-i18n-html="pt.s3.cap"><b>示例：</b>参与 14 天，前 7 天每天持仓 300 USDC，后 7 天为 0。日均持仓 = (300×7 + 0×7) / 14 = 150 USDC → 乘数 <b>1.0</b>。<b>行动建议：</b>如果打算冲段位，尽量让日均持仓保持在 200 USDC 以上。</p>
       </div>
     </div>
 
     <div class="hl-box">
-      <div class="hl-box-title">有效交易过滤（不影响正常交易）</div>
-      <div class="hl-box-body">
+      <div class="hl-box-title" data-i18n="pt.hb.title">有效交易过滤（不影响正常交易）</div>
+      <div class="hl-box-body" data-i18n-html="pt.hb.body">
         <b>微交易：</b>单笔 &lt; 20 USDC 不计分。<br>
         <b>短持仓：</b>买卖间隔 &lt; 3 分钟不计分。<br>
         <b>对敲交易：</b>10 分钟内买卖金额偏差 &lt; 5%，积分清零并标记。<br>
@@ -774,58 +844,58 @@
   <section class="wrap sec" id="personal">
     <div class="sec-head">
       <span class="sec-idx">04</span>
-      <h2 class="sec-title">个人赛道：达标即得<span>Personal Track</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.personal">个人赛道：达标即得</span><span class="st-en">Personal Track</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>积分达到对应门槛，就能锁定段位奖励；积分冲进 Top 10，还能瓜分王者榜。两个奖池独立计算。</p>
+    <p class="gain-lead" data-i18n-html="ps.lead"><b>你能得到：</b>积分达到对应门槛，就能锁定段位奖励；积分冲进 Top 10，还能瓜分王者榜。两个奖池独立计算。</p>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-layer-group"></i></span>段位阶梯奖 · 达标即得</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-layer-group"></i></span><span data-i18n="ps.t1.title">段位阶梯奖 · 达标即得</span></div>
         <span class="sector-amount">20,000 USDC</span>
       </div>
       <div class="sector-body">
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>段位</th><th>财神积分门槛</th><th>你能拿到</th><th>名额</th><th>小计</th></tr></thead>
+            <thead><tr><th data-i18n="ps.t1.th1">段位</th><th data-i18n="ps.t1.th2">财神积分门槛</th><th data-i18n="ps.t1.th3">你能拿到</th><th data-i18n="ps.t1.th4">名额</th><th data-i18n="ps.t1.th5">小计</th></tr></thead>
             <tbody>
-              <tr><td>青铜</td><td class="num">100 – 499</td><td class="hl">瓜分 3,000</td><td>不限</td><td class="num">3,000</td></tr>
-              <tr><td>白银</td><td class="num">500 – 1,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
-              <tr><td>黄金</td><td class="num">2,000 – 7,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
-              <tr><td>钻石</td><td class="num">8,000 – 19,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
-              <tr><td>铂金</td><td class="num">20,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
-              <tr class="sum"><td>合计</td><td>—</td><td>—</td><td>—</td><td class="num">20,000</td></tr>
+              <tr><td data-i18n="tier.bronze">青铜</td><td class="num">100 – 499</td><td class="hl" data-i18n="ps.t1.bronze">瓜分 3,000</td><td data-i18n="ps.unlimited">不限</td><td class="num">3,000</td></tr>
+              <tr><td data-i18n="tier.silver">白银</td><td class="num">500 – 1,999</td><td>15 USDC</td><td>200</td><td class="num">3,000</td></tr>
+              <tr><td data-i18n="tier.gold">黄金</td><td class="num">2,000 – 7,999</td><td>60 USDC</td><td>100</td><td class="num">6,000</td></tr>
+              <tr><td data-i18n="tier.diamond">钻石</td><td class="num">8,000 – 19,999</td><td>200 USDC</td><td>30</td><td class="num">6,000</td></tr>
+              <tr><td data-i18n="tier.platinum">铂金</td><td class="num">20,000+</td><td>500 USDC</td><td>4</td><td class="num">2,000</td></tr>
+              <tr class="sum"><td data-i18n="rw.rta">合计</td><td>—</td><td>—</td><td>—</td><td class="num">20,000</td></tr>
             </tbody>
           </table>
         </div>
         <div class="sources" style="margin-top:16px;">
-          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>青铜瓜分池</b>：按最终财神积分占青铜总积分的比例瓜分 3,000 USDC，单人上限 <b>10 USDC</b>，剩余部分滚入王者榜奖池。</span></div>
-          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>青铜参与条件</b>：有效交易 ≥ 3 笔，净买入 ≥ 50 USDC，押金合格，无违规记录。</span></div>
-          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>白银及以上</b>：达标即得，奖池发完即止；若达标人数超过名额，按最终财神积分从高到低录取。</span></div>
-          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>发放时间</b>：活动结束后 7 天内，按结束日 24h TWAP 折算 $财神DAO 自动发放。</span></div>
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text" data-i18n-html="ps.t1.s1"><b>青铜瓜分池</b>：按最终财神积分占青铜总积分的比例瓜分 3,000 USDC，单人上限 <b>10 USDC</b>，剩余部分滚入王者榜奖池。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text" data-i18n-html="ps.t1.s2"><b>青铜参与条件</b>：有效交易 ≥ 3 笔，净买入 ≥ 50 USDC，押金合格，无违规记录。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text" data-i18n-html="ps.t1.s3"><b>白银及以上</b>：达标即得，奖池发完即止；若达标人数超过名额，按最终财神积分从高到低录取。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text" data-i18n-html="ps.t1.s4"><b>发放时间</b>：活动结束后 7 天内，按结束日 24h TWAP 折算 $财神DAO 自动发放。</span></div>
         </div>
       </div>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-crown"></i></span>个人王者榜 · Top 10 瓜分</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-crown"></i></span><span data-i18n="ps.t2.title">个人王者榜 · Top 10 瓜分</span></div>
         <span class="sector-amount">13,000 USDC</span>
       </div>
       <div class="sector-body">
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>名次</th><th>你能拿到（USDC 等值）</th></tr></thead>
+            <thead><tr><th data-i18n="ps.t2.th1">名次</th><th data-i18n="ps.t2.th2">你能拿到（USDC 等值）</th></tr></thead>
             <tbody>
-              <tr><td>第 1 名</td><td class="hl">5,500</td></tr>
-              <tr><td>第 2 名</td><td>3,000</td></tr>
-              <tr><td>第 3 名</td><td>2,000</td></tr>
-              <tr><td>第 4–10 名</td><td>瓜分 2,500</td></tr>
-              <tr class="sum"><td>合计</td><td class="num">13,000</td></tr>
+              <tr><td data-i18n="ps.t2.r1">第 1 名</td><td class="hl">5,500</td></tr>
+              <tr><td data-i18n="ps.t2.r2">第 2 名</td><td>3,000</td></tr>
+              <tr><td data-i18n="ps.t2.r3">第 3 名</td><td>2,000</td></tr>
+              <tr><td data-i18n="ps.t2.r4">第 4–10 名</td><td data-i18n="ps.t2.r4v">瓜分 2,500</td></tr>
+              <tr class="sum"><td data-i18n="rw.rta">合计</td><td class="num">13,000</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption red"><b>并列处理：</b>若第 1 名并列，平分第 1 名奖励；若第 10 名并列，平分第 4–10 名剩余奖池。发放时间同段位奖。<br><b>结束持仓锁定：</b>王者榜 Top 10 需在活动结束时仍持有 ≥ 100 USDC 等值 $财神DAO，若提前卖出则取消王者榜资格，该部分奖励滚入下一名次。</p>
+        <p class="caption red" data-i18n-html="ps.t2.cap"><b>并列处理：</b>若第 1 名并列，平分第 1 名奖励；若第 10 名并列，平分第 4–10 名剩余奖池。发放时间同段位奖。<br><b>结束持仓锁定：</b>王者榜 Top 10 需在活动结束时仍持有 ≥ 100 USDC 等值 $财神DAO，若提前卖出则取消王者榜资格，该部分奖励滚入下一名次。</p>
       </div>
     </div>
   </section>
@@ -834,49 +904,49 @@
   <section class="wrap sec" id="team">
     <div class="sec-head">
       <span class="sec-idx">05</span>
-      <h2 class="sec-title">战队赛道：组队多拿 1.1×<span>Squad Track</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.team">战队赛道：组队多拿 1.1×</span><span class="st-en">Squad Track</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>加入有效战队后，每一笔有效交易额外享受 <b>1.1×</b> 积分加成；战队冲进 Top 8，队长和队员按比例瓜分奖池。队长拿 30%，队员分 70%。</p>
+    <p class="gain-lead" data-i18n-html="tm.lead"><b>你能得到：</b>加入有效战队后，每一笔有效交易额外享受 <b>1.1×</b> 积分加成；战队冲进 Top 8，队长和队员按比例瓜分奖池。队长拿 30%，队员分 70%。</p>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-users"></i></span>战队规则与奖池</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-users"></i></span><span data-i18n="tm.t1.title">战队规则与奖池</span></div>
         <span class="sector-amount">20,666 USDC</span>
       </div>
       <div class="sector-body">
         <div class="sector-stats">
-          <div class="s-stat"><div class="k">队长押金</div><div class="v">50 USDC 等值</div></div>
-          <div class="s-stat"><div class="k">每队人数上限</div><div class="v">50 人</div></div>
-          <div class="s-stat"><div class="k">有效队员门槛</div><div class="v is-red">≥ 300 财神积分</div></div>
-          <div class="s-stat"><div class="k">战队注册费</div><div class="v">无</div></div>
+          <div class="s-stat"><div class="k" data-i18n="tm.k1">队长押金</div><div class="v" data-i18n="tm.v1">50 USDC 等值</div></div>
+          <div class="s-stat"><div class="k" data-i18n="tm.k2">每队人数上限</div><div class="v" data-i18n="tm.v2">50 人</div></div>
+          <div class="s-stat"><div class="k" data-i18n="tm.k3">有效队员门槛</div><div class="v is-red" data-i18n="tm.v3">≥ 300 财神积分</div></div>
+          <div class="s-stat"><div class="k" data-i18n="tm.k4">战队注册费</div><div class="v" data-i18n="tm.v4">无</div></div>
         </div>
         <div class="hl-box">
-          <div class="hl-box-title">战队排名公式 · 归一化加权</div>
-          <div class="hl-box-body">
+          <div class="hl-box-title" data-i18n="tm.hb.title">战队排名公式 · 归一化加权</div>
+          <div class="hl-box-body" data-i18n-html="tm.hb.body">
             <b>战队得分 = (战队总积分 ÷ 最高总积分) × 40 + (有效队员人均积分 ÷ 最高人均积分) × 40 + (新增持币地址数 ÷ 最高新增持币地址数) × 20</b><br>
             三项指标分别除以所有战队中的最大值，再按 40 / 40 / 20 加权，量纲统一，避免「大户队」一家独大。队员越多、人均越强、新增持币越多，排名越高。
           </div>
         </div>
         <div class="tbl-scroll" style="margin-top:16px;">
           <table>
-            <thead><tr><th>名次</th><th>奖池</th><th>队长分成</th><th>队员分成</th></tr></thead>
+            <thead><tr><th data-i18n="tm.t1.th1">名次</th><th data-i18n="tm.t1.th2">奖池</th><th data-i18n="tm.t1.th3">队长分成</th><th data-i18n="tm.t1.th4">队员分成</th></tr></thead>
             <tbody>
               <tr><td>Top 1</td><td class="hl">7,000</td><td>30% = 2,100</td><td>70% = 4,900</td></tr>
-              <tr><td>Top 2–3</td><td>各 3,000</td><td>30% = 900</td><td>70% = 2,100</td></tr>
-              <tr><td>Top 4–8</td><td>各 1,000</td><td>30% = 300</td><td>70% = 700</td></tr>
-              <tr><td>最佳新人</td><td>2,666</td><td>30% = 800</td><td>70% = 1,866</td></tr>
-              <tr class="sum"><td>合计</td><td class="num">20,666</td><td>—</td><td>—</td></tr>
+              <tr><td>Top 2–3</td><td data-i18n="tm.t1.r2p">各 3,000</td><td>30% = 900</td><td>70% = 2,100</td></tr>
+              <tr><td>Top 4–8</td><td data-i18n="tm.t1.r3p">各 1,000</td><td>30% = 300</td><td>70% = 700</td></tr>
+              <tr><td data-i18n="tm.t1.best">最佳新人</td><td>2,666</td><td>30% = 800</td><td>70% = 1,866</td></tr>
+              <tr class="sum"><td data-i18n="rw.rta">合计</td><td class="num">20,666</td><td>—</td><td>—</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption"><b>队长不参与队员池分配。</b>最佳新人战队：成立时间 &lt; 14 天且进入前 20 名。队员按个人财神积分比例瓜分队员池。活动结束后 7 天内，队长与队员奖励分别自动空投。战队成员在个人积分上额外享受 <b>1.1×</b> 战队加成（B<sub>team</sub>），队长与队员均适用。</p>
+        <p class="caption" data-i18n-html="tm.t1.cap"><b>队长不参与队员池分配。</b>最佳新人战队：成立时间 &lt; 14 天且进入前 20 名。队员按个人财神积分比例瓜分队员池。活动结束后 7 天内，队长与队员奖励分别自动空投。战队成员在个人积分上额外享受 <b>1.1×</b> 战队加成（B<sub>team</sub>），队长与队员均适用。</p>
       </div>
     </div>
 
     <div class="hl-box">
-      <div class="hl-box-title">战队反作弊</div>
-      <div class="hl-box-body">
+      <div class="hl-box-title" data-i18n="tm.ab.title">战队反作弊</div>
+      <div class="hl-box-body" data-i18n-html="tm.ab.body">
         同一 IP 或同一资金来源加入同一战队 &gt; 3 人 → 标记审核。<br>
         战队内女巫占比 &gt; 30% → 取消整队资格，没收队长押金。<br>
         队长未督促队员交易不影响排名，但队长分成仅来自有效队员。
@@ -888,69 +958,69 @@
   <section class="wrap sec" id="starter">
     <div class="sec-head">
       <span class="sec-idx">06</span>
-      <h2 class="sec-title">新手任务 &amp; 连续参与<span>Starter &amp; Streak</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.starter">新手任务 &amp; 连续参与</span><span class="st-en">Starter &amp; Streak</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>不冲榜也能拿积分。完成新手任务额外送 <b>500 财神积分 + 1 张宝盒券</b>；连续 7 天或 14 天参与，再送 <b>300–800 财神积分</b>。这些积分直接计入总积分，影响段位和排名。</p>
+    <p class="gain-lead" data-i18n-html="st.lead"><b>你能得到：</b>不冲榜也能拿积分。完成新手任务额外送 <b>500 财神积分 + 1 张宝盒券</b>；连续 7 天或 14 天参与，再送 <b>300–800 财神积分</b>。这些积分直接计入总积分，影响段位和排名。</p>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-seedling"></i></span>新手任务 · 首周专享</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-seedling"></i></span><span data-i18n="st.t1.title">新手任务 · 首周专享</span></div>
         <span class="sector-amount">+500 积分</span>
       </div>
       <div class="sector-body">
-        <p class="sector-desc"><b>适合刚报名的用户：</b>四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可免费抽一次宝盒。</p>
+        <p class="sector-desc" data-i18n-html="st.t1.desc"><b>适合刚报名的用户：</b>四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可免费抽一次宝盒。</p>
         <div class="task-grid">
           <div class="task-card">
-            <div class="task-title"><i class="fas fa-check-circle"></i>完成报名</div>
-            <p class="task-cond">通过 4 项安全检查并锁定押金</p>
-            <div class="task-reward">+50 财神积分</div>
+            <div class="task-title"><i class="fas fa-check-circle"></i><span data-i18n="st.task1.t">完成报名</span></div>
+            <p class="task-cond" data-i18n="st.task1.c">通过 4 项安全检查并锁定押金</p>
+            <div class="task-reward" data-i18n="st.task1.r">+50 财神积分</div>
           </div>
           <div class="task-card">
-            <div class="task-title"><i class="fas fa-arrow-trend-up"></i>首笔有效交易</div>
-            <p class="task-cond">单笔 ≥ 20 USDC 的买入或卖出</p>
-            <div class="task-reward">+100 财神积分</div>
+            <div class="task-title"><i class="fas fa-arrow-trend-up"></i><span data-i18n="st.task2.t">首笔有效交易</span></div>
+            <p class="task-cond" data-i18n="st.task2.c">单笔 ≥ 20 USDC 的买入或卖出</p>
+            <div class="task-reward" data-i18n="st.task2.r">+100 财神积分</div>
           </div>
           <div class="task-card">
-            <div class="task-title"><i class="fas fa-hand-holding-heart"></i>首次持仓 24h</div>
-            <p class="task-cond">持仓 ≥ 50 USDC 等值满 24 小时</p>
-            <div class="task-reward">+150 财神积分</div>
+            <div class="task-title"><i class="fas fa-hand-holding-heart"></i><span data-i18n="st.task3.t">首次持仓 24h</span></div>
+            <p class="task-cond" data-i18n="st.task3.c">持仓 ≥ 50 USDC 等值满 24 小时</p>
+            <div class="task-reward" data-i18n="st.task3.r">+150 财神积分</div>
           </div>
           <div class="task-card">
-            <div class="task-title"><i class="fas fa-user-plus"></i>邀请首个好友</div>
-            <p class="task-cond">好友完成报名并通过安全检查</p>
-            <div class="task-reward">+200 财神积分</div>
+            <div class="task-title"><i class="fas fa-user-plus"></i><span data-i18n="st.task4.t">邀请首个好友</span></div>
+            <p class="task-cond" data-i18n="st.task4.c">好友完成报名并通过安全检查</p>
+            <div class="task-reward" data-i18n="st.task4.r">+200 财神积分</div>
           </div>
         </div>
         <div class="hl-box" style="margin-top:4px;">
-          <div class="hl-box-title">全部完成额外奖励</div>
-          <div class="hl-box-body">
+          <div class="hl-box-title" data-i18n="st.t1.bonus.title">全部完成额外奖励</div>
+          <div class="hl-box-body" data-i18n-html="st.t1.bonus.body">
             四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可在活动期间免费抽取一次宝盒。
           </div>
         </div>
-        <p class="caption"><b>奖励来源：</b>新手任务积分由活动方额外提供，<b>不占用主奖池</b>；宝盒券从宝盒池中列支，抽完即止。<b>反作弊：</b>任务奖励需通过钱包年龄、历史交易、最低净买入门槛，批量注册钱包不计入。</p>
+        <p class="caption" data-i18n-html="st.t1.cap"><b>奖励来源：</b>新手任务积分由活动方额外提供，<b>不占用主奖池</b>；宝盒券从宝盒池中列支，抽完即止。<b>反作弊：</b>任务奖励需通过钱包年龄、历史交易、最低净买入门槛，批量注册钱包不计入。</p>
       </div>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-fire"></i></span>连续参与 · 日活奖励</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-fire"></i></span><span data-i18n="st.t2.title">连续参与 · 日活奖励</span></div>
         <span class="sector-amount">+800 积分</span>
       </div>
       <div class="sector-body">
-        <p class="sector-desc"><b>适合持续交易或持仓的用户：</b>连续天数越长，积分奖励越高。交易和持仓两条线独立计算，可同时享受。</p>
+        <p class="sector-desc" data-i18n-html="st.t2.desc"><b>适合持续交易或持仓的用户：</b>连续天数越长，积分奖励越高。交易和持仓两条线独立计算，可同时享受。</p>
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>连续天数</th><th>条件</th><th>你能拿到</th></tr></thead>
+            <thead><tr><th data-i18n="st.t2.th1">连续天数</th><th data-i18n="st.t2.th2">条件</th><th data-i18n="st.t2.th3">你能拿到</th></tr></thead>
             <tbody>
-              <tr><td>连续 7 天</td><td>每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl">+300 财神积分</td></tr>
-              <tr><td>连续 14 天</td><td>每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl">+800 财神积分</td></tr>
-              <tr><td>连续 7 天</td><td>每日持仓 ≥ 100 USDC 等值</td><td class="hl">+200 财神积分</td></tr>
-              <tr><td>连续 14 天</td><td>每日持仓 ≥ 100 USDC 等值</td><td class="hl">+500 财神积分</td></tr>
+              <tr><td data-i18n="st.t2.r1">连续 7 天</td><td data-i18n="st.t2.c1">每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl" data-i18n="st.t2.v1">+300 财神积分</td></tr>
+              <tr><td data-i18n="st.t2.r2">连续 14 天</td><td data-i18n="st.t2.c1">每日至少 1 笔 ≥ 20 USDC 有效交易</td><td class="hl" data-i18n="st.t2.v2">+800 财神积分</td></tr>
+              <tr><td data-i18n="st.t2.r1">连续 7 天</td><td data-i18n="st.t2.c2">每日持仓 ≥ 100 USDC 等值</td><td class="hl" data-i18n="st.t2.v3">+200 财神积分</td></tr>
+              <tr><td data-i18n="st.t2.r2">连续 14 天</td><td data-i18n="st.t2.c2">每日持仓 ≥ 100 USDC 等值</td><td class="hl" data-i18n="st.t2.v4">+500 财神积分</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption"><b>奖励来源：</b>连续参与积分由活动方额外提供，<b>不占用主奖池</b>。<b>断签规则：</b>中断一天即重新计数，建议每日完成一笔小额有效交易保持连续。<b>反作弊：</b>同 IP 多地址、对敲交易不计入连续天数。</p>
+        <p class="caption" data-i18n-html="st.t2.cap"><b>奖励来源：</b>连续参与积分由活动方额外提供，<b>不占用主奖池</b>。<b>断签规则：</b>中断一天即重新计数，建议每日完成一笔小额有效交易保持连续。<b>反作弊：</b>同 IP 多地址、对敲交易不计入连续天数。</p>
       </div>
     </div>
   </section>
@@ -959,34 +1029,34 @@
   <section class="wrap sec" id="gacha">
     <div class="sec-head">
       <span class="sec-idx">07</span>
-      <h2 class="sec-title">财神宝盒：积分换惊喜<span>Fortune Box</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.gacha">财神宝盒：积分换惊喜</span><span class="st-en">Fortune Box</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>50 财神积分抽一次，<b>100% 中奖</b>，最高 500 USDC 等值。建议先冲段位，再抽宝盒——段位按最高积分锁定，宝盒只消耗最终积分。</p>
+    <p class="gain-lead" data-i18n-html="gc.lead"><b>你能得到：</b>50 财神积分抽一次，<b>100% 中奖</b>，最高 500 USDC 等值。建议先冲段位，再抽宝盒——段位按最高积分锁定，宝盒只消耗最终积分。</p>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-gift"></i></span>积分抽奖 · 抽完即止</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-gift"></i></span><span data-i18n="gc.t1.title">积分抽奖 · 抽完即止</span></div>
         <span class="sector-amount">8,333 USDC</span>
       </div>
       <div class="sector-body">
         <div class="sector-stats">
-          <div class="s-stat"><div class="k">消耗</div><div class="v is-red">50 财神积分 / 次</div></div>
-          <div class="s-stat"><div class="k">预计可抽次数</div><div class="v">约 800 次</div></div>
-          <div class="s-stat"><div class="k">期望奖励</div><div class="v is-red">约 10.3 USDC / 次</div></div>
-          <div class="s-stat"><div class="k">中奖率</div><div class="v">100%</div></div>
+          <div class="s-stat"><div class="k" data-i18n="gc.k1">消耗</div><div class="v is-red" data-i18n="gc.v1">50 财神积分 / 次</div></div>
+          <div class="s-stat"><div class="k" data-i18n="gc.k2">预计可抽次数</div><div class="v" data-i18n="gc.v2">约 800 次</div></div>
+          <div class="s-stat"><div class="k" data-i18n="gc.k3">期望奖励</div><div class="v is-red" data-i18n="gc.v3">约 10.3 USDC / 次</div></div>
+          <div class="s-stat"><div class="k" data-i18n="gc.k4">中奖率</div><div class="v">100%</div></div>
         </div>
         <div class="tbl-scroll" style="margin-top:14px;">
           <table>
-            <thead><tr><th>概率</th><th>奖励区间</th><th>说明</th></tr></thead>
+            <thead><tr><th data-i18n="gc.t1.th1">概率</th><th data-i18n="gc.t1.th2">奖励区间</th><th data-i18n="gc.t1.th3">说明</th></tr></thead>
             <tbody>
-              <tr><td>85%</td><td>1 – 3 USDC</td><td>小额，维持参与感</td></tr>
-              <tr><td>13%</td><td>10 – 30 USDC</td><td>中额，制造惊喜</td></tr>
-              <tr><td class="hl">2%</td><td class="hl">100 – 500 USDC</td><td>大奖，冲榜之外的意外之喜</td></tr>
+              <tr><td>85%</td><td>1 – 3 USDC</td><td data-i18n="gc.t1.d1">小额，维持参与感</td></tr>
+              <tr><td>13%</td><td>10 – 30 USDC</td><td data-i18n="gc.t1.d2">中额，制造惊喜</td></tr>
+              <tr><td class="hl">2%</td><td class="hl">100 – 500 USDC</td><td data-i18n="gc.t1.d3">大奖，冲榜之外的意外之喜</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption">
+        <p class="caption" data-i18n-html="gc.t1.cap">
           <b>策略提示：</b>段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。<b>建议先冲段位，再抽宝盒</b>；如果王者榜竞争激烈，抽宝盒前请评估对排名的影响。<br>
           <b>扣除方式：</b>每次抽取<b>扣除 50 财神积分</b>，从用户总积分中实时扣减。<br>
           <b>保底机制：</b>连续 10 次未中奖可获 1 USDC 安慰奖。<br>
@@ -1001,41 +1071,41 @@
   <section class="wrap sec" id="early">
     <div class="sec-head">
       <span class="sec-idx">08</span>
-      <h2 class="sec-title">早鸟冲刺：首周保底 + 按比例<span>Early Bird Bonus</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.early">早鸟冲刺：首周保底 + 按比例</span><span class="st-en">Early Bird Bonus</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>前 7 天净买入达标，<b>先拿保底，再按净买入量瓜分剩余奖池</b>，单人设有上限。越早买入，越容易拿到保底。</p>
+    <p class="gain-lead" data-i18n-html="eb.lead"><b>你能得到：</b>前 7 天净买入达标，<b>先拿保底，再按净买入量瓜分剩余奖池</b>，单人设有上限。越早买入，越容易拿到保底。</p>
 
     <div class="prose" style="margin-bottom:16px;">
-      <p>早鸟奖池独立于基础积分，专为活动前 7 天积极净买入的用户准备。每日 UTC 00:00 快照前一日净买入量，按排名瓜分对应奖池。</p>
+      <p data-i18n="eb.p1">早鸟奖池独立于基础积分，专为活动前 7 天积极净买入的用户准备。每日 UTC 00:00 快照前一日净买入量，按排名瓜分对应奖池。</p>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-bolt"></i></span>前 7 天冲刺奖池</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-bolt"></i></span><span data-i18n="eb.t1.title">前 7 天冲刺奖池</span></div>
         <span class="sector-amount">6,889 USDC</span>
       </div>
       <div class="sector-body">
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>阶段</th><th>额外奖池</th><th>保底 + 按比例</th><th>单人上限</th></tr></thead>
+            <thead><tr><th data-i18n="eb.t1.th1">阶段</th><th data-i18n="eb.t1.th2">额外奖池</th><th data-i18n="eb.t1.th3">保底 + 按比例</th><th data-i18n="eb.t1.th4">单人上限</th></tr></thead>
             <tbody>
-              <tr><td>第 1 天</td><td class="hl">3,000 USDC</td><td>前 100 名每人保底 <b>10 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">100 USDC</td></tr>
-              <tr><td>第 2–3 天</td><td class="hl">2,500 USDC</td><td>前 200 名每人保底 <b>5 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">80 USDC</td></tr>
-              <tr><td>第 4–7 天</td><td class="hl">1,389 USDC</td><td>前 300 名每人保底 <b>3 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">50 USDC</td></tr>
-              <tr><td>第 8 天起</td><td>无额外池</td><td>仅保留基础积分和早鸟乘数</td><td>—</td></tr>
+              <tr><td data-i18n="eb.t1.r1">第 1 天</td><td class="hl">3,000 USDC</td><td data-i18n-html="eb.t1.d1">前 100 名每人保底 <b>10 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">100 USDC</td></tr>
+              <tr><td data-i18n="eb.t1.r2">第 2–3 天</td><td class="hl">2,500 USDC</td><td data-i18n-html="eb.t1.d2">前 200 名每人保底 <b>5 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">80 USDC</td></tr>
+              <tr><td data-i18n="eb.t1.r3">第 4–7 天</td><td class="hl">1,389 USDC</td><td data-i18n-html="eb.t1.d3">前 300 名每人保底 <b>3 USDC</b>，剩余按净买入量占比瓜分</td><td class="hl">50 USDC</td></tr>
+              <tr><td data-i18n="eb.t1.r4">第 8 天起</td><td data-i18n="eb.t1.none">无额外池</td><td data-i18n="eb.t1.d4">仅保留基础积分和早鸟乘数</td><td>—</td></tr>
             </tbody>
           </table>
         </div>
         <div class="sources" style="margin-top:16px;">
-          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>最低净买入门槛：</b>参与早鸟排名，当日净买入量须 ≥ <b>50 USDC 等值</b>，未达标不进入排名。</span></div>
-          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值计；负值按 0 计，不参与排名。</span></div>
-          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>排名并列：</b>净买入量相同者，按当日交易笔数多者优先；仍并列则按首次交易时间早者优先。</span></div>
-          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>结束持仓锁定：</b>获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO；若提前卖出，取消早鸟奖励资格，该部分滚入王者榜奖池。</span></div>
-          <div class="source-row"><span class="source-idx">05</span><span class="source-text"><b>奖励发放：</b>活动结束后 7 天内统一折算 $财神DAO 发放，与基础积分奖励同步。</span></div>
-          <div class="source-row"><span class="source-idx">06</span><span class="source-text"><b>防刷限制：</b>净买入量仅统计有效交易（单笔 ≥ 20 USDC，非对敲，非自成交）。</span></div>
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text" data-i18n-html="eb.t1.s1"><b>最低净买入门槛：</b>参与早鸟排名，当日净买入量须 ≥ <b>50 USDC 等值</b>，未达标不进入排名。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text" data-i18n-html="eb.t1.s2"><b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值计；负值按 0 计，不参与排名。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text" data-i18n-html="eb.t1.s3"><b>排名并列：</b>净买入量相同者，按当日交易笔数多者优先；仍并列则按首次交易时间早者优先。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text" data-i18n-html="eb.t1.s4"><b>结束持仓锁定：</b>获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO；若提前卖出，取消早鸟奖励资格，该部分滚入王者榜奖池。</span></div>
+          <div class="source-row"><span class="source-idx">05</span><span class="source-text" data-i18n-html="eb.t1.s5"><b>奖励发放：</b>活动结束后 7 天内统一折算 $财神DAO 发放，与基础积分奖励同步。</span></div>
+          <div class="source-row"><span class="source-idx">06</span><span class="source-text" data-i18n-html="eb.t1.s6"><b>防刷限制：</b>净买入量仅统计有效交易（单笔 ≥ 20 USDC，非对敲，非自成交）。</span></div>
         </div>
-        <p class="caption">每日 UTC 00:30 更新前一日早鸟榜。早鸟奖池独立列支，不与王者榜冲突；早鸟乘数（积分加成）与早鸟奖池（额外奖金）可同时享受。</p>
+        <p class="caption" data-i18n="eb.t1.cap">每日 UTC 00:30 更新前一日早鸟榜。早鸟奖池独立列支，不与王者榜冲突；早鸟乘数（积分加成）与早鸟奖池（额外奖金）可同时享受。</p>
       </div>
     </div>
   </section>
@@ -1044,13 +1114,13 @@
   <section class="wrap sec" id="rules">
     <div class="sec-head">
       <span class="sec-idx">09</span>
-      <h2 class="sec-title">押金与公平保障<span>Deposit &amp; Fair Play</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.rules">押金与公平保障</span><span class="st-en">Deposit &amp; Fair Play</span></h2>
     </div>
 
-    <p class="gain-lead"><b>你能得到：</b>押金只是临时锁定，活动结束后 <b>24 小时内原数退还</b>；公平性补丁让刷量成本更高、误伤更少，规则可复算、可申诉、可公示。</p>
+    <p class="gain-lead" data-i18n-html="rl.lead"><b>你能得到：</b>押金只是临时锁定，活动结束后 <b>24 小时内原数退还</b>；公平性补丁让刷量成本更高、误伤更少，规则可复算、可申诉、可公示。</p>
 
     <div class="prose" style="margin-bottom:16px;">
-      <p>
+      <p data-i18n-html="rl.p1">
         报名需锁定 <b>20 USDC 等值 $财神DAO</b> 作为押金，通过安全检查后进入白名单才开始计分。
         押金机制有三重作用：<b>拦截批量女巫、锁定流通盘、抑制活动期间砸盘</b>。
         对参与者来说，它只是一笔<b>活动结束后 24 小时内全额退还</b>的临时锁定。
@@ -1059,18 +1129,18 @@
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-shield-halved"></i></span>报名检查项</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-shield-halved"></i></span><span data-i18n="rl.t1.title">报名检查项</span></div>
         <span class="sector-amount">4 项</span>
       </div>
       <div class="sector-body">
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>检查项</th><th>阈值</th><th>不通过处理</th></tr></thead>
+            <thead><tr><th data-i18n="rl.t1.th1">检查项</th><th data-i18n="rl.t1.th2">阈值</th><th data-i18n="rl.t1.th3">不通过处理</th></tr></thead>
             <tbody>
-              <tr><td>历史交易数</td><td>≥ 3 笔</td><td>拒绝报名</td></tr>
-              <tr><td>SOL 余额</td><td>≥ 0.01</td><td>拒绝报名</td></tr>
-              <tr><td>钱包年龄</td><td>≥ 3 天</td><td>拒绝报名</td></tr>
-              <tr><td>黑名单</td><td>不在黑名单</td><td>拒绝报名</td></tr>
+              <tr><td data-i18n="rl.t1.r1">历史交易数</td><td data-i18n="rl.t1.v1">≥ 3 笔</td><td data-i18n="rl.t1.x1">拒绝报名</td></tr>
+              <tr><td data-i18n="rl.t1.r2">SOL 余额</td><td data-i18n="rl.t1.v2">≥ 0.01</td><td data-i18n="rl.t1.x1">拒绝报名</td></tr>
+              <tr><td data-i18n="rl.t1.r3">钱包年龄</td><td data-i18n="rl.t1.v3">≥ 3 天</td><td data-i18n="rl.t1.x1">拒绝报名</td></tr>
+              <tr><td data-i18n="rl.t1.r4">黑名单</td><td data-i18n="rl.t1.v4">不在黑名单</td><td data-i18n="rl.t1.x1">拒绝报名</td></tr>
             </tbody>
           </table>
         </div>
@@ -1079,58 +1149,58 @@
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-coins"></i></span>押金规则</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-coins"></i></span><span data-i18n="rl.t2.title">押金规则</span></div>
         <span class="sector-amount">全额退还</span>
       </div>
       <div class="sector-body">
         <div class="sector-stats">
-          <div class="s-stat"><div class="k">普通用户押金</div><div class="v is-red">20 USDC 等值</div></div>
-          <div class="s-stat"><div class="k">队长额外押金</div><div class="v is-red">50 USDC 等值</div></div>
-          <div class="s-stat"><div class="k">退还时间</div><div class="v is-red">结束后 24 小时内</div></div>
-          <div class="s-stat"><div class="k">退还方式</div><div class="v">退还原始锁定代币数量</div></div>
+          <div class="s-stat"><div class="k" data-i18n="rl.t2.k1">普通用户押金</div><div class="v is-red" data-i18n="rl.t2.v1">20 USDC 等值</div></div>
+          <div class="s-stat"><div class="k" data-i18n="rl.t2.k2">队长额外押金</div><div class="v is-red" data-i18n="rl.t2.v2">50 USDC 等值</div></div>
+          <div class="s-stat"><div class="k" data-i18n="rl.t2.k3">退还时间</div><div class="v is-red" data-i18n="rl.t2.v3">结束后 24 小时内</div></div>
+          <div class="s-stat"><div class="k" data-i18n="rl.t2.k4">退还方式</div><div class="v" data-i18n="rl.t2.v4">退还原始锁定代币数量</div></div>
         </div>
         <div class="sources">
-          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>报名锁定</b>：20 USDC 等值 $财神DAO，按报名时币价锁定代币数量。</span></div>
-          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>正常退还</b>：活动结束后 <b>24 小时内</b>，退还报名时锁定的原始 $财神DAO 代币数量，不随币价变动。</span></div>
-          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>违规没收</b>：女巫 / 对敲违规，押金转入销毁地址或奖池，并在活动页面公示脱敏记录。</span></div>
-          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>抑制抛压</b>：押金锁定减少流通盘，活动期间卖压更低，对所有参与者都是利好。</span></div>
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text" data-i18n-html="rl.t2.s1"><b>报名锁定</b>：20 USDC 等值 $财神DAO，按报名时币价锁定代币数量。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text" data-i18n-html="rl.t2.s2"><b>正常退还</b>：活动结束后 <b>24 小时内</b>，退还报名时锁定的原始 $财神DAO 代币数量，不随币价变动。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text" data-i18n-html="rl.t2.s3"><b>违规没收</b>：女巫 / 对敲违规，押金转入销毁地址或奖池，并在活动页面公示脱敏记录。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text" data-i18n-html="rl.t2.s4"><b>抑制抛压</b>：押金锁定减少流通盘，活动期间卖压更低，对所有参与者都是利好。</span></div>
         </div>
       </div>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-scale-balanced"></i></span>公平性补丁 · 让刷量成本更高</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-scale-balanced"></i></span><span data-i18n="rl.t3.title">公平性补丁 · 让刷量成本更高</span></div>
         <span class="sector-amount">4 项</span>
       </div>
       <div class="sector-body">
         <div class="sources" style="margin-top:0;">
-          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>滚动净买入辅助风控：</b>保留当日净买入作为主口径，同时观察 <b>7 日滚动净买入占比</b>。若单日净买入异常高、次日出现大额卖出，标记进入人工复核，不直接清零。</span></div>
-          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>随机快照：</b>每日随机 3–5 次快照，取中位数作为日均持仓。快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</span></div>
-          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>结束持仓锁定：</b>早鸟奖要求结束前最后 24h 日均持仓 ≥ 50 USDC；王者榜 Top 10 要求活动结束时持仓 ≥ 100 USDC。减少领奖前后砸盘。</span></div>
-          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>三段式处理：</b>所有异常先「标记 → 复核 → 处罚」，正常高频用户可申诉，避免误伤。</span></div>
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text" data-i18n-html="rl.t3.s1"><b>滚动净买入辅助风控：</b>保留当日净买入作为主口径，同时观察 <b>7 日滚动净买入占比</b>。若单日净买入异常高、次日出现大额卖出，标记进入人工复核，不直接清零。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text" data-i18n-html="rl.t3.s2"><b>随机快照：</b>每日随机 3–5 次快照，取中位数作为日均持仓。快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text" data-i18n-html="rl.t3.s3"><b>结束持仓锁定：</b>早鸟奖要求结束前最后 24h 日均持仓 ≥ 50 USDC；王者榜 Top 10 要求活动结束时持仓 ≥ 100 USDC。减少领奖前后砸盘。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text" data-i18n-html="rl.t3.s4"><b>三段式处理：</b>所有异常先「标记 → 复核 → 处罚」，正常高频用户可申诉，避免误伤。</span></div>
         </div>
       </div>
     </div>
 
     <div class="sector-block">
       <div class="sector-header">
-        <div class="sector-title"><span class="s-icon"><i class="fas fa-file-shield"></i></span>公示与申诉入口</div>
+        <div class="sector-title"><span class="s-icon"><i class="fas fa-file-shield"></i></span><span data-i18n="rl.t4.title">公示与申诉入口</span></div>
         <span class="sector-amount">透明可查</span>
       </div>
       <div class="sector-body">
         <div class="sources" style="margin-top:0;">
-          <div class="source-row"><span class="source-idx">01</span><span class="source-text"><b>公平性公示：</b>奖池地址、押金锁定地址、销毁记录、违规处理脱敏记录、随机数种子哈希、发放交易哈希，统一在活动页面「透明度」入口公示。</span></div>
-          <div class="source-row"><span class="source-idx">02</span><span class="source-text"><b>申诉入口：</b>活动页面提供申诉表单，被标记用户可在公示期内提交证据。<b>48 小时内响应</b>，处理结果在页面公示。</span></div>
-          <div class="source-row"><span class="source-idx">03</span><span class="source-text"><b>申诉期：</b>活动结束后 3 天申诉期，覆盖段位、王者榜、早鸟奖、战队奖和宝盒异常。</span></div>
-          <div class="source-row"><span class="source-idx">04</span><span class="source-text"><b>规则可复算：</b>积分公式、快照规则、排名规则全部公开，用户可根据链上交易记录自行复算。</span></div>
+          <div class="source-row"><span class="source-idx">01</span><span class="source-text" data-i18n-html="rl.t4.s1"><b>公平性公示：</b>奖池地址、押金锁定地址、销毁记录、违规处理脱敏记录、随机数种子哈希、发放交易哈希，统一在活动页面「透明度」入口公示。</span></div>
+          <div class="source-row"><span class="source-idx">02</span><span class="source-text" data-i18n-html="rl.t4.s2"><b>申诉入口：</b>活动页面提供申诉表单，被标记用户可在公示期内提交证据。<b>48 小时内响应</b>，处理结果在页面公示。</span></div>
+          <div class="source-row"><span class="source-idx">03</span><span class="source-text" data-i18n-html="rl.t4.s3"><b>申诉期：</b>活动结束后 3 天申诉期，覆盖段位、王者榜、早鸟奖、战队奖和宝盒异常。</span></div>
+          <div class="source-row"><span class="source-idx">04</span><span class="source-text" data-i18n-html="rl.t4.s4"><b>规则可复算：</b>积分公式、快照规则、排名规则全部公开，用户可根据链上交易记录自行复算。</span></div>
         </div>
       </div>
     </div>
 
     <div class="hl-box">
-      <div class="hl-box-title">押金如何保护奖池</div>
-      <div class="hl-box-body">
+      <div class="hl-box-title" data-i18n="rl.hb.title">押金如何保护奖池</div>
+      <div class="hl-box-body" data-i18n-html="rl.hb.body">
         以 <b>500 人</b>报名、人均锁定 20 USDC 等值 $财神DAO 计算，总锁定量约 <b>10,000 USDC 等值</b>。
         即便其中 10% 因违规被没收销毁，仍有 <b>9,000 USDC 等值</b>的 $财神DAO 在活动期间处于锁定状态 ——
         流通盘更小、抛压更低，所有守规参与者都能受益。
@@ -1142,60 +1212,60 @@
   <section class="wrap sec" id="faq">
     <div class="sec-head">
       <span class="sec-idx">10</span>
-      <h2 class="sec-title">常见问题<span>FAQ</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.faq">常见问题</span><span class="st-en">FAQ</span></h2>
     </div>
 
     <div class="faq">
       <details>
-        <summary>押金怎么退？多久到账？</summary>
-        <div class="faq-a">活动结束后 <b>24 小时内</b>自动退还到报名钱包，退还的是<b>报名时锁定的原始 $财神DAO 代币数量</b>，不随币价变动，无需手动领取。</div>
+        <summary data-i18n="faq.1.q">押金怎么退？多久到账？</summary>
+        <div class="faq-a" data-i18n-html="faq.1.a">活动结束后 <b>24 小时内</b>自动退还到报名钱包，退还的是<b>报名时锁定的原始 $财神DAO 代币数量</b>，不随币价变动，无需手动领取。</div>
       </details>
       <details>
-        <summary>奖励什么时候发？发什么？</summary>
-        <div class="faq-a">活动结束后 <b>48 小时</b>锁定积分，公示 3 天、申诉期 3 天，随后在 <b>7 天内</b>统一空投。奖励以 <b>USDC 计价、$财神DAO 发放</b>，按结束时的 24h TWAP 折算。</div>
+        <summary data-i18n="faq.2.q">奖励什么时候发？发什么？</summary>
+        <div class="faq-a" data-i18n-html="faq.2.a">活动结束后 <b>48 小时</b>锁定积分，公示 3 天、申诉期 3 天，随后在 <b>7 天内</b>统一空投。奖励以 <b>USDC 计价、$财神DAO 发放</b>，按结束时的 24h TWAP 折算。</div>
       </details>
       <details>
-        <summary>我只买不卖，能拿多少积分？</summary>
-        <div class="faq-a">净买入部分按 <b>1.2 倍</b>权重计入，同时享受早鸟乘数（首日最高 2.0×）和持仓乘数（最高 1.5×）。若加入战队还可叠加 <b>1.1×</b> 加成，各项乘数相乘计算。新手任务和连续参与还能额外加积分。</div>
+        <summary data-i18n="faq.3.q">我只买不卖，能拿多少积分？</summary>
+        <div class="faq-a" data-i18n-html="faq.3.a">净买入部分按 <b>1.2 倍</b>权重计入，同时享受早鸟乘数（首日最高 2.0×）和持仓乘数（最高 1.5×）。若加入战队还可叠加 <b>1.1×</b> 加成，各项乘数相乘计算。新手任务和连续参与还能额外加积分。</div>
       </details>
       <details>
-        <summary>反复买卖刷量有用吗？</summary>
-        <div class="faq-a">作用非常有限。当当日净买入 ≤ 0 时，卖出积分权重从 0.3 降为 <b>0.1</b>，同样金额的刷量只能拿到真实交易的 <b>1/12</b>；同时 10 分钟内金额偏差 &lt; 5% 的对敲交易会被清零并标记。活动还增加了 7 日滚动净买入辅助风控和随机快照，进一步压缩刷量空间。</div>
+        <summary data-i18n="faq.4.q">反复买卖刷量有用吗？</summary>
+        <div class="faq-a" data-i18n-html="faq.4.a">作用非常有限。当当日净买入 ≤ 0 时，卖出积分权重从 0.3 降为 <b>0.1</b>，同样金额的刷量只能拿到真实交易的 <b>1/12</b>；同时 10 分钟内金额偏差 &lt; 5% 的对敲交易会被清零并标记。活动还增加了 7 日滚动净买入辅助风控和随机快照，进一步压缩刷量空间。</div>
       </details>
       <details>
-        <summary>青铜段位是不是没什么奖励？</summary>
-        <div class="faq-a">青铜是门槛最低的普惠档：财神积分 100–499 即可进入，按积分占比<b>瓜分 3,000 USDC</b>，单人上限 10 USDC。参与条件为有效交易 ≥ 3 笔、净买入 ≥ 50 USDC。完成新手任务还能额外拿 500 积分，更容易进入白银。</div>
+        <summary data-i18n="faq.5.q">青铜段位是不是没什么奖励？</summary>
+        <div class="faq-a" data-i18n-html="faq.5.a">青铜是门槛最低的普惠档：财神积分 100–499 即可进入，按积分占比<b>瓜分 3,000 USDC</b>，单人上限 10 USDC。参与条件为有效交易 ≥ 3 笔、净买入 ≥ 50 USDC。完成新手任务还能额外拿 500 积分，更容易进入白银。</div>
       </details>
       <details>
-        <summary>新手任务和连续参与奖励从哪里来？会稀释主奖池吗？</summary>
-        <div class="faq-a">不会。新手任务积分由活动方<b>额外提供</b>，不占用 68,888 USDC 主奖池；宝盒券从宝盒池中列支，抽完即止。连续参与积分同样由活动方额外提供，不影响主奖池分配。</div>
+        <summary data-i18n="faq.6.q">新手任务和连续参与奖励从哪里来？会稀释主奖池吗？</summary>
+        <div class="faq-a" data-i18n-html="faq.6.a">不会。新手任务积分由活动方<b>额外提供</b>，不占用 68,888 USDC 主奖池；宝盒券从宝盒池中列支，抽完即止。连续参与积分同样由活动方额外提供，不影响主奖池分配。</div>
       </details>
       <details>
-        <summary>早鸟奖现在怎么分？大户还会通吃吗？</summary>
-        <div class="faq-a">早鸟奖改为<b>保底 + 按比例 + 单人上限</b>的混合分配。第 1 天前 100 名每人保底 10 USDC，剩余按净买入量占比瓜分，单人上限 100 USDC。这样中小用户能拿到保底，大户也不能通吃。</div>
+        <summary data-i18n="faq.7.q">早鸟奖现在怎么分？大户还会通吃吗？</summary>
+        <div class="faq-a" data-i18n-html="faq.7.a">早鸟奖改为<b>保底 + 按比例 + 单人上限</b>的混合分配。第 1 天前 100 名每人保底 10 USDC，剩余按净买入量占比瓜分，单人上限 100 USDC。这样中小用户能拿到保底，大户也不能通吃。</div>
       </details>
       <details>
-        <summary>持仓快照时间固定吗？会不会被定点操纵？</summary>
-        <div class="faq-a">不固定。每日随机 3–5 次快照，取中位数作为日均持仓，快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</div>
+        <summary data-i18n="faq.8.q">持仓快照时间固定吗？会不会被定点操纵？</summary>
+        <div class="faq-a" data-i18n-html="faq.8.a">不固定。每日随机 3–5 次快照，取中位数作为日均持仓，快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。</div>
       </details>
       <details>
-        <summary>如果被误判违规，怎么申诉？</summary>
-        <div class="faq-a">活动页面提供申诉表单，被标记用户可在公示期内提交链上交易记录等证据。<b>48 小时内响应</b>，处理结果在页面公示。所有异常采用「标记 → 复核 → 处罚」三段式，不会直接清零。</div>
+        <summary data-i18n="faq.9.q">如果被误判违规，怎么申诉？</summary>
+        <div class="faq-a" data-i18n-html="faq.9.a">活动页面提供申诉表单，被标记用户可在公示期内提交链上交易记录等证据。<b>48 小时内响应</b>，处理结果在页面公示。所有异常采用「标记 → 复核 → 处罚」三段式，不会直接清零。</div>
       </details>
       <details>
-        <summary>抽宝盒会不会影响我的段位？</summary>
-        <div class="faq-a">不会。段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。建议先冲段位，再抽宝盒。</div>
+        <summary data-i18n="faq.10.q">抽宝盒会不会影响我的段位？</summary>
+        <div class="faq-a" data-i18n-html="faq.10.a">不会。段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。建议先冲段位，再抽宝盒。</div>
       </details>
       <details>
-        <summary>早鸟奖和早鸟乘数可以同时拿吗？</summary>
-        <div class="faq-a">可以。早鸟乘数是<b>积分加成</b>，早鸟奖池是<b>额外奖金</b>，两者独立计算、同时享受。但早鸟奖池获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO。</div>
+        <summary data-i18n="faq.11.q">早鸟奖和早鸟乘数可以同时拿吗？</summary>
+        <div class="faq-a" data-i18n-html="faq.11.a">可以。早鸟乘数是<b>积分加成</b>，早鸟奖池是<b>额外奖金</b>，两者独立计算、同时享受。但早鸟奖池获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO。</div>
       </details>
     </div>
 
     <div class="final-cta">
-      <h3>68,888 USDC 奖池已经开启</h3>
-      <p>20 USDC 押金全额退还 · 新手任务 + 连续参与额外送积分 · 早鸟保底 + 按比例 · 结束后 7 天内自动空投</p>
-      <a class="btn btn-primary" href="#join">现在就去参与 <i class="fas fa-arrow-right"></i></a>
+      <h3 data-i18n="cta.title">68,888 USDC 奖池已经开启</h3>
+      <p data-i18n="cta.sub">20 USDC 押金全额退还 · 新手任务 + 连续参与额外送积分 · 早鸟保底 + 按比例 · 结束后 7 天内自动空投</p>
+      <a class="btn btn-primary" href="#join"><span data-i18n="cta.btn">现在就去参与</span> <i class="fas fa-arrow-right"></i></a>
     </div>
   </section>
 
@@ -1203,25 +1273,25 @@
   <section class="wrap sec" id="notice">
     <div class="sec-head">
       <span class="sec-idx">!</span>
-      <h2 class="sec-title">风险提示<span>Risk Disclosure</span></h2>
+      <h2 class="sec-title"><span class="st-cn" data-i18n="sec.notice">风险提示</span><span class="st-en">Risk Disclosure</span></h2>
     </div>
 
     <div class="notice-box">
-      <div class="hl-box-title"><i class="fas fa-triangle-exclamation" aria-hidden="true" style="font-size:11px;"></i> 请务必阅读</div>
+      <div class="hl-box-title"><i class="fas fa-triangle-exclamation" aria-hidden="true" style="font-size:11px;"></i><span data-i18n="notice.title">请务必阅读</span></div>
       <div class="notice-body">
-        <span class="line">加密资产风险极高，代币价格波动剧烈。本页面所有 USDC 等值奖励仅作展示参考，<b>最终以链上实际发放数量为准</b>。</span>
-        <span class="line">押金退还的是<b>报名时锁定的原始代币数量</b>，币价涨跌不影响退还数量，但押金代币本身价值会随市场波动。</span>
-        <span class="line">请遵守当地法律法规，仅以可承受损失的资金参与。受限制地区用户不参与本次活动。</span>
-        <span class="line">活动规则、金额、时间与乘数以官方最终公告及链上实际执行结果为准。</span>
+        <span class="line" data-i18n-html="notice.l1">加密资产风险极高，代币价格波动剧烈。本页面所有 USDC 等值奖励仅作展示参考，<b>最终以链上实际发放数量为准</b>。</span>
+        <span class="line" data-i18n-html="notice.l2">押金退还的是<b>报名时锁定的原始代币数量</b>，币价涨跌不影响退还数量，但押金代币本身价值会随市场波动。</span>
+        <span class="line" data-i18n-html="notice.l3">请遵守当地法律法规，仅以可承受损失的资金参与。受限制地区用户不参与本次活动。</span>
+        <span class="line" data-i18n-html="notice.l4">活动规则、金额、时间与乘数以官方最终公告及链上实际执行结果为准。</span>
       </div>
     </div>
   </section>
 
   <!-- ================= 页脚 ================= -->
   <footer class="wrap doc-foot">
-    <div class="foot-row"><span class="foot-k">Event</span><span class="foot-v">$财神DAO · DEX 交易狂欢季</span></div>
-    <div class="foot-row"><span class="foot-k">Total Pool</span><span class="foot-v">68,888 USDC 等值 $财神DAO</span></div>
-    <div class="foot-row"><span class="foot-k">Duration</span><span class="foot-v">4 周 / 28 天</span></div>
+    <div class="foot-row"><span class="foot-k">Event</span><span class="foot-v" data-i18n="foot.event">$财神DAO · DEX 交易狂欢季</span></div>
+    <div class="foot-row"><span class="foot-k">Total Pool</span><span class="foot-v" data-i18n="foot.pool">68,888 USDC 等值 $财神DAO</span></div>
+    <div class="foot-row"><span class="foot-k">Duration</span><span class="foot-v" data-i18n="foot.duration">4 周 / 28 天</span></div>
     <div class="foot-row">
       <span class="foot-k">Contract</span>
       <span class="foot-v foot-ca">
@@ -1235,9 +1305,9 @@
       </span>
     </div>
     <div class="foot-row"><span class="foot-k">Network</span><span class="foot-v">Solana SPL</span></div>
-    <div class="foot-row"><span class="foot-k">Status</span><span class="foot-v">Official · 官方活动页面</span></div>
-    <div class="foot-row"><span class="foot-k">Transparency</span><span class="foot-v">奖池地址 · 押金锁定地址 · 销毁记录 · 随机数种子哈希 · 发放交易哈希（活动页公示）</span></div>
-    <div class="disc">本页面内容仅用于活动说明，不构成任何投资建议或收益承诺。<br>数字资产价格波动剧烈，请理性判断、注意风险。所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。</div>
+    <div class="foot-row"><span class="foot-k">Status</span><span class="foot-v" data-i18n="foot.status">Official · 官方活动页面</span></div>
+    <div class="foot-row"><span class="foot-k">Transparency</span><span class="foot-v" data-i18n="foot.trans">奖池地址 · 押金锁定地址 · 销毁记录 · 随机数种子哈希 · 发放交易哈希（活动页公示）</span></div>
+    <div class="disc" data-i18n-html="foot.disc">本页面内容仅用于活动说明，不构成任何投资建议或收益承诺。<br>数字资产价格波动剧烈，请理性判断、注意风险。所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。</div>
   </footer>
 
 </div>
@@ -1250,15 +1320,685 @@
 
 <div id="toast" role="status" aria-live="polite">已复制</div>
 
+<!-- 语言字典 -->
 <script>
+  var I18N = {
+    zh: {
+      'page.title': '$财神DAO · 交易狂欢季 | 68,888 USDC 奖池等你瓜分',
+      'page.desc': '$财神DAO DEX 交易激励狂欢季：68,888 USDC 等值总奖池，28 天净额积分制双轨联赛。净买入 1.2 倍权重、首日早鸟 2.0 倍乘数、20 USDC 押金全额退还。',
+
+      'hero.eb': 'Solana · DEX 交易狂欢季',
+      'hero.title': '<em>$财神DAO</em> 交易狂欢季',
+      'hero.sub': '买得越多、拿得越久、战队越强，收益越高 · 押金全额退还',
+      'hero.unit': 'USDC 等值总奖池',
+      'chip.1': '首日早鸟 2.0×',
+      'chip.2': '冠军独享 5,500',
+      'chip.3': '新手任务 + 连续参与',
+      'chip.4': '押金全额退还',
+      'btn.join': '查看怎么参与',
+      'btn.rewards': '先看奖池',
+      'hero.foot': '代币总量恒定 <b>686,868,686</b> 枚 · 无增发 · 无冻结权限<br>奖励以 USDC 计价，结束 <b>7 天内</b>按 24h TWAP 折算 <b>$财神DAO</b> 自动空投',
+
+      'toc.overview': '概览',
+      'toc.join': '怎么参与',
+      'toc.rewards': '奖池',
+      'toc.points': '积分',
+      'toc.personal': '个人',
+      'toc.team': '战队',
+      'toc.starter': '新手 & 连续',
+      'toc.gacha': '宝盒',
+      'toc.early': '早鸟',
+      'toc.rules': '保障',
+      'toc.faq': '问答',
+
+      'ov.p1': '<b>$财神DAO</b> 发行于 Solana 主网，总量恒定 <b>686,868,686</b> 枚，无增发、无冻结权限。本次交易狂欢季投入 <span class="hl">68,888 USDC 等值 $财神DAO</span> 作为总奖池，用 <b>28 天</b>「净额积分制」个人 + 战队双轨联赛，奖励真实交易、真实持币、真实社区。',
+      'ov.p2': '简单说：<span class="hl">净买入越多、拿得越久、战队越强，你能拿到的积分和奖励就越高</span>。净买入享受 <b>1.2 倍</b>权重，净卖出权重降至 <b>0.1</b>；日均持仓越高，乘数越高（<b>0.7–1.5×</b>）；加入战队再叠 <b>1.1×</b> 加成。新手任务和连续参与奖励额外送积分，不占用主奖池。',
+      'ov.p3': '报名只需锁定 <b>20 USDC 等值 $财神DAO</b> 押金，活动结束后 <b>24 小时内全额退还</b>（退还报名时锁定的代币数量，不随币价变动）。全部奖励以 <b>USDC 计价、$财神DAO 发放</b>，结束后 <b>7 天内</b>自动空投，无需手动领取。',
+      'ov.c1': '天活动周期',
+      'ov.c2': 'USDC 押金<br>全额退还',
+      'ov.c3': '天内<br>自动发放奖励',
+
+      'sec.join': '四步拿到奖励',
+      'join.lead': '<b>你能得到：</b>完成报名后当天开始计分，交易、持仓、组队同步累积，五重奖励可叠加。',
+      'join.s1.t': '锁定押金，完成报名',
+      'join.s1.d': '用 <b>20 USDC 等值 $财神DAO</b> 锁定押金，通过 4 项安全检查后进入白名单，当天开始计分。押金活动结束 <b>24 小时内全额退还</b>。',
+      'join.s2.t': '交易赚「财神积分」',
+      'join.s2.d': '净买入享 <b>1.2 倍</b>权重，首日早鸟乘数 <b>2.0×</b>，持仓越久乘数越高。积分实时累计，段位自动升级。',
+      'join.s3.t': '组队放大收益',
+      'join.s3.d': '邀请好友组成战队，冲击战队榜。队长独享 <b>30%</b> 分成，队员按积分比例瓜分 <b>70%</b>，全员额外 <b>1.1×</b> 积分加成。',
+      'join.s4.t': '瓜分 68,888 USDC',
+      'join.s4.d': '段位奖 + 王者榜 + 战队奖 + 宝盒 + 早鸟奖，五重收益可叠加。结束 <b>7 天内</b>自动空投至报名钱包。',
+      'join.gate.title': '报名门槛 · 4 项安全检查',
+      'join.gate.body': '<b>历史交易 ≥ 3 笔</b>　·　<b>SOL 余额 ≥ 0.01</b>　·　<b>钱包年龄 ≥ 3 天</b>　·　<b>不在黑名单</b><br>全部通过即可进入白名单。门槛用于拦截批量注册的女巫钱包，保护真实参与者的奖池不被稀释。',
+
+      'sec.rewards': '你能拿到哪几份',
+      'rw.lead': '<b>你能得到：</b>五重奖池独立计算、可叠加。冲榜拿王者榜和战队奖，达标拿段位奖，早鸟期额外拿冲刺奖，积分还能抽宝盒。',
+      'rw.c1': '个人段位奖<br>含青铜瓜分池 3,000',
+      'rw.c2': '个人王者榜<br>Top 10 瓜分',
+      'rw.c3': '战队赛道<br>Top 战队 + 最佳新人',
+      'rw.c4': '财神宝盒<br>积分抽取，抽完即止',
+      'rw.c5': '早鸟冲刺<br>前 7 天额外奖池',
+      'rw.th1': '模块',
+      'rw.th2': '占比',
+      'rw.th3': 'USDC 等值',
+      'rw.th4': '怎么拿',
+      'rw.r1a': '个人王者榜',
+      'rw.r1d': '积分冲进 Top 10',
+      'rw.r2a': '个人段位奖',
+      'rw.r2d': '积分达标即得',
+      'rw.r3a': '战队赛道',
+      'rw.r3d': '组队冲榜，队长队员分',
+      'rw.r4a': '财神宝盒',
+      'rw.r4d': '50 积分抽一次',
+      'rw.r5a': '早鸟冲刺',
+      'rw.r5d': '前 7 天净买入排名',
+      'rw.rta': '合计',
+      'rw.rtd': '押金独立运作，不计入奖池',
+      'rw.hb.title': '奖励折算与发放',
+      'rw.hb.body': '<b>计价：</b>全部奖励以 USDC 计价，页面展示的 USDC 等值仅为参考。<br><b>折算：</b>实得代币数量 = USDC 等值奖励 ÷ 活动结束时 $财神DAO/USDC 的 <b>24h TWAP</b>。<br><b>TWAP 口径：</b>取 Meteora TWAP 的<b>中位数</b>，并<b>排除最后 2 小时</b>数据。<br><b>发放节奏：</b>活动结束后 <b>48 小时</b>锁定积分 → 公示 <b>3 天</b> → 申诉期 <b>3 天</b> → <b>7 天内</b>自动空投。',
+
+      'sec.points': '怎么买、拿多久，积分最高',
+      'pt.lead': '<b>你能得到：</b>同样买入 500 USDC，首日买入比第 8 天买入多拿 1 倍积分；持有 14 天比不持有多 20%–50%；组队再多 10%。',
+      'pt.p1': '总积分公式：<b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>，<b>财神积分 = S<sub>final</sub> × 100</b>。排行榜、段位门槛、宝盒消耗均以财神积分计。',
+      'pt.p2': '每日 UTC 00:00 结算前一日（UTC 00:00–23:59）的净买入与卖出，应用当日早鸟乘数，累加即为总交易积分。',
+      'pt.s1.title': '净买入怎么算',
+      'pt.s1.desc': '<b>核心逻辑：</b>按当日净买入方向差异化计分——净买入为正时，卖出也能拿到 0.3 权重；一旦当日净买入 ≤ 0，卖出权重直接降至 0.1。买入并持有是拿积分最划算的方式。',
+      'pt.s1.hb.title': '计分公式',
+      'pt.s1.hb.body': '<b>当净买入 &gt; 0 时：</b>S<sub>trade</sub> = (V<sub>净买入</sub> × 1.2 + V<sub>卖出</sub> × 0.3) / 100<br><b>当净买入 ≤ 0 时：</b>S<sub>trade</sub> = V<sub>卖出</sub> × 0.1 / 100',
+      'pt.s1.k1': '净买入权重',
+      'pt.s1.k2': '卖出权重（净买入 &gt; 0）',
+      'pt.s1.k3': '卖出权重（净买入 ≤ 0）',
+      'pt.s1.k4': '单笔最低门槛',
+      'pt.s1.cap': '<b>场景 A（买入并持有）：</b>买入 500、卖出 200，净买入 300。<br>S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 原始积分</b> = <b>420 财神积分</b>。<br><b>场景 B（买入后立刻卖出）：</b>买入 100、卖出 300，净买入 −200。<br>S = 300 × 0.1 / 100 = <b>0.3 原始积分</b> = <b>30 财神积分</b>。<br><b>结论：</b>同样 300 USDC 的卖出额，买入并持有可得 360 财神积分，买入后立刻卖出只有 30 财神积分——<b>刷量效率仅为真实交易的 1/12</b>。',
+      'pt.s2.title': '越早买，积分越多 E<sub>i</sub>',
+      'pt.s2.th1': '活动阶段',
+      'pt.s2.th2': '乘数',
+      'pt.s2.th3': '你能多拿多少',
+      'pt.s2.r1': '第 1 天',
+      'pt.s2.r2': '第 2–3 天',
+      'pt.s2.r3': '第 4–7 天',
+      'pt.s2.r4': '第 8 天起',
+      'pt.s2.d1': '同样买入，积分翻倍',
+      'pt.s2.d2': '多拿 50%',
+      'pt.s2.d3': '多拿 20%',
+      'pt.s2.d4': '标准积分',
+      'pt.s2.cap': '<b>应用方式：</b>按<b>交易发生日</b>逐日应用，每日结算使用当日乘数，不影响持仓乘数与战队加成。<b>行动建议：</b>想冲榜的话，首日完成第一笔有效买入最划算。',
+      'pt.s3.title': '拿得越久，乘数越高 M<sub>hold</sub>',
+      'pt.s3.desc': '每日 UTC 00:00 对白名单地址做余额快照（时间随机），按 USDC 等值计算日均持仓。',
+      'pt.s3.th1': '日均持仓（USDC 等值）',
+      'pt.s3.th2': '乘数',
+      'pt.s3.th3': '你能多拿多少',
+      'pt.s3.d1': '积分打 7 折',
+      'pt.s3.d2': '标准积分',
+      'pt.s3.d3': '多拿 20%',
+      'pt.s3.d4': '多拿 50%',
+      'pt.s3.cap': '<b>示例：</b>参与 14 天，前 7 天每天持仓 300 USDC，后 7 天为 0。日均持仓 = (300×7 + 0×7) / 14 = 150 USDC → 乘数 <b>1.0</b>。<b>行动建议：</b>如果打算冲段位，尽量让日均持仓保持在 200 USDC 以上。',
+      'pt.hb.title': '有效交易过滤（不影响正常交易）',
+      'pt.hb.body': '<b>微交易：</b>单笔 &lt; 20 USDC 不计分。<br><b>短持仓：</b>买卖间隔 &lt; 3 分钟不计分。<br><b>对敲交易：</b>10 分钟内买卖金额偏差 &lt; 5%，积分清零并标记。<br><b>高频往返：</b>1 小时内买卖对 &gt; 5 组，标记并人工审核。<br><b>初始持仓：</b>活动开始前已持有的代币卖出，优先扣除初始持仓，不计入卖出积分。<br><b>失败交易：</b>链上 err 不为 null，不计分。',
+
+      'sec.personal': '个人赛道：达标即得',
+      'ps.lead': '<b>你能得到：</b>积分达到对应门槛，就能锁定段位奖励；积分冲进 Top 10，还能瓜分王者榜。两个奖池独立计算。',
+      'ps.t1.title': '段位阶梯奖 · 达标即得',
+      'ps.t1.th1': '段位',
+      'ps.t1.th2': '财神积分门槛',
+      'ps.t1.th3': '你能拿到',
+      'ps.t1.th4': '名额',
+      'ps.t1.th5': '小计',
+      'tier.bronze': '青铜',
+      'tier.silver': '白银',
+      'tier.gold': '黄金',
+      'tier.diamond': '钻石',
+      'tier.platinum': '铂金',
+      'ps.t1.bronze': '瓜分 3,000',
+      'ps.unlimited': '不限',
+      'ps.t1.s1': '<b>青铜瓜分池</b>：按最终财神积分占青铜总积分的比例瓜分 3,000 USDC，单人上限 <b>10 USDC</b>，剩余部分滚入王者榜奖池。',
+      'ps.t1.s2': '<b>青铜参与条件</b>：有效交易 ≥ 3 笔，净买入 ≥ 50 USDC，押金合格，无违规记录。',
+      'ps.t1.s3': '<b>白银及以上</b>：达标即得，奖池发完即止；若达标人数超过名额，按最终财神积分从高到低录取。',
+      'ps.t1.s4': '<b>发放时间</b>：活动结束后 7 天内，按结束日 24h TWAP 折算 $财神DAO 自动发放。',
+      'ps.t2.title': '个人王者榜 · Top 10 瓜分',
+      'ps.t2.th1': '名次',
+      'ps.t2.th2': '你能拿到（USDC 等值）',
+      'ps.t2.r1': '第 1 名',
+      'ps.t2.r2': '第 2 名',
+      'ps.t2.r3': '第 3 名',
+      'ps.t2.r4': '第 4–10 名',
+      'ps.t2.r4v': '瓜分 2,500',
+      'ps.t2.cap': '<b>并列处理：</b>若第 1 名并列，平分第 1 名奖励；若第 10 名并列，平分第 4–10 名剩余奖池。发放时间同段位奖。<br><b>结束持仓锁定：</b>王者榜 Top 10 需在活动结束时仍持有 ≥ 100 USDC 等值 $财神DAO，若提前卖出则取消王者榜资格，该部分奖励滚入下一名次。',
+
+      'sec.team': '战队赛道：组队多拿 1.1×',
+      'tm.lead': '<b>你能得到：</b>加入有效战队后，每一笔有效交易额外享受 <b>1.1×</b> 积分加成；战队冲进 Top 8，队长和队员按比例瓜分奖池。队长拿 30%，队员分 70%。',
+      'tm.t1.title': '战队规则与奖池',
+      'tm.k1': '队长押金',
+      'tm.v1': '50 USDC 等值',
+      'tm.k2': '每队人数上限',
+      'tm.v2': '50 人',
+      'tm.k3': '有效队员门槛',
+      'tm.v3': '≥ 300 财神积分',
+      'tm.k4': '战队注册费',
+      'tm.v4': '无',
+      'tm.hb.title': '战队排名公式 · 归一化加权',
+      'tm.hb.body': '<b>战队得分 = (战队总积分 ÷ 最高总积分) × 40 + (有效队员人均积分 ÷ 最高人均积分) × 40 + (新增持币地址数 ÷ 最高新增持币地址数) × 20</b><br>三项指标分别除以所有战队中的最大值，再按 40 / 40 / 20 加权，量纲统一，避免「大户队」一家独大。队员越多、人均越强、新增持币越多，排名越高。',
+      'tm.t1.th1': '名次',
+      'tm.t1.th2': '奖池',
+      'tm.t1.th3': '队长分成',
+      'tm.t1.th4': '队员分成',
+      'tm.t1.r2p': '各 3,000',
+      'tm.t1.r3p': '各 1,000',
+      'tm.t1.best': '最佳新人',
+      'tm.t1.cap': '<b>队长不参与队员池分配。</b>最佳新人战队：成立时间 &lt; 14 天且进入前 20 名。队员按个人财神积分比例瓜分队员池。活动结束后 7 天内，队长与队员奖励分别自动空投。战队成员在个人积分上额外享受 <b>1.1×</b> 战队加成（B<sub>team</sub>），队长与队员均适用。',
+      'tm.ab.title': '战队反作弊',
+      'tm.ab.body': '同一 IP 或同一资金来源加入同一战队 &gt; 3 人 → 标记审核。<br>战队内女巫占比 &gt; 30% → 取消整队资格，没收队长押金。<br>队长未督促队员交易不影响排名，但队长分成仅来自有效队员。',
+
+      'sec.starter': '新手任务 &amp; 连续参与',
+      'st.lead': '<b>你能得到：</b>不冲榜也能拿积分。完成新手任务额外送 <b>500 财神积分 + 1 张宝盒券</b>；连续 7 天或 14 天参与，再送 <b>300–800 财神积分</b>。这些积分直接计入总积分，影响段位和排名。',
+      'st.t1.title': '新手任务 · 首周专享',
+      'st.t1.desc': '<b>适合刚报名的用户：</b>四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可免费抽一次宝盒。',
+      'st.task1.t': '完成报名',
+      'st.task1.c': '通过 4 项安全检查并锁定押金',
+      'st.task1.r': '+50 财神积分',
+      'st.task2.t': '首笔有效交易',
+      'st.task2.c': '单笔 ≥ 20 USDC 的买入或卖出',
+      'st.task2.r': '+100 财神积分',
+      'st.task3.t': '首次持仓 24h',
+      'st.task3.c': '持仓 ≥ 50 USDC 等值满 24 小时',
+      'st.task3.r': '+150 财神积分',
+      'st.task4.t': '邀请首个好友',
+      'st.task4.c': '好友完成报名并通过安全检查',
+      'st.task4.r': '+200 财神积分',
+      'st.t1.bonus.title': '全部完成额外奖励',
+      'st.t1.bonus.body': '四项任务全部完成，额外获得 <b>1 张宝盒券</b>（价值 50 财神积分），可在活动期间免费抽取一次宝盒。',
+      'st.t1.cap': '<b>奖励来源：</b>新手任务积分由活动方额外提供，<b>不占用主奖池</b>；宝盒券从宝盒池中列支，抽完即止。<b>反作弊：</b>任务奖励需通过钱包年龄、历史交易、最低净买入门槛，批量注册钱包不计入。',
+      'st.t2.title': '连续参与 · 日活奖励',
+      'st.t2.desc': '<b>适合持续交易或持仓的用户：</b>连续天数越长，积分奖励越高。交易和持仓两条线独立计算，可同时享受。',
+      'st.t2.th1': '连续天数',
+      'st.t2.th2': '条件',
+      'st.t2.th3': '你能拿到',
+      'st.t2.r1': '连续 7 天',
+      'st.t2.r2': '连续 14 天',
+      'st.t2.c1': '每日至少 1 笔 ≥ 20 USDC 有效交易',
+      'st.t2.c2': '每日持仓 ≥ 100 USDC 等值',
+      'st.t2.v1': '+300 财神积分',
+      'st.t2.v2': '+800 财神积分',
+      'st.t2.v3': '+200 财神积分',
+      'st.t2.v4': '+500 财神积分',
+      'st.t2.cap': '<b>奖励来源：</b>连续参与积分由活动方额外提供，<b>不占用主奖池</b>。<b>断签规则：</b>中断一天即重新计数，建议每日完成一笔小额有效交易保持连续。<b>反作弊：</b>同 IP 多地址、对敲交易不计入连续天数。',
+
+      'sec.gacha': '财神宝盒：积分换惊喜',
+      'gc.lead': '<b>你能得到：</b>50 财神积分抽一次，<b>100% 中奖</b>，最高 500 USDC 等值。建议先冲段位，再抽宝盒——段位按最高积分锁定，宝盒只消耗最终积分。',
+      'gc.t1.title': '积分抽奖 · 抽完即止',
+      'gc.k1': '消耗',
+      'gc.v1': '50 财神积分 / 次',
+      'gc.k2': '预计可抽次数',
+      'gc.v2': '约 800 次',
+      'gc.k3': '期望奖励',
+      'gc.v3': '约 10.3 USDC / 次',
+      'gc.k4': '中奖率',
+      'gc.t1.th1': '概率',
+      'gc.t1.th2': '奖励区间',
+      'gc.t1.th3': '说明',
+      'gc.t1.d1': '小额，维持参与感',
+      'gc.t1.d2': '中额，制造惊喜',
+      'gc.t1.d3': '大奖，冲榜之外的意外之喜',
+      'gc.t1.cap': '<b>策略提示：</b>段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。<b>建议先冲段位，再抽宝盒</b>；如果王者榜竞争激烈，抽宝盒前请评估对排名的影响。<br><b>扣除方式：</b>每次抽取<b>扣除 50 财神积分</b>，从用户总积分中实时扣减。<br><b>保底机制：</b>连续 10 次未中奖可获 1 USDC 安慰奖。<br><b>随机性：</b>使用链下可验证随机数，每日公示种子哈希。<br><b>发放：</b>中奖奖励在活动结束后 7 天内随主奖池一并发放。',
+
+      'sec.early': '早鸟冲刺：首周保底 + 按比例',
+      'eb.lead': '<b>你能得到：</b>前 7 天净买入达标，<b>先拿保底，再按净买入量瓜分剩余奖池</b>，单人设有上限。越早买入，越容易拿到保底。',
+      'eb.p1': '早鸟奖池独立于基础积分，专为活动前 7 天积极净买入的用户准备。每日 UTC 00:00 快照前一日净买入量，按排名瓜分对应奖池。',
+      'eb.t1.title': '前 7 天冲刺奖池',
+      'eb.t1.th1': '阶段',
+      'eb.t1.th2': '额外奖池',
+      'eb.t1.th3': '保底 + 按比例',
+      'eb.t1.th4': '单人上限',
+      'eb.t1.r1': '第 1 天',
+      'eb.t1.r2': '第 2–3 天',
+      'eb.t1.r3': '第 4–7 天',
+      'eb.t1.r4': '第 8 天起',
+      'eb.t1.none': '无额外池',
+      'eb.t1.d1': '前 100 名每人保底 <b>10 USDC</b>，剩余按净买入量占比瓜分',
+      'eb.t1.d2': '前 200 名每人保底 <b>5 USDC</b>，剩余按净买入量占比瓜分',
+      'eb.t1.d3': '前 300 名每人保底 <b>3 USDC</b>，剩余按净买入量占比瓜分',
+      'eb.t1.d4': '仅保留基础积分和早鸟乘数',
+      'eb.t1.s1': '<b>最低净买入门槛：</b>参与早鸟排名，当日净买入量须 ≥ <b>50 USDC 等值</b>，未达标不进入排名。',
+      'eb.t1.s2': '<b>净买入定义：</b>当日总买入 − 当日总卖出，仅正值计；负值按 0 计，不参与排名。',
+      'eb.t1.s3': '<b>排名并列：</b>净买入量相同者，按当日交易笔数多者优先；仍并列则按首次交易时间早者优先。',
+      'eb.t1.s4': '<b>结束持仓锁定：</b>获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO；若提前卖出，取消早鸟奖励资格，该部分滚入王者榜奖池。',
+      'eb.t1.s5': '<b>奖励发放：</b>活动结束后 7 天内统一折算 $财神DAO 发放，与基础积分奖励同步。',
+      'eb.t1.s6': '<b>防刷限制：</b>净买入量仅统计有效交易（单笔 ≥ 20 USDC，非对敲，非自成交）。',
+      'eb.t1.cap': '每日 UTC 00:30 更新前一日早鸟榜。早鸟奖池独立列支，不与王者榜冲突；早鸟乘数（积分加成）与早鸟奖池（额外奖金）可同时享受。',
+
+      'sec.rules': '押金与公平保障',
+      'rl.lead': '<b>你能得到：</b>押金只是临时锁定，活动结束后 <b>24 小时内原数退还</b>；公平性补丁让刷量成本更高、误伤更少，规则可复算、可申诉、可公示。',
+      'rl.p1': '报名需锁定 <b>20 USDC 等值 $财神DAO</b> 作为押金，通过安全检查后进入白名单才开始计分。押金机制有三重作用：<b>拦截批量女巫、锁定流通盘、抑制活动期间砸盘</b>。对参与者来说，它只是一笔<b>活动结束后 24 小时内全额退还</b>的临时锁定。',
+      'rl.t1.title': '报名检查项',
+      'rl.t1.th1': '检查项',
+      'rl.t1.th2': '阈值',
+      'rl.t1.th3': '不通过处理',
+      'rl.t1.r1': '历史交易数',
+      'rl.t1.v1': '≥ 3 笔',
+      'rl.t1.r2': 'SOL 余额',
+      'rl.t1.v2': '≥ 0.01',
+      'rl.t1.r3': '钱包年龄',
+      'rl.t1.v3': '≥ 3 天',
+      'rl.t1.r4': '黑名单',
+      'rl.t1.v4': '不在黑名单',
+      'rl.t1.x1': '拒绝报名',
+      'rl.t2.title': '押金规则',
+      'rl.t2.k1': '普通用户押金',
+      'rl.t2.v1': '20 USDC 等值',
+      'rl.t2.k2': '队长额外押金',
+      'rl.t2.v2': '50 USDC 等值',
+      'rl.t2.k3': '退还时间',
+      'rl.t2.v3': '结束后 24 小时内',
+      'rl.t2.k4': '退还方式',
+      'rl.t2.v4': '退还原始锁定代币数量',
+      'rl.t2.s1': '<b>报名锁定</b>：20 USDC 等值 $财神DAO，按报名时币价锁定代币数量。',
+      'rl.t2.s2': '<b>正常退还</b>：活动结束后 <b>24 小时内</b>，退还报名时锁定的原始 $财神DAO 代币数量，不随币价变动。',
+      'rl.t2.s3': '<b>违规没收</b>：女巫 / 对敲违规，押金转入销毁地址或奖池，并在活动页面公示脱敏记录。',
+      'rl.t2.s4': '<b>抑制抛压</b>：押金锁定减少流通盘，活动期间卖压更低，对所有参与者都是利好。',
+      'rl.t3.title': '公平性补丁 · 让刷量成本更高',
+      'rl.t3.s1': '<b>滚动净买入辅助风控：</b>保留当日净买入作为主口径，同时观察 <b>7 日滚动净买入占比</b>。若单日净买入异常高、次日出现大额卖出，标记进入人工复核，不直接清零。',
+      'rl.t3.s2': '<b>随机快照：</b>每日随机 3–5 次快照，取中位数作为日均持仓。快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。',
+      'rl.t3.s3': '<b>结束持仓锁定：</b>早鸟奖要求结束前最后 24h 日均持仓 ≥ 50 USDC；王者榜 Top 10 要求活动结束时持仓 ≥ 100 USDC。减少领奖前后砸盘。',
+      'rl.t3.s4': '<b>三段式处理：</b>所有异常先「标记 → 复核 → 处罚」，正常高频用户可申诉，避免误伤。',
+      'rl.t4.title': '公示与申诉入口',
+      'rl.t4.s1': '<b>公平性公示：</b>奖池地址、押金锁定地址、销毁记录、违规处理脱敏记录、随机数种子哈希、发放交易哈希，统一在活动页面「透明度」入口公示。',
+      'rl.t4.s2': '<b>申诉入口：</b>活动页面提供申诉表单，被标记用户可在公示期内提交证据。<b>48 小时内响应</b>，处理结果在页面公示。',
+      'rl.t4.s3': '<b>申诉期：</b>活动结束后 3 天申诉期，覆盖段位、王者榜、早鸟奖、战队奖和宝盒异常。',
+      'rl.t4.s4': '<b>规则可复算：</b>积分公式、快照规则、排名规则全部公开，用户可根据链上交易记录自行复算。',
+      'rl.hb.title': '押金如何保护奖池',
+      'rl.hb.body': '以 <b>500 人</b>报名、人均锁定 20 USDC 等值 $财神DAO 计算，总锁定量约 <b>10,000 USDC 等值</b>。即便其中 10% 因违规被没收销毁，仍有 <b>9,000 USDC 等值</b>的 $财神DAO 在活动期间处于锁定状态 —— 流通盘更小、抛压更低，所有守规参与者都能受益。',
+
+      'sec.faq': '常见问题',
+      'faq.1.q': '押金怎么退？多久到账？',
+      'faq.1.a': '活动结束后 <b>24 小时内</b>自动退还到报名钱包，退还的是<b>报名时锁定的原始 $财神DAO 代币数量</b>，不随币价变动，无需手动领取。',
+      'faq.2.q': '奖励什么时候发？发什么？',
+      'faq.2.a': '活动结束后 <b>48 小时</b>锁定积分，公示 3 天、申诉期 3 天，随后在 <b>7 天内</b>统一空投。奖励以 <b>USDC 计价、$财神DAO 发放</b>，按结束时的 24h TWAP 折算。',
+      'faq.3.q': '我只买不卖，能拿多少积分？',
+      'faq.3.a': '净买入部分按 <b>1.2 倍</b>权重计入，同时享受早鸟乘数（首日最高 2.0×）和持仓乘数（最高 1.5×）。若加入战队还可叠加 <b>1.1×</b> 加成，各项乘数相乘计算。新手任务和连续参与还能额外加积分。',
+      'faq.4.q': '反复买卖刷量有用吗？',
+      'faq.4.a': '作用非常有限。当当日净买入 ≤ 0 时，卖出积分权重从 0.3 降为 <b>0.1</b>，同样金额的刷量只能拿到真实交易的 <b>1/12</b>；同时 10 分钟内金额偏差 &lt; 5% 的对敲交易会被清零并标记。活动还增加了 7 日滚动净买入辅助风控和随机快照，进一步压缩刷量空间。',
+      'faq.5.q': '青铜段位是不是没什么奖励？',
+      'faq.5.a': '青铜是门槛最低的普惠档：财神积分 100–499 即可进入，按积分占比<b>瓜分 3,000 USDC</b>，单人上限 10 USDC。参与条件为有效交易 ≥ 3 笔、净买入 ≥ 50 USDC。完成新手任务还能额外拿 500 积分，更容易进入白银。',
+      'faq.6.q': '新手任务和连续参与奖励从哪里来？会稀释主奖池吗？',
+      'faq.6.a': '不会。新手任务积分由活动方<b>额外提供</b>，不占用 68,888 USDC 主奖池；宝盒券从宝盒池中列支，抽完即止。连续参与积分同样由活动方额外提供，不影响主奖池分配。',
+      'faq.7.q': '早鸟奖现在怎么分？大户还会通吃吗？',
+      'faq.7.a': '早鸟奖改为<b>保底 + 按比例 + 单人上限</b>的混合分配。第 1 天前 100 名每人保底 10 USDC，剩余按净买入量占比瓜分，单人上限 100 USDC。这样中小用户能拿到保底，大户也不能通吃。',
+      'faq.8.q': '持仓快照时间固定吗？会不会被定点操纵？',
+      'faq.8.a': '不固定。每日随机 3–5 次快照，取中位数作为日均持仓，快照时间不公开，降低「快照前买入、快照后卖出」的套利空间。',
+      'faq.9.q': '如果被误判违规，怎么申诉？',
+      'faq.9.a': '活动页面提供申诉表单，被标记用户可在公示期内提交链上交易记录等证据。<b>48 小时内响应</b>，处理结果在页面公示。所有异常采用「标记 → 复核 → 处罚」三段式，不会直接清零。',
+      'faq.10.q': '抽宝盒会不会影响我的段位？',
+      'faq.10.a': '不会。段位按活动期间<b>最高累计财神积分</b>判定，宝盒消耗只影响<b>最终积分</b>（即王者榜排名），不影响已锁定段位。建议先冲段位，再抽宝盒。',
+      'faq.11.q': '早鸟奖和早鸟乘数可以同时拿吗？',
+      'faq.11.a': '可以。早鸟乘数是<b>积分加成</b>，早鸟奖池是<b>额外奖金</b>，两者独立计算、同时享受。但早鸟奖池获奖者需在活动结束前最后 24h 日均持仓 ≥ 50 USDC 等值 $财神DAO。',
+
+      'cta.title': '68,888 USDC 奖池已经开启',
+      'cta.sub': '20 USDC 押金全额退还 · 新手任务 + 连续参与额外送积分 · 早鸟保底 + 按比例 · 结束后 7 天内自动空投',
+      'cta.btn': '现在就去参与',
+
+      'sec.notice': '风险提示',
+      'notice.title': '请务必阅读',
+      'notice.l1': '加密资产风险极高，代币价格波动剧烈。本页面所有 USDC 等值奖励仅作展示参考，<b>最终以链上实际发放数量为准</b>。',
+      'notice.l2': '押金退还的是<b>报名时锁定的原始代币数量</b>，币价涨跌不影响退还数量，但押金代币本身价值会随市场波动。',
+      'notice.l3': '请遵守当地法律法规，仅以可承受损失的资金参与。受限制地区用户不参与本次活动。',
+      'notice.l4': '活动规则、金额、时间与乘数以官方最终公告及链上实际执行结果为准。',
+
+      'foot.event': '$财神DAO · DEX 交易狂欢季',
+      'foot.pool': '68,888 USDC 等值 $财神DAO',
+      'foot.duration': '4 周 / 28 天',
+      'foot.status': 'Official · 官方活动页面',
+      'foot.trans': '奖池地址 · 押金锁定地址 · 销毁记录 · 随机数种子哈希 · 发放交易哈希（活动页公示）',
+      'foot.disc': '本页面内容仅用于活动说明，不构成任何投资建议或收益承诺。<br>数字资产价格波动剧烈，请理性判断、注意风险。所有价格、金额、时间与规则以链上实际执行及官方最终公告为准。',
+
+      'label.lang.switch': 'Switch to English',
+      'label.lang.text': 'EN',
+      'toast.copied': '合约地址已复制'
+    },
+
+    en: {
+      'page.title': '$财神DAO · Trading Carnival | Share the 68,888 USDC Prize Pool',
+      'page.desc': '$财神DAO DEX Trading Incentive Carnival: a 68,888 USDC-equivalent total prize pool across a 28-day net-amount points dual-track league. Net buys earn a 1.2× weight, Day-1 early birds get a 2.0× multiplier, and the 20 USDC deposit is fully refunded.',
+
+      'hero.eb': 'Solana · DEX Trading Carnival',
+      'hero.title': '<em>$财神DAO</em> Trading Carnival',
+      'hero.sub': 'Buy more, hold longer, squad up stronger — earn higher rewards · Deposit fully refunded',
+      'hero.unit': 'USDC Equivalent Total Prize Pool',
+      'chip.1': 'Day-1 Early Bird 2.0×',
+      'chip.2': 'Champion Takes 5,500',
+      'chip.3': 'Starter Tasks + Streak',
+      'chip.4': 'Deposit Fully Refunded',
+      'btn.join': 'How to Join',
+      'btn.rewards': 'View Prize Pools',
+      'hero.foot': 'Fixed total supply of <b>686,868,686</b> tokens · No minting · No freeze authority<br>Rewards priced in USDC, auto-airdropped in <b>$财神DAO</b> within <b>7 days</b> after the event at the 24h TWAP',
+
+      'toc.overview': 'Overview',
+      'toc.join': 'How to Join',
+      'toc.rewards': 'Prize Pools',
+      'toc.points': 'Points',
+      'toc.personal': 'Personal',
+      'toc.team': 'Squad',
+      'toc.starter': 'Starter & Streak',
+      'toc.gacha': 'Fortune Box',
+      'toc.early': 'Early Bird',
+      'toc.rules': 'Fair Play',
+      'toc.faq': 'FAQ',
+
+      'ov.p1': '<b>$财神DAO</b> is issued on Solana mainnet with a fixed total supply of <b>686,868,686</b> tokens — no minting, no freeze authority. This Trading Carnival allocates <span class="hl">68,888 USDC equivalent in $财神DAO</span> as the total prize pool, running a <b>28-day</b> "net-amount points" dual-track league for individuals and squads, rewarding real trades, real holdings, and real community.',
+      'ov.p2': 'In short: <span class="hl">the more you net-buy, the longer you hold, and the stronger your squad, the higher your points and rewards</span>. Net buys carry a <b>1.2×</b> weight, while net sells drop to <b>0.1×</b>. Higher average daily holdings raise your multiplier (<b>0.7–1.5×</b>), and joining a squad adds another <b>1.1×</b> bonus. Starter tasks and streak rewards grant extra points without drawing from the main prize pool.',
+      'ov.p3': 'Registration only requires locking a <b>20 USDC-equivalent deposit in $财神DAO</b>, which is <b>fully refunded within 24 hours</b> after the event ends (returning the exact token quantity locked at registration, unaffected by price). All rewards are <b>priced in USDC and paid in $财神DAO</b>, auto-airdropped within <b>7 days</b> after the event — no manual claim required.',
+      'ov.c1': 'Days Duration',
+      'ov.c2': 'USDC Deposit<br>Fully Refunded',
+      'ov.c3': 'Days Auto<br>Distribution',
+
+      'sec.join': 'Four Steps to Rewards',
+      'join.lead': '<b>What you get:</b> Scoring starts the day you register. Trades, holdings, and squads accumulate in parallel, and five reward streams stack.',
+      'join.s1.t': 'Lock Deposit & Register',
+      'join.s1.d': 'Lock a <b>20 USDC-equivalent deposit in $财神DAO</b>, pass four safety checks, and enter the whitelist. Scoring begins the same day. Deposit is <b>fully refunded within 24 hours</b> after the event ends.',
+      'join.s2.t': 'Earn Caishen Points by Trading',
+      'join.s2.d': 'Net buys earn a <b>1.2×</b> weight, the Day-1 early bird multiplier is <b>2.0×</b>, and longer holds raise your multiplier. Points accumulate in real time and tiers upgrade automatically.',
+      'join.s3.t': 'Amplify with a Squad',
+      'join.s3.d': 'Invite friends to form a squad and climb the squad leaderboard. The captain receives <b>30%</b>, members split <b>70%</b> by points, and every member gets an extra <b>1.1×</b> points boost.',
+      'join.s4.t': 'Share the 68,888 USDC Pool',
+      'join.s4.d': 'Tier rewards + Champions Leaderboard + Squad rewards + Fortune Box + Early Bird rewards — five streams stack. Auto-airdropped to your registered wallet within <b>7 days</b>.',
+      'join.gate.title': 'Registration Gate · 4 Safety Checks',
+      'join.gate.body': '<b>Historical trades ≥ 3</b>　·　<b>SOL balance ≥ 0.01</b>　·　<b>Wallet age ≥ 3 days</b>　·　<b>Not on blacklist</b><br>All checks passed and you enter the whitelist. The gate blocks bulk-registered Sybil wallets and protects real participants\' share of the pool.',
+
+      'sec.rewards': 'Which Pools You Can Win',
+      'rw.lead': '<b>What you get:</b> Five independent prize pools, all stackable. Climb for the Champions Leaderboard and Squad rewards, hit thresholds for tier rewards, sprint during the Early Bird phase, and spin Fortune Boxes with your points.',
+      'rw.c1': 'Personal Tier Rewards<br>incl. Bronze pool 3,000',
+      'rw.c2': 'Champions Leaderboard<br>Top 10 share',
+      'rw.c3': 'Squad Track<br>Top Squads + Best Newcomer',
+      'rw.c4': 'Fortune Box<br>Spun with points, while supplies last',
+      'rw.c5': 'Early Bird Sprint<br>Extra pool for the first 7 days',
+      'rw.th1': 'Module',
+      'rw.th2': 'Share',
+      'rw.th3': 'USDC Equivalent',
+      'rw.th4': 'How to Qualify',
+      'rw.r1a': 'Champions Leaderboard',
+      'rw.r1d': 'Top 10 by points',
+      'rw.r2a': 'Personal Tier Rewards',
+      'rw.r2d': 'Reach the threshold',
+      'rw.r3a': 'Squad Track',
+      'rw.r3d': 'Squad up, captain and members split',
+      'rw.r4a': 'Fortune Box',
+      'rw.r4d': '50 points per spin',
+      'rw.r5a': 'Early Bird Sprint',
+      'rw.r5d': 'Top net buys in the first 7 days',
+      'rw.rta': 'Total',
+      'rw.rtd': 'Deposits operate separately and are not part of the pool',
+      'rw.hb.title': 'Reward Conversion & Distribution',
+      'rw.hb.body': '<b>Pricing:</b> All rewards are priced in USDC; the USDC-equivalent shown on the page is for reference only.<br><b>Conversion:</b> Token quantity received = USDC-equivalent reward ÷ the <b>24h TWAP</b> of $财神DAO/USDC at event end.<br><b>TWAP basis:</b> Uses the <b>median</b> of the Meteora TWAP and <b>excludes the final 2 hours</b> of data.<br><b>Distribution schedule:</b> Points locked <b>48 hours</b> after the event → <b>3-day</b> public disclosure → <b>3-day</b> appeal window → auto-airdrop within <b>7 days</b>.',
+
+      'sec.points': 'Buy Smart, Hold Long, Score High',
+      'pt.lead': '<b>What you get:</b> For the same 500 USDC buy, joining on Day 1 earns 2× the points of joining on Day 8. Holding 14 days yields 20–50% more than not holding. Squadding up adds another 10%.',
+      'pt.p1': 'Total points formula: <b>S<sub>final</sub> = (Σ S<sub>trade</sub> × E<sub>i</sub>) × M<sub>hold</sub> × B<sub>team</sub></b>, with <b>Caishen Points = S<sub>final</sub> × 100</b>. Leaderboards, tier thresholds, and Fortune Box consumption are all denominated in Caishen Points.',
+      'pt.p2': 'Every day at UTC 00:00, the previous day\'s (UTC 00:00–23:59) net buys and sells are settled, the day\'s early bird multiplier is applied, and the total is added to your trading points.',
+      'pt.s1.title': 'How Net Buy Is Calculated',
+      'pt.s1.desc': '<b>Core logic:</b> Scoring is differentiated by the day\'s net-buy direction. When net buy is positive, sells also earn a 0.3 weight; once the day\'s net buy ≤ 0, the sell weight drops to 0.1. Buying and holding is the most efficient way to earn points.',
+      'pt.s1.hb.title': 'Scoring Formula',
+      'pt.s1.hb.body': '<b>When net buy &gt; 0:</b> S<sub>trade</sub> = (V<sub>net buy</sub> × 1.2 + V<sub>sell</sub> × 0.3) / 100<br><b>When net buy ≤ 0:</b> S<sub>trade</sub> = V<sub>sell</sub> × 0.1 / 100',
+      'pt.s1.k1': 'Net Buy Weight',
+      'pt.s1.k2': 'Sell Weight (net buy &gt; 0)',
+      'pt.s1.k3': 'Sell Weight (net buy ≤ 0)',
+      'pt.s1.k4': 'Minimum Trade Size',
+      'pt.s1.cap': '<b>Scenario A (buy and hold):</b> Buy 500, sell 200 → net buy 300.<br>S = (300 × 1.2 + 200 × 0.3) / 100 = <b>4.2 raw points</b> = <b>420 Caishen Points</b>.<br><b>Scenario B (buy and dump immediately):</b> Buy 100, sell 300 → net buy −200.<br>S = 300 × 0.1 / 100 = <b>0.3 raw points</b> = <b>30 Caishen Points</b>.<br><b>Conclusion:</b> For the same 300 USDC sell volume, buying and holding yields 360 Caishen Points while buying and dumping yields only 30 — <b>wash-trading efficiency is just 1/12 of real trading</b>.',
+      'pt.s2.title': 'Buy Early, Earn More E<sub>i</sub>',
+      'pt.s2.th1': 'Phase',
+      'pt.s2.th2': 'Multiplier',
+      'pt.s2.th3': 'Extra You Get',
+      'pt.s2.r1': 'Day 1',
+      'pt.s2.r2': 'Days 2–3',
+      'pt.s2.r3': 'Days 4–7',
+      'pt.s2.r4': 'From Day 8',
+      'pt.s2.d1': 'Same buy, double points',
+      'pt.s2.d2': '+50%',
+      'pt.s2.d3': '+20%',
+      'pt.s2.d4': 'Standard points',
+      'pt.s2.cap': '<b>Application:</b> Applied day by day based on the <b>trade date</b>; each day\'s settlement uses that day\'s multiplier and does not affect the holding multiplier or squad bonus. <b>Action tip:</b> If you want to climb, completing your first valid buy on Day 1 is the most efficient move.',
+      'pt.s3.title': 'Hold Longer, Multiply Higher M<sub>hold</sub>',
+      'pt.s3.desc': 'Every day at UTC 00:00, a balance snapshot is taken for whitelisted addresses (at random times), and average daily holdings are calculated on a USDC-equivalent basis.',
+      'pt.s3.th1': 'Avg Daily Holdings (USDC Eq.)',
+      'pt.s3.th2': 'Multiplier',
+      'pt.s3.th3': 'Extra You Get',
+      'pt.s3.d1': 'Points × 0.7',
+      'pt.s3.d2': 'Standard points',
+      'pt.s3.d3': '+20%',
+      'pt.s3.d4': '+50%',
+      'pt.s3.cap': '<b>Example:</b> 14 days of participation, holding 300 USDC daily for the first 7 days and 0 for the last 7. Avg daily = (300×7 + 0×7) / 14 = 150 USDC → multiplier <b>1.0</b>. <b>Action tip:</b> If you aim for a higher tier, try to keep average daily holdings above 200 USDC.',
+      'pt.hb.title': 'Valid Trade Filtering (Does Not Affect Normal Trading)',
+      'pt.hb.body': '<b>Micro-trades:</b> Single trades &lt; 20 USDC are not counted.<br><b>Short holds:</b> Buys and sells within &lt; 3 minutes are not counted.<br><b>Wash trading:</b> Buy/sell amount deviation &lt; 5% within 10 minutes → points are zeroed and the address flagged.<br><b>High-frequency round trips:</b> More than 5 buy/sell pairs within 1 hour → flagged for manual review.<br><b>Initial holdings:</b> Selling pre-event holdings first deducts from the initial position and does not count toward sell points.<br><b>Failed trades:</b> On-chain err not null → not counted.',
+
+      'sec.personal': 'Personal Track: Hit the Threshold, Get Rewarded',
+      'ps.lead': '<b>What you get:</b> Reaching the points threshold locks in tier rewards; climbing into the Top 10 also earns a share of the Champions Leaderboard. The two pools are calculated independently.',
+      'ps.t1.title': 'Tier Ladder Rewards · Hit the Threshold',
+      'ps.t1.th1': 'Tier',
+      'ps.t1.th2': 'Caishen Points Threshold',
+      'ps.t1.th3': 'You Get',
+      'ps.t1.th4': 'Slots',
+      'ps.t1.th5': 'Subtotal',
+      'tier.bronze': 'Bronze',
+      'tier.silver': 'Silver',
+      'tier.gold': 'Gold',
+      'tier.diamond': 'Diamond',
+      'tier.platinum': 'Platinum',
+      'ps.t1.bronze': 'Share 3,000',
+      'ps.unlimited': 'Unlimited',
+      'ps.t1.s1': '<b>Bronze share pool:</b> Share 3,000 USDC proportionally by final Caishen Points out of total Bronze points, capped at <b>10 USDC</b> per user; the remainder rolls into the Champions Leaderboard pool.',
+      'ps.t1.s2': '<b>Bronze participation requirements:</b> Valid trades ≥ 3, net buy ≥ 50 USDC, deposit qualified, no violations.',
+      'ps.t1.s3': '<b>Silver and above:</b> Hit the threshold and get rewarded; pool pays out until exhausted. If qualifying users exceed slots, admission is by final Caishen Points, highest first.',
+      'ps.t1.s4': '<b>Distribution:</b> Within 7 days after the event, auto-distributed in $财神DAO at the end-of-event 24h TWAP.',
+      'ps.t2.title': 'Champions Leaderboard · Top 10 Share',
+      'ps.t2.th1': 'Rank',
+      'ps.t2.th2': 'You Get (USDC Equivalent)',
+      'ps.t2.r1': 'Rank 1',
+      'ps.t2.r2': 'Rank 2',
+      'ps.t2.r3': 'Rank 3',
+      'ps.t2.r4': 'Ranks 4–10',
+      'ps.t2.r4v': 'Share 2,500',
+      'ps.t2.cap': '<b>Tie handling:</b> If Rank 1 is tied, the Rank 1 reward is split evenly. If Rank 10 is tied, the remaining Ranks 4–10 pool is split evenly. Distribution timing is the same as tier rewards.<br><b>End-of-event holding lock:</b> Champions Leaderboard Top 10 must still hold ≥ 100 USDC-equivalent in $财神DAO at event end. Early selling disqualifies the Champions Leaderboard slot, and that share rolls into the next rank.',
+
+      'sec.team': 'Squad Track: Squad Up for 1.1×',
+      'tm.lead': '<b>What you get:</b> After joining a valid squad, every valid trade receives an extra <b>1.1×</b> points boost. If your squad reaches the Top 8, the captain and members share the pool proportionally — captain takes 30%, members split 70%.',
+      'tm.t1.title': 'Squad Rules & Prize Pool',
+      'tm.k1': 'Captain Deposit',
+      'tm.v1': '50 USDC Equivalent',
+      'tm.k2': 'Max Members / Squad',
+      'tm.v2': '50',
+      'tm.k3': 'Valid Member Threshold',
+      'tm.v3': '≥ 300 Caishen Points',
+      'tm.k4': 'Squad Registration Fee',
+      'tm.v4': 'None',
+      'tm.hb.title': 'Squad Ranking Formula · Normalized Weighting',
+      'tm.hb.body': '<b>Squad Score = (Squad Total Points ÷ Highest Total Points) × 40 + (Avg Valid-Member Points ÷ Highest Avg) × 40 + (New Holding Addresses ÷ Highest New Addresses) × 20</b><br>Each of the three metrics is divided by the maximum across all squads and then weighted 40 / 40 / 20, unifying the scale and preventing a single "whale squad" from dominating. More members, stronger averages, and more new holders → higher rank.',
+      'tm.t1.th1': 'Rank',
+      'tm.t1.th2': 'Pool',
+      'tm.t1.th3': 'Captain Share',
+      'tm.t1.th4': 'Member Share',
+      'tm.t1.r2p': '3,000 each',
+      'tm.t1.r3p': '1,000 each',
+      'tm.t1.best': 'Best Newcomer',
+      'tm.t1.cap': '<b>The captain does not participate in the member pool distribution.</b> Best Newcomer Squad: age &lt; 14 days and ranked in the Top 20. Members split the member pool proportionally by personal Caishen Points. Within 7 days after the event, captain and member rewards are auto-airdropped separately. Squad members receive an extra <b>1.1×</b> squad bonus (B<sub>team</sub>) on personal points; both captain and members qualify.',
+      'tm.ab.title': 'Squad Anti-Cheat',
+      'tm.ab.body': 'More than 3 members of the same squad sharing the same IP or same funding source → flagged for review.<br>Squad Sybil ratio &gt; 30% → the entire squad is disqualified and the captain\'s deposit is forfeited.<br>A captain\'s failure to prompt members\' trading does not affect ranking, but the captain\'s share is calculated only from valid members.',
+
+      'sec.starter': 'Starter Tasks &amp; Streak',
+      'st.lead': '<b>What you get:</b> You don\'t have to climb to earn points. Completing starter tasks grants <b>500 Caishen Points + 1 Fortune Box ticket</b>; participating 7 or 14 days in a row grants another <b>300–800 Caishen Points</b>. These points go straight into your total, affecting your tier and rank.',
+      'st.t1.title': 'Starter Tasks · First-Week Exclusive',
+      'st.t1.desc': '<b>Best for newly registered users:</b> Complete all four tasks to receive <b>1 extra Fortune Box ticket</b> (worth 50 Caishen Points) for a free spin during the event.',
+      'st.task1.t': 'Complete Registration',
+      'st.task1.c': 'Pass 4 safety checks and lock the deposit',
+      'st.task1.r': '+50 Caishen Points',
+      'st.task2.t': 'First Valid Trade',
+      'st.task2.c': 'A single buy or sell ≥ 20 USDC',
+      'st.task2.r': '+100 Caishen Points',
+      'st.task3.t': 'First 24h Hold',
+      'st.task3.c': 'Hold ≥ 50 USDC-equivalent for 24 hours',
+      'st.task3.r': '+150 Caishen Points',
+      'st.task4.t': 'Invite Your First Friend',
+      'st.task4.c': 'Friend completes registration and passes safety checks',
+      'st.task4.r': '+200 Caishen Points',
+      'st.t1.bonus.title': 'All-Complete Bonus',
+      'st.t1.bonus.body': 'Complete all four tasks to receive <b>1 extra Fortune Box ticket</b> (worth 50 Caishen Points) for one free spin during the event.',
+      'st.t1.cap': '<b>Reward source:</b> Starter-task points are provided additionally by the organizer and <b>do not draw from the main prize pool</b>; Fortune Box tickets are drawn from the Fortune Box pool while supplies last. <b>Anti-cheat:</b> Task rewards require wallet age, historical trades, and minimum net buy thresholds; bulk-registered wallets are not counted.',
+      'st.t2.title': 'Streak Participation · Daily Active Rewards',
+      'st.t2.desc': '<b>Best for continuous traders or holders:</b> The longer the streak, the higher the points. Trading and holding are tracked independently and can be stacked.',
+      'st.t2.th1': 'Streak',
+      'st.t2.th2': 'Condition',
+      'st.t2.th3': 'You Get',
+      'st.t2.r1': '7 Consecutive Days',
+      'st.t2.r2': '14 Consecutive Days',
+      'st.t2.c1': 'At least 1 valid trade ≥ 20 USDC per day',
+      'st.t2.c2': 'Daily holdings ≥ 100 USDC-equivalent',
+      'st.t2.v1': '+300 Caishen Points',
+      'st.t2.v2': '+800 Caishen Points',
+      'st.t2.v3': '+200 Caishen Points',
+      'st.t2.v4': '+500 Caishen Points',
+      'st.t2.cap': '<b>Reward source:</b> Streak points are provided additionally by the organizer and <b>do not draw from the main prize pool</b>. <b>Streak reset:</b> A missed day resets the counter; complete one small valid trade daily to maintain the streak. <b>Anti-cheat:</b> Multi-address on the same IP and wash trades do not count toward the streak.',
+
+      'sec.gacha': 'Fortune Box: Points for Surprises',
+      'gc.lead': '<b>What you get:</b> 50 Caishen Points per spin, <b>100% win rate</b>, up to 500 USDC-equivalent. Tip: climb tiers first, then spin Fortune Boxes — tiers lock on peak points, and the Fortune Box only consumes final points.',
+      'gc.t1.title': 'Points Lottery · While Supplies Last',
+      'gc.k1': 'Cost',
+      'gc.v1': '50 Caishen Points / Spin',
+      'gc.k2': 'Estimated Spins Available',
+      'gc.v2': '~800',
+      'gc.k3': 'Expected Reward',
+      'gc.v3': '~10.3 USDC / Spin',
+      'gc.k4': 'Win Rate',
+      'gc.t1.th1': 'Probability',
+      'gc.t1.th2': 'Reward Range',
+      'gc.t1.th3': 'Notes',
+      'gc.t1.d1': 'Small, keeps engagement alive',
+      'gc.t1.d2': 'Medium, adds surprise',
+      'gc.t1.d3': 'Jackpot, a bonus beyond the leaderboard',
+      'gc.t1.cap': '<b>Strategy tip:</b> Tiers are judged by your <b>peak cumulative Caishen Points</b> during the event. Fortune Box consumption only affects <b>final points</b> (i.e., Champions Leaderboard rank) and does not affect locked tiers. <b>Climb first, spin later</b>; if the Champions Leaderboard is competitive, assess the impact on your rank before spinning.<br><b>Deduction:</b> Each spin <b>deducts 50 Caishen Points</b> from your total in real time.<br><b>Pity mechanism:</b> 10 consecutive non-wins grants a 1 USDC consolation prize.<br><b>Randomness:</b> Off-chain verifiable random numbers, with daily disclosure of the seed hash.<br><b>Distribution:</b> Winning rewards are distributed together with the main prize pool within 7 days after the event ends.',
+
+      'sec.early': 'Early Bird Sprint: First-Week Floor + Pro-Rata',
+      'eb.lead': '<b>What you get:</b> Hit the net-buy threshold in the first 7 days to <b>secure a floor first, then share the remaining pool pro-rata by net buy</b>, with per-user caps. The earlier you buy, the more likely you hit the floor.',
+      'eb.p1': 'The Early Bird pool is independent of base points and is reserved for users who actively net-buy during the first 7 days. Every day at UTC 00:00, the previous day\'s net buy is snapshotted and the corresponding pool is shared by rank.',
+      'eb.t1.title': 'First 7 Days Sprint Pool',
+      'eb.t1.th1': 'Phase',
+      'eb.t1.th2': 'Extra Pool',
+      'eb.t1.th3': 'Floor + Pro-Rata',
+      'eb.t1.th4': 'Per-User Cap',
+      'eb.t1.r1': 'Day 1',
+      'eb.t1.r2': 'Days 2–3',
+      'eb.t1.r3': 'Days 4–7',
+      'eb.t1.r4': 'From Day 8',
+      'eb.t1.none': 'No Extra Pool',
+      'eb.t1.d1': 'Top 100 each receive a <b>10 USDC</b> floor; remaining pool shared pro-rata by net buy',
+      'eb.t1.d2': 'Top 200 each receive a <b>5 USDC</b> floor; remaining pool shared pro-rata by net buy',
+      'eb.t1.d3': 'Top 300 each receive a <b>3 USDC</b> floor; remaining pool shared pro-rata by net buy',
+      'eb.t1.d4': 'Only base points and the early bird multiplier remain',
+      'eb.t1.s1': '<b>Minimum net-buy threshold:</b> To appear in the Early Bird ranking, daily net buy must be ≥ <b>50 USDC-equivalent</b>. Below threshold, no rank.',
+      'eb.t1.s2': '<b>Net buy definition:</b> Daily total buys − daily total sells; only the positive value counts. Negative values are treated as 0 and do not enter the ranking.',
+      'eb.t1.s3': '<b>Tie handling:</b> If net buys are equal, the address with more trades that day ranks first; if still tied, the address with the earlier first trade ranks first.',
+      'eb.t1.s4': '<b>End-of-event holding lock:</b> Winners must maintain an average daily holding of ≥ 50 USDC-equivalent in $财神DAO over the last 24 hours before the event ends. Early selling disqualifies the Early Bird reward and that share rolls into the Champions Leaderboard pool.',
+      'eb.t1.s5': '<b>Distribution:</b> Within 7 days after the event, converted uniformly into $财神DAO and distributed alongside base points rewards.',
+      'eb.t1.s6': '<b>Anti-abuse:</b> Net buys only count valid trades (single trade ≥ 20 USDC, not wash trades, not self-trades).',
+      'eb.t1.cap': 'The Early Bird leaderboard updates daily at UTC 00:30 for the previous day. The Early Bird pool is funded separately and does not conflict with the Champions Leaderboard; the early bird multiplier (points boost) and the Early Bird pool (bonus rewards) can be earned simultaneously.',
+
+      'sec.rules': 'Deposit & Fair Play',
+      'rl.lead': '<b>What you get:</b> The deposit is just a temporary lock, fully returned <b>within 24 hours</b> after the event ends. Fair-play patches make wash trading more expensive and reduce false positives, with rules that are recomputable, appealable, and publicly disclosed.',
+      'rl.p1': 'Registration requires locking <b>20 USDC-equivalent in $财神DAO</b> as a deposit. Once safety checks pass and you enter the whitelist, scoring begins. The deposit serves three purposes: <b>blocking bulk Sybil wallets, locking circulating supply, and suppressing dumping during the event</b>. For participants, it is simply a temporary lock <b>fully refunded within 24 hours</b> after the event ends.',
+      'rl.t1.title': 'Registration Checks',
+      'rl.t1.th1': 'Check',
+      'rl.t1.th2': 'Threshold',
+      'rl.t1.th3': 'If Failed',
+      'rl.t1.r1': 'Historical Trades',
+      'rl.t1.v1': '≥ 3',
+      'rl.t1.r2': 'SOL Balance',
+      'rl.t1.v2': '≥ 0.01',
+      'rl.t1.r3': 'Wallet Age',
+      'rl.t1.v3': '≥ 3 Days',
+      'rl.t1.r4': 'Blacklist',
+      'rl.t1.v4': 'Not on Blacklist',
+      'rl.t1.x1': 'Registration Rejected',
+      'rl.t2.title': 'Deposit Rules',
+      'rl.t2.k1': 'Standard User Deposit',
+      'rl.t2.v1': '20 USDC Equivalent',
+      'rl.t2.k2': 'Captain Extra Deposit',
+      'rl.t2.v2': '50 USDC Equivalent',
+      'rl.t2.k3': 'Refund Timing',
+      'rl.t2.v3': 'Within 24h After End',
+      'rl.t2.k4': 'Refund Method',
+      'rl.t2.v4': 'Original Locked Token Quantity',
+      'rl.t2.s1': '<b>Registration lock:</b> 20 USDC-equivalent in $财神DAO, with the token quantity locked at the registration-time price.',
+      'rl.t2.s2': '<b>Normal refund:</b> Within <b>24 hours</b> after the event ends, the exact original $财神DAO token quantity locked at registration is returned, unaffected by price.',
+      'rl.t2.s3': '<b>Forfeiture for violations:</b> Sybil / wash-trading violations result in the deposit being sent to a burn address or the prize pool, with anonymized records disclosed on the event page.',
+      'rl.t2.s4': '<b>Suppressing sell pressure:</b> The deposit lock reduces circulating supply and lowers sell pressure during the event — a net positive for all participants.',
+      'rl.t3.title': 'Fair-Play Patches · Making Wash Trading Costlier',
+      'rl.t3.s1': '<b>Rolling net-buy secondary risk control:</b> Keeps same-day net buy as the primary basis while also observing the <b>7-day rolling net-buy share</b>. If a single day\'s net buy is unusually high and a large sell follows the next day, the address is flagged for manual review rather than immediately zeroed.',
+      'rl.t3.s2': '<b>Random snapshots:</b> 3–5 random snapshots per day, with the median used as average daily holdings. Snapshot times are not disclosed, reducing the arbitrage space of "buy before snapshot, sell after".',
+      'rl.t3.s3': '<b>End-of-event holding lock:</b> The Early Bird reward requires average daily holdings ≥ 50 USDC over the last 24h; the Champions Leaderboard Top 10 requires holdings ≥ 100 USDC at event end. This reduces dumping around reward distribution.',
+      'rl.t3.s4': '<b>Three-stage handling:</b> All anomalies follow "flag → review → penalize". Normal high-frequency users can appeal, avoiding false positives.',
+      'rl.t4.title': 'Public Disclosure & Appeals',
+      'rl.t4.s1': '<b>Fair-play disclosure:</b> Prize pool addresses, deposit-lock addresses, burn records, anonymized violation records, random-number seed hashes, and distribution transaction hashes are all disclosed via the "Transparency" entry on the event page.',
+      'rl.t4.s2': '<b>Appeal entry:</b> The event page provides an appeal form. Flagged users may submit evidence during the disclosure window. <b>Response within 48 hours</b>, with outcomes published on the page.',
+      'rl.t4.s3': '<b>Appeal window:</b> A 3-day appeal window after the event ends, covering tiers, the Champions Leaderboard, Early Bird rewards, Squad rewards, and Fortune Box anomalies.',
+      'rl.t4.s4': '<b>Rules are recomputable:</b> The points formula, snapshot rules, and ranking rules are all public. Users can recompute from on-chain trade records themselves.',
+
+      'sec.faq': 'Frequently Asked Questions',
+      'faq.1.q': 'How is the deposit refunded, and when does it arrive?',
+      'faq.1.a': 'Within <b>24 hours</b> after the event ends, it is automatically refunded to your registered wallet. The refund is the <b>exact original $财神DAO token quantity locked at registration</b>, unaffected by price — no manual claim required.',
+      'faq.2.q': 'When are rewards distributed, and in what form?',
+      'faq.2.a': 'Points are locked <b>48 hours</b> after the event ends, followed by a 3-day disclosure and a 3-day appeal window, then airdropped within <b>7 days</b>. Rewards are <b>priced in USDC and paid in $财神DAO</b>, converted at the 24h TWAP at event end.',
+      'faq.3.q': 'If I only buy and never sell, how many points can I earn?',
+      'faq.3.a': 'Net buys are counted at a <b>1.2×</b> weight, plus the early bird multiplier (up to 2.0× on Day 1) and the holding multiplier (up to 1.5×). Joining a squad adds another <b>1.1×</b>, multiplied together. Starter tasks and streaks add extra points on top.',
+      'faq.4.q': 'Does buying and selling repeatedly help?',
+      'faq.4.a': 'Very little. When same-day net buy ≤ 0, the sell points weight drops from 0.3 to <b>0.1</b> — the same amount of wash trading only earns <b>1/12</b> of real trading. Wash trades with amount deviation &lt; 5% within 10 minutes are zeroed and flagged. A 7-day rolling net-buy secondary control and random snapshots further compress wash-trading space.',
+      'faq.5.q': 'Is the Bronze tier basically worthless?',
+      'faq.5.a': 'Bronze is the lowest-threshold inclusive tier: 100–499 Caishen Points qualifies, and you share <b>3,000 USDC</b> pro-rata by points, capped at 10 USDC per user. Requirements are valid trades ≥ 3 and net buy ≥ 50 USDC. Completing starter tasks adds 500 points, making Silver easier to reach.',
+      'faq.6.q': 'Where do starter-task and streak rewards come from? Do they dilute the main pool?',
+      'faq.6.a': 'No. Starter-task points are <b>provided additionally</b> by the organizer and do not draw from the 68,888 USDC main prize pool; Fortune Box tickets are drawn from the Fortune Box pool while supplies last. Streak points are similarly provided additionally and do not affect main prize pool allocation.',
+      'faq.7.q': 'How are Early Bird rewards distributed now? Can whales still take everything?',
+      'faq.7.a': 'Early Bird rewards are now a hybrid of <b>floor + pro-rata + per-user cap</b>. On Day 1, the top 100 each receive a 10 USDC floor, with the remainder shared pro-rata by net buy, capped at 100 USDC per user. This lets smaller users secure a floor while preventing whales from taking everything.',
+      'faq.8.q': 'Are holding snapshot times fixed? Could they be manipulated?',
+      'faq.8.a': 'Not fixed. 3–5 random snapshots per day, with the median used as average daily holdings. Snapshot times are not disclosed, reducing the arbitrage space of "buy before snapshot, sell after".',
+      'faq.9.q': 'If I am incorrectly flagged, how do I appeal?',
+      'faq.9.a': 'The event page provides an appeal form. Flagged users may submit evidence such as on-chain trade records during the disclosure window. <b>Response within 48 hours</b>, with outcomes published on the page. All anomalies follow a three-stage "flag → review → penalize" process and are never zeroed outright.',
+      'faq.10.q': 'Does spinning Fortune Boxes affect my tier?',
+      'faq.10.a': 'No. Tiers are judged by your <b>peak cumulative Caishen Points</b> during the event. Fortune Box consumption only affects <b>final points</b> (i.e., Champions Leaderboard rank) and does not affect locked tiers. Climb first, spin later.',
+      'faq.11.q': 'Can I receive both the Early Bird reward and the Early Bird multiplier?',
+      'faq.11.a': 'Yes. The early bird multiplier is a <b>points boost</b>, and the Early Bird pool is an <b>extra bonus</b>; they are calculated independently and can be earned together. However, Early Bird pool winners must maintain average daily holdings ≥ 50 USDC-equivalent in $财神DAO over the last 24h before the event ends.',
+
+      'cta.title': 'The 68,888 USDC Pool Is Live',
+      'cta.sub': '20 USDC deposit fully refunded · Starter tasks + streak points · Early Bird floor + pro-rata · Auto-airdrop within 7 days after the event',
+      'cta.btn': 'Join Now',
+
+      'sec.notice': 'Risk Disclosure',
+      'notice.title': 'Please Read Carefully',
+      'notice.l1': 'Crypto assets carry extremely high risk and token prices are highly volatile. All USDC-equivalent rewards on this page are for illustrative reference only; <b>the actual amount distributed on-chain prevails</b>.',
+      'notice.l2': 'The deposit refund returns the <b>exact original token quantity locked at registration</b>; price movements do not affect the refund quantity, though the value of the deposit tokens themselves will fluctuate with the market.',
+      'notice.l3': 'Please comply with local laws and regulations and participate only with funds you can afford to lose. Users in restricted regions are not eligible.',
+      'notice.l4': 'Event rules, amounts, timing, and multipliers are subject to the official final announcement and actual on-chain execution.',
+
+      'foot.event': '$财神DAO · DEX Trading Carnival',
+      'foot.pool': '68,888 USDC equivalent in $财神DAO',
+      'foot.duration': '4 Weeks / 28 Days',
+      'foot.status': 'Official · Event Page',
+      'foot.trans': 'Prize pool address · Deposit-lock address · Burn records · Random-number seed hash · Distribution transaction hash (disclosed on event page)',
+      'foot.disc': 'This page is for event information only and does not constitute investment advice or a promise of returns.<br>Digital asset prices are highly volatile; please judge rationally and be aware of risks. All prices, amounts, timing, and rules are subject to actual on-chain execution and the official final announcement.',
+
+      'label.lang.switch': '切换到中文',
+      'label.lang.text': '中文',
+      'toast.copied': 'Contract address copied'
+    }
+  };
+
   (function () {
-    /* ================= 主题系统 ================= */
+    'use strict';
+
     var root = document.documentElement;
     var themeBtn = document.getElementById('themeToggle');
+    var langBtn = document.getElementById('langToggle');
     var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
     var STORAGE_KEY = 'gof-theme';
+    var LANG_KEY = 'gof-lang';
     var themeColorMeta = document.getElementById('themeColorMeta');
+    var metaDesc = document.getElementById('metaDesc');
 
+    /* ================= 主题系统 ================= */
     function currentTheme() {
       var attr = root.getAttribute('data-theme');
       if (attr === 'dark' || attr === 'light') return attr;
@@ -1266,9 +2006,12 @@
     }
     function applyThemeUI() {
       var t = currentTheme();
+      var lang = root.getAttribute('data-lang') || 'zh';
       if (themeBtn) {
         themeBtn.setAttribute('data-icon', t);
-        var label = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+        var label = t === 'dark'
+          ? (lang === 'en' ? 'Switch to light mode' : '切换到浅色模式')
+          : (lang === 'en' ? 'Switch to dark mode' : '切换到深色模式');
         themeBtn.setAttribute('aria-label', label);
         themeBtn.title = label;
       }
@@ -1302,6 +2045,45 @@
       toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
     }
 
+    /* ================= 语言切换 ================= */
+    function setLang(lang) {
+      if (!I18N[lang]) lang = 'zh';
+      var d = I18N[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (d[k] != null) el.textContent = d[k];
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n-html');
+        if (d[k] != null) el.innerHTML = d[k];
+      });
+
+      document.title = d['page.title'];
+      if (metaDesc && d['page.desc']) metaDesc.setAttribute('content', d['page.desc']);
+
+      root.setAttribute('data-lang', lang);
+      root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+
+      if (langBtn) {
+        langBtn.setAttribute('aria-label', d['label.lang.switch']);
+        langBtn.textContent = d['label.lang.text'];
+      }
+
+      applyThemeUI();
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    }
+
+    if (langBtn) {
+      langBtn.addEventListener('click', function () {
+        setLang(root.getAttribute('data-lang') === 'zh' ? 'en' : 'zh');
+      });
+    }
+
+    setLang(root.getAttribute('data-lang') || 'zh');
+
+    /* ================= 复制合约地址 ================= */
     function fallbackCopy(text, cb) {
       var ta = document.createElement('textarea');
       ta.value = text; ta.setAttribute('readonly', '');
@@ -1321,7 +2103,8 @@
       copyBtn.addEventListener('click', function () {
         copyText(copyBtn.getAttribute('data-addr'), function () {
           copyBtn.classList.add('copied');
-          showToast('合约地址已复制');
+          var lang = root.getAttribute('data-lang') || 'zh';
+          showToast(I18N[lang]['toast.copied']);
           setTimeout(function () { copyBtn.classList.remove('copied'); }, 1500);
         });
       });
@@ -1349,7 +2132,7 @@
               }
             }
           });
-        }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
+        }, { rootMargin: '-64px 0px -70% 0px', threshold: 0 });
         sections.forEach(function (s) { obs.observe(s); });
       }
     }
