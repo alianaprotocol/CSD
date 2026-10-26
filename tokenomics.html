@@ -588,25 +588,37 @@
           </a>
         </div>
       </div>
-    </div>
 
-    <div class="rel-list">
-      <div class="rel total">
-        <div class="rel-head">
-          <span class="rel-title">合计</span>
-          <span class="rel-amt num">686,868,686 <small>枚</small></span>
+      <!-- 新增：汇总行（无缝融入 alloc-list） -->
+      <div class="alloc-row lead" style="margin-top: 8px;">
+        <div class="alloc-head">
+          <span class="alloc-name" style="font-size: 16px;">合计</span>
+          <span class="alloc-pct" style="font-size: 22px;">686,868,686 <small style="font-size: 13px; color: var(--muted); font-weight: 600; margin-left: 2px;">枚</small></span>
         </div>
-        <div class="rel-scope">与总发行量一致 · 100%</div>
+        <div class="alloc-note" style="margin-top: 4px; margin-bottom: 16px; color: var(--ink-3); font-weight: 500;">与总发行量一致 · 100%</div>
+
+        <div class="alloc-vest" style="grid-template-columns: 1fr; padding-top: 16px; border-top-color: var(--line);">
+          <div class="vest-item is-tge tge-summary-item">
+            <div class="tge-head">
+              <span class="vest-k" style="font-size: 13px; font-weight: 700;">其中：TGE 即时释放小计</span>
+              <span class="vest-v" style="font-size: 17px; font-weight: 800;">≈ 49,506,150 <small style="font-size: 11px; opacity: 0.8; font-weight: 600; margin-left:2px;">枚</small></span>
+            </div>
+            <div class="tge-note">约占总量的 7.21%</div>
+            
+            <div class="tge-list">
+              <span class="tge-item">初始流动性 25M</span>
+              <span class="tge-item">Alpha 奖励 13M</span>
+              <span class="tge-item">做市 4.12M</span>
+              <span class="tge-item">燃香赐福池 2.51M</span>
+              <span class="tge-item">生态建设 3.5M</span>
+              <span class="tge-item">营销/活动/空投 0.69M</span>
+              <span class="tge-item">运营 0.69M</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="rel subtotal">
-        <div class="rel-head">
-          <span class="rel-title">其中：TGE 即时释放小计</span>
-          <span class="rel-amt num">≈ 49,506,150 <small>枚</small></span>
-        </div>
-        <div class="rel-scope">初始流动性 25M + Alpha 奖励 13M + 做市 4.12M + 燃香赐福池 2.51M + 生态建设 3.5M + 营销/活动/空投 0.69M + 运营 0.69M，约占总量的 7.21%</div>
-      </div>
-    </div>
+    </div> <!-- 结束 alloc-list -->
 
     <p class="caption">
       <b>说明：</b>各分配项中的 <b>TGE</b> 指代币生成事件当日的即时释放比例，剩余部分按该行「释放期 (Vesting)」栏的线性周期解锁；「线性释放」指按时间均匀解锁，例如 36 个月线性释放即每月解锁该部分总量的 1/36 —— 解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。TGE 与锁仓的完整定义见「03 解锁节奏」末尾的名词解释。
