@@ -524,7 +524,8 @@
 
   table{border-collapse:collapse; width:100%; font-size:13px; background:var(--card);}
   th,td{
-    padding:var(--sp-3) var(--sp-4); text-align:right; white-space:nowrap;
+    padding:var(--sp-3) var(--sp-4); text-align:right;
+    white-space: nowrap; /* 强制不换行，保证整齐 */
     border-bottom:1px solid var(--line-2); line-height:1.5; position:relative;
   }
   th:first-child,td:first-child{text-align:left;}
@@ -555,6 +556,57 @@
   }
   tbody tr.flex td{color:var(--ink-3);}
 
+  /* ======== 核心修复：设定固定布局和最小宽度，确保滑动时绝对整齐 ======== */
+
+  /* 1. 总额汇总表格 */
+  #summary table {
+    table-layout: fixed;
+    min-width: 520px; /* 触发滑动，并保证每一列都有充足空间 */
+  }
+  #summary th:nth-child(1) { width: 22%; text-align: left; } /* 组别 */
+  #summary th:nth-child(2) { width: 15%; text-align: right; } /* 名额 */
+  #summary th:nth-child(3) { width: 18%; text-align: right; } /* 限额 */
+  #summary th:nth-child(4) { width: 25%; text-align: right; } /* 总额 */
+  #summary th:nth-child(5) { width: 20%; text-align: right; } /* 占目标 */
+
+  /* 2. 释放规则对比表格 */
+  .compare-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 460px; /* 触发滑动 */
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .compare-table th {
+    background: var(--thead-bg);
+    color: var(--ink-3);
+    font-weight: 600;
+    font-size: 11.5px;
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .compare-table th:nth-child(1) { width: 25%; text-align: left; } /* 项目 */
+  .compare-table th:nth-child(2) { width: 37.5%; color: var(--cyber); } /* 主池 */
+  .compare-table th:nth-child(3) { width: 37.5%; color: var(--gold); } /* 奖励池 */
+
+  .compare-table td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .compare-table td:first-child { text-align: left; font-weight: 600; color: var(--ink); }
+  .compare-table tr:last-child td { border-bottom: 0; }
+  .compare-table tr:nth-child(even) td { background: var(--zebra-bg); }
+
+  /* ================= 滑动提示 ================= */
   .tbl-swipe-hint {
     display: none; margin: 0 0 16px; padding: 8px 14px;
     font-size: 11.5px; color: var(--muted); text-align: center;
@@ -658,41 +710,6 @@
 
   .tl-title{ font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.45; }
   .tl-desc{ font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-  /* ================= 双池释放规则 ================= */
-  .compare-table{
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 24px;
-    font-size: 13px;
-  }
-  .compare-table th{
-    background: var(--thead-bg);
-    color: var(--ink-3);
-    font-weight: 600;
-    font-size: 11.5px;
-    padding: 12px 16px;
-    text-align: center;
-    border-bottom: 1px solid var(--line);
-  }
-  .compare-table th:first-child{ text-align: left; width: 25%; }
-  .compare-table th:nth-child(2){ color: var(--cyber); }
-  .compare-table th:nth-child(3){ color: var(--gold); }
-
-  .compare-table td{
-    padding: 12px 16px;
-    text-align: center;
-    border-bottom: 1px solid var(--line-2);
-    color: var(--ink-2);
-    line-height: 1.5;
-  }
-  .compare-table td:first-child{ text-align: left; font-weight: 600; color: var(--ink); }
-  .compare-table tr:last-child td{ border-bottom: 0; }
-  .compare-table tr:nth-child(even) td{ background: var(--zebra-bg); }
 
   /* ================= 释放曲线图 ================= */
   .chart-container {
@@ -1054,6 +1071,8 @@
     .toc-link{padding:8px 14px; min-height:40px; display:inline-flex; align-items:center;}
     .theme-toggle{width:40px; height:40px;}
     .theme-toggle svg{width:19px; height:19px;}
+
+    /* 在移动端显示滑动提示 */
     .tbl-swipe-hint { display: flex; }
 
     .mast-meta{
@@ -1066,8 +1085,8 @@
     .ca-btn{width:34px; height:34px;}
     .ca-btn svg{width:16px; height:16px;}
 
-    .compare-table th, .compare-table td { padding: 10px 8px; font-size: 12px; }
-    .compare-table th:first-child, .compare-table td:first-child { width: 30%; }
+    /* 缩小单元格 padding 让内容更紧凑，留出更多滑动空间 */
+    .compare-table th, .compare-table td { padding: 10px 6px; font-size: 12px; }
   }
 
   @media (max-width: 480px){
@@ -1152,6 +1171,11 @@
     .calc-res-label { font-size: 10.5px; }
     .calc-shortcuts button { font-size: 12px; padding: 8px 0; }
     .calc-note { font-size: 11.5px; padding: 9px 11px; }
+
+    /* 移动端表格 padding 微调 */
+    #summary th, #summary td { padding: 10px 8px; font-size: 12.5px; }
+    .compare-table th, .compare-table td { padding: 10px 6px; font-size: 12px; }
+    .compare-table th { font-size: 10.5px; }
   }
 
   @media (max-width: 400px){
@@ -1198,7 +1222,8 @@
     .ca-btn{width:32px; height:32px;}
     .ca-btn svg{width:15px; height:15px;}
 
-    .compare-table th, .compare-table td { padding: 8px 6px; font-size: 11.5px; }
+    #summary th, #summary td { padding: 10px 6px; font-size: 12px; }
+    .compare-table th, .compare-table td { padding: 10px 4px; font-size: 11.5px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1256,8 +1281,12 @@
     .spec-toggle { padding: 10px 0 4px; }
     .spec-v { padding-bottom: 12px; border-left-color: #a91f27 !important; }
 
+    /* 打印时强制取消横向滑动，使其按纸张宽度自适应并允许换行 */
     .tbl-scroll{overflow:visible !important; border-radius:0; margin-bottom:0;}
     .tbl-scroll::after { display: none !important; }
+    table { min-width: 0 !important; }
+    th, td { white-space: normal !important; word-break: break-word !important; padding: 6px !important; }
+
     a[href^="http"]::after{content:" (" attr(href) ")"; font-family:var(--mono); font-size:8.5pt; color:#666; word-break:break-all;}
     .ca-btn::after, .ca-link::after{content:"" !important;}
     .sub-row.sum-row { background: #f5f5f5; }
@@ -1433,7 +1462,7 @@
       <div class="group is-core">
         <div class="group-head">
           <span class="group-name">A 组 · 非凡系统-BG</span>
-          
+
         </div>
         <div class="group-stats">
           <div class="group-stat">
@@ -1484,7 +1513,7 @@
       <div class="group">
         <div class="group-head">
           <span class="group-name">B 组 · FIST / LUCKY99 / CY2000</span>
-          
+
         </div>
         <div class="group-stats">
           <div class="group-stat">
@@ -1572,7 +1601,8 @@
     </div>
 
     <div class="tbl-scroll">
-      <table style="min-width: 480px;">
+      <!-- 应用定制列宽 -->
+      <table>
         <thead>
           <tr>
             <th>组别</th>
@@ -1591,6 +1621,7 @@
         </tbody>
       </table>
     </div>
+    <!-- 恢复移动端滑动提示 -->
     <p class="tbl-swipe-hint" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       左右滑动查看完整数据
@@ -1831,6 +1862,7 @@
 
     <!-- 对比表格 -->
     <div class="tbl-scroll" style="margin-bottom: 24px;">
+      <!-- 应用定制列宽 -->
       <table class="compare-table" style="margin-bottom: 0; border: none;">
         <thead>
           <tr>
@@ -1878,6 +1910,12 @@
         </tbody>
       </table>
     </div>
+    <!-- 移动端滑动提示 -->
+    <p class="tbl-swipe-hint" aria-hidden="true" style="margin-top: -24px; margin-bottom: 24px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      左右滑动查看完整数据
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </p>
 
     <!-- 极简堆叠面积图 -->
     <div class="chart-container">
@@ -2497,3 +2535,4 @@
 
 </body>
 </html>
+```
