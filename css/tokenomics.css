@@ -643,6 +643,50 @@ body{
 .caption-ol li{margin:2px 0; padding-left:2px; line-height:1.9;}
 .caption-ol li::marker{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
 
+/* ================= TGE 汇总标签（新增） ================= */
+.tge-summary-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  padding: 16px !important;
+}
+
+.tge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.tge-note {
+  font-size: 12px;
+  color: var(--muted);
+  width: 100%;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.tge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.tge-item {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  transition: background-color .2s ease, border-color .2s ease;
+}
+
 /* ================= 解锁时间轴（横向） ================= */
 .tl-wrap{margin:var(--sp-4) 0 var(--sp-5);}
 .tl-scroll{
@@ -723,90 +767,6 @@ body{
   font-size:12px; color:var(--muted);
   margin-top:3px; line-height:1.65;
 }
-
-/* ================= 释放规则明细 ================= */
-.rel-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px dashed var(--line);
-}
-
-.rel {
-  padding: 20px;
-  border-radius: 16px;
-  background: var(--card);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
-  transition: transform .25s ease, box-shadow .25s ease;
-  box-shadow: 0 8px 24px -12px rgba(20, 24, 29, 0.08), 0 0 0 1px var(--line-2);
-}
-
-.rel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px -12px rgba(20, 24, 29, 0.12), 0 0 0 1px var(--cyber-glow-soft);
-}
-
-.rel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.rel-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--ink);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
-
-.rel-amt {
-  flex: none;
-  font-family: var(--mono);
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--ink);
-  white-space: nowrap;
-  text-align: right;
-  letter-spacing: -0.02em;
-}
-
-.rel-amt small {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  margin-left: 4px;
-}
-
-.rel-scope {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.rel.total {
-  background: linear-gradient(145deg, var(--red-soft) 0%, var(--card) 100%);
-  box-shadow: 0 8px 24px -12px rgba(255, 45, 85, 0.15), 0 0 0 1px var(--sum-line);
-}
-.rel.total .rel-title { color: var(--cyber-d); }
-.rel.total .rel-amt { color: var(--cyber); }
-.rel.total .rel-scope { color: var(--ink-3); font-weight: 500; }
-
-.rel.subtotal {
-  background: var(--cyber-glow-faint);
-  box-shadow: 0 8px 24px -12px rgba(255, 45, 85, 0.05), 0 0 0 1px var(--cyber-glow-soft);
-}
-.rel.subtotal .rel-title { color: var(--cyber-d); }
-.rel.subtotal .rel-amt { color: var(--cyber); }
-.rel.subtotal .rel-scope { color: var(--ink-3); }
 
 /* ================= 表格 ================= */
 .tbl-details{margin: 0;}
@@ -1401,6 +1361,9 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
     padding: 8px 12px;
   }
   .vest-k, .vest-v { line-height: 1.3; }
+  
+  /* TGE 标签在移动端堆叠 */
+  .tge-head { flex-direction: column; align-items: flex-start; gap: 4px; }
 
   /* 多签席位：横向转纵向 */
   .multisig-seats { flex-direction: column; align-items: stretch; gap: 6px; }
@@ -1459,12 +1422,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .vest-v { font-size: 12px; }
   .alloc-links { gap: 8px; }
   .alloc-link { flex: 1; padding: 10px; }
-
-  .rel-list { margin-top: 24px; padding-top: 20px; }
-  .rel { padding: 16px; gap: 10px; }
-  .rel-title { font-size: 15px; }
-  .rel-amt { font-size: 18px; }
-  .rel-scope { font-size: 12.5px; line-height: 1.65; }
 
   .alloc-note { font-size: 12.5px; line-height: 1.75; margin-top: 10px; }
   .caption { font-size: 12.5px; line-height: 1.9; }
@@ -1612,12 +1569,6 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
   .vest-k { font-size: 10px; }
   .vest-v { font-size: 12px; }
 
-  .rel { padding: 14px; gap: 8px; }
-  .rel-head { flex-direction: column; gap: 4px; align-items: flex-start; }
-  .rel-title { font-size: 14px; }
-  .rel-amt { text-align: left; font-size: 17px; }
-  .rel-scope { font-size: 12px; }
-
   .faq-a{padding-right:8px;}
   .faq-item summary { padding: 14px 0; font-size: 13.5px; }
 
@@ -1703,4 +1654,7 @@ a.channel-card:hover .ch-name{color:var(--cyber);}
 
   .hl-card.hl-red:last-child { background: #fff !important; border: 1px solid #ccc !important; color: #000 !important; }
   .hl-card.hl-red:last-child .hl-num, .hl-card.hl-red:last-child .hl-t, .hl-card.hl-red:last-child .hl-d { color: #000 !important; text-shadow: none !important; background: none !important; -webkit-text-fill-color: initial !important; }
+  
+  /* 打印模式下隐藏 TGE 标签的阴影，保持清晰 */
+  .tge-item { box-shadow: none !important; border-color: #ccc !important; }
 }
