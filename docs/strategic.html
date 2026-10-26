@@ -9,7 +9,7 @@
   :root{
     color-scheme: light dark;
     --ink:#14181d; --ink-2:#2f3841; --ink-3:#5b6672; --muted:#6b7480;
-    --line:#e2e6ea; --line-2:#eef1f4; --bg:#f5f6f8; --card:#ffffff;
+    --line:#e2e6ea; --line-2:#eef1f4; --line-3:#cbd3da; --bg:#f5f6f8; --card:#ffffff;
     --red:#a91f27; --red-dark:#7e161c; --red-soft:#fbf4f4;
     --gold:#a8821c; --gold-soft:#faf6ea;
     --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
@@ -40,6 +40,7 @@
     margin:0; background:var(--bg); color:var(--ink);
     font-size:14.5px; line-height:1.75;
     font-family:var(--sans);
+    letter-spacing: 0.01em;
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color:transparent;
     transition:background-color .25s ease, color .25s ease;
@@ -69,7 +70,7 @@
     50%      { box-shadow:0 0 20px var(--cyber-glow), 0 0 40px var(--cyber-glow-soft); }
   }
   .wrap{padding:0;}
-  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:-.01em;}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:-.01em; padding: 0 1px;}
 
   /* ================= 抬头 ================= */
   .masthead{padding:var(--sp-9) 0 26px; border-bottom:1.5px solid var(--ink); position:relative;}
@@ -131,10 +132,10 @@
   .theme-toggle[data-icon="dark"] .ico-sun{display:block;}
   .theme-toggle[data-icon="dark"] .ico-moon{display:none;}
 
-  /* 5 字段：桌面 5 列均分 */
+  /* 抬头 6 字段：全局 3 列 x 2 行 */
   .mast-meta{
     display:grid;
-    grid-template-columns:repeat(5, minmax(0,1fr));
+    grid-template-columns:repeat(3, minmax(0,1fr));
     gap:var(--sp-4) 18px;
     align-items:start;
     margin-top:24px; padding-top:var(--sp-4); border-top:1px solid var(--line-2);
@@ -146,6 +147,14 @@
   }
   .mast-meta .v{display:block; font-size:14px; font-weight:600; color:var(--ink); letter-spacing:.02em; line-height:1.4;}
   .mast-meta .v.is-red{color:var(--cyber);}
+  /* 核心数据渐变高亮 */
+  .mast-meta .cell:nth-child(4) .v, .mast-meta .cell:nth-child(5) .v {
+    background: linear-gradient(90deg, var(--gold), var(--cyber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    font-weight: 800;
+  }
 
   /* ================= 合约地址条 ================= */
   .ca-bar{
@@ -246,85 +255,131 @@
     border-bottom: 1px solid var(--line);
   }
 
-  /* 包裹内容的微背景卡片 */
   .abstract-card {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 16px 18px;
-    border-left: 3px solid var(--cyber);
-    margin-bottom: 20px;
-    transition: background-color .25s ease;
+    background: var(--card);
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 24px -8px rgba(20,24,29,.06);
+    transition: background-color .25s ease, border-color .25s ease;
   }
 
-  .abstract-card p {
-    margin: 0;
-    font-size: 14px;
+  .abstract-text {
+    margin: 0 0 20px;
+    font-size: 14.5px;
     line-height: 1.95;
     color: var(--ink-2);
+    letter-spacing: 0.01em;
   }
-  .abstract-card b { color: var(--ink); font-weight: 700; }
-  .abstract-card .hl {
+  .abstract-text b { color: var(--ink); font-weight: 700; }
+  .abstract-text .hl {
     color: var(--cyber); font-weight: 700;
     border-bottom: 2px solid var(--cyber-glow-soft);
     padding-bottom: 1px;
   }
 
-  /* ===== CTA 容器 ===== */
-  .cta-row{
-    display:flex; flex-wrap:wrap; gap:12px;
-    align-items:center;
-  }
-
-  /* 演示入口 CTA */
-  .demo-cta{
-    display:inline-flex; align-items:center; gap:9px;
-    padding:10px 18px 10px 16px;
-    border:1px solid var(--cyber-glow-soft); border-radius:6px;
-    background:var(--cyber-glow-faint); color:var(--cyber);
-    font-size:13px; font-weight:700; line-height:1.4;
-    text-decoration:none; letter-spacing:.01em;
-    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease, transform .2s cubic-bezier(.34,1.2,.64,1);
-    -webkit-tap-highlight-color:transparent;
-  }
-  .demo-cta:hover{
-    background:var(--cyber-glow-soft); border-color:var(--cyber);
-    box-shadow:0 0 16px -3px var(--cyber-glow), 0 0 0 1px var(--cyber-glow-soft);
-    transform:translateY(-1px);
-  }
-  .demo-cta:active{transform:translateY(0);}
-  .demo-cta svg{width:14px; height:14px; display:block; flex:none;}
-  .demo-cta svg.ico-arrow{width:13px; height:13px; opacity:.75; transition:transform .2s ease, opacity .2s ease;}
-  .demo-cta:hover svg.ico-arrow{transform:translateX(2px); opacity:1;}
-
-  /* 代币经济文档 CTA */
-  .token-cta{
-    display:inline-flex; align-items:center; gap:9px;
-    padding:10px 18px 10px 16px;
-    border: 1px solid var(--token-glow);
-    border-radius:6px;
-    background: var(--token-glow-soft);
+  .inline-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     color: var(--token);
-    font-size:13px; font-weight:700; line-height:1.4;
-    text-decoration:none; letter-spacing:.01em;
-    transition:background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease, transform .2s cubic-bezier(.34,1.2,.64,1);
-    -webkit-tap-highlight-color:transparent;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--token-glow);
+    transition: color .2s ease, border-color .2s ease;
+    margin-left: 4px;
+    vertical-align: baseline;
   }
-  .token-cta:hover{
-    background: var(--token-glow);
-    border-color: var(--token);
-    box-shadow: 0 0 16px -3px var(--token-glow), 0 0 0 1px var(--token-glow-soft);
-    transform:translateY(-1px);
+  .inline-link:hover {
+    color: var(--cyber);
+    border-bottom-color: var(--cyber);
   }
-  .token-cta:active{transform:translateY(0);}
-  .token-cta svg{width:14px; height:14px; display:block; flex:none;}
-  .token-cta svg.ico-coin{
-    width:13px; height:13px;
-    opacity:.85;
-    transition:transform .25s ease, opacity .2s ease;
+  .inline-link svg {
+    width: 13px;
+    height: 13px;
+    position: relative;
+    top: 1px;
   }
-  .token-cta:hover svg.ico-coin{
-    opacity:1;
-    transform:rotateY(180deg);
+
+  .mechanism-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .mechanism-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    border: 1px solid var(--line-2);
+  }
+  .mechanism-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyber);
+    background: var(--cyber-glow-faint);
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    flex: none;
+  }
+
+  .bonus-block {
+    background: linear-gradient(90deg, var(--cyber-glow-faint) 0%, rgba(255,255,255,0) 100%);
+    border-left: 3px solid var(--cyber);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .bonus-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: var(--cyber);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .bonus-text {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  .bonus-text strong {
+    font-size: 22px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #ffb700, #ff2d55);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 6px;
+    display: inline-block;
+    filter: drop-shadow(0 2px 8px rgba(255, 183, 0, 0.25));
+  }
+
+  @media (min-width: 600px) {
+    .mechanism-list {
+      flex-direction: row;
+      gap: 10px;
+    }
+    .mechanism-item {
+      flex: 1;
+      justify-content: center;
+      padding: 14px 10px;
+    }
+    .bonus-block {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 14px 20px;
+    }
   }
 
   /* ================= 区块 ================= */
@@ -407,29 +462,63 @@
   .group-note{margin-top:10px; font-size:12px; color:var(--muted); line-height:1.7;}
   .group-note b{color:var(--ink-2); font-weight:600;}
 
+  /* 严格对齐的子数据行 */
   .sub-alloc{margin-top:10px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden;}
   .sub-row{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding:8px 12px; border-bottom:1px solid var(--line-2);
-    font-size:12.5px; line-height:1.6;
-    transition:background-color .2s ease;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 13px;
+    line-height: 1.5;
+    transition: background-color .2s ease;
   }
   .sub-row:last-child{border-bottom:0;}
   .sub-row:nth-child(even){background:var(--zebra-bg);}
   .sub-row:hover{background:var(--cyber-glow-faint);}
-  .sub-row .s-name{color:var(--ink-2); min-width:0;}
-  .sub-row .s-val{flex:none; font-family:var(--mono); font-size:12px; color:var(--ink-3); white-space:nowrap;}
+
+  .s-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .s-name { color: var(--ink-2); font-weight: 600; }
+  .s-detail { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+  .s-val {
+    text-align: right; font-family: var(--mono); font-size: 14.5px; font-weight: 700;
+    color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
+  }
+
+  .sub-row.sum-row { background: var(--red-soft); }
+  .sub-row.sum-row .s-name { color:var(--cyber-d); }
+  .sub-row.sum-row .s-detail { color:var(--cyber); opacity: 0.8; }
+  .sub-row.sum-row .s-val { color:var(--cyber); }
 
   /* ================= 表格 ================= */
   .tbl-scroll{
+    position: relative;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
     border:1px solid var(--line); border-radius:var(--r);
     background:var(--card); scrollbar-width:thin;
     transition:background-color .25s ease, border-color .25s ease;
     margin-bottom: 8px;
   }
-  .tbl-scroll::-webkit-scrollbar{height:4px;}
-  .tbl-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg, var(--cyber), var(--gold)); border-radius:2px;}
+  .tbl-scroll::-webkit-scrollbar { height: 4px; background: transparent; }
+  .tbl-scroll::-webkit-scrollbar-track { background: transparent; }
+  .tbl-scroll::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 2px; }
+  .tbl-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* 添加右侧滑动遮罩暗示 */
+  .tbl-scroll::after {
+    content: "";
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 30px;
+    background: linear-gradient(to right, transparent, var(--card));
+    pointer-events: none;
+    border-radius: 0 var(--r) var(--r) 0;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+  }
+  .tbl-scroll.is-scrolled-end::after { opacity: 0; }
 
   .tbl-scroll + .tbl-swipe-hint{margin-top:-8px;}
 
@@ -466,7 +555,6 @@
   }
   tbody tr.flex td{color:var(--ink-3);}
 
-  /* 移动端滑动提示 */
   .tbl-swipe-hint {
     display: none; margin: 0 0 16px; padding: 8px 14px;
     font-size: 11.5px; color: var(--muted); text-align: center;
@@ -476,24 +564,6 @@
     align-items: center; justify-content: center; gap: 6px;
   }
   .tbl-swipe-hint svg{width:12px; height:12px; display:inline-block; vertical-align:-1px; opacity:.7;}
-
-  /* 阶段详情表 */
-  .stage-table { width: 100%; min-width: 720px; font-size: 12.5px; }
-  .stage-table th, .stage-table td { padding: 12px 14px; vertical-align: middle; white-space: nowrap; }
-  .stage-table th:nth-child(1), .stage-table td:nth-child(1) {
-    width: 60px; text-align: center; font-family: var(--mono);
-    font-size: 11.5px; color: var(--cyber); font-weight: 700;
-  }
-  .stage-table th:nth-child(2), .stage-table td:nth-child(2) { font-weight: 600; color: var(--ink); min-width: 120px; }
-  .stage-table th:nth-child(3), .stage-table td:nth-child(3) { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
-  .stage-table th:nth-child(4), .stage-table td:nth-child(4) {
-    font-family: var(--mono); font-size: 11px; font-weight: 700;
-    color: var(--cyber); text-align: center; width: 90px;
-  }
-  .stage-table td:nth-child(4).is-gold { color: var(--gold); }
-  .stage-table th:nth-child(5), .stage-table td:nth-child(5) {
-    color: var(--ink-2); text-align: left; min-width: 240px; line-height: 1.6;
-  }
 
   /* ================= 流程 ================= */
   .flow{border-top:1px solid var(--line);}
@@ -538,203 +608,185 @@
   .formula b{color:var(--cyber); font-weight:700;}
   .formula .cmt{color:var(--muted);}
 
-  /* ================= 时间轴（桌面横向） ================= */
-  .tl-wrap{margin:var(--sp-4) 0 var(--sp-5);}
-  .tl-scroll{
-    overflow-x:auto; -webkit-overflow-scrolling:touch;
-    padding:12px 0 10px;
-    scrollbar-width:thin; scrollbar-color:var(--scroll-thumb) transparent;
+  /* ================= 时间轴 ================= */
+  .timeline-list{
+    margin: var(--sp-5) 0;
+    position: relative;
   }
-  .tl-scroll::-webkit-scrollbar{height:4px;}
-  .tl-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb); border-radius:2px;}
-  .tl{position:relative; min-width:920px; padding:0 64px;}
-  .tl-inner{position:relative; height:320px;}
-  .tl-axis{
-    position:absolute; left:0; right:0; top:50%; height:2px;
-    background:var(--line); border-radius:1px; transform:translateY(-50%);
+  .tl-item{
+    position: relative;
+    padding-left: 36px;
+    padding-bottom: 24px;
   }
-  .tl-fill{
-    position:absolute; left:0; top:0; bottom:0; width:100%;
-    background:linear-gradient(90deg, var(--gold) 0%, var(--gold) 30%, var(--cyber) 68%, var(--cyber-l) 100%);
-    opacity:.45; border-radius:1px;
+  .tl-item:last-child{ padding-bottom: 0; }
+  .tl-item::before{
+    content: ""; position: absolute; left: 7px; top: 10px; bottom: -10px;
+    width: 2px; background: var(--line);
   }
-  .tl-node{position:absolute; left:var(--x); top:50%; width:0; height:0; z-index:1; transform:translateX(-50%);}
-  .tl-dot{
-    position:absolute; left:0; top:0;
-    transform:translate(-50%, -50%);
-    width:10px; height:10px; border-radius:50%;
-    background:var(--card); border:2px solid var(--cyber);
-    box-shadow:0 0 0 3px var(--card), 0 0 10px var(--cyber-glow);
-    z-index:2;
-  }
-  .tl-node.is-window .tl-dot{border-color:var(--gold); box-shadow:0 0 0 3px var(--card), 0 0 10px var(--gold-glow);}
-  .tl-node.is-milestone .tl-dot{animation:tlPulse 2.4s ease-in-out infinite;}
-  @keyframes tlPulse{
-    0%,100%{box-shadow:0 0 0 3px var(--card), 0 0 10px var(--cyber-glow);}
-    50%    {box-shadow:0 0 0 3px var(--card), 0 0 18px var(--cyber-glow), 0 0 26px var(--cyber-glow-soft);}
-  }
-  .tl-stem{position:absolute; left:0; width:1px; background:var(--line); transform:translateX(-50%);}
-  .tl-top .tl-stem{bottom:0; height:46px;}
-  .tl-bottom .tl-stem{top:0; height:46px;}
-  .tl-card{
-    position:absolute; left:0; transform:translateX(-50%);
-    width:165px; padding:10px 12px 11px;
-    border:1px solid var(--line); border-radius:6px;
-    background:var(--card); text-align:center; line-height:1.4;
-    box-shadow:0 2px 8px -4px rgba(20,24,29,.08);
-    transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease;
-  }
-  .tl-top .tl-card{bottom:46px;}
-  .tl-bottom .tl-card{top:46px;}
-  .tl-card:hover{
-    border-color:var(--cyber-glow);
-    box-shadow:0 0 14px -2px var(--cyber-glow-soft);
-    transform:translateX(-50%) translateY(-1px);
-  }
-  .tl-node.is-window .tl-card{border-color:rgba(168,130,28,.35);}
-  .tl-node.is-window .tl-card:hover{border-color:var(--gold); box-shadow:0 0 14px -2px var(--gold-glow-soft);}
-  .tl-when{
-    font-family:var(--mono); font-size:9.5px; letter-spacing:.08em;
-    color:var(--cyber); text-transform:uppercase; line-height:1.4;
-  }
-  .tl-node.is-window .tl-when{color:var(--gold);}
-  .tl-what{font-size:12.5px; font-weight:700; color:var(--ink); margin-top:3px; line-height:1.45; word-break:break-word;}
-  .tl-why{font-size:11px; color:var(--muted); margin-top:4px; line-height:1.55; word-break:break-word;}
-  .tl-dur{
-    display:inline-block; margin-top:6px;
-    font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.04em;
-    padding:1px 8px; border-radius:999px; line-height:1.6;
-    background:var(--cyber-glow-faint); color:var(--cyber);
-    border:1px solid var(--cyber-glow-soft);
-    white-space:nowrap;
-  }
-  .tl-node.is-window .tl-dur{
-    background:var(--gold-soft); color:var(--gold);
-    border-color:rgba(168,130,28,.25);
-  }
-  .tl-caption{margin:12px 0 0; font-size:11px; color:var(--muted); line-height:1.7; text-align:center;}
+  .tl-item:last-child::before{ display:none; }
+  .tl-item.active::before{ background: var(--cyber-glow); }
+  .tl-item.gold::before{ background: var(--gold-glow); }
 
-  /* ================= 时间轴（移动纵向） ================= */
-  .tl-vert{display:none; margin:2px 0 20px; padding-left:2px;}
-  .tl-v-item{
-    position:relative;
-    padding:0 0 20px 28px;
-    border-left:1px dashed var(--line);
-    margin-left:6px;
+  .tl-circle{
+    position: absolute; left: 0; top: 4px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 3px solid var(--cyber);
+    box-shadow: 0 0 0 3px var(--card);
+    z-index: 1;
   }
-  .tl-v-item:last-child{border-left:1px solid transparent; padding-bottom:0;}
-  .tl-v-dot{
-    position:absolute; left:-6px; top:3px;
-    width:11px; height:11px; border-radius:50%;
-    background:var(--card); border:2px solid var(--cyber);
-    box-shadow:0 0 0 3px var(--card), 0 0 10px var(--cyber-glow);
-  }
-  .tl-v-item.is-window .tl-v-dot{border-color:var(--gold); box-shadow:0 0 0 3px var(--card), 0 0 10px var(--gold-glow);}
-  .tl-v-item.is-milestone .tl-v-dot{animation:tlPulse 2.4s ease-in-out infinite;}
-  .tl-v-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
-  .tl-v-when{
-    font-family:var(--mono); font-size:10px; letter-spacing:.06em;
-    color:var(--cyber); text-transform:uppercase; line-height:1.5;
-  }
-  .tl-v-item.is-window .tl-v-when{color:var(--gold);}
-  .tl-v-dur{
-    font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.04em;
-    padding:1px 8px; border-radius:999px; line-height:1.6;
-    background:var(--cyber-glow-faint); color:var(--cyber);
-    border:1px solid var(--cyber-glow-soft);
-    white-space:nowrap;
-  }
-  .tl-v-item.is-window .tl-v-dur{
-    background:var(--gold-soft); color:var(--gold);
-    border-color:rgba(168,130,28,.25);
-  }
-  .tl-v-what{font-size:14px; font-weight:700; color:var(--ink); margin-top:2px; line-height:1.45;}
-  .tl-v-why{font-size:12px; color:var(--muted); margin-top:3px; line-height:1.65;}
+  .tl-item.gold .tl-circle{ border-color: var(--gold); }
+  .tl-item.milestone .tl-circle{ background: var(--cyber); border-color: var(--cyber); }
 
-  /* ================= 关键时长 KPI ================= */
-  .dur-grid{
-    display:grid; grid-template-columns:repeat(2,1fr);
-    border:1px solid var(--line); border-radius:var(--r);
-    margin-top:var(--sp-4); overflow:hidden;
-    transition:border-color .25s ease;
+  .tl-header{ display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .tl-time{
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    color: var(--cyber); letter-spacing: 0.05em;
   }
-  .dur-cell{
-    padding:14px 12px; text-align:center;
-    border-right:1px solid var(--line-2);
-    border-bottom:1px solid var(--line-2);
-    transition:background-color .2s ease, box-shadow .3s ease;
-    position:relative;
+  .tl-item.gold .tl-time{ color: var(--gold); }
+
+  .tl-badge{
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    padding: 2px 8px; border-radius: 999px;
+    background: var(--cyber-glow-faint); color: var(--cyber);
+    border: 1px solid var(--cyber-glow-soft); line-height: 1.4;
   }
-  .dur-cell:nth-child(2n){border-right:0;}
-  .dur-cell:nth-last-child(-n+2){border-bottom:0;}
-  .dur-cell:hover{background:var(--cyber-glow-faint); box-shadow:inset 0 0 20px var(--cyber-glow-faint);}
-  .dur-cell b{
-    display:block; font-family:var(--mono); font-size:18px; font-weight:700;
-    color:var(--ink); letter-spacing:-.02em; line-height:1.2;
-  }
-  .dur-cell b.is-red{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
-  .dur-cell b.is-gold{color:var(--gold);}
-  .dur-cell span{
-    display:block; margin-top:5px; font-size:10.5px; color:var(--muted);
-    letter-spacing:.04em; line-height:1.5;
+  .tl-item.gold .tl-badge{
+    background: var(--gold-soft); color: var(--gold); border-color: rgba(168,130,28,.25);
   }
 
-  /* ================= 释放规则 ================= */
-  .timeline{border-top:1px solid var(--line);}
-  .tl-row{
-    display:grid; grid-template-columns:96px 1fr; gap:16px;
-    padding:14px 0; border-bottom:1px solid var(--line-2);
-    position:relative;
-    transition:background-color .2s ease, padding-left .25s ease;
-  }
-  .tl-row:last-child{border-bottom:0;}
-  .tl-row:hover{background:var(--cyber-glow-faint); padding-left:8px;}
-  .tl-row:hover::before{
-    content:""; position:absolute; left:0; top:10px; bottom:10px; width:2px;
-    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
-  }
-  .tl-key{
-    font-family:var(--mono); font-size:11px; font-weight:700;
-    letter-spacing:.06em; color:var(--cyber); text-transform:uppercase;
-    line-height:1.8; padding-top:1px;
-  }
-  .tl-val{font-size:13.5px; color:var(--ink-2); line-height:1.8; min-width:0;}
-  .tl-val b{color:var(--ink); font-weight:700;}
+  .tl-title{ font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.45; }
+  .tl-desc{ font-size: 13px; color: var(--muted); line-height: 1.7; }
 
-  /* ================= 规格 ================= */
-  .spec{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
-  .spec-row{
-    display:grid; grid-template-columns:120px 1fr; gap:var(--sp-5);
-    padding:var(--sp-4) 0; border-bottom:1px solid var(--line-2);
-    transition:background-color .2s ease, padding-left .25s ease; position:relative;
+  /* ================= 双池释放规则 ================= */
+  .compare-table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    font-size: 13px;
   }
-  .spec-row:hover{background:var(--cyber-glow-faint); padding-left:8px;}
-  .spec-row:hover::before{
-    content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
-    background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
+  .compare-table th{
+    background: var(--thead-bg);
+    color: var(--ink-3);
+    font-weight: 600;
+    font-size: 11.5px;
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
   }
-  .spec-row:last-child{border-bottom:0;}
-  .spec-k{padding-top:2px; line-height:1.5;}
-  .spec-k-cn{
-    display:block; font-family:var(--sans); font-size:11px;
-    font-weight:600; letter-spacing:.02em; color:var(--ink-3);
-    line-height:1.5; margin-bottom:2px; transition:color .25s ease;
+  .compare-table th:first-child{ text-align: left; width: 25%; }
+  .compare-table th:nth-child(2){ color: var(--cyber); }
+  .compare-table th:nth-child(3){ color: var(--gold); }
+
+  .compare-table td{
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink-2);
+    line-height: 1.5;
   }
-  .spec-k-en{
-    display:block; font-family:var(--mono); font-size:9px;
-    font-weight:400; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--muted); line-height:1.4; transition:color .25s ease;
+  .compare-table td:first-child{ text-align: left; font-weight: 600; color: var(--ink); }
+  .compare-table tr:last-child td{ border-bottom: 0; }
+  .compare-table tr:nth-child(even) td{ background: var(--zebra-bg); }
+
+  /* ================= 释放曲线图 ================= */
+  .chart-container {
+    margin: 24px 0;
+    padding: 18px 18px 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    transition: background-color .25s ease, border-color .25s ease;
   }
-  .spec-row:hover .spec-k-cn{color:var(--ink);}
-  .spec-row:hover .spec-k-en{color:var(--cyber);}
-  .spec-v{font-size:13.5px; color:var(--ink-2); line-height:1.8; min-width:0;}
-  .spec-v b{color:var(--ink); font-weight:700;}
-  .spec-v code{
+  .chart-header {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; padding-bottom: 12px; margin-bottom: 4px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .chart-title {
+    font-size: 13.5px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.005em; line-height: 1.3;
+  }
+  .chart-title span {
+    display: block; font-family: var(--mono); font-size: 10px;
+    font-weight: 400; color: var(--muted); letter-spacing: 0.1em;
+    margin-top: 3px; text-transform: uppercase;
+  }
+  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .legend-item {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.02em;
+  }
+  .legend-dot { width: 12px; height: 3px; border-radius: 2px; flex: none; }
+  .legend-dot.main { background: var(--cyber); }
+  .legend-dot.reward { background: var(--gold); }
+  .chart-svg { width: 100%; height: auto; display: block; margin: 4px 0; }
+
+  /* 极简说明列表 */
+  .chart-notes {
+    margin-top: 12px;
+    padding-left: 14px;
+    border-left: 2px solid var(--line-2);
+  }
+  .chart-notes p {
+    margin: 6px 0;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  /* ================= 安全说明 ================= */
+  .spec-accordion { border-top: 1px solid var(--line); margin-bottom: 24px; }
+  .spec-item { border-bottom: 1px solid var(--line-2); transition: background-color .2s ease; }
+  .spec-item:hover { background: var(--cyber-glow-faint); }
+  .spec-toggle {
+    width: 100%; background: transparent; border: none; padding: 16px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; text-align: left; color: var(--ink);
+    font-family: var(--sans); transition: color .2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .spec-toggle:hover .spec-k-cn { color: var(--cyber); }
+  .spec-k { display: flex; flex-direction: column; gap: 4px; }
+  .spec-k-cn { font-size: 14px; font-weight: 700; letter-spacing: 0.02em; transition: color .2s ease; }
+  .spec-k-en { font-family: var(--mono); font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .spec-icon {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--bg); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    flex: none; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .spec-icon svg { width: 12px; height: 12px; stroke: var(--ink-3); transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), stroke .2s ease; }
+  .spec-toggle[aria-expanded="true"] .spec-icon { background: var(--cyber-glow-faint); border-color: var(--cyber-glow-soft); transform: rotate(180deg); }
+  .spec-toggle[aria-expanded="true"] .spec-icon svg { stroke: var(--cyber); }
+  .spec-toggle[aria-expanded="true"] .spec-k-cn { color: var(--cyber); }
+
+  .spec-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .spec-content.is-open { grid-template-rows: 1fr; }
+  .spec-content-inner { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+  .spec-content.is-open .spec-content-inner { max-height: 1000px; }
+
+  .spec-v {
+    padding: 0 0 20px 14px; border-left: 2px solid transparent;
+    transition: border-color .3s ease; font-size: 13.5px;
+    color: var(--ink-2); line-height: 1.8;
+  }
+  .spec-content.is-open .spec-v { border-left-color: var(--cyber-glow-soft); }
+  .spec-v b { color: var(--ink); font-weight: 700; }
+  .spec-v code {
     display:inline-block; font-family:var(--mono); font-size:11.5px;
-    color:var(--ink); background:var(--bg);
-    border:1px solid var(--line); border-radius:var(--r);
-    padding:2px 7px; word-break:break-all; line-height:1.65;
-    margin:2px 0; transition:background-color .25s ease, border-color .25s ease;
+    color:var(--ink); background:var(--bg); border:1px solid var(--line);
+    border-radius:var(--r); padding:2px 7px; word-break:break-all;
+    line-height:1.65; margin:2px 0;
   }
 
   /* ================= 规则 ================= */
@@ -742,8 +794,7 @@
   .rule-item{
     display:grid; grid-template-columns:22px 1fr; gap:12px;
     padding:12px 0; border-bottom:1px solid var(--line-2);
-    transition:background-color .2s ease, padding-left .25s ease;
-    position:relative;
+    transition:background-color .2s ease, padding-left .25s ease; position:relative;
   }
   .rule-item:last-child{border-bottom:0;}
   .rule-item:hover{background:var(--cyber-glow-faint); padding-left:8px;}
@@ -751,11 +802,7 @@
     content:""; position:absolute; left:0; top:10px; bottom:10px; width:2px;
     background:var(--cyber); box-shadow:0 0 6px var(--cyber-glow);
   }
-  .rule-dot{
-    font-family:var(--mono); font-size:11px; font-weight:700;
-    color:var(--cyber); line-height:1.75; padding-top:2px;
-    letter-spacing:.04em;
-  }
+  .rule-dot{ font-family:var(--mono); font-size:11px; font-weight:700; color:var(--cyber); line-height:1.75; padding-top:2px; letter-spacing:.04em; }
   .rule-text{font-size:13.5px; color:var(--ink-2); line-height:1.78; min-width:0;}
   .rule-text b{color:var(--ink); font-weight:700;}
 
@@ -772,8 +819,7 @@
   .kpi{
     display:grid; grid-template-columns:repeat(2,1fr);
     border:1px solid var(--line); border-radius:var(--r);
-    margin-top:var(--sp-4); overflow:hidden;
-    transition:border-color .25s ease;
+    margin-top:var(--sp-4); overflow:hidden; transition:border-color .25s ease;
   }
   .kpi-cell{
     padding:var(--sp-4) var(--sp-3); text-align:center;
@@ -783,14 +829,94 @@
   .kpi-cell:nth-child(2n){border-right:0;}
   .kpi-cell:nth-child(-n+2){border-bottom:1px solid var(--line-2);}
   .kpi-cell:hover{background:var(--cyber-glow-faint); box-shadow:inset 0 0 20px var(--cyber-glow-faint);}
-  .kpi-cell b{
-    display:block; font-size:16px; font-weight:700; color:var(--ink);
-    letter-spacing:-.01em; line-height:1.3;
-  }
+  .kpi-cell b{ display:block; font-size:16px; font-weight:700; color:var(--ink); letter-spacing:-.01em; line-height:1.3; }
   .kpi-cell b.is-red{color:var(--cyber); text-shadow:0 0 12px var(--cyber-glow-soft);}
-  .kpi-cell span{
-    display:block; margin-top:6px; font-size:10.5px; color:var(--muted);
-    letter-spacing:.04em; line-height:1.5;
+  .kpi-cell span{ display:block; margin-top:6px; font-size:10.5px; color:var(--muted); letter-spacing:.04em; line-height:1.5; }
+
+  /* ================= 试算计算器 ================= */
+  .calc-container {
+    margin-top: 24px; padding: 20px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; box-shadow: 0 4px 20px -8px rgba(0,0,0,0.05);
+    display: flex !important; flex-direction: column;
+    transition: background-color .25s ease, border-color .25s ease;
+  }
+  .calc-badge {
+    display: inline-flex !important; align-items: center; gap: 6px;
+    background: var(--gold-soft); color: var(--gold);
+    padding: 6px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+    margin-bottom: 16px; align-self: flex-start;
+  }
+  .calc-badge::before {
+    content: ""; display: block; width: 5px; height: 5px;
+    border-radius: 50%; background: var(--gold);
+  }
+  .calc-input-row {
+    display: flex !important; gap: 10px; margin-bottom: 12px; width: 100%;
+  }
+  .calc-input-row input {
+    flex: 1; min-width: 0; font-size: 22px; font-weight: 700;
+    padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--bg); color: var(--ink); font-family: var(--mono); outline: none;
+  }
+  .calc-input-row input:focus {
+    border-color: var(--gold); background: var(--card);
+  }
+  .calc-input-row .unit {
+    display: flex !important; align-items: center; justify-content: center;
+    padding: 0 16px; background: var(--bg); border: 1px solid var(--line);
+    border-radius: 8px; font-weight: 700; font-size: 14px; color: var(--ink-3); flex: none;
+  }
+  .calc-shortcuts {
+    display: grid !important; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; margin-bottom: 20px;
+  }
+  .calc-shortcuts button {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 0; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    cursor: pointer; font-family: var(--mono); transition: all .2s ease;
+  }
+  .calc-shortcuts button:active {
+    background: var(--gold-soft); color: var(--gold); border-color: var(--gold-glow-soft);
+  }
+  .calc-results {
+    display: flex !important; align-items: center; justify-content: space-between;
+    background: var(--bg); border: 1px solid var(--line-2);
+    border-radius: 8px; padding: 16px 10px; width: 100%;
+  }
+  .calc-res-item { text-align: center; flex: 1; min-width: 0; }
+  .calc-res-val {
+    font-size: 18px; font-weight: 800; font-family: var(--mono);
+    color: var(--ink); line-height: 1.2; margin-bottom: 4px; word-break: break-all;
+  }
+  .calc-res-label { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .calc-res-op { font-size: 16px; color: var(--line-3); font-weight: 600; padding: 0 4px; flex: none; }
+
+  /* ================= 试算提示 ================= */
+  .calc-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold-glow-soft);
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-3);
+    letter-spacing: 0.01em;
+  }
+  .calc-note svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    margin-top: 2px;
+    color: var(--gold);
+  }
+  .calc-note b {
+    color: var(--ink-2);
+    font-weight: 700;
   }
 
   /* ================= 页脚 ================= */
@@ -800,63 +926,68 @@
   }
   .doc-foot::before{
     content:""; position:absolute; top:-1px; left:0; width:34%; height:1px;
-    background:linear-gradient(90deg, var(--cyber), transparent);
-    box-shadow:0 0 8px var(--cyber-glow);
+    background:linear-gradient(90deg, var(--cyber), transparent); box-shadow:0 0 8px var(--cyber-glow);
   }
   .foot-row{
     display:flex; justify-content:space-between; gap:var(--sp-4); flex-wrap:wrap;
     padding:var(--sp-2) 0; border-bottom:1px solid var(--line-2);
   }
   .foot-row:last-of-type{border-bottom:0;}
-  .foot-k{
-    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--muted); line-height:1.8; flex:none;
-  }
-  .foot-v{
-    font-family:var(--mono); font-size:11px; color:var(--ink-3);
-    line-height:1.8; word-break:break-all; text-align:right;
-  }
-  .foot-v a{
-    color:var(--ink-2); text-decoration:none;
-    border-bottom:1px dashed var(--line);
-    transition:color .18s ease, border-color .18s ease;
-  }
+  .foot-k{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); line-height:1.8; flex:none; }
+  .foot-v{ font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.8; word-break:break-all; text-align:right; }
+  .foot-v a{ color:var(--ink-2); text-decoration:none; border-bottom:1px dashed var(--line); transition:color .18s ease, border-color .18s ease; }
   .foot-v a:hover{color:var(--cyber); border-bottom-color:var(--cyber-glow-soft);}
   .foot-v a.is-demo{color:var(--cyber); font-weight:700; border-bottom-color:var(--cyber-glow-soft);}
   .foot-v a.is-demo:hover{border-bottom-color:var(--cyber);}
-  .disc{
-    margin-top:var(--sp-5); padding-top:var(--sp-4);
-    border-top:1px solid var(--line-2);
-    font-size:11px; color:var(--muted); line-height:1.95;
-  }
+  .disc{ margin-top:var(--sp-5); padding-top:var(--sp-4); border-top:1px solid var(--line-2); font-size:11px; color:var(--muted); line-height:1.95; }
 
   /* ================= 返回顶部 ================= */
   .back-top{
-    position:fixed; right:20px;
-    bottom:calc(20px + env(safe-area-inset-bottom, 0px));
-    z-index:30;
+    position:fixed; right:20px; bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:30;
     width:40px; height:40px; padding:0;
     display:inline-flex; align-items:center; justify-content:center;
     border:1px solid var(--line); border-radius:50%;
-    background:var(--card); color:var(--ink-3); cursor:pointer;
+    background:var(--toc-bg); color:var(--ink-3); cursor:pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow:0 4px 16px -6px rgba(20,24,29,.25);
     opacity:0; transform:translateY(12px); pointer-events:none;
     transition:opacity .25s ease, transform .25s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
     -webkit-tap-highlight-color:transparent;
   }
   .back-top.show{opacity:1; transform:translateY(0); pointer-events:auto;}
-  .back-top:hover{
-    border-color:var(--cyber-glow); color:var(--cyber);
-    box-shadow:0 4px 16px -6px rgba(20,24,29,.25), 0 0 14px -2px var(--cyber-glow-soft);
-  }
+  .back-top:hover{ border-color:var(--cyber-glow); color:var(--cyber); box-shadow:0 4px 16px -6px rgba(20,24,29,.25), 0 0 14px -2px var(--cyber-glow-soft); }
   .back-top svg{width:18px; height:18px; display:block;}
+
+  /* ================= Toast ================= */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(20, 24, 29, 0.85);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   /* ================= 暗色 ================= */
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
-      --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+      --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#9aa5b8; --muted:#8a94a6;
+      --line:#252c36; --line-2:#1a2029; --line-3:#3a424d; --bg:#0a0e14; --card:#10161e;
       --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418;
       --gold:#d4a82a; --gold-soft:#1d1a10;
       --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
@@ -867,20 +998,28 @@
       --lead-fade:rgba(42,20,24,0);
       --hover-bg:rgba(230,236,240,.06);
       --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
-      --token:#e6b536;
-      --token-dark:#c98f10;
-      --token-soft:#1d1a10;
-      --token-glow:rgba(230,181,54,.4);
-      --token-glow-soft:rgba(230,181,54,.18);
-      --token-glow-faint:rgba(230,181,54,.07);
+      --token:#e6b536; --token-dark:#c98f10; --token-soft:#1d1a10;
+      --token-glow:rgba(230,181,54,.4); --token-glow-soft:rgba(230,181,54,.18); --token-glow-faint:rgba(230,181,54,.07);
     }
     :root:not([data-theme="light"]) .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
     :root:not([data-theme="light"]) .group.is-flex::before{background:#5a5048;}
+    :root:not([data-theme="light"]) .abstract-card { background: #10161e; box-shadow: 0 8px 30px -12px rgba(0,0,0,.6); }
+    :root:not([data-theme="light"]) .mechanism-item { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.05); }
+    :root:not([data-theme="light"]) .bonus-block { background: linear-gradient(90deg, rgba(255,45,85,.08) 0%, transparent 100%); }
+    :root:not([data-theme="light"]) .spec-icon { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.08); }
+    :root:not([data-theme="light"]) .sub-row.sum-row { background: rgba(230,57,70,.1); }
+    :root:not([data-theme="light"]) .pool-block { background: rgba(255,255,255,.02); }
+    :root:not([data-theme="light"]) .tbl-scroll::after { background: linear-gradient(to right, transparent, var(--card)); }
+    :root:not([data-theme="light"]) .toast { background: rgba(16, 22, 30, 0.9); border: 1px solid var(--line); }
+    :root:not([data-theme="light"]) .calc-input-row input { background: rgba(255,255,255,.03); }
+    :root:not([data-theme="light"]) .calc-input-row .unit { background: rgba(255,255,255,.03); }
+    :root:not([data-theme="light"]) .calc-shortcuts button { background: rgba(255,255,255,.03); }
+    :root:not([data-theme="light"]) .calc-results { background: rgba(255,255,255,.02); }
   }
   :root[data-theme="dark"]{
     color-scheme: dark;
-    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#8892a0; --muted:#7a8390;
-    --line:#252c36; --line-2:#1a2029; --bg:#0a0e14; --card:#10161e;
+    --ink:#e6eaf0; --ink-2:#b0b8c2; --ink-3:#9aa5b8; --muted:#8a94a6;
+    --line:#252c36; --line-2:#1a2029; --line-3:#3a424d; --bg:#0a0e14; --card:#10161e;
     --red:#e63946; --red-dark:#ff5a6a; --red-soft:#241418;
     --gold:#d4a82a; --gold-soft:#1d1a10;
     --cyber:#ff2d55; --cyber-d:#cc0e30; --cyber-l:#ff6b85;
@@ -891,15 +1030,23 @@
     --lead-fade:rgba(42,20,24,0);
     --hover-bg:rgba(230,236,240,.06);
     --thead-bg:#181e26; --zebra-bg:#171e28; --sum-line:#3a1e22; --scroll-thumb:#3a424d;
-    --token:#e6b536;
-    --token-dark:#c98f10;
-    --token-soft:#1d1a10;
-    --token-glow:rgba(230,181,54,.4);
-    --token-glow-soft:rgba(230,181,54,.18);
-    --token-glow-faint:rgba(230,181,54,.07);
+    --token:#e6b536; --token-dark:#c98f10; --token-soft:#1d1a10;
+    --token-glow:rgba(230,181,54,.4); --token-glow-soft:rgba(230,181,54,.18); --token-glow-faint:rgba(230,181,54,.07);
   }
   :root[data-theme="dark"] .back-top{box-shadow:0 4px 16px -6px rgba(0,0,0,.5);}
   :root[data-theme="dark"] .group.is-flex::before{background:#5a5048;}
+  :root[data-theme="dark"] .abstract-card { background: #10161e; box-shadow: 0 8px 30px -12px rgba(0,0,0,.6); }
+  :root[data-theme="dark"] .mechanism-item { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.05); }
+  :root[data-theme="dark"] .bonus-block { background: linear-gradient(90deg, rgba(255,45,85,.08) 0%, transparent 100%); }
+  :root[data-theme="dark"] .spec-icon { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.08); }
+  :root[data-theme="dark"] .sub-row.sum-row { background: rgba(230,57,70,.1); }
+  :root[data-theme="dark"] .pool-block { background: rgba(255,255,255,.02); }
+  :root[data-theme="dark"] .tbl-scroll::after { background: linear-gradient(to right, transparent, var(--card)); }
+  :root[data-theme="dark"] .toast { background: rgba(16, 22, 30, 0.9); border: 1px solid var(--line); }
+  :root[data-theme="dark"] .calc-input-row input { background: rgba(255,255,255,.03); }
+  :root[data-theme="dark"] .calc-input-row .unit { background: rgba(255,255,255,.03); }
+  :root[data-theme="dark"] .calc-shortcuts button { background: rgba(255,255,255,.03); }
+  :root[data-theme="dark"] .calc-results { background: rgba(255,255,255,.02); }
   :root[data-theme="light"]{color-scheme: light;}
 
   /* ================= 响应式 ================= */
@@ -907,24 +1054,20 @@
     .toc-link{padding:8px 14px; min-height:40px; display:inline-flex; align-items:center;}
     .theme-toggle{width:40px; height:40px;}
     .theme-toggle svg{width:19px; height:19px;}
-    .tl-wrap{display:none;}
-    .tl-vert{display:block;}
     .tbl-swipe-hint { display: flex; }
 
-    /* 抬头 5 字段：3 + 2 居中 */
     .mast-meta{
-      grid-template-columns:repeat(6, minmax(0,1fr));
-      gap:14px 12px;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px 12px;
     }
-    .mast-meta .cell:nth-child(-n+3){grid-column:span 2;}
-    .mast-meta .cell:nth-child(4){grid-column:2 / 4;}
-    .mast-meta .cell:nth-child(5){grid-column:4 / 6;}
 
-    /* 合约地址：移动端显示短地址 */
     .ca-full{display:none;}
     .ca-short{display:inline;}
     .ca-btn{width:34px; height:34px;}
     .ca-btn svg{width:16px; height:16px;}
+
+    .compare-table th, .compare-table td { padding: 10px 8px; font-size: 12px; }
+    .compare-table th:first-child, .compare-table td:first-child { width: 30%; }
   }
 
   @media (max-width: 480px){
@@ -932,16 +1075,22 @@
     .toc{margin:0 -20px; padding:8px 20px;}
 
     body{font-size:15px; line-height:1.8;}
-    .abstract-card { padding:14px 16px; margin-bottom:16px; }
-    .abstract-card p{font-size:14.5px; line-height:1.95;}
+    .abstract-card { padding: 20px; margin-bottom:16px; border-radius: 12px; }
+    .abstract-text { font-size: 14.5px; line-height: 1.95; margin-bottom: 20px; }
+
+    .mechanism-list { gap: 8px; margin-bottom: 20px; }
+    .mechanism-item { padding: 10px 14px; font-size: 13.5px; }
+    .mechanism-num { width: 18px; height: 18px; font-size: 10px; }
+
+    .bonus-block { padding: 14px 14px 14px 16px; margin-bottom: 20px; }
+    .bonus-text { font-size: 14px; }
+    .bonus-text strong { font-size: 20px; }
+
     .prose p{font-size:14.5px; line-height:1.9;}
     .caption{font-size:12.5px; line-height:1.9;}
-    .spec-v{font-size:13.5px; line-height:1.85;}
     .rule-text{font-size:13.5px; line-height:1.85;}
-    .tl-val{font-size:13.5px; line-height:1.8;}
     .disc{font-size:11.5px; line-height:1.95;}
 
-    /* 分组卡片移动端优化 */
     .group{padding:14px 14px 13px 12px; margin-bottom: 8px; border-radius: 6px;}
     .group::before{top:14px; bottom:14px; left:0; border-radius:6px 0 0 6px;}
     .group-head{gap:8px;}
@@ -951,57 +1100,58 @@
     .group-stats{gap:8px; margin-top:10px;}
     .group-stat{padding:8px 10px;}
     .group-stat .v{font-size:13px;}
-    .sub-row{padding:8px 10px;}
+
+    .sub-row{padding:10px 12px; gap:8px;}
+    .s-name{font-size:13.5px;}
+    .s-detail{font-size:10.5px;}
+    .s-val{font-size:14px;}
+
     .group-note{font-size:12px; word-break:break-word; line-height:1.75;}
 
-    .spec-row{grid-template-columns:1fr; gap:4px; padding:14px 0;}
-    .spec-k{padding-top:0;}
-    .spec-k-cn{font-size:11.5px;}
-    .spec-k-en{font-size:9.5px;}
-
-    .tl-row{grid-template-columns:82px 1fr; gap:12px; padding:12px 0;}
+    .spec-toggle { padding: 14px 0; }
+    .spec-k-cn { font-size: 14.5px; }
+    .spec-v { padding-bottom: 16px; font-size: 13.5px; }
 
     .kpi-cell b{font-size:15px;}
     .kpi-cell{padding:14px 12px;}
 
     .formula{font-size:11.5px; padding:12px 13px;}
 
-    /* 摘要按钮移动端优化 */
-    .cta-row{flex-direction:column; gap:10px;}
-    .cta-row .demo-cta,
-    .cta-row .token-cta{width:100%; justify-content:center; font-size:13.5px; padding:12px 18px;}
-
-    .tl-v-when{font-size:11px;}
-    .tl-v-what{font-size:15px;}
-    .tl-v-why{font-size:13px;}
-    .tl-v-item{padding:0 0 22px 28px;}
-
-    .dur-cell b{font-size:17px;}
+    .tl-item { padding-left: 30px; padding-bottom: 20px; }
+    .tl-item::before { left: 6px; }
+    .tl-circle { width: 14px; height: 14px; left: 0; top: 4px; border-width: 2px; }
+    .tl-title { font-size: 14.5px; }
+    .tl-desc { font-size: 12.5px; }
 
     .tbl-scroll { margin-bottom: 12px; }
     .tbl-scroll + .tbl-swipe-hint{margin-top:-12px;}
-    .stage-table { font-size: 12px; min-width: 640px; }
-    .stage-table th, .stage-table td { padding: 10px 12px; }
-    .stage-table th:nth-child(1), .stage-table td:nth-child(1) { width: 50px; font-size: 11px; }
-    .stage-table th:nth-child(2), .stage-table td:nth-child(2) { min-width: 90px; }
-    .stage-table th:nth-child(3), .stage-table td:nth-child(3) { font-size: 10.5px; }
-    .stage-table th:nth-child(4), .stage-table td:nth-child(4) { width: 80px; font-size: 10.5px; }
-    .stage-table th:nth-child(5), .stage-table td:nth-child(5) { min-width: 200px; font-size: 12px; }
 
-    /* 抬头 5 字段：2 + 2 + 1 居中 */
-    .mast-meta{
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:12px 12px;
-    }
-    .mast-meta .cell:nth-child(-n+4){grid-column:span 1;}
-    .mast-meta .cell:nth-child(5){grid-column:2 / 4;}
+    .mast-meta { gap: 20px 12px; }
 
-    /* 合约地址条移动端微调 */
     .ca-bar{margin-top:14px; padding:9px 10px 9px 15px; gap:8px;}
     .ca-label{font-size:9px; padding-right:9px;}
     .ca-addr{font-size:12.5px;}
 
     .back-top{right:14px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); width:38px; height:38px;}
+
+    .chart-container { padding: 14px 12px 10px; }
+    .chart-title { font-size: 12.5px; }
+    .chart-legend { gap: 10px; }
+    .legend-item { font-size: 10.5px; }
+    .chart-notes { padding-left: 10px; }
+    .chart-notes p { font-size: 12.5px; }
+
+    /* 移动端图表字号强制放大 */
+    .chart-svg text { font-size: 12px !important; }
+
+    /* 计算器响应式 */
+    .calc-container { padding: 16px; }
+    .calc-input-row input { font-size: 20px; padding: 10px 14px; }
+    .calc-results { padding: 14px 6px; }
+    .calc-res-val { font-size: 15px; }
+    .calc-res-label { font-size: 10.5px; }
+    .calc-shortcuts button { font-size: 12px; padding: 8px 0; }
+    .calc-note { font-size: 11.5px; padding: 9px 11px; }
   }
 
   @media (max-width: 400px){
@@ -1018,19 +1168,19 @@
 
     .mast-meta{gap:10px 10px;}
 
-    /* 极窄屏下保留双列，微调间距防止挤压 */
     .group-stats{gap:6px;}
     .group-stat{padding:8px;}
     .group-stat .k{font-size:9px;}
     .group-stat .v{font-size:12.5px;}
     .group-total{font-size:13.5px;}
 
+    .sub-row { padding: 8px 10px; }
+    .s-name { font-size: 13px; }
+    .s-detail { font-size: 10px; }
+    .s-val { font-size: 13.5px; }
+
     .foot-row{flex-direction:column; gap:2px;}
     .foot-v{text-align:left;}
-
-    .tl-row{grid-template-columns:74px 1fr; gap:10px;}
-    .tl-key{font-size:10.5px;}
-    .tl-val{font-size:13px;}
 
     .formula{font-size:11px;}
 
@@ -1042,20 +1192,13 @@
 
     .spec-v code{font-size:11px;}
 
-    .cta-row .demo-cta,
-    .cta-row .token-cta{font-size:12.5px;}
-
-    .tl-v-what{font-size:14.5px;}
-    .tl-v-why{font-size:12.5px;}
-
-    .dur-cell b{font-size:16px;}
-    .dur-cell span{font-size:10px;}
-
     .ca-bar{padding:8px 9px 8px 14px; gap:7px;}
     .ca-label{font-size:8.5px; letter-spacing:.1em;}
     .ca-addr{font-size:12px;}
     .ca-btn{width:32px; height:32px;}
     .ca-btn svg{width:15px; height:15px;}
+
+    .compare-table th, .compare-table td { padding: 8px 6px; font-size: 11.5px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1087,40 +1230,44 @@
     body{background:#fff; color:#000; font-size:10.5pt; line-height:1.6;}
     .doc{max-width:none; margin:0; border:0; padding:0; min-height:0;}
     .doc::before, .masthead::after, .doc-foot::before{display:none !important;}
-    .theme-toggle, .toc, .back-top, .tbl-swipe-hint{display:none !important;}
-    /* 打印时只保留横向时间轴 */
-    .tl-wrap{display:block !important;}
-    .tl-vert{display:none !important;}
-    /* 合约地址：打印显示完整地址，隐藏按钮 */
+    .theme-toggle, .toc, .back-top, .tbl-swipe-hint, .spec-icon, .toast{display:none !important;}
+
+    .abstract-card { background: #fff !important; border: 1px solid #ccc; border-left: 4px solid #a91f27; box-shadow: none; }
+    .mechanism-item { background: #fff !important; border: 1px solid #ddd; }
+    .bonus-block { background: #fff !important; border-left: 3px solid #a91f27; }
+
     .ca-full{display:inline !important;}
     .ca-short{display:none !important;}
     .ca-btn{display:none !important;}
     .ca-bar{background:#fff; border-color:#ccc; border-left:3px solid #7a5f10;}
-    /* 打印时抬头字段恢复简单 flex 单行/换行，避免 grid 分裂 */
     .mast-meta{
       display:flex; flex-wrap:wrap; gap:12px 24px;
       grid-template-columns:none;
     }
     .mast-meta .cell{grid-column:auto !important;}
-    .abstract-card{background:#fff; border:1px solid #ddd; border-left:3px solid #a91f27;}
     .sec{padding:14px 0 12px; border-bottom:1px solid #ddd; page-break-inside:avoid;}
-    .group, .flow-step, .spec-row, .rule-item, .tl-row, .kpi, .group-stat,
-    .tl-card, .dur-grid, .dur-cell{box-shadow:none !important;}
-    .group:hover, .flow-step:hover, .spec-row:hover, .rule-item:hover,
-    .tl-row:hover, .tl-card:hover, .dur-cell:hover{transform:none !important; background:#fff !important;}
+    .group, .flow-step, .rule-item, .kpi, .group-stat,
+    .pool-block, .chart-container, .spec-item{box-shadow:none !important;}
+    .group:hover, .flow-step:hover, .rule-item:hover,
+    .pool-block:hover, .kpi-cell:hover{transform:none !important; background:#fff !important;}
+
+    .spec-content { grid-template-rows: 1fr !important; }
+    .spec-content-inner { max-height: none !important; }
+    .spec-toggle { padding: 10px 0 4px; }
+    .spec-v { padding-bottom: 12px; border-left-color: #a91f27 !important; }
+
     .tbl-scroll{overflow:visible !important; border-radius:0; margin-bottom:0;}
-    .tl-scroll{overflow:visible !important;}
-    .tl{min-width:0 !important; padding:0 !important;}
-    .tl-inner{height:auto !important; min-height:0 !important;}
-    .tl-axis, .tl-fill, .tl-stem, .tl-dot{display:none !important;}
-    .tl-node{position:static !important; width:auto !important; height:auto !important; transform:none !important; margin-bottom:8px;}
-    .tl-card{position:static !important; transform:none !important; width:auto !important; text-align:left !important;}
-    .demo-cta{border:1px solid #a91f27 !important; color:#a91f27 !important; background:#fff !important;}
-    .token-cta{border:1px solid #7a5f10 !important; color:#7a5f10 !important; background:#fff !important;}
+    .tbl-scroll::after { display: none !important; }
     a[href^="http"]::after{content:" (" attr(href) ")"; font-family:var(--mono); font-size:8.5pt; color:#666; word-break:break-all;}
-    .demo-cta::after{content:"" !important;}
-    .token-cta::after{content:"" !important;}
     .ca-btn::after, .ca-link::after{content:"" !important;}
+    .sub-row.sum-row { background: #f5f5f5; }
+
+    .calc-container { border: 1px solid #ccc; box-shadow: none; }
+    .calc-input-row input { border: 1px solid #ccc; }
+    .calc-input-row .unit { border: 1px solid #ccc; }
+    .calc-shortcuts button { border: 1px solid #ccc; }
+    .calc-results { border: 1px solid #ccc; background: #fafafa; }
+    .calc-note { background: #faf6ea; border: 1px solid #ddd; }
   }
 </style>
 
@@ -1177,19 +1324,23 @@
       </div>
       <div class="cell">
         <span class="k">目标认购</span>
-        <span class="v num">$160,000</span>
+        <span class="v num">$174,000</span>
       </div>
       <div class="cell">
         <span class="k">硬顶金额</span>
-        <span class="v num is-red">$190,000</span>
+        <span class="v num is-red">$200,000</span>
       </div>
       <div class="cell">
-        <span class="k">开盘价</span>
-        <span class="v num">$0.010</span>
+        <span class="k">预计开盘价</span>
+        <span class="v num">$0.016+</span>
       </div>
       <div class="cell">
         <span class="k">预计均价</span>
-        <span class="v num">$0.015–0.017</span>
+        <span class="v num">$0.014+</span>
+      </div>
+      <div class="cell">
+        <span class="k">总发行量</span>
+        <span class="v num">6.868亿</span>
       </div>
     </div>
 
@@ -1223,15 +1374,13 @@
   <!-- ================= 导航 ================= -->
   <nav class="toc" aria-label="文档导航">
     <a class="toc-link" href="#abstract">专案摘要</a>
-    <a class="toc-link" href="#background">专案背景</a>
     <a class="toc-link" href="#whitelist">白名单分组</a>
     <a class="toc-link" href="#summary">总额汇总</a>
     <a class="toc-link" href="#pricing">统一币价</a>
     <a class="toc-link" href="#timeline">启动时间轴</a>
     <a class="toc-link" href="#vesting">释放规则</a>
-    <a class="toc-link" href="#technical">技术执行</a>
-    <a class="toc-link" href="#security">安全说明</a>
     <a class="toc-link" href="#rules">核心规则</a>
+    <a class="toc-link" href="#security">安全说明</a>
   </nav>
 
   <!-- ================= 00 摘要 ================= -->
@@ -1242,69 +1391,39 @@
     </div>
 
     <div class="abstract-card">
-      <p>
-        本专案采用 Meteora <b>Alpha Vault</b> 的 <span class="hl">Pro-Rata（按比例分配）</span>模式，
-        结合 Launch Pool 的 DLMM 流动性池，实现公平、透明的预启动认购机制。
-        核心目的是防止狙击机器人在代币公开交易的第一时间抢购低价筹码，
-        确保真正的社区支持者能够获得公平的早期参与机会——
-        <b>所有参与者同一个资金池、同一个买入价、同一个分配公式。</b>
+      <p class="abstract-text">
+        本专案采用 Meteora <b>Alpha Vault</b> 的 <span class="hl">Pro-Rata（按比例分配）</span>模式，结合 Launch Pool 的 DLMM 流动性池，构建公平、透明的预启动认购机制。旨在彻底杜绝狙击机器人在开盘瞬间抢购低价筹码，确保真正的社区支持者享有平等的早期参与机会。了解详情请参阅
+        <a href="https://caishendao.world/tokenomics" target="_blank" rel="noopener" class="inline-link">
+          代币经济文档 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
       </p>
-    </div>
 
-    <div class="cta-row">
-      <a class="demo-cta" href="https://caishendao.world/demo/alpha" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-        体验 Alpha 演示
-        <svg class="ico-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-          <polyline points="12 5 19 12 12 19"></polyline>
-        </svg>
-      </a>
+      <div class="mechanism-list">
+        <div class="mechanism-item">
+          <div class="mechanism-num">01</div>
+          <span>同一个资金池</span>
+        </div>
+        <div class="mechanism-item">
+          <div class="mechanism-num">02</div>
+          <span>同一个买入价</span>
+        </div>
+        <div class="mechanism-item">
+          <div class="mechanism-num">03</div>
+          <span>同一个分配公式</span>
+        </div>
+      </div>
 
-      <a class="token-cta" href="https://caishendao.world/tokenomics" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-        代币经济文档
-        <svg class="ico-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 6v12M15 9.5c-.8-.7-1.8-1-3-1-1.7 0-3 .8-3 2s1.3 1.8 3 2c1.7.2 3 .8 3 2s-1.3 2-3 2c-1.2 0-2.2-.3-3-1"></path>
-        </svg>
-      </a>
+      <div class="bonus-block">
+        <span class="bonus-label">BONUS / 专案特权</span>
+        <span class="bonus-text">参与认购即获得额外 <strong>50%</strong> Alpha 奖励</span>
+      </div>
     </div>
   </section>
 
-  <!-- ================= 01 方案背景 ================= -->
-  <section class="wrap sec" id="background">
-    <div class="sec-head">
-      <span class="sec-idx">01</span>
-      <h2 class="sec-title">专案背景<span>Background</span></h2>
-    </div>
-
-    <div class="prose">
-      <p>
-        代币公开发行最常见的痛点，是<b>抢跑与狙击</b>：机器人通过监控内存池，在开盘瞬间以极低价格抢先成交，
-        随后迅速抛售，形成对普通参与者的价格剥削。传统的「先到先得」认购模式，反而放大了这种优势。
-      </p>
-      <p>
-        本案采用 Meteora Alpha Vault 的 Pro-Rata（按比例分配）模式，结合 Launch Pool 的 DLMM 流动性池，
-        实现公平、透明的预启动认购机制。存款窗口内所有资金进入同一资金池，窗口关闭后由合约在保护窗口内
-        统一执行买入，<b>从根本上消除「谁先存谁价低」的可能</b>。
-      </p>
-      <p>
-        Alpha Vault 运行在 Solana 主网，并非独立的 AMM，而是一个<b>账户制分配层</b>——
-        它连接到一个 Meteora Launch Pool，使用该池子执行实际买入。所有分配、退款与释放均由链上合约自动执行，
-        无需人工干预，也无需自定义开发。
-      </p>
-    </div>
-  </section>
-
-  <!-- ================= 02 白名单分组与额度 ================= -->
+  <!-- ================= 01 白名单分组与额度 ================= -->
   <section class="wrap sec" id="whitelist">
     <div class="sec-head">
-      <span class="sec-idx">02</span>
+      <span class="sec-idx">01</span>
       <h2 class="sec-title">白名单分组与额度<span>Whitelist Groups</span></h2>
     </div>
 
@@ -1313,60 +1432,109 @@
       <!-- A 组 -->
       <div class="group is-core">
         <div class="group-head">
-          <span class="group-name">A 组 · 核心名额</span>
-          <span class="group-total num">80,000 USDC</span>
+          <span class="group-name">A 组 · 非凡系统-BG</span>
+          <span class="group-total num">75,000 USDC</span>
         </div>
         <div class="group-stats">
           <div class="group-stat">
-            <div class="k">名额</div>
-            <div class="v num">80 人</div>
+            <div class="k">总名额</div>
+            <div class="v num">360 人</div>
           </div>
           <div class="group-stat">
-            <div class="k">单人限额</div>
-            <div class="v num">1,000 USDC / 人</div>
+            <div class="k">组内总额</div>
+            <div class="v num">75,000 USDC</div>
+          </div>
+        </div>
+        <div class="sub-alloc">
+          <div class="sub-row">
+            <div class="s-info">
+              <span class="s-name">核心</span>
+              <span class="s-detail">个人限额 1,000 USDC · 10 人</span>
+            </div>
+            <span class="s-val">10,000</span>
+          </div>
+          <div class="sub-row">
+            <div class="s-info">
+              <span class="s-name">基金会成员</span>
+              <span class="s-detail">个人限额 500 USDC · 50 人</span>
+            </div>
+            <span class="s-val">25,000</span>
+          </div>
+          <div class="sub-row">
+            <div class="s-info">
+              <span class="s-name">铁军</span>
+              <span class="s-detail">个人限额 200 USDC · 100 人</span>
+            </div>
+            <span class="s-val">20,000</span>
+          </div>
+          <div class="sub-row">
+            <div class="s-info">
+              <span class="s-name">会员</span>
+              <span class="s-detail">个人限额 100 USDC · 200 人</span>
+            </div>
+            <span class="s-val">20,000</span>
           </div>
         </div>
         <div class="group-note">
-          <b>资格：</b>仅限 BG 基金会成员 + 少数兄弟社区核心。
+          <b>资格：</b>非凡系统及 BG 社区成员。
         </div>
       </div>
 
       <!-- B 组 -->
       <div class="group">
         <div class="group-head">
-          <span class="group-name">B 组 · 社区名额</span>
-          <span class="group-total num">80,000 USDC</span>
+          <span class="group-name">B 组 · FIST / LUCKY99 / CY2000</span>
+          <span class="group-total num">99,000 USDC</span>
         </div>
         <div class="group-stats">
           <div class="group-stat">
-            <div class="k">名额</div>
-            <div class="v num">400 人</div>
+            <div class="k">总名额</div>
+            <div class="v num">519 人</div>
           </div>
           <div class="group-stat">
-            <div class="k">单人限额</div>
-            <div class="v num">200 USDC / 人</div>
+            <div class="k">组内总额</div>
+            <div class="v num">99,000 USDC</div>
           </div>
         </div>
         <div class="sub-alloc">
           <div class="sub-row">
-            <span class="s-name">BG 社区成员 / 铁军</span>
-            <span class="s-val num">37.5% · 150 人</span>
+            <div class="s-info">
+              <span class="s-name">核心（单社区）</span>
+              <span class="s-detail">个人限额 1,000 USDC · 3 人</span>
+            </div>
+            <span class="s-val">3,000</span>
           </div>
           <div class="sub-row">
-            <span class="s-name">CY2000 社区</span>
-            <span class="s-val num">25% · 100 人</span>
+            <div class="s-info">
+              <span class="s-name">基金会成员</span>
+              <span class="s-detail">个人限额 500 USDC · 20 人</span>
+            </div>
+            <span class="s-val">10,000</span>
           </div>
           <div class="sub-row">
-            <span class="s-name">FIST 社区</span>
-            <span class="s-val num">18.75% · 75 人</span>
+            <div class="s-info">
+              <span class="s-name">铁军</span>
+              <span class="s-detail">个人限额 200 USDC · 50 人</span>
+            </div>
+            <span class="s-val">10,000</span>
           </div>
           <div class="sub-row">
-            <span class="s-name">LUCKY99 社区</span>
-            <span class="s-val num">18.75% · 75 人</span>
+            <div class="s-info">
+              <span class="s-name">会员</span>
+              <span class="s-detail">个人限额 100 USDC · 100 人</span>
+            </div>
+            <span class="s-val">10,000</span>
+          </div>
+          <div class="sub-row sum-row">
+            <div class="s-info">
+              <span class="s-name">单社区小计 × 3 社区</span>
+              <span class="s-detail">限额 33,000 USDC · 3 社区</span>
+            </div>
+            <span class="s-val">99,000</span>
           </div>
         </div>
         <div class="group-note">
-          <b>资格：</b>BG、CY2000、FIST、LUCKY99 四大社区成员，按各社区配额分配。
+          <b>资格：</b>FIST、LUCKY99、CY2000 三大社区成员，按各社区同等配额分配。
         </div>
       </div>
 
@@ -1374,7 +1542,7 @@
       <div class="group is-flex">
         <div class="group-head">
           <span class="group-name">C 组 · 备用缓冲（机动额度）</span>
-          <span class="group-total num">30,000 USDC</span>
+          <span class="group-total num">26,000 USDC</span>
         </div>
         <div class="group-stats">
           <div class="group-stat">
@@ -1382,24 +1550,24 @@
             <div class="v">待定</div>
           </div>
           <div class="group-stat">
-            <div class="k">限额</div>
-            <div class="v">待定</div>
+            <div class="k">个人限额</div>
+            <div class="v">≤ 200 USDC</div>
           </div>
         </div>
         <div class="group-note">
-          由项目方 / 基金会根据实际白名单与超募情况机动分配。<br>
-          <b>用途：</b>作为硬顶 $190,000 USDC 中的备用缓冲额度，用于补充社区名额、合作方或临时白名单；
-          是否启用及具体分配以最终公告为准。
+            <b>触发条件：</b><br>仅限 A+B 组未满硬顶需要补足时启用。<br>
+            <b>分配对象：</b><br>仅限已公示的合作方与临时白名单；分配明细于 TGE 前公示。<br>
+            <b>不启用：</b><br>A+B 组达到 174,000 USDC 但未超硬顶时，C 组不占用。
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ================= 03 总额汇总 ================= -->
+  <!-- ================= 02 总额汇总 ================= -->
   <section class="wrap sec" id="summary">
     <div class="sec-head">
-      <span class="sec-idx">03</span>
+      <span class="sec-idx">02</span>
       <h2 class="sec-title">总额汇总<span>Allocation Summary</span></h2>
     </div>
 
@@ -1415,11 +1583,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>A 组</td><td class="num">80</td><td class="num">1,000 USDC</td><td class="num">80,000 USDC</td><td class="num">50.0%</td></tr>
-          <tr><td>B 组</td><td class="num">400</td><td class="num">200 USDC</td><td class="num">80,000 USDC</td><td class="num">50.0%</td></tr>
-          <tr class="sum"><td>目标合计</td><td class="num">480</td><td>—</td><td class="num">160,000 USDC</td><td class="num">100%</td></tr>
-          <tr class="flex"><td>C 组</td><td>机动待定</td><td>待定</td><td class="num">30,000 USDC</td><td>缓冲</td></tr>
-          <tr class="sum"><td>硬顶合计</td><td>480 + C 组</td><td>—</td><td class="num">190,000 USDC</td><td class="num">118.75%</td></tr>
+          <tr><td>A 组 (非凡系统)</td><td class="num">360</td><td>分档限额</td><td class="num">75,000 USDC</td><td class="num">43.1%</td></tr>
+          <tr><td>B 组 (三大社区)</td><td class="num">519</td><td>分档限额</td><td class="num">99,000 USDC</td><td class="num">56.9%</td></tr>
+          <tr class="sum"><td>目标合计</td><td class="num">879</td><td>—</td><td class="num">174,000 USDC</td><td class="num">100%</td></tr>
+          <tr class="flex"><td>C 组 (缓冲)</td><td>机动待定</td><td>待定</td><td class="num">26,000 USDC</td><td>缓冲</td></tr>
+          <tr class="sum"><td>硬顶合计</td><td>879 + C 组</td><td>—</td><td class="num">200,000 USDC</td><td class="num">114.9%</td></tr>
         </tbody>
       </table>
     </div>
@@ -1430,23 +1598,23 @@
     </p>
 
     <p class="caption" style="margin-top:16px;">
-      <b>说明：</b>目标认购 $160,000 USDC；硬顶金额 $190,000 USDC，
-      其中包含 D 组备用缓冲 $30,000 USDC。目标认购与硬顶之间的差额，
-      仅在超募或需要临时补充白名单时启用。
+      <b>说明：</b>目标认购 $174,000 USDC；硬顶金额 $200,000 USDC，
+      其中包含 C 组备用机动额度 $26,000 USDC。该部分由项目方作为战略缓冲与内部调配使用，
+      确保白名单认购总额严格控制在硬顶范围内，不涉及外部超募。
     </p>
   </section>
 
-  <!-- ================= 04 统一币价机制 ================= -->
+  <!-- ================= 03 统一币价机制 ================= -->
   <section class="wrap sec" id="pricing">
     <div class="sec-head">
-      <span class="sec-idx">04</span>
+      <span class="sec-idx">03</span>
       <h2 class="sec-title">统一币价机制<span>Pro-Rata Pricing</span></h2>
     </div>
 
     <div class="prose" style="margin-bottom:4px;">
       <p>
-        本方案采用 Alpha Vault 的 Pro-Rata（按比例分配）模式，核心机制是
-        <b>先统一归集，再统一买入，最后按比例分配</b>。
+        采用 Alpha Vault 的 Pro-Rata（按比例分配）模式：
+        <b>先统一归集、统一买入，再按比例分配</b>——任何人、任何金额，买入单价完全一致。
       </p>
     </div>
 
@@ -1455,10 +1623,7 @@
         <div class="flow-num">1</div>
         <div class="flow-body">
           <div class="flow-title">统一归集</div>
-          <div class="flow-desc">
-            存款窗口开启后，A / B / D 白名单成员将 USDC 存入同一个 Alpha Vault。
-            所有资金进入统一资金池，由 vault 合约统一管理，任何单笔存款都无法改变整体买入价格。
-          </div>
+          <div class="flow-desc">白名单成员在存款窗口内将 USDC 存入同一个 Alpha Vault，资金由合约统一管理。</div>
         </div>
       </div>
 
@@ -1466,11 +1631,7 @@
         <div class="flow-num">2</div>
         <div class="flow-body">
           <div class="flow-title">统一买入</div>
-          <div class="flow-desc">
-            存款窗口关闭后，Alpha Vault 在 Launch Pool 的预激活保护窗口内，
-            用全部可用资金以同一个价格、统一执行买入。
-            买入价格由池子参数决定，对所有参与者完全相同。
-          </div>
+          <div class="flow-desc">窗口关闭后，Vault 在预激活保护窗口内以同一价格完成买入，价格由池子参数决定。</div>
         </div>
       </div>
 
@@ -1478,590 +1639,365 @@
         <div class="flow-num">3</div>
         <div class="flow-body">
           <div class="flow-title">按比例分配</div>
-          <div class="flow-desc">
-            买入完成后，系统记录本次买入获得的代币总量。每个人的分配公式为：
-          </div>
+          <div class="flow-desc">按个人存款占总存款的比例分配代币——存款多则代币多，单价不变。</div>
         </div>
       </div>
     </div>
 
-    <div class="formula">你的代币 = （你的存款 ÷ 总存款）× 本次买入的代币总量</div>
+    <div class="formula">主池代币 = （你的存款 ÷ 总存款）× 本次买入的代币总量
+奖励代币 = 主池代币 × 50%
+总获得   = 主池代币 + 奖励代币</div>
 
     <div class="prose" style="margin-top:14px;">
       <p>
-        这意味着：无论你存 1,000 U 还是 200 U，你获得的代币都是按同一个平均成本计算的。
-        <b>存款多的人拿到的代币多，但单价完全相同。</b>
+        存 1,000 U 与存 200 U 遵循同一套公式、同一个均价；
+        此外每位参与者额外获得 <b>50% Alpha 奖励</b>，自动发放、独立托管。
       </p>
     </div>
 
-    <p class="caption gold">
-      <b>超额认购处理：</b>Pro-Rata 模式原生支持超额认购。如果总存款超过预设的买入上限，
-      超出部分按比例退还。最终所有人的实际买入均价仍然一致。
-    </p>
-
     <div class="kpi">
-      <div class="kpi-cell">
-        <b class="num is-red">$0.015–0.017</b>
-        <span>预计平均买入价</span>
+      <div class="kpi-cell" style="border-bottom:0;">
+        <b class="num is-red">$0.014+</b>
+        <span>预计买入均价</span>
       </div>
-      <div class="kpi-cell">
-        <b class="num">$7.5M–8.5M</b>
-        <span>预计初始 FDV</span>
-      </div>
-      <div class="kpi-cell" style="grid-column:1 / -1; border-right:0; border-bottom:0;">
-        <b style="font-size:13.5px; font-weight:600; color:var(--ink-3); letter-spacing:0;">
-          同一个资金池 · 同一个买入价 · 同一个分配公式
-        </b>
-        <span>Pro-Rata 消除了「谁先存谁价低」或「大户有折扣」的可能</span>
+      <div class="kpi-cell" style="border-right:0; border-bottom:0;">
+        <b class="num">$0.016+</b>
+        <span>预计开盘价</span>
       </div>
     </div>
 
-    <p class="caption">
-      <b>说明：</b>FDV 按原总供应口径估算，实际以链上执行为准。
-      平均买入价基于目标 $160K / 硬顶 $190K 与当前池子深度估算。
-    </p>
+    <!-- 试算计算器 -->
+    <div class="calc-container">
+      <div class="calc-badge">即时试算 · 按 $0.014 估算</div>
+
+      <div class="calc-input-row">
+        <input type="number" id="calcInput" value="100" placeholder="输入金额" min="0" inputmode="decimal">
+        <span class="unit">USDC</span>
+      </div>
+
+      <div class="calc-shortcuts">
+        <button data-val="100">100</button>
+        <button data-val="200">200</button>
+        <button data-val="500">500</button>
+        <button data-val="1000">1000</button>
+      </div>
+
+      <div class="calc-results">
+        <div class="calc-res-item">
+          <div class="calc-res-val" id="calcMain">7,143</div>
+          <div class="calc-res-label">主池代币</div>
+        </div>
+        <div class="calc-res-op">+</div>
+        <div class="calc-res-item">
+          <div class="calc-res-val" id="calcReward" style="color:var(--gold);">3,571</div>
+          <div class="calc-res-label">奖励代币</div>
+        </div>
+        <div class="calc-res-op">=</div>
+        <div class="calc-res-item">
+          <div class="calc-res-val" id="calcTotal" style="color:var(--cyber);">10,714</div>
+          <div class="calc-res-label">总代币</div>
+        </div>
+      </div>
+
+      <!-- 新增：试算口径提示 -->
+      <div class="calc-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>试算基于 <b>$0.014</b> 预估均价，仅供参与前参考；<b>实际获得数量以 TGE 时链上 Alpha Vault 执行结果及官方公告为准</b>。</span>
+      </div>
+    </div>
+
   </section>
 
-  <!-- ================= 05 启动时间轴 ================= -->
+  <!-- ================= 04 启动时间轴 ================= -->
   <section class="wrap sec" id="timeline">
     <div class="sec-head">
-      <span class="sec-idx">05</span>
-      <h2 class="sec-title">启动时间轴<span>Launch Timeline · T-0 至 +60d</span></h2>
+      <span class="sec-idx">04</span>
+      <h2 class="sec-title">启动时间轴<span>Launch Timeline · T-0 至 +180d</span></h2>
     </div>
 
     <div class="prose" style="margin-bottom:4px;">
       <p>
-        从白名单征集到首次领取，整个流程分为 <b>9 个阶段</b>。以下时间轴以
+        从白名单征集到全部释放完毕，整个流程分为 <b>7 个核心节点</b>。以下时间轴以
         「白名单征集启动」为 <b>T-0</b>，所有时间点均为相对时间；具体日期以官方公告为准。
       </p>
     </div>
 
-    <!-- 横向时间轴（桌面） -->
-    <div class="tl-wrap">
-      <div class="tl-scroll">
-        <div class="tl">
-          <div class="tl-inner">
-            <div class="tl-axis"><span class="tl-fill"></span></div>
+    <!-- 纵向时间轴（图1风格） -->
+    <div class="timeline-list">
 
-            <div class="tl-node tl-top is-window" style="--x:9%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">T-0</div>
-                <div class="tl-what">白名单征集启动</div>
-                <div class="tl-why">各大社区提交名单</div>
-                <span class="tl-dur">窗口 48h</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-bottom" style="--x:23%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">T+48h</div>
-                <div class="tl-what">名单冻结 → 认购开启</div>
-                <div class="tl-why">审核导入 · 创建 escrow</div>
-                <span class="tl-dur">认购 48h</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-top" style="--x:37%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">T+96h</div>
-                <div class="tl-what">认购截止 → Alpha 买入</div>
-                <div class="tl-why">保护窗口内统一执行</div>
-                <span class="tl-dur">买入 30min</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-bottom" style="--x:51%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">买入完成</div>
-                <div class="tl-what">份额确认与退款</div>
-                <div class="tl-why">按比例分配 · 超额退还</div>
-                <span class="tl-dur">即时</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-top is-milestone" style="--x:65%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">TGE</div>
-                <div class="tl-what">公开交易</div>
-                <div class="tl-why">池子激活 · 代币上线</div>
-                <span class="tl-dur">开盘</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-bottom is-milestone" style="--x:79%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">TGE</div>
-                <div class="tl-what">首次 Claim 开放</div>
-                <div class="tl-why">启动 60 天线性释放</div>
-                <span class="tl-dur">当天</span>
-              </div>
-            </div>
-
-            <div class="tl-node tl-top is-milestone" style="--x:93%">
-              <span class="tl-stem"></span>
-              <span class="tl-dot"></span>
-              <div class="tl-card">
-                <div class="tl-when">+60d</div>
-                <div class="tl-what">释放完毕</div>
-                <div class="tl-why">60 天线性释放结束</div>
-                <span class="tl-dur">60 天</span>
-              </div>
-            </div>
-
-          </div>
+      <!-- 节点 1 -->
+      <div class="tl-item gold">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">T-0</span>
+          <span class="tl-badge">48h</span>
         </div>
+        <div class="tl-title">白名单征集启动</div>
+        <div class="tl-desc">各大社区提交白名单，项目方同步审核资格、去重。</div>
       </div>
-      <p class="tl-caption">时间轴仅示意流程顺序与窗口时长，非等比时间轴。</p>
+
+      <!-- 节点 2 -->
+      <div class="tl-item gold">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">T+48H</span>
+          <span class="tl-badge">名单冻结 · 认购开启 48h</span>
+        </div>
+        <div class="tl-title">名单冻结 + 认购窗口开启</div>
+        <div class="tl-desc">名单导入 Alpha Vault，为每个钱包创建托管账户并设定额度；白名单成员在额度内自由存入 USDC。</div>
+      </div>
+
+      <!-- 节点 3 -->
+      <div class="tl-item active">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">T+96H</span>
+          <span class="tl-badge">截止 + 买入 30min</span>
+        </div>
+        <div class="tl-title">认购截止 + 统一买入</div>
+        <div class="tl-desc">停止存入，统计总资金；随后在启动池预激活保护窗口内统一执行买入。</div>
+      </div>
+
+      <!-- 节点 4 -->
+      <div class="tl-item active">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">买入完成</span>
+          <span class="tl-badge">即时</span>
+        </div>
+        <div class="tl-title">份额确认与退款</div>
+        <div class="tl-desc">记录代币总量，按比例分配，超额部分退还 USDC；奖励基数同步确认。</div>
+      </div>
+
+      <!-- 节点 5 -->
+      <div class="tl-item active milestone">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">TGE</span>
+          <span class="tl-badge">开盘 · 主池首领</span>
+        </div>
+        <div class="tl-title">公开交易 + 主池首次领取</div>
+        <div class="tl-desc">池子激活，代币上线公开市场（开盘 $0.016）；主池启动 60 天线性释放，奖励进入 60 天 Cliff。</div>
+      </div>
+
+      <!-- 节点 6 -->
+      <div class="tl-item gold milestone">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">TGE + 60D</span>
+          <span class="tl-badge">主池完成 · 奖励首日 1/120</span>
+        </div>
+        <div class="tl-title">主池释放完毕 + 奖励首次领取</div>
+        <div class="tl-desc">主池 60 天线性释放结束；Cliff 结束当天奖励释放首日份额 1/120，此后每日 +1/120。</div>
+      </div>
+
+      <!-- 节点 7 -->
+      <div class="tl-item gold milestone">
+        <div class="tl-circle"></div>
+        <div class="tl-header">
+          <span class="tl-time">TGE + 180D</span>
+          <span class="tl-badge">奖励全部释放</span>
+        </div>
+        <div class="tl-title">奖励释放完毕</div>
+        <div class="tl-desc">奖励 120 天线性释放全部结束（满额确认日；实际满额于 TGE+179d 达成）。</div>
+      </div>
+
     </div>
-
-    <!-- 纵向时间轴（移动端） -->
-    <div class="tl-vert">
-      <div class="tl-v-item is-window">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">T-0</span>
-          <span class="tl-v-dur">窗口 48h</span>
-        </div>
-        <div class="tl-v-what">白名单征集启动</div>
-        <div class="tl-v-why">各大社区提交白名单，项目方同步审核资格、去重</div>
-      </div>
-
-      <div class="tl-v-item">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">T+48h</span>
-          <span class="tl-v-dur">即时</span>
-        </div>
-        <div class="tl-v-what">名单冻结</div>
-        <div class="tl-v-why">名单汇总导入 Alpha Vault，为每个钱包创建 escrow 并设定额度</div>
-      </div>
-
-      <div class="tl-v-item is-window">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">T+48h</span>
-          <span class="tl-v-dur">窗口 48h</span>
-        </div>
-        <div class="tl-v-what">认购窗口开启</div>
-        <div class="tl-v-why">白名单成员在各自额度内自由存入 USDC</div>
-      </div>
-
-      <div class="tl-v-item">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">T+96h</span>
-          <span class="tl-v-dur">即时</span>
-        </div>
-        <div class="tl-v-what">认购截止</div>
-        <div class="tl-v-why">停止存入，统计总资金与各人份额</div>
-      </div>
-
-      <div class="tl-v-item">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">T+96h 起</span>
-          <span class="tl-v-dur">买入 30min</span>
-        </div>
-        <div class="tl-v-what">Alpha 买入</div>
-        <div class="tl-v-why">在 Launch Pool 预激活保护窗口内统一执行买入</div>
-      </div>
-
-      <div class="tl-v-item">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">买入完成</span>
-          <span class="tl-v-dur">即时</span>
-        </div>
-        <div class="tl-v-what">份额确认与退款</div>
-        <div class="tl-v-why">记录代币总量，按比例分配，超额部分退还 USDC</div>
-      </div>
-
-      <div class="tl-v-item is-milestone">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">TGE</span>
-          <span class="tl-v-dur">开盘</span>
-        </div>
-        <div class="tl-v-what">公开交易</div>
-        <div class="tl-v-why">池子激活，代币上线公开市场</div>
-      </div>
-
-      <div class="tl-v-item is-milestone">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">TGE</span>
-          <span class="tl-v-dur">当天</span>
-        </div>
-        <div class="tl-v-what">首次 Claim 开放</div>
-        <div class="tl-v-why">开放领取，启动 60 天线性释放</div>
-      </div>
-
-      <div class="tl-v-item is-milestone">
-        <span class="tl-v-dot"></span>
-        <div class="tl-v-head">
-          <span class="tl-v-when">+60d</span>
-          <span class="tl-v-dur">60 天</span>
-        </div>
-        <div class="tl-v-what">释放完毕</div>
-        <div class="tl-v-why">60 天线性释放全部结束</div>
-      </div>
-    </div>
-
-    <!-- 关键时长 -->
-    <div class="dur-grid">
-      <div class="dur-cell">
-        <b class="is-gold num">48h</b>
-        <span>白名单征集窗口</span>
-      </div>
-      <div class="dur-cell">
-        <b class="is-gold num">48h</b>
-        <span>Alpha 认购窗口</span>
-      </div>
-      <div class="dur-cell">
-        <b class="is-red num">30min</b>
-        <span>Alpha 买入窗口</span>
-      </div>
-      <div class="dur-cell">
-        <b class="num">60d</b>
-        <span>线性释放周期</span>
-      </div>
-    </div>
-
-    <!-- 阶段详情表 -->
-    <div class="tbl-scroll" style="margin-top:16px;">
-      <table class="stage-table">
-        <thead>
-          <tr>
-            <th>阶段</th>
-            <th>名称</th>
-            <th>时间点</th>
-            <th>时长</th>
-            <th>关键动作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>01</td>
-            <td>白名单征集</td>
-            <td>T-0 → T+48h</td>
-            <td class="is-gold">48 小时</td>
-            <td>各大社区提交白名单，项目方审核资格、去重</td>
-          </tr>
-          <tr>
-            <td>02</td>
-            <td>名单冻结</td>
-            <td>T+48h</td>
-            <td>即时</td>
-            <td>名单汇总导入 Alpha Vault，为每个钱包创建 escrow 并设定额度</td>
-          </tr>
-          <tr>
-            <td>03</td>
-            <td>认购窗口</td>
-            <td>T+48h → T+96h</td>
-            <td class="is-gold">48 小时</td>
-            <td>白名单成员在各自额度内自由存入 USDC</td>
-          </tr>
-          <tr>
-            <td>04</td>
-            <td>认购截止</td>
-            <td>T+96h</td>
-            <td>即时</td>
-            <td>停止存入，统计总资金与各人份额</td>
-          </tr>
-          <tr>
-            <td>05</td>
-            <td>Alpha 买入</td>
-            <td>T+96h 起</td>
-            <td>30 分钟</td>
-            <td>在 Launch Pool 预激活保护窗口内统一执行买入</td>
-          </tr>
-          <tr>
-            <td>06</td>
-            <td>份额确认</td>
-            <td>买入完成后</td>
-            <td>即时</td>
-            <td>记录买入代币总量，按比例分配，超额部分退还 USDC</td>
-          </tr>
-          <tr>
-            <td>07</td>
-            <td>TGE 公开交易</td>
-            <td>份额确认后</td>
-            <td>—</td>
-            <td>池子激活，代币上线公开交易</td>
-          </tr>
-          <tr>
-            <td>08</td>
-            <td>首次 Claim</td>
-            <td>公开交易当天</td>
-            <td>—</td>
-            <td>开放首次领取，启动 60 天线性释放</td>
-          </tr>
-          <tr class="sum">
-            <td>09</td>
-            <td>释放完毕</td>
-            <td>公开交易 +60 天</td>
-            <td>60 天</td>
-            <td>全部代币线性释放完毕</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tbl-swipe-hint" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      左右滑动查看完整数据
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </p>
 
     <p class="caption" style="margin-top:16px;">
-      <b>说明：</b>白名单征集与认购窗口均为 <b>48 小时</b>，Alpha 买入在认购截止后的
-      保护窗口内执行，持续约 <b>30 分钟</b>。买入完成后即进入份额确认与 TGE；
-      首次 Claim 在 <b>公开交易当天</b> 开放，随后 <b>60 天</b> 线性释放完毕。
-    </p>
-
-    <p class="caption gold">
-      <b>时间提示：</b>上述时长为方案设计值，若遇网络拥堵、池子参数调整或跨时区协调，
-      项目方将提前公告变更，并确保所有参与者有充足准备时间。
+      <b>说明：</b>白名单与认购窗口均为 <b>48 小时</b>，Alpha 买入在保护窗口内持续约 <b>30 分钟</b>。
+      TGE 后主池代币按 <b>60 天</b>线性释放完毕；
+      奖励代币则按照独立的 <b>Cliff 60 天 + 120 天线性</b>规则，在 TGE 后 180 天全部释放完成。
     </p>
   </section>
 
-  <!-- ================= 06 释放规则 ================= -->
+  <!-- ================= 05 释放规则 ================= -->
   <section class="wrap sec" id="vesting">
     <div class="sec-head">
-      <span class="sec-idx">06</span>
-      <h2 class="sec-title">释放规则<span>Vesting · Cliff 0 天 / 60 天线性</span></h2>
+      <span class="sec-idx">05</span>
+      <h2 class="sec-title">释放规则<span>主池 · 奖励池独立释放</span></h2>
     </div>
 
-    <div class="timeline">
-      <div class="tl-row">
-        <div class="tl-key">Cliff</div>
-        <div class="tl-val"><b>0 天</b> —— 指无额外锁仓，TGE 即开启释放</div>
-      </div>
-      <div class="tl-row">
-        <div class="tl-key">首次 Claim</div>
-        <div class="tl-val">公开交易时间 <b>当天</b>，即公开交易开始后即可领取第一天的释放份额</div>
-      </div>
-      <div class="tl-row">
-        <div class="tl-key">Vesting</div>
-        <div class="tl-val"><b>60 天</b>线性释放 —— 首次 claim 开放后，代币在 60 天内按天均匀释放，每天解锁 1/60</div>
-      </div>
+    <div class="prose" style="margin-bottom:14px;">
+      <p>
+        所有通过 Alpha Vault 成功认购的地址，额外获得相当于主池代币量 <b>50%</b> 的奖励代币。
+        奖励独立托管、独立释放、独立领取，<b>不影响主池的按比例分配与退款逻辑。</b>
+      </p>
     </div>
 
-    <div class="formula">首次 claim 开放前：
-当前可领取量 = 0
-
-首次 claim 开放后：
-当前可领取量 = （已释放天数 ÷ 60 天）× 你分配到的总代币
-
-<span class="cmt">// 已释放天数包含首次 claim 当天（即 TGE 当天算作第 1 天）</span>
-<span class="cmt">// 最高不超过你分配到的总代币</span></div>
-
-    <div class="tbl-scroll" style="margin-top:16px;">
-      <table style="min-width: 480px;">
+    <!-- 对比表格 -->
+    <div class="tbl-scroll" style="margin-bottom: 24px;">
+      <table class="compare-table" style="margin-bottom: 0; border: none;">
         <thead>
           <tr>
-            <th>时间节点</th>
-            <th>累计解锁比例</th>
-            <th>可领取数量（以 6,000 枚为例）</th>
+            <th>项目</th>
+            <th>主池 · ALPHA VAULT</th>
+            <th>奖励池 · ALPHA REWARDS</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="sum"><td>TGE 当天（首次 Claim）</td><td class="num">1/60 ≈ 1.67%</td><td class="num">约 100 枚</td></tr>
-          <tr><td>开放后第 1 天</td><td class="num">2/60 ≈ 3.33%</td><td class="num">约 200 枚</td></tr>
-          <tr><td>开放后第 15 天</td><td class="num">16/60 ≈ 26.67%</td><td class="num">约 1,600 枚</td></tr>
-          <tr><td>开放后第 30 天</td><td class="num">31/60 ≈ 51.67%</td><td class="num">约 3,100 枚</td></tr>
-          <tr><td>开放后第 45 天</td><td class="num">46/60 ≈ 76.67%</td><td class="num">约 4,600 枚</td></tr>
-          <tr><td>开放后第 60 天</td><td class="num">60/60 = 100%</td><td class="num">6,000 枚</td></tr>
+          <tr>
+            <td>相对规模</td>
+            <td>占总配额约 66.7%</td>
+            <td>占总配额约 33.3%</td>
+          </tr>
+          <tr>
+            <td>分配基数</td>
+            <td>按比例分配公式</td>
+            <td>主池成交代币量 × 50%</td>
+          </tr>
+          <tr>
+            <td>锁定期 (Cliff)</td>
+            <td>0 天</td>
+            <td>60 天</td>
+          </tr>
+          <tr>
+            <td>线性释放</td>
+            <td>60 天</td>
+            <td>120 天</td>
+          </tr>
+          <tr>
+            <td>首次可领</td>
+            <td>TGE 当天</td>
+            <td>TGE + 60 天 (1/120)</td>
+          </tr>
+          <tr>
+            <td>全部释放</td>
+            <td>TGE + 60 天</td>
+            <td>TGE + 180 天</td>
+          </tr>
+          <tr>
+            <td>领取入口</td>
+            <td>Vault</td>
+            <td>奖励池</td>
+          </tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-swipe-hint" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      左右滑动查看完整数据
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </p>
 
-    <p class="caption" style="margin-top:16px;">
-      <b>举例：</b>如果你分配到 6,000 枚代币，<b>公开交易开始当天开放首次 claim，当日即可领取第 1 天的份额（约 100 枚）</b>。
-      开放后第 30 天，累计可领取约 <b>3,100 枚</b>（约 51.67%），
-      第 60 天全部释放完毕。
-    </p>
+    <!-- 极简堆叠面积图 -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">
+          代币累计解锁进度
+          <span>Cumulative Unlock · TGE → +180d</span>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot main"></span>主池代币 (66.7%)</span>
+          <span class="legend-item"><span class="legend-dot reward"></span>奖励代币 (33.3%)</span>
+        </div>
+      </div>
 
-    <p class="caption gold">
-      <b>一句话说明：</b>Cliff 0 天，无额外锁仓；公开交易当天开放首次 claim，随后 60 天内按天线性释放完毕。
-    </p>
-  </section>
+      <svg class="chart-svg" viewBox="0 0 520 280" role="img"
+           aria-label="代币累计解锁进度：前60天主池释放封顶66.7%；后120天奖励释放叠加至100%">
 
-  <!-- ================= 07 技术执行说明 ================= -->
-  <section class="wrap sec" id="technical">
-    <div class="sec-head">
-      <span class="sec-idx">07</span>
-      <h2 class="sec-title">技术执行说明<span>Technical Implementation</span></h2>
+        <defs>
+          <linearGradient id="grad-main-area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--cyber)" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="var(--cyber)" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="grad-reward-area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="var(--gold)" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 阶段背景色块 -->
+        <rect x="60" y="30" width="143.33" height="200" fill="var(--cyber)" opacity="0.03" />
+        <rect x="203.33" y="30" width="286.67" height="200" fill="var(--gold)" opacity="0.03" />
+
+        <!-- 水平网格 -->
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="60" y1="30" x2="490" y2="30" opacity="0.7"/>
+          <line x1="60" y1="80" x2="490" y2="80" stroke-dasharray="3 4" opacity="0.35"/>
+          <line x1="60" y1="130" x2="490" y2="130" stroke-dasharray="3 4" opacity="0.35"/>
+          <line x1="60" y1="180" x2="490" y2="180" stroke-dasharray="3 4" opacity="0.35"/>
+          <line x1="60" y1="230" x2="490" y2="230" opacity="0.7"/>
+        </g>
+
+        <!-- Y 轴刻度 -->
+        <g font-family="var(--mono)" font-size="10.5" fill="var(--muted)" text-anchor="end">
+          <text x="52" y="34">100%</text>
+          <text x="52" y="84">75%</text>
+          <!-- 66.7% 精确刻度 -->
+          <text x="52" y="101" fill="var(--cyber)" font-weight="700">66.7%</text>
+          <text x="52" y="134">50%</text>
+          <text x="52" y="184">25%</text>
+          <text x="52" y="234">0%</text>
+        </g>
+
+        <!-- 垂直网格 -->
+        <g stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4" opacity="0.3">
+          <line x1="131.67" y1="30" x2="131.67" y2="230"/>
+          <line x1="275" y1="30" x2="275" y2="230"/>
+          <line x1="346.67" y1="30" x2="346.67" y2="230"/>
+          <line x1="418.33" y1="30" x2="418.33" y2="230"/>
+        </g>
+
+        <!-- 堆叠面积填充 -->
+        <path d="M 60,230 L 203.33,96.66 L 490,96.66 L 490,230 Z" fill="url(#grad-main-area)">
+          <title>主池：前60天线性释放，封顶占总盘 66.7%</title>
+        </path>
+        <path d="M 203.33,96.66 L 490,30 L 490,96.66 Z" fill="url(#grad-reward-area)">
+          <title>奖励池：第60天起接力，120天释放剩余 33.3%</title>
+        </path>
+
+        <!-- 曲线分界线 -->
+        <path d="M 60,230 L 203.33,96.66 L 490,96.66" stroke="var(--cyber)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <path d="M 203.33,96.66 L 490,30" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+
+        <!-- +60d 垂直与水平对齐线 -->
+        <line x1="203.33" y1="30" x2="203.33" y2="230" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+        <line x1="60" y1="96.66" x2="203.33" y2="96.66" stroke="var(--cyber)" stroke-width="1" stroke-dasharray="2 3" opacity="0.4"/>
+
+        <!-- 关键数据点 -->
+        <circle cx="60" cy="230" r="4" fill="var(--card)" stroke="var(--cyber)" stroke-width="2.5"/>
+        <circle cx="203.33" cy="96.66" r="5" fill="var(--card)" stroke="var(--cyber)" stroke-width="3">
+          <title>+60d 交接点：主池完成，奖励开启</title>
+        </circle>
+        <circle cx="490" cy="30" r="4" fill="var(--card)" stroke="var(--gold)" stroke-width="2.5"/>
+
+        <!-- X 轴刻度 -->
+        <g font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">
+          <text x="60" y="250">TGE</text>
+          <text x="131.67" y="250" opacity="0.6">+30d</text>
+          <text x="203.33" y="250" fill="var(--ink)" font-weight="700">+60d</text>
+          <text x="275" y="250" opacity="0.6">+90d</text>
+          <text x="346.67" y="250" opacity="0.6">+120d</text>
+          <text x="418.33" y="250" opacity="0.6">+150d</text>
+          <text x="490" y="250">+180d</text>
+        </g>
+
+        <!-- 底部时间区间指示带 -->
+        <line x1="60" y1="265" x2="203.33" y2="265" stroke="var(--cyber)" stroke-width="2" opacity="0.3"/>
+        <line x1="203.33" y1="265" x2="490" y2="265" stroke="var(--gold)" stroke-width="2" opacity="0.3"/>
+
+        <g font-family="var(--sans)" font-size="11" font-weight="700" text-anchor="middle">
+          <text x="131.67" y="278" fill="var(--cyber)">主池释放期</text>
+          <text x="346.67" y="278" fill="var(--gold)">奖励释放期</text>
+        </g>
+      </svg>
     </div>
 
-    <div class="prose" style="margin-bottom:14px;">
-      <p>
-        本方案的技术实现依托 Meteora Alpha Vault 的原生功能，<b>无需自定义开发</b>，
-        所有参数均通过标准指令配置。
-      </p>
+    <!-- 图表下方极简说明（无边框） -->
+    <div class="chart-notes">
+      <p><b style="color:var(--cyber);">主池释放：</b>TGE 起 60 天内全额线性释放，占总配额 66.7%。</p>
+      <p><b style="color:var(--gold);">奖励接力：</b>第 60 天无缝开启，120 天内线性释放剩余 33.3% 额度。</p>
     </div>
 
-    <div class="spec">
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">白名单实现</span>
-          <span class="spec-k-en">Whitelist</span>
-        </div>
-        <div class="spec-v">
-          采用 <b>Authority-Managed Escrow</b> 模式（<code>PermissionWithAuthority</code>）。
-          Vault 创建者（authority）为每个白名单钱包创建独立的 escrow 账户，
-          并分别设定各组的 <code>max_cap</code>（最大存入额度）。
-          该模式操作简单，适合精选白名单名单。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">统一币价</span>
-          <span class="spec-k-en">Pro-Rata</span>
-        </div>
-        <div class="spec-v">
-          Vault 以 Pro-Rata 模式初始化（<code>initialize_vault_with_prorata_config</code>），
-          所有参与者按存款比例分配代币。<code>max_buying_cap</code> 参数限定 vault
-          在池子中可交换的 quote 总量，超出部分自动退还。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">释放机制</span>
-          <span class="spec-k-en">Vesting</span>
-        </div>
-        <div class="spec-v">
-          Vesting 通过 <code>start_vesting_point</code> 与 <code>end_vesting_point</code> 参数配置。
-          Cliff 0 天表示无额外锁仓；首次 claim 为公开交易时间，随后 60 天线性解锁。
-          主网锁定 / vesting 时长上限约一年，60 天远低于该限制。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">前置条件</span>
-          <span class="spec-k-en">Prerequisite</span>
-        </div>
-        <div class="spec-v">
-          需先创建 Meteora Launch Pool（DLMM 类型），且该池子必须将
-          Alpha Vault 地址记录为白名单预激活买家。
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 08 安全说明 ================= -->
-  <section class="wrap sec" id="security">
-    <div class="sec-head">
-      <span class="sec-idx">08</span>
-      <h2 class="sec-title">安全说明<span>Security & Risk Control</span></h2>
-    </div>
-
-    <div class="prose" style="margin-bottom:14px;">
-      <p>
-        参与 Alpha Vault 的资金安全是最高优先级。本方案依托 Solana 主网上成熟的基础设施，
-        从<b>智能合约、资金托管、机制设计、用户操作</b>四个维度提供全方位的安全保障。
-      </p>
-    </div>
-
-    <div class="spec">
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">合约代码审计</span>
-          <span class="spec-k-en">Smart Contract</span>
-        </div>
-        <div class="spec-v">
-          Alpha Vault 由 <b>Meteora 官方团队开发</b>，并非项目方自行编写的合约。
-          其底层代码经历了多家顶级安全机构（如 OtterSec、Sec3 等）的严格审计，
-          合约完全开源，所有逻辑在链上公开透明，杜绝了暗箱操作与后门代码的风险。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">资金非托管</span>
-          <span class="spec-k-en">Custody</span>
-        </div>
-        <div class="spec-v">
-          用户的认购资金（USDC）直接存入链上的 Vault 智能合约，
-          <b>项目方无法提前触碰或挪用这笔资金</b>。存款、买入、退款、释放，每一个步骤均由合约根据预设条件自动执行。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">退款保障机制</span>
-          <span class="spec-k-en">Refund</span>
-        </div>
-        <div class="spec-v">
-          若发生超额认购（存款总额超出硬顶），或者由于极端行情导致未能完成买入，
-          <b>未成功买入的 USDC 将原路自动退还</b>至用户的存款地址，不存在资金被冻结或卡住的风险。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">防狙击保护</span>
-          <span class="spec-k-en">Anti-Sniping</span>
-        </div>
-        <div class="spec-v">
-          机制内置了<b>预激活保护窗口（Pre-activation Window）</b>。
-          在 TGE 正式对外公开交易之前，Alpha Vault 会在这个保护窗口内完成统一买入。
-          这有效防止了机器人通过监控内存池在开盘瞬间抢跑或进行三明治攻击。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">账户隔离</span>
-          <span class="spec-k-en">Escrow</span>
-        </div>
-        <div class="spec-v">
-          系统为每一个白名单地址创建<b>独立的隔离账户（Escrow）</b>并设定专属额度。
-          任何人的存入行为互不干扰，合约层面的余额独立计算，防止了跨账户的攻击风险。
-        </div>
-      </div>
-
-      <div class="spec-row">
-        <div class="spec-k">
-          <span class="spec-k-cn">操作安全防范</span>
-          <span class="spec-k-en">Operation</span>
-        </div>
-        <div class="spec-v">
-          参与过程中，用户<b>仅需授权 USDC 的转账权限</b>，切勿向任何人泄露私钥或助记词。
-          务必认准本页面公布的官方入口（<code>caishendao.world</code>），谨防钓鱼网站。
-        </div>
-      </div>
-    </div>
-
-    <p class="caption gold">
-      <b>风险提示：</b>虽然协议层与机制层具有极高的安全性，但数字资产市场价格波动剧烈。
-      智能合约仍存在极低概率的未知漏洞风险，请确保仅使用您能承受损失的资金参与。
+    <p class="caption gold" style="margin-top: 16px;">
+      <b>总结：</b>主池与奖励池首尾相接，整个 180 天周期资金持续到账，无断档期。
     </p>
   </section>
 
-  <!-- ================= 09 核心规则 ================= -->
+  <!-- ================= 06 核心规则 ================= -->
   <section class="wrap sec" id="rules">
     <div class="sec-head">
-      <span class="sec-idx">09</span>
+      <span class="sec-idx">06</span>
       <h2 class="sec-title">核心规则<span>Key Rules</span></h2>
     </div>
 
@@ -2077,32 +2013,198 @@
       <div class="rule-item">
         <span class="rule-dot">03</span>
         <span class="rule-text">
-          Cliff 0 天，Vesting 60 天：首次 claim 为公开交易时间，
-          随后 60 天内线性释放完毕。
+          参与认购的用户将额外获得 <b>50% Alpha 奖励</b>，该奖励自动发放，独立核算。
         </span>
       </div>
       <div class="rule-item">
         <span class="rule-dot">04</span>
-        <span class="rule-text">通过 <b>Alpha Vault + Meteora DLMM</b> 方案执行。</span>
+        <span class="rule-text">
+          <b>主池释放规则：</b>Cliff 0 天，60 天线性释放（TGE 当天开始）。
+        </span>
       </div>
       <div class="rule-item">
         <span class="rule-dot">05</span>
         <span class="rule-text">
-          存款窗口内可在各自额度内自由存入，窗口关闭后 vault 统一执行买入。
+          <b>奖励池释放规则：</b>Cliff 60 天，120 天线性释放（独立自动运行）。
         </span>
       </div>
       <div class="rule-item">
         <span class="rule-dot">06</span>
-        <span class="rule-text">超额部分<b>按比例退还</b> USDC。</span>
+        <span class="rule-text">通过 <b>Alpha Vault + Meteora DLMM</b> 方案执行。</span>
       </div>
       <div class="rule-item">
         <span class="rule-dot">07</span>
         <span class="rule-text">
-          目标认购 <b>$160,000 USDC</b>；硬顶金额 <b>$190,000 USDC</b>，
-          其中包含 D 组备用缓冲 $30,000 USDC。
+          目标认购 <b>$174,000 USDC</b>；硬顶金额 <b>$200,000 USDC</b>，
+          其中包含 C 组备用缓冲 $26,000 USDC。
         </span>
       </div>
     </div>
+  </section>
+
+  <!-- ================= 07 安全说明 ================= -->
+  <section class="wrap sec" id="security">
+    <div class="sec-head">
+      <span class="sec-idx">07</span>
+      <h2 class="sec-title">安全说明<span>Security & Risk Control</span></h2>
+    </div>
+
+    <div class="prose" style="margin-bottom:14px;">
+      <p>
+        参与 Alpha Vault 的资金安全是最高优先级。本方案依托 Solana 主网上成熟的基础设施，
+        从<b>智能合约、资金托管、机制设计、用户操作</b>四个维度提供全方位的安全保障。
+      </p>
+    </div>
+
+    <!-- 手风琴折叠列表 -->
+    <div class="spec-accordion">
+
+      <!-- 1 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-1">
+          <div class="spec-k">
+            <span class="spec-k-cn">合约代码审计</span>
+            <span class="spec-k-en">Smart Contract</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-1">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              Alpha Vault 由 <b>Meteora 官方团队开发</b>，并非项目方自行编写的合约。
+              其底层代码经历了多家顶级安全机构（如 OtterSec、Sec3 等）的严格审计，
+              合约完全开源，所有逻辑在链上公开透明，杜绝了暗箱操作与后门代码的风险。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-2">
+          <div class="spec-k">
+            <span class="spec-k-cn">资金非托管</span>
+            <span class="spec-k-en">Custody</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-2">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              用户的认购资金（USDC）直接存入链上的 Vault 智能合约，
+              <b>项目方无法提前触碰或挪用这笔资金</b>。存款、买入、释放，每一个步骤均由合约根据预设条件自动执行。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-3">
+          <div class="spec-k">
+            <span class="spec-k-cn">退款保障机制</span>
+            <span class="spec-k-en">Refund</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-3">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              若因极端行情或不可抗力导致未能完成买入，
+              <b>未成功买入的 USDC 将原路自动退还</b>至用户的存款地址，最大程度保障用户资金安全。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-4">
+          <div class="spec-k">
+            <span class="spec-k-cn">防狙击保护</span>
+            <span class="spec-k-en">Anti-Sniping</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-4">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              机制内置了<b>预激活保护窗口（Pre-activation Window）</b>。
+              在 TGE 正式对外公开交易之前，Alpha Vault 会在这个保护窗口内完成统一买入。
+              这有效防止了机器人通过监控内存池在开盘瞬间抢跑或进行三明治攻击。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-5">
+          <div class="spec-k">
+            <span class="spec-k-cn">账户隔离</span>
+            <span class="spec-k-en">Escrow</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-5">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              系统为每一个白名单地址创建<b>独立的隔离账户（Escrow）</b>并设定专属额度。
+              任何人的存入行为互不干扰，合约层面的余额独立计算，防止了跨账户的攻击风险。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="spec-item">
+        <button class="spec-toggle" aria-expanded="false" aria-controls="spec-content-6">
+          <div class="spec-k">
+            <span class="spec-k-cn">操作安全防范</span>
+            <span class="spec-k-en">Operation</span>
+          </div>
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="spec-content" id="spec-content-6">
+          <div class="spec-content-inner">
+            <div class="spec-v">
+              参与过程中，用户<b>仅需授权 USDC 的转账权限</b>，切勿向任何人泄露私钥或助记词。
+              务必认准本页面公布的官方入口（<code>caishendao.world</code>），谨防钓鱼网站。
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="caption gold">
+      <b>风险提示：</b>虽然协议层与机制层具有极高的安全性，但数字资产市场价格波动剧烈。
+      智能合约仍存在极低概率的未知漏洞风险，请确保仅使用您能承受损失的资金参与。
+    </p>
   </section>
 
   <!-- ================= 页脚 ================= -->
@@ -2137,7 +2239,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v2.7 · 2026-10-19</span>
+      <span class="foot-v">v2.8 · 2026-10-20</span>
     </div>
     <div class="disc">
       本文档仅用于信息展示，不构成任何投资建议。数字资产价格波动剧烈，请理性判断、注意风险。
@@ -2152,6 +2254,8 @@
     <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
   </svg>
 </button>
+
+<div id="toast" class="toast" aria-live="polite"></div>
 
 <script>
   (function () {
@@ -2204,6 +2308,19 @@
     else if (darkMQ.addListener) darkMQ.addListener(onSystemChange);
     applyUI();
 
+    /* ---------- 全局 Toast 提示 ---------- */
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+    function showToast(msg) {
+      if (!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toastEl.classList.remove('show');
+      }, 2500);
+    }
+
     /* ---------- 合约地址复制 ---------- */
     var caCopy = document.getElementById('caCopy');
     var caStatus = document.getElementById('caStatus');
@@ -2216,6 +2333,7 @@
         caCopy.setAttribute('aria-label', '已复制合约地址');
         caCopy.setAttribute('title', '已复制');
         if (caStatus) caStatus.textContent = '合约地址已复制到剪贴板';
+        showToast('合约地址已复制');
         clearTimeout(caTimer);
         caTimer = setTimeout(function () {
           caCopy.classList.remove('is-copied');
@@ -2240,6 +2358,7 @@
           markCopied();
         } else if (caStatus) {
           caStatus.textContent = '复制失败，请手动选择地址复制';
+          showToast('复制失败，请手动选择');
         }
       };
       caCopy.addEventListener('click', function () {
@@ -2250,6 +2369,21 @@
         }
       });
     }
+
+    /* ---------- 表格滑动遮罩处理 ---------- */
+    var tblScrolls = document.querySelectorAll('.tbl-scroll');
+    tblScrolls.forEach(function (tbl) {
+      tbl.addEventListener('scroll', function () {
+        if (this.scrollLeft + this.clientWidth >= this.scrollWidth - 1) {
+          this.classList.add('is-scrolled-end');
+        } else {
+          this.classList.remove('is-scrolled-end');
+        }
+      }, { passive: true });
+      if (tbl.scrollLeft + tbl.clientWidth >= tbl.scrollWidth - 1) {
+        tbl.classList.add('is-scrolled-end');
+      }
+    });
 
     /* ---------- 导航高亮 ---------- */
     var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
@@ -2291,7 +2425,7 @@
     var backTop = document.getElementById('backTop');
     if (backTop) {
       var onScroll = function () {
-        if (window.scrollY > 600) backTop.classList.add('show');
+        if (window.scrollY > 400) backTop.classList.add('show');
         else backTop.classList.remove('show');
       };
       window.addEventListener('scroll', onScroll, { passive: true });
@@ -2299,6 +2433,64 @@
       backTop.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: scrollBehavior() });
       });
+    }
+
+    /* ---------- 安全说明折叠面板 ---------- */
+    var specToggles = document.querySelectorAll('.spec-toggle');
+    if (specToggles.length) {
+      specToggles.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var expanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !expanded);
+
+          var contentId = this.getAttribute('aria-controls');
+          var content = document.getElementById(contentId);
+          if (content) {
+            if (expanded) {
+              content.classList.remove('is-open');
+            } else {
+              content.classList.add('is-open');
+            }
+          }
+        });
+      });
+    }
+
+    /* ---------- 认购计算器 ---------- */
+    var calcInput = document.getElementById('calcInput');
+    var calcMain = document.getElementById('calcMain');
+    var calcReward = document.getElementById('calcReward');
+    var calcTotal = document.getElementById('calcTotal');
+    var shortcutBtns = document.querySelectorAll('.calc-shortcuts button');
+
+    var CALC_PRICE = 0.014; // 估算单价
+
+    function updateCalculator() {
+      if (!calcInput || !calcMain) return;
+      var usdc = parseFloat(calcInput.value);
+      if (isNaN(usdc) || usdc < 0) usdc = 0;
+
+      var mainTokens = Math.round(usdc / CALC_PRICE);
+      var rewardTokens = Math.floor(mainTokens * 0.5);
+      var totalTokens = mainTokens + rewardTokens;
+
+      var formatNum = function(num) { return num.toLocaleString('en-US'); };
+
+      calcMain.textContent = formatNum(mainTokens);
+      calcReward.textContent = formatNum(rewardTokens);
+      calcTotal.textContent = formatNum(totalTokens);
+    }
+
+    if (calcInput) {
+      calcInput.addEventListener('input', updateCalculator);
+      shortcutBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          calcInput.value = this.getAttribute('data-val');
+          updateCalculator();
+          calcInput.blur(); // 移动端点击后收起键盘
+        });
+      });
+      updateCalculator();
     }
   })();
 </script>
