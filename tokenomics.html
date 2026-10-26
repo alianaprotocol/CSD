@@ -8,16 +8,13 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23060305'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%23ffb700' font-family='monospace' font-weight='900'%3E%E8%B4%A2%3C/text%3E%3C/svg%3E">
 <title>财神DAO · 代币经济方案</title>
 
-<!-- 早期初始化：仅恢复主题，避免首屏闪烁 -->
 <script>
   (function () {
     'use strict';
     var root = document.documentElement;
     try {
       var t = localStorage.getItem('gof-theme');
-      if (t === 'dark' || t === 'light') {
-        root.setAttribute('data-theme', t);
-      }
+      if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t);
     } catch (e) {}
   })();
 </script>
@@ -87,9 +84,9 @@
       <img src="../images/banner.png" alt="欢迎来到 财神DAO - 公屏接财神，钱包开门迎" decoding="async">
     </div>
     <p>
-      全网仅发行 <b>686,868,686</b> 枚 $财神DAO，总量恒定、不再增发。其中 <span class="hl">43.52%</span> 划入「FDV 里程碑销毁池」——
-      币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁上限 298,897,210 枚，且永不回流团队。
-      剩余 56.48% 按基金会、社区、生态、流动性、运营与战略储备分项配置，多数份额设 3 至 36 个月不等的锁仓与线性释放；
+      全网仅发行 <b>686,868,686</b> 枚 $财神DAO，总量恒定、不再增发。其中 <span class="hl">41.06%</span> 划入「FDV 里程碑销毁池」——
+      币价每上一个台阶，即触发一档销毁，转入黑洞地址<span class="hl">永久退出流通</span>，累计销毁上限 282,028,523 枚，且永不回流团队。
+      剩余 58.94% 按基金会、社区、生态、流动性、运营与战略储备分项配置，多数份额设 3 至 36 个月不等的锁仓与线性释放；
       流动性类份额采用 TGE 先释放、余量线性释放的方式，每一笔锁仓均有独立链上地址可供查验。
     </p>
   </section>
@@ -105,9 +102,9 @@
         <span class="hl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
         </span>
-        <div class="hl-num">43.52%</div>
+        <div class="hl-num">41.06%</div>
         <div class="hl-t">供应量用于销毁</div>
-        <div class="hl-d">12 档 FDV 里程碑，累计销毁上限 298,897,210 枚，永不回流团队</div>
+        <div class="hl-d">12 档 FDV 里程碑，累计销毁上限 282,028,523 枚，永不回流团队</div>
       </div>
       <div class="hl-card">
         <span class="hl-ico" aria-hidden="true">
@@ -175,7 +172,7 @@
           </button>
         </div>
       </div>
-      <div class="fact wide"><div class="k">核心特性 | Features</div><div class="v">总量恒定不增发 · 43.52% 供应量用于销毁 · 全部分配额链上可查</div></div>
+      <div class="fact wide"><div class="k">核心特性 | Features</div><div class="v">总量恒定不增发 · 41.06% 供应量用于销毁 · 全部分配额链上可查</div></div>
     </div>
   </section>
 
@@ -190,20 +187,21 @@
         <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="代币分配环形图">
           <circle cx="100" cy="100" r="72" fill="none" stroke="var(--donut-track)" stroke-width="22"/>
           <g transform="rotate(-90 100 100)">
-            <circle class="donut-seg" data-seg="0" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#ff2d55" stroke-width="22" stroke-dasharray="196.85 255.54" stroke-dashoffset="0" data-base-stroke="#ff2d55" data-dark-stroke="#ff2d55"/>
-            <circle class="donut-seg" data-seg="1" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#a8821c" stroke-width="22" stroke-dasharray="45.24 407.15" stroke-dashoffset="-196.85" data-base-stroke="#a8821c" data-dark-stroke="#d4a82a"/>
-            <circle class="donut-seg" data-seg="2" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#bf9a3a" stroke-width="22" stroke-dasharray="27.14 425.25" stroke-dashoffset="-242.09" data-base-stroke="#bf9a3a" data-dark-stroke="#e0b85a"/>
-            <circle class="donut-seg" data-seg="3" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#c9a84a" stroke-width="22" stroke-dasharray="33.08 419.31" stroke-dashoffset="-269.23" data-base-stroke="#c9a84a" data-dark-stroke="#c9a84a"/>
-            <circle class="donut-seg" data-seg="4" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#2f3841" stroke-width="22" stroke-dasharray="27.14 425.25" stroke-dashoffset="-302.31" data-base-stroke="#2f3841" data-dark-stroke="#c8cfd6"/>
-            <circle class="donut-seg" data-seg="5" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#5b6672" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-329.45" data-base-stroke="#5b6672" data-dark-stroke="#b8c0c8"/>
-            <circle class="donut-seg" data-seg="6" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#7a8590" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-343.02" data-base-stroke="#7a8590" data-dark-stroke="#a8b0b8"/>
-            <circle class="donut-seg" data-seg="7" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#8a6fb0" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-356.59" data-base-stroke="#8a6fb0" data-dark-stroke="#a98fce"/>
-            <circle class="donut-seg" data-seg="8" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#8f99a4" stroke-width="22" stroke-dasharray="23.05 429.34" stroke-dashoffset="-370.16" data-base-stroke="#8f99a4" data-dark-stroke="#9aa2aa"/>
-            <circle class="donut-seg" data-seg="9" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#4a8fa8" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-393.21" data-base-stroke="#4a8fa8" data-dark-stroke="#6ab0c8"/>
-            <circle class="donut-seg" data-seg="10" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#a8b0b8" stroke-width="22" stroke-dasharray="16.47 435.92" stroke-dashoffset="-406.78" data-base-stroke="#a8b0b8" data-dark-stroke="#8a9298"/>
-            <circle class="donut-seg" data-seg="11" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#bdc4ca" stroke-width="22" stroke-dasharray="1.98 440.41" stroke-dashoffset="-423.25" data-base-stroke="#bdc4ca" data-dark-stroke="#7a8290"/>
-            <circle class="donut-seg" data-seg="12" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#d0d5da" stroke-width="22" stroke-dasharray="4.52 447.87" stroke-dashoffset="-425.23" data-base-stroke="#d0d5da" data-dark-stroke="#6a7280"/>
-            <circle class="donut-seg" data-seg="13" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#b8a040" stroke-width="22" stroke-dasharray="22.62 429.77" stroke-dashoffset="-429.75" data-base-stroke="#b8a040" data-dark-stroke="#d4b85a"/>
+            <circle class="donut-seg" data-seg="0" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#ff2d55" stroke-width="22" stroke-dasharray="185.75 266.64" stroke-dashoffset="0" data-base-stroke="#ff2d55" data-dark-stroke="#ff2d55"/>
+            <circle class="donut-seg" data-seg="1" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#a8821c" stroke-width="22" stroke-dasharray="45.24 407.15" stroke-dashoffset="-185.75" data-base-stroke="#a8821c" data-dark-stroke="#d4a82a"/>
+            <circle class="donut-seg" data-seg="2" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#c9a84a" stroke-width="22" stroke-dasharray="33.08 419.31" stroke-dashoffset="-230.99" data-base-stroke="#c9a84a" data-dark-stroke="#c9a84a"/>
+            <circle class="donut-seg" data-seg="3" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#bf9a3a" stroke-width="22" stroke-dasharray="27.14 425.25" stroke-dashoffset="-264.07" data-base-stroke="#bf9a3a" data-dark-stroke="#e0b85a"/>
+            <circle class="donut-seg" data-seg="4" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#2f3841" stroke-width="22" stroke-dasharray="27.14 425.25" stroke-dashoffset="-291.21" data-base-stroke="#2f3841" data-dark-stroke="#c8cfd6"/>
+            <circle class="donut-seg" data-seg="5" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#8f99a4" stroke-width="22" stroke-dasharray="23.05 429.34" stroke-dashoffset="-318.35" data-base-stroke="#8f99a4" data-dark-stroke="#9aa2aa"/>
+            <circle class="donut-seg" data-seg="6" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#b8a040" stroke-width="22" stroke-dasharray="22.62 429.77" stroke-dashoffset="-341.40" data-base-stroke="#b8a040" data-dark-stroke="#d4b85a"/>
+            <circle class="donut-seg" data-seg="7" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#4a8fa8" stroke-width="22" stroke-dasharray="16.47 435.92" stroke-dashoffset="-364.02" data-base-stroke="#4a8fa8" data-dark-stroke="#6ab0c8"/>
+            <circle class="donut-seg" data-seg="8" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#5b6672" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-380.49" data-base-stroke="#5b6672" data-dark-stroke="#b8c0c8"/>
+            <circle class="donut-seg" data-seg="9" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#7a8590" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-394.06" data-base-stroke="#7a8590" data-dark-stroke="#a8b0b8"/>
+            <circle class="donut-seg" data-seg="10" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#8a6fb0" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-407.63" data-base-stroke="#8a6fb0" data-dark-stroke="#a98fce"/>
+            <circle class="donut-seg" data-seg="11" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#6a9a7a" stroke-width="22" stroke-dasharray="13.57 428.82" stroke-dashoffset="-421.20" data-base-stroke="#6a9a7a" data-dark-stroke="#8fc09a"/>
+            <circle class="donut-seg" data-seg="12" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#b06a8a" stroke-width="22" stroke-dasharray="8.56 443.83" stroke-dashoffset="-434.77" data-base-stroke="#b06a8a" data-dark-stroke="#d08fae"/>
+            <circle class="donut-seg" data-seg="13" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#bdc4ca" stroke-width="22" stroke-dasharray="4.52 447.87" stroke-dashoffset="-443.33" data-base-stroke="#bdc4ca" data-dark-stroke="#7a8290"/>
+            <circle class="donut-seg" data-seg="14" cx="100" cy="100" r="72" fill="none" tabindex="0" role="img" stroke="#d0d5da" stroke-width="22" stroke-dasharray="4.52 447.87" stroke-dashoffset="-447.85" data-base-stroke="#d0d5da" data-dark-stroke="#6a7280"/>
           </g>
           <text x="100" y="93" text-anchor="middle" class="donut-num">686.9M</text>
           <text x="100" y="113" text-anchor="middle" class="donut-label">总供应量</text>
@@ -211,20 +209,21 @@
       </div>
 
       <div class="donut-legend">
-        <div class="lg-item" data-seg="0" tabindex="0"><span class="lg-dot" style="background:#ff2d55"></span><span class="lg-name">FDV 里程碑销毁池</span><span class="lg-pct">43.5159%</span></div>
+        <div class="lg-item" data-seg="0" tabindex="0"><span class="lg-dot" style="background:#ff2d55"></span><span class="lg-name">FDV 里程碑销毁池</span><span class="lg-pct">41.0600%</span></div>
         <div class="lg-item" data-seg="1" tabindex="0"><span class="lg-dot" style="background:#a8821c"></span><span class="lg-name">财神基金会</span><span class="lg-pct">10.0000%</span></div>
-        <div class="lg-item" data-seg="2" tabindex="0"><span class="lg-dot" style="background:#bf9a3a"></span><span class="lg-name">BG 基金会</span><span class="lg-pct">6.0000%</span></div>
-        <div class="lg-item" data-seg="3" tabindex="0"><span class="lg-dot" style="background:#c9a84a"></span><span class="lg-name">燃香赐福池</span><span class="lg-pct">7.3120%</span></div>
+        <div class="lg-item" data-seg="2" tabindex="0"><span class="lg-dot" style="background:#c9a84a"></span><span class="lg-name">燃香赐福池</span><span class="lg-pct">7.3120%</span></div>
+        <div class="lg-item" data-seg="3" tabindex="0"><span class="lg-dot" style="background:#bf9a3a"></span><span class="lg-name">BG 基金会</span><span class="lg-pct">6.0000%</span></div>
         <div class="lg-item" data-seg="4" tabindex="0"><span class="lg-dot" style="background:#2f3841"></span><span class="lg-name">做市 / CEX / DEX</span><span class="lg-pct">6.0000%</span></div>
-        <div class="lg-item" data-seg="5" tabindex="0"><span class="lg-dot" style="background:#5b6672"></span><span class="lg-name">LUCKY99 社区</span><span class="lg-pct">3.0000%</span></div>
-        <div class="lg-item" data-seg="6" tabindex="0"><span class="lg-dot" style="background:#7a8590"></span><span class="lg-name">FIST 社区</span><span class="lg-pct">3.0000%</span></div>
-        <div class="lg-item" data-seg="7" tabindex="0"><span class="lg-dot" style="background:#8a6fb0"></span><span class="lg-name">CY2000 社区</span><span class="lg-pct">3.0000%</span></div>
-        <div class="lg-item" data-seg="8" tabindex="0"><span class="lg-dot" style="background:#8f99a4"></span><span class="lg-name">财神生态建设</span><span class="lg-pct">5.0956%</span></div>
-        <div class="lg-item" data-seg="9" tabindex="0"><span class="lg-dot" style="background:#4a8fa8"></span><span class="lg-name">财神初创基金</span><span class="lg-pct">3.0000%</span></div>
-        <div class="lg-item" data-seg="10" tabindex="0"><span class="lg-dot" style="background:#a8b0b8"></span><span class="lg-name">初始流动性</span><span class="lg-pct">3.6397%</span></div>
-        <div class="lg-item" data-seg="11" tabindex="0"><span class="lg-dot" style="background:#bdc4ca"></span><span class="lg-name">Alpha 奖励 / 营销</span><span class="lg-pct">0.4368%</span></div>
-        <div class="lg-item" data-seg="12" tabindex="0"><span class="lg-dot" style="background:#d0d5da"></span><span class="lg-name">运营</span><span class="lg-pct">1.0000%</span></div>
-        <div class="lg-item" data-seg="13" tabindex="0"><span class="lg-dot" style="background:#b8a040"></span><span class="lg-name">战略储备</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="5" tabindex="0"><span class="lg-dot" style="background:#8f99a4"></span><span class="lg-name">财神生态建设</span><span class="lg-pct">5.0956%</span></div>
+        <div class="lg-item" data-seg="6" tabindex="0"><span class="lg-dot" style="background:#b8a040"></span><span class="lg-name">战略储备</span><span class="lg-pct">5.0000%</span></div>
+        <div class="lg-item" data-seg="7" tabindex="0"><span class="lg-dot" style="background:#4a8fa8"></span><span class="lg-name">初始流动性</span><span class="lg-pct">3.6397%</span></div>
+        <div class="lg-item" data-seg="8" tabindex="0"><span class="lg-dot" style="background:#5b6672"></span><span class="lg-name">LUCKY99 社区</span><span class="lg-pct">3.0000%</span></div>
+        <div class="lg-item" data-seg="9" tabindex="0"><span class="lg-dot" style="background:#7a8590"></span><span class="lg-name">FIST 社区</span><span class="lg-pct">3.0000%</span></div>
+        <div class="lg-item" data-seg="10" tabindex="0"><span class="lg-dot" style="background:#8a6fb0"></span><span class="lg-name">CY2000 社区</span><span class="lg-pct">3.0000%</span></div>
+        <div class="lg-item" data-seg="11" tabindex="0"><span class="lg-dot" style="background:#6a9a7a"></span><span class="lg-name">财神初创基金</span><span class="lg-pct">3.0000%</span></div>
+        <div class="lg-item" data-seg="12" tabindex="0"><span class="lg-dot" style="background:#b06a8a"></span><span class="lg-name">Alpha 奖励</span><span class="lg-pct">1.8926%</span></div>
+        <div class="lg-item" data-seg="13" tabindex="0"><span class="lg-dot" style="background:#bdc4ca"></span><span class="lg-name">营销 / 活动 / 空投</span><span class="lg-pct">1.0000%</span></div>
+        <div class="lg-item" data-seg="14" tabindex="0"><span class="lg-dot" style="background:#d0d5da"></span><span class="lg-name">运营</span><span class="lg-pct">1.0000%</span></div>
       </div>
     </div>
 
@@ -232,16 +231,16 @@
       <div class="alloc-row lead">
         <div class="alloc-head">
           <span class="alloc-name">FDV 里程碑销毁池</span>
-          <span class="alloc-pct">43.5159%</span>
+          <span class="alloc-pct">41.0600%</span>
         </div>
-        <div class="alloc-amt num">298,897,210 <small>枚</small></div>
+        <div class="alloc-amt num">282,028,523 <small>枚</small></div>
         <div class="alloc-bar"><i style="width:100%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">按里程碑销毁</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">按里程碑销毁</span></span>
         </div>
-        <div class="alloc-note">多签 5/7 执行，价格每达一档目标即转入黑洞永久销毁，累计 298,897,210 枚，永不回流团队</div>
+        <div class="alloc-note">多签 5/7 执行，价格每达一档目标即转入黑洞永久销毁，累计 282,028,523 枚，永不回流团队</div>
       </div>
 
       <div class="alloc-row">
@@ -250,36 +249,11 @@
           <span class="alloc-pct">10.0000%</span>
         </div>
         <div class="alloc-amt num">68,686,869 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:22.98%"></i></div>
+        <div class="alloc-bar"><i style="width:24.35%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
-        </div>
-        <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
-        <div class="alloc-links">
-          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            Jupiter Lock
-          </a>
-          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            Solscan
-          </a>
-        </div>
-      </div>
-
-      <div class="alloc-row">
-        <div class="alloc-head">
-          <span class="alloc-name">BG 基金会</span>
-          <span class="alloc-pct">6.0000%</span>
-        </div>
-        <div class="alloc-amt num">41,212,121 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:13.79%"></i></div>
-        <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
@@ -300,13 +274,38 @@
           <span class="alloc-pct">7.3120%</span>
         </div>
         <div class="alloc-amt num">50,224,000 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:16.80%"></i></div>
+        <div class="alloc-bar"><i style="width:17.81%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">5%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">5% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(2,511,200)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">TGE 释放 5%（约 2,511,200 枚），其余 95% 于 12 个月内线性释放；定向回馈真实参与的用户</div>
+        <div class="alloc-links">
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
+          </a>
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
+          </a>
+        </div>
+      </div>
+
+      <div class="alloc-row">
+        <div class="alloc-head">
+          <span class="alloc-name">BG 基金会</span>
+          <span class="alloc-pct">6.0000%</span>
+        </div>
+        <div class="alloc-amt num">41,212,121 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:14.61%"></i></div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
+        </div>
+        <div class="alloc-note">三年匀速解锁，与项目长期价值深度绑定</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -325,11 +324,11 @@
           <span class="alloc-pct">6.0000%</span>
         </div>
         <div class="alloc-amt num">41,212,121 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:13.79%"></i></div>
+        <div class="alloc-bar"><i style="width:14.61%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(4,121,212)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">12 个月线性</span></span>
         </div>
         <div class="alloc-note">TGE 释放 10%（约 4,121,212 枚），剩余 90% 于 12 个月内线性释放；先建立交易深度，再逐步释放</div>
         <div class="alloc-links">
@@ -346,15 +345,86 @@
 
       <div class="alloc-row">
         <div class="alloc-head">
+          <span class="alloc-name">财神生态建设</span>
+          <span class="alloc-pct">5.0956%</span>
+        </div>
+        <div class="alloc-amt num">35,000,000 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:12.41%"></i></div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(3,500,000)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">18 个月线性</span></span>
+        </div>
+        <div class="alloc-note">TGE 释放 10%（约 3,500,000 枚），其余 90% 于 18 个月内线性释放；按建设节奏分批投入</div>
+        <div class="alloc-links">
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
+          </a>
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
+          </a>
+        </div>
+      </div>
+
+      <div class="alloc-row">
+        <div class="alloc-head">
+          <span class="alloc-name">战略储备</span>
+          <span class="alloc-pct">5.0000%</span>
+        </div>
+        <div class="alloc-amt num">34,343,434 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:12.18%"></i></div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
+        </div>
+        <div class="alloc-note">预留给未来合作社区与特别战略伙伴，锁仓 3 个月后分 36 个月线性释放，为生态长期协同预留空间</div>
+        <div class="alloc-links">
+          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Jupiter Lock
+          </a>
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
+          </a>
+        </div>
+      </div>
+
+      <div class="alloc-row">
+        <div class="alloc-head">
+          <span class="alloc-name">初始流动性</span>
+          <span class="alloc-pct">3.6397%</span>
+        </div>
+        <div class="alloc-amt num">25,000,000 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:8.86%"></i></div>
+        <div class="alloc-vest">
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">100% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(25,000,000)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">开盘注入</span></span>
+        </div>
+        <div class="alloc-note">建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
+        <div class="alloc-links">
+          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Solscan
+          </a>
+        </div>
+      </div>
+
+      <div class="alloc-row">
+        <div class="alloc-head">
           <span class="alloc-name">LUCKY99 社区</span>
           <span class="alloc-pct">3.0000%</span>
         </div>
         <div class="alloc-amt num">20,606,061 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:6.89%"></i></div>
+        <div class="alloc-bar"><i style="width:7.31%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
@@ -375,11 +445,11 @@
           <span class="alloc-pct">3.0000%</span>
         </div>
         <div class="alloc-amt num">20,606,061 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:6.89%"></i></div>
+        <div class="alloc-bar"><i style="width:7.31%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">社区份额长期匀速解锁，不形成集中抛压</div>
         <div class="alloc-links">
@@ -400,38 +470,13 @@
           <span class="alloc-pct">3.0000%</span>
         </div>
         <div class="alloc-amt num">20,606,061 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:6.89%"></i></div>
+        <div class="alloc-bar"><i style="width:7.31%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">36 个月线性</span></span>
         </div>
         <div class="alloc-note">新增生态伙伴份额，TGE 不释放、无锁仓期，自 TGE 起 36 个月匀速线性释放，长期协同</div>
-        <div class="alloc-links">
-          <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            Jupiter Lock
-          </a>
-          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            Solscan
-          </a>
-        </div>
-      </div>
-
-      <div class="alloc-row">
-        <div class="alloc-head">
-          <span class="alloc-name">财神生态建设</span>
-          <span class="alloc-pct">5.0956%</span>
-        </div>
-        <div class="alloc-amt num">35,000,000 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:11.71%"></i></div>
-        <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">18 个月线性</span></span>
-        </div>
-        <div class="alloc-note">TGE 释放 10%（约 3,500,000 枚），其余 90% 于 18 个月内线性释放；按建设节奏分批投入</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -450,11 +495,11 @@
           <span class="alloc-pct">3.0000%</span>
         </div>
         <div class="alloc-amt num">20,606,061 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:6.89%"></i></div>
+        <div class="alloc-bar"><i style="width:7.31%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">24 个月线性</span></span>
+          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0% <span style="font-size:11px;font-weight:500;opacity:.8;">(0)</span></span></span>
+          <span class="vest-item"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">3 个月</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">24 个月线性</span></span>
         </div>
         <div class="alloc-note">为早期生态合作伙伴预留，锁仓 3 个月后分 24 个月线性释放，加速早期生态协同</div>
         <div class="alloc-links">
@@ -471,38 +516,17 @@
 
       <div class="alloc-row">
         <div class="alloc-head">
-          <span class="alloc-name">初始流动性</span>
-          <span class="alloc-pct">3.6397%</span>
+          <span class="alloc-name">Alpha 奖励</span>
+          <span class="alloc-pct">1.8926%</span>
         </div>
-        <div class="alloc-amt num">25,000,000 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:8.36%"></i></div>
+        <div class="alloc-amt num">13,000,000 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:4.61%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">100%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">开盘注入</span></span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(1,300,000)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">12 个月线性</span></span>
         </div>
-        <div class="alloc-note">建立 Meteora DLMM 流动池，开盘即有真实可交易深度</div>
-        <div class="alloc-links">
-          <a class="alloc-link" href="https://solscan.io/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            Solscan
-          </a>
-        </div>
-      </div>
-
-      <div class="alloc-row">
-        <div class="alloc-head">
-          <span class="alloc-name">Alpha 奖励 / 营销 / 活动</span>
-          <span class="alloc-pct">0.4368%</span>
-        </div>
-        <div class="alloc-amt num">3,000,000 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:1.00%"></i></div>
-        <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
-        </div>
-        <div class="alloc-note">TGE 释放 10%（约 300,000 枚），剩余 90% 于 12 个月内线性释放；空投直达真实用户，营销细水长流</div>
+        <div class="alloc-note">TGE 释放 10%（约 1,300,000 枚），剩余 90% 于 12 个月内线性释放；激励 Alpha 用户与早期参与者</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -517,17 +541,17 @@
 
       <div class="alloc-row">
         <div class="alloc-head">
-          <span class="alloc-name">项目运营</span>
+          <span class="alloc-name">营销 / 活动 / 空投</span>
           <span class="alloc-pct">1.0000%</span>
         </div>
         <div class="alloc-amt num">6,868,687 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:2.30%"></i></div>
+        <div class="alloc-bar"><i style="width:2.44%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10%</span></span>
-          <span class="vest-item is-zero"><span class="vest-k">锁仓</span><span class="vest-v">无</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">12 个月线性</span></span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(686,869)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">12 个月线性</span></span>
         </div>
-        <div class="alloc-note">TGE 释放 10%（约 686,869 枚），剩余 90% 于 12 个月内线性释放；保障项目日常运营与市场推广</div>
+        <div class="alloc-note">TGE 释放 10%（约 686,869 枚），剩余 90% 于 12 个月内线性释放；空投直达真实用户，营销细水长流</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -542,17 +566,17 @@
 
       <div class="alloc-row">
         <div class="alloc-head">
-          <span class="alloc-name">战略储备</span>
-          <span class="alloc-pct">5.0000%</span>
+          <span class="alloc-name">运营</span>
+          <span class="alloc-pct">1.0000%</span>
         </div>
-        <div class="alloc-amt num">34,343,434 <small>枚</small></div>
-        <div class="alloc-bar"><i style="width:11.49%"></i></div>
+        <div class="alloc-amt num">6,868,687 <small>枚</small></div>
+        <div class="alloc-bar"><i style="width:2.44%"></i></div>
         <div class="alloc-vest">
-          <span class="vest-item is-tge is-zero"><span class="vest-k">TGE</span><span class="vest-v">0%</span></span>
-          <span class="vest-item"><span class="vest-k">锁仓</span><span class="vest-v">3 个月</span></span>
-          <span class="vest-item"><span class="vest-k">释放</span><span class="vest-v">36 个月线性</span></span>
+          <span class="vest-item is-tge"><span class="vest-k">TGE</span><span class="vest-v">10% <span style="font-size:11px;font-weight:500;color:var(--muted);margin-left:2px;">(686,869)</span></span></span>
+          <span class="vest-item is-zero"><span class="vest-k">锁仓期 (Cliff)</span><span class="vest-v">无</span></span>
+          <span class="vest-item"><span class="vest-k">释放期 (Vesting)</span><span class="vest-v">12 个月线性</span></span>
         </div>
-        <div class="alloc-note">预留给未来合作社区与特别战略伙伴，锁仓 3 个月后分 36 个月线性释放，为生态长期协同预留空间</div>
+        <div class="alloc-note">TGE 释放 10%（约 686,869 枚），剩余 90% 于 12 个月内线性释放；保障项目日常运营与市场推广</div>
         <div class="alloc-links">
           <a class="alloc-link" href="https://lock.jup.ag/token/68Fya6TgdrYeVDSy2zxsEq8uFxxzEyzMTPhLwM816868" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -578,14 +602,14 @@
       <div class="rel subtotal">
         <div class="rel-head">
           <span class="rel-title">其中：TGE 即时释放小计</span>
-          <span class="rel-amt num">≈ 36,119,281 <small>枚</small></span>
+          <span class="rel-amt num">≈ 37,806,150 <small>枚</small></span>
         </div>
-        <div class="rel-scope">初始流动性 25M + 做市/Alpha/运营 5.11M + 燃香赐福池 2.51M + 生态建设 3.5M，约占总量的 5.26%</div>
+        <div class="rel-scope">初始流动性 25M + 做市 4.12M + 燃香赐福池 2.51M + 生态建设 3.5M + Alpha 奖励 1.3M + 营销/活动/空投 0.69M + 运营 0.69M，约占总量的 5.50%</div>
       </div>
     </div>
 
     <p class="caption">
-      <b>说明：</b>各分配项中的 <b>TGE</b> 指代币生成事件当日的即时释放比例，剩余部分按该行「释放」栏的线性周期解锁；「线性释放」指按时间均匀解锁，例如 36 个月线性释放即每月解锁该部分总量的 1/36 —— 解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。TGE 与锁仓的完整定义见「03 解锁节奏」末尾的名词解释。
+      <b>说明：</b>各分配项中的 <b>TGE</b> 指代币生成事件当日的即时释放比例，剩余部分按该行「释放期 (Vesting)」栏的线性周期解锁；「线性释放」指按时间均匀解锁，例如 36 个月线性释放即每月解锁该部分总量的 1/36 —— 解锁曲线平缓，不存在一次性大额解锁带来的集中抛压。TGE 与锁仓的完整定义见「03 解锁节奏」末尾的名词解释。
     </p>
   </section>
 
@@ -606,8 +630,8 @@
               <span class="tl-dot"></span>
               <div class="tl-card">
                 <div class="tl-when">TGE · 0 月</div>
-                <div class="tl-what">≈ 36.1M 枚</div>
-                <div class="tl-why">初始流通 5.26%</div>
+                <div class="tl-what">≈ 37.8M 枚</div>
+                <div class="tl-why">初始流通 5.50%</div>
               </div>
             </div>
 
@@ -626,7 +650,7 @@
               <span class="tl-dot"></span>
               <div class="tl-card">
                 <div class="tl-when">第 12 个月</div>
-                <div class="tl-what">做市 / Alpha / 燃香 / 运营</div>
+                <div class="tl-what">做市 / Alpha / 燃香 / 营销 / 运营</div>
                 <div class="tl-why">12 个月线性份额释放完毕</div>
               </div>
             </div>
@@ -660,8 +684,8 @@
       <div class="tl-v-item">
         <span class="tl-v-dot"></span>
         <div class="tl-v-when">TGE · 0 月</div>
-        <div class="tl-v-what">≈ 36.1M 枚</div>
-        <div class="tl-v-why">初始流通 5.26%</div>
+        <div class="tl-v-what">≈ 37.8M 枚</div>
+        <div class="tl-v-why">初始流通 5.50%</div>
       </div>
       <div class="tl-v-item">
         <span class="tl-v-dot"></span>
@@ -672,7 +696,7 @@
       <div class="tl-v-item">
         <span class="tl-v-dot"></span>
         <div class="tl-v-when">第 12 个月</div>
-        <div class="tl-v-what">做市 / Alpha / 燃香 / 运营完成</div>
+        <div class="tl-v-what">做市 / Alpha / 燃香 / 营销 / 运营完成</div>
         <div class="tl-v-why">12 个月线性份额释放完毕</div>
       </div>
       <div class="tl-v-item">
@@ -708,7 +732,7 @@
 
     <p class="caption gold" style="margin-top:0;margin-bottom:16px;">
       币价上涨带动 FDV 上升，逐档触发销毁 —— 价格越高，单档销毁量越大，形成
-      <b>「上涨 → 通缩 → 筹码更稀缺」</b>的正向循环。12 档全部触发后，累计销毁 298,897,210 枚，占总量的 <b>43.52%</b>，
+      <b>「上涨 → 通缩 → 筹码更稀缺」</b>的正向循环。12 档全部触发后，累计销毁 282,028,523 枚，占总量的 <b>41.06%</b>，
       且永不回流团队。销毁池独立列示，与基金会、社区份额完全隔离。
     </p>
 
@@ -720,7 +744,7 @@
           </svg>
           <span>FDV 里程碑销毁表</span>
         </span>
-        <span class="tbl-summary-meta">12 档 · 298,897,210 枚</span>
+        <span class="tbl-summary-meta">12 档 · 282,028,523 枚</span>
         <span class="tbl-summary-icon" aria-hidden="true"></span>
       </summary>
       <div class="tbl-scroll scroll-hint">
@@ -735,18 +759,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>01</td><td class="num">$10M</td><td class="num">1,914,811</td><td class="num">1,914,811</td><td class="num">684,953,875</td></tr>
-            <tr><td>02</td><td class="num">$15M</td><td class="num">2,872,214</td><td class="num">4,787,025</td><td class="num">682,081,661</td></tr>
-            <tr><td>03</td><td class="num">$25M</td><td class="num">4,352,703</td><td class="num">9,139,728</td><td class="num">677,728,958</td></tr>
-            <tr><td>04</td><td class="num">$40M</td><td class="num">6,792,681</td><td class="num">15,932,409</td><td class="num">670,936,277</td></tr>
-            <tr><td>05</td><td class="num">$60M</td><td class="num">9,660,065</td><td class="num">25,592,474</td><td class="num">661,276,212</td></tr>
-            <tr><td>06</td><td class="num">$90M</td><td class="num">13,574,875</td><td class="num">39,167,349</td><td class="num">647,701,337</td></tr>
-            <tr><td>07</td><td class="num">$130M</td><td class="num">19,319,435</td><td class="num">58,486,784</td><td class="num">628,381,902</td></tr>
-            <tr><td>08</td><td class="num">$180M</td><td class="num">26,111,866</td><td class="num">84,598,650</td><td class="num">602,270,036</td></tr>
-            <tr><td>09</td><td class="num">$250M</td><td class="num">33,942,153</td><td class="num">118,540,803</td><td class="num">568,327,883</td></tr>
-            <tr><td>10</td><td class="num">$350M</td><td class="num">43,516,126</td><td class="num">162,056,929</td><td class="num">524,811,757</td></tr>
-            <tr><td>11</td><td class="num">$500M</td><td class="num">58,139,491</td><td class="num">220,196,420</td><td class="num">466,672,266</td></tr>
-            <tr class="sum"><td>12</td><td class="num">$1B</td><td class="num">78,700,790</td><td class="num">298,897,210</td><td class="num">387,971,476</td></tr>
+            <tr><td>01</td><td class="num">$10M</td><td class="num">1,806,746</td><td class="num">1,806,746</td><td class="num">685,061,940</td></tr>
+            <tr><td>02</td><td class="num">$15M</td><td class="num">2,710,117</td><td class="num">4,516,863</td><td class="num">682,351,823</td></tr>
+            <tr><td>03</td><td class="num">$25M</td><td class="num">4,107,052</td><td class="num">8,623,915</td><td class="num">678,244,771</td></tr>
+            <tr><td>04</td><td class="num">$40M</td><td class="num">6,409,326</td><td class="num">15,033,241</td><td class="num">671,835,445</td></tr>
+            <tr><td>05</td><td class="num">$60M</td><td class="num">9,114,886</td><td class="num">24,148,127</td><td class="num">662,720,559</td></tr>
+            <tr><td>06</td><td class="num">$90M</td><td class="num">12,808,758</td><td class="num">36,956,885</td><td class="num">649,911,801</td></tr>
+            <tr><td>07</td><td class="num">$130M</td><td class="num">18,229,116</td><td class="num">55,186,001</td><td class="num">631,682,685</td></tr>
+            <tr><td>08</td><td class="num">$180M</td><td class="num">24,638,206</td><td class="num">79,824,207</td><td class="num">607,044,479</td></tr>
+            <tr><td>09</td><td class="num">$250M</td><td class="num">32,026,580</td><td class="num">111,850,787</td><td class="num">575,017,899</td></tr>
+            <tr><td>10</td><td class="num">$350M</td><td class="num">41,060,232</td><td class="num">152,911,019</td><td class="num">533,957,667</td></tr>
+            <tr><td>11</td><td class="num">$500M</td><td class="num">54,858,307</td><td class="num">207,769,326</td><td class="num">479,099,360</td></tr>
+            <tr class="sum"><td>12</td><td class="num">$1B</td><td class="num">74,259,197</td><td class="num">282,028,523</td><td class="num">404,840,163</td></tr>
           </tbody>
         </table>
       </div>
@@ -759,7 +783,7 @@
 
     <div class="chart-wrap">
       <p class="chart-title">Burn Curve<span>累计销毁随 FDV 上升</span></p>
-      <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="累计销毁曲线：FDV 从 $10M 到 $1B，累计销毁从 191 万到 2.99 亿">
+      <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="累计销毁曲线：FDV 从 $10M 到 $1B，累计销毁从约 181 万到 2.82 亿">
         <defs>
           <linearGradient id="burnGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#ff2d55" stop-opacity=".28"/>
@@ -781,14 +805,14 @@
         <line class="axis" x1="56" y1="30" x2="56" y2="180"/>
         <line class="axis" x1="56" y1="180" x2="500" y2="180"/>
 
-        <text class="lbl lbl-y" x="48" y="33">299M</text>
-        <text class="lbl lbl-y detail" x="48" y="71">224M</text>
-        <text class="lbl lbl-y detail" x="48" y="108">149M</text>
-        <text class="lbl lbl-y detail" x="48" y="145">75M</text>
+        <text class="lbl lbl-y" x="48" y="33">282M</text>
+        <text class="lbl lbl-y detail" x="48" y="71">211M</text>
+        <text class="lbl lbl-y detail" x="48" y="108">141M</text>
+        <text class="lbl lbl-y detail" x="48" y="145">71M</text>
         <text class="lbl lbl-y" x="48" y="183">0</text>
 
-        <text class="lbl lbl-y mobile-only" x="48" y="83">199M</text>
-        <text class="lbl lbl-y mobile-only" x="48" y="133">100M</text>
+        <text class="lbl lbl-y mobile-only" x="48" y="83">188M</text>
+        <text class="lbl lbl-y mobile-only" x="48" y="133">94M</text>
 
         <line class="grid mobile-only" x1="167" y1="30" x2="167" y2="180"/>
         <line class="grid mobile-only" x1="278" y1="30" x2="278" y2="180"/>
@@ -831,22 +855,22 @@
 
     <div class="kpi">
       <div class="kpi-cell">
-        <b class="num is-red">298,897,210</b>
+        <b class="num is-red">282,028,523</b>
         <span>累计销毁上限（枚）</span>
       </div>
       <div class="kpi-cell">
-        <b class="num">43.5159%</b>
+        <b class="num">41.0600%</b>
         <span>占总发行量</span>
       </div>
       <div class="kpi-cell">
-        <b class="num">387,971,476</b>
+        <b class="num">404,840,163</b>
         <span>全部触发后剩余供应量</span>
       </div>
     </div>
 
     <p class="caption">
       <b>FDV（完全稀释估值）</b> = 币价 × 原始总供应量 686,868,686。触发口径固定，不因流通量变化而改变。
-      12 档目标逐级抬升，单档销毁量随之递增，全部触发后累计销毁量占总供应量的 43.52%。
+      12 档目标逐级抬升，单档销毁量随之递增，全部触发后累计销毁量占总供应量的 41.06%。
       美元单位：M = 百万，B = 十亿。
     </p>
   </section>
@@ -1135,7 +1159,7 @@
     </div>
     <div class="foot-row">
       <span class="foot-k">Version</span>
-      <span class="foot-v">v1.8 · 2026-10-18</span>
+      <span class="foot-v">v1.9 · 2026-10-18</span>
     </div>
     <div class="foot-row">
       <span class="foot-k">Total Supply</span>
@@ -1210,7 +1234,7 @@
 
     <div class="disc">
       本文档仅用于信息展示，不构成任何投资、法律、税务或会计建议。数字资产价格波动剧烈，请理性判断、注意风险。
-      完整风险披露请见「06 风险与声明」。文档版本 v1.8 · 最后更新 2026-10-18。
+      完整风险披露请见「06 风险与声明」。文档版本 v1.9 · 最后更新 2026-10-18。
     </div>
   </footer>
 
